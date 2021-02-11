@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +16,41 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeControllers::class, 'redirect']
+);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+// レシピ一覧を取得するルーティング
+Route::get('/users/{id?}/recipes', [RecipeController::class, 'index'])->name('recipes')->middleware('auth');
+Route::get('/users/{id?}/recipes/{recipe_id?}', [RecipeController::class, 'show'])->name('recipes')->middleware('auth');
+
+
+// Route::get('/', function () {
+//     return view('home');
+// });
+
+// // Route::get('/inquiry-list', function () {
+// //     return view('inquirylist');
+// // });
+
+// Route::get('/input-inquiry', function () {
+//     return view('inquiryinput');
+// });
+
+// Route::get('/input-inquiry-sub', [GetInquiryController::class, 'getInquiry']);
+// // Route::get('/inquiry-list', [GetInquiryController::class, 'getTargetInquiry']);
+
+// Route::get('/inquiry-edit', [EditInquiryController::class, 'getEditTargetInquiry']);
+// // Route::get('/inquiry-list', [GetInquiryController::class, 'getTargetInquiry']);
+
+// Route::post('/input-inquiry-complete', [SaveInquiryController::class, 'saveInquiry']);
+
+// Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

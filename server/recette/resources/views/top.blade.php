@@ -4,7 +4,7 @@
 <div class="container-fluid w-95 mx-auto pt-4">
     <!-- @if (Session::has('save_complete_message'))
     @endif -->
-    <top-component></top-component>
+    <top-page></top-page>
     <a href="{{ route('logout') }}"
    onclick="event.preventDefault();
    document.getElementById('logout-form').submit();"> Logout </a>

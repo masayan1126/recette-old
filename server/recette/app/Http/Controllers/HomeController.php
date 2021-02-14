@@ -26,7 +26,7 @@ class HomeController extends Controller
     {
         //
         $id = Auth::id();
-        $url = url("/user/{$id}/recipes");
+        $url = url("/users/{$id}/recipes");
         return redirect($url);
     }
 }

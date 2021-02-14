@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', [HomeControllers::class, 'redirect']
+Route::get('/', [HomeController::class, 'redirect']
 );
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {

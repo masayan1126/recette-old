@@ -20,7 +20,8 @@ require("./bootstrap");
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 import { createApp } from "vue";
-import TopComponent from "./components/TopComponent.vue";
+import TopPage from "./components/TopPage.vue";
+import RecipeDetail from "./components/recipe/RecipeDetail.vue";
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -32,6 +33,7 @@ import TopComponent from "./components/TopComponent.vue";
 
 createApp({
     components: {
-        TopComponent,
+        TopPage,
+        RecipeDetail,
     },
 }).mount("#app");

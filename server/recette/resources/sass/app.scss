@@ -9,7 +9,8 @@
 
 body {
     height: 100vh;
-    background-color: #454545;
+    background-color: #454545; //黒
+    color: #c4c4c4; //グレー
 }
 
 #app {
@@ -36,10 +37,52 @@ body {
     height: 55px;
 }
 
+@media (max-width: 375px) {
+    .nav-fix-bottom {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1030;
+    }
+}
+
 .top-container-recipe-title {
-    color: #f0eeee;
 }
 
 .top-container-recipe-content {
     height: 100px;
+}
+
+// レシピ詳細画面　ーーーーーーーーーーーーーーーーーーーーー
+// 全体のセクション
+.recipe-detail-section {
+    width: 90%;
+    margin: 0 auto;
+}
+// 各コンテナ
+.meal-container__recipe-deatail,
+.ingredient-container__recipe-deatail,
+.recipe-container__recipe-deatail {
+    margin: 0 auto 50px;
+    max-width: 600px;
+}
+
+// 各コンテナ内のタイトル
+.meal-title__recipe-deatail,
+.ingredient-title__recipe-detail,
+.recipe-title__recipe-detail {
+    margin-bottom: 0px;
+}
+
+// mealコンテナ内の画像
+.meal-image__recipe-deatail {
+    width: 100%;
+}
+
+// ingredient、recipeコンテナ内の説明文
+.ingredient-description__recipe-deatail,
+.recipe-description__recipe-deatail {
+    background-color: #c4c4c4; //グレー
+    color: #454545; //黒
 }

@@ -4,7 +4,7 @@
 <div class="container-fluid w-95 mx-auto pt-4">
     <!-- @if (Session::has('save_complete_message'))
     @endif -->
-    <p>detail</p>
-    <recipe-detail></recipe-detail>
+    <h3>レシピ詳細</h3>
+    <recipe-detail :target-recipe={{$target_recipe}}></recipe-detail>
 </div>
 @endsection

@@ -7,11 +7,7 @@
 
         <div class="meal-container__recipe-deatail">
             <div class="text-right"></div>
-            <img
-                class="meal-image__recipe-deatail"
-                src="https://www.moranbong.co.jp/files/topics/3128_ext_03_0_L.jpg?v=1519087533"
-                alt=""
-            />
+            <img class="meal-image__recipe-deatail" src="" alt="" />
             <p class="meal-title__recipe-deatail">中華丼</p>
             <!-- <div
                 class="d-flex justify-content-between align-items-center"

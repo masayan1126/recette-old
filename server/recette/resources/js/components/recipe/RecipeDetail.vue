@@ -8,15 +8,17 @@
         <div class="meal-container__recipe-deatail">
             <div class="text-right">
                 <span @click="goToRecipeEditScreen()"
-                    ><i class="fas fa-pencil-alt mr-1"></i>編集する</span
+                    ><i class="fas fa-pencil-alt mr-1"></i>編集</span
                 >
             </div>
             <img
                 class="meal-image__recipe-deatail"
-                src="https://www.moranbong.co.jp/files/topics/3128_ext_03_0_L.jpg?v=1519087533"
+                :src="targetRecipe.recipe_image_path"
                 alt=""
             />
-            <p class="meal-title__recipe-deatail">中華丼</p>
+            <p class="meal-title__recipe-deatail">
+                {{ targetRecipe.recipe_name }}
+            </p>
             <!-- <div
                 class="d-flex justify-content-between align-items-center"
             ></div> -->
@@ -39,8 +41,10 @@
 <script>
 export default {
     name: "RecipeDetail",
+    props: ["targetRecipe"],
     mounted() {
         console.log(this.$store.state.userId);
+        console.log(this.targetRecipe);
     },
     methods: {
         returnToPreviousPage: function () {
@@ -58,15 +62,6 @@ export default {
                 "/recipes/" +
                 "edit/" +
                 recipeId;
-
-            // location.pathname = `/users/${this.$store.state.userId} + "/" + recipeId`;
-            // const recipeId = 364;
-            // document.testForm.action = `/user/1/recipes/${recipeId}`;
-            // document.testForm.submit();
-            // let id = window.location.pathname.split("/recipe/edit")[1];
-            // if (id) {
-            //     id = id.split("/")[1];
-            // }
         },
     },
 };

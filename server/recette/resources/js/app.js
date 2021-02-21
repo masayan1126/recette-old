@@ -22,6 +22,7 @@ require("./bootstrap");
 import { createApp } from "vue";
 import { store } from "./store";
 import TopPage from "./components/TopPage.vue";
+import RecipeList from "./components/recipe/RecipeList";
 import RecipeDetail from "./components/recipe/RecipeDetail.vue";
 import EditRecipe from "./components/recipe/EditRecipe.vue";
 import CreateRecipe from "./components/recipe/CreateRecipe.vue";
@@ -42,6 +43,7 @@ createApp({
         EditRecipe,
         CreateRecipe,
         StoreRecipe,
+        RecipeList,
     },
 })
     .use(store)

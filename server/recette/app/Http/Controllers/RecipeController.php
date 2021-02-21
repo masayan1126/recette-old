@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Recipe;
+use Storage;
 
 class RecipeController extends Controller
 {
@@ -15,7 +17,13 @@ class RecipeController extends Controller
     // レシピ一覧を取得し表示する
     public function index($id)
     {   
-        return view('top');
+        $recipes = Recipe::where('user_id', $id)->get();
+        return view('top')->with(
+            [
+                'user_id' => $id,
+                'recipes' => $recipes
+            ]
+        );
 
     }
 
@@ -24,9 +32,11 @@ class RecipeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
         //
+        // dd("create");
+        return view('recipe.create_recipe')->with('user_id', $id);
     }
 
     /**
@@ -35,9 +45,25 @@ class RecipeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$id)
     {
+        // dd($request->all());
+        $recipe = new Recipe();
+        $imagefile = $request->file('imagefile');
+        // $pathの中身は"products/ファイル名.jpeg"　等
+        $path = Storage::disk('s3')->putFile('/recipes', $imagefile, 'public');
+        // $product->pathの中身は上記$pathの画像ファイル名含めたs3のURL
+        $recipe->recipe_name = $request->recipe_name;
+        $recipe->user_id = $id;
+        $recipe->recipe_image_path = Storage::disk('s3')->url($path);
+        // $recipe->price = $request->price;
+        // $recipe->stock_quantity = $request->stock_quantity;
+        $recipe->save();
         //
+        $url = url("/users/{$id}/recipes");
+        return redirect($url);
+
+        return view('recipe.store_recipe')->with('user_id', $id);
         $recipe_id = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 8);
         // dd($recipe_id);
     }
@@ -63,9 +89,11 @@ class RecipeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,$recipe_id)
     {
         //
+        return view('recipe.edit_recipe')->with('user_id', $id,$recipe_id);
+
     }
 
     /**

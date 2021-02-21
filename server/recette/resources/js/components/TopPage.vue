@@ -26,7 +26,7 @@
             class="top-container-recipe-title d-flex justify-content-between mt-5"
         >
             <h3>マイレシピ</h3>
-            <p>すべて見る</p>
+            <p @click="showRecipeList()">すべて見る</p>
         </div>
         <div class="top-container-recipe-content">
             <div
@@ -116,6 +116,10 @@ export default {
     methods: {
         showRecipeDetail: function (recipeId) {
             location.pathname = location.pathname + "/" + recipeId;
+        },
+        showRecipeList() {
+            location.pathname =
+                "/users/" + this.$store.state.userId + "/recipes/list";
         },
     },
 };

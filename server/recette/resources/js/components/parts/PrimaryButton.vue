@@ -1,0 +1,90 @@
+<template>
+    <button
+        class="btn"
+        @click="showRecipeDetail()"
+        style="
+            width: 100%;
+            height: 30px;
+            border-radius: 2%;
+            color: FFFFFF;
+            background-color: #e4c8ad;
+        "
+    >
+        登録する
+    </button>
+</template>
+
+<script>
+import Button from "../../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue";
+export default {
+    components: { Button },
+    name: "EditRecipe",
+    props: ["editTargetRecipe", "showRecipeDetail"],
+    data() {
+        return {
+            revisedRecipeObj: null,
+            revisedRecipeName: "",
+            revisedRecipeImage: "",
+            csrf: document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        };
+    },
+    created() {
+        // this.revisedRecipeName = this.editTargetRecipe.recipe_name;
+    },
+    mounted() {
+        // console.log(this.editTargetRecipe);
+    },
+    methods: {
+        showRecipeDetail: function () {
+            const userId = this.$store.state.userId;
+            // axios
+            //     .post("users/" + userId + "/recipes/update", "axiosテスト", {
+            //         headers: { "content-type": "multipart/form-data" },
+            //     })
+            //     .then((res) => {
+            //         // location.pathname = "/users/" + userId + "/recipes";
+            //     })
+            //     .catch((error) => {
+            //         new Error(error);
+            //     });
+
+            const revisedRecipeObj = {
+                id: this.editTargetRecipe.id,
+                revisedRecipeName: this.revisedRecipeName,
+                revisedRecipeImage: this.revisedRecipeImage,
+            };
+            this.revisedRecipeObj = revisedRecipeObj;
+
+            document.createRecipeForm.action = `/users/${userId}/recipes/update`;
+            document.createRecipeForm.submit();
+        },
+        returnToPreviousPage: function () {
+            history.back();
+        },
+        goToRecipeEditScreen: function () {
+            const userId = this.$store.state.userId;
+            // urlから正規表現でrecipeidのみ抽出
+            const recipeId = location.pathname.match(/([^\/.]+)/g)[3];
+            console.log(recipeId);
+
+            location.pathname =
+                "/users/" +
+                this.$store.state.userId +
+                "/recipes/" +
+                "edit/" +
+                recipeId;
+
+            // location.pathname = `/users/${this.$store.state.userId} + "/" + recipeId`;
+            // const recipeId = 364;
+            // document.testForm.action = `/user/1/recipes/${recipeId}`;
+            // document.testForm.submit();
+            // let id = window.location.pathname.split("/recipe/edit")[1];
+            // if (id) {
+            //     id = id.split("/")[1];
+            // }
+        },
+    },
+};
+</script>

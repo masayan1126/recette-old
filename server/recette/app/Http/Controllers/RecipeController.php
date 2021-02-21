@@ -17,8 +17,23 @@ class RecipeController extends Controller
     // レシピ一覧を取得し表示する
     public function index($id)
     {   
+        // 現在のURLを取得し、表示画面を分岐させる
+        $uri = rtrim($_SERVER["REQUEST_URI"], '/');
+        $uri = substr($uri, strrpos($uri, '/') + 1);
+
+        // 通常のトップ画面の一覧で全レシピを表示した場合
         $recipes = Recipe::where('user_id', $id)->get();
-        return view('top')->with(
+
+        if ($uri == "recipes") {
+            return view('top')->with(
+                [
+                    'user_id' => $id,
+                    'recipes' => $recipes
+                ]
+            );
+        }
+        // リスト形式の一覧で全レシピを表示した場合
+        return view('recipe.recipe_list')->with(
             [
                 'user_id' => $id,
                 'recipes' => $recipes
@@ -47,7 +62,6 @@ class RecipeController extends Controller
      */
     public function store(Request $request,$id)
     {
-        // dd($request->all());
         $recipe = new Recipe();
         $imagefile = $request->file('imagefile');
         // $pathの中身は"products/ファイル名.jpeg"　等
@@ -76,10 +90,9 @@ class RecipeController extends Controller
      */
     public function show($id,$recipe_id)
     {
-        //
-        // dd($id,$recipe_id);
+        $target_recipe = Recipe::find($recipe_id);
         // レシピ詳細画面
-        return view('recipe.recipe_detail');
+        return view('recipe.recipe_detail')->with('target_recipe', $target_recipe);
 
     }
 
@@ -92,7 +105,8 @@ class RecipeController extends Controller
     public function edit($id,$recipe_id)
     {
         //
-        return view('recipe.edit_recipe')->with('user_id', $id,$recipe_id);
+        $editing_target_recipe = Recipe::find($recipe_id);
+        return view('recipe.edit_recipe')->with('editing_target_recipe', $editing_target_recipe);
 
     }
 
@@ -105,7 +119,15 @@ class RecipeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $revised_recipe = json_decode($request->revised_recipe);
+        // dd($revised_recipe);
+        $update_target_recipe = Recipe::where('id',$revised_recipe->id)->first();
+        $update_target_recipe->recipe_name = $revised_recipe->revisedRecipeName;
+        $update_target_recipe->recipe_image_path = $revised_recipe->revisedRecipeImage;
+        // dd($update_target_recipe);
+        $update_target_recipe->save();
+        $url = url("/users/{$id}/recipes");
+        return redirect($url);
     }
 
     /**

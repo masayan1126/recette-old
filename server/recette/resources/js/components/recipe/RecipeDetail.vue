@@ -26,7 +26,12 @@
         <div class="ingredient-container__recipe-deatail">
             <p class="ingredient-title__recipe-detail">材料</p>
             <div class="ingredient-description__recipe-deatail">
-                必要な材料が表示される
+                <ul
+                    v-for="targetIngredient in targetIngredients"
+                    :key="targetIngredient.id"
+                >
+                    <li>{{ targetIngredient.ingredient_name }}</li>
+                </ul>
             </div>
         </div>
         <div class="recipe-container__recipe-deatail">
@@ -41,10 +46,15 @@
 <script>
 export default {
     name: "RecipeDetail",
-    props: ["targetRecipe"],
+    props: ["targetRecipe", "targetIngredients"],
+    data() {
+        return {
+            targetIngredientList: [],
+        };
+    },
     mounted() {
         console.log(this.$store.state.userId);
-        console.log(this.targetRecipe);
+        console.log(this.targetIngredients);
     },
     methods: {
         returnToPreviousPage: function () {

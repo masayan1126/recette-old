@@ -5,39 +5,71 @@
             @click="returnToPreviousPage()"
             class="fas fa-long-arrow-alt-left fa-2x"
         ></i>
-
         <form
             action=""
             method="POST"
             enctype="multipart/form-data"
-            id="create-recipe-form"
-            name="createRecipeForm"
+            id="edit-recipe-form"
+            name="editRecipeForm"
         >
             <input type="hidden" name="_token" :value="csrf" />
             <input
                 type="hidden"
-                name="revised_recipe"
-                :value="JSON.stringify(revisedRecipeObj)"
+                name="editedRecipe"
+                :value="JSON.stringify(editedRecipeObj)"
             />
             <div class="meal-container__recipe-deatail">
-                <div class="text-right"></div>
-                <img
-                    class="meal-image__recipe-deatail"
-                    :src="editingTargetRecipe.recipe_image_path"
-                    alt=""
-                />
-                <input
-                    v-model="revisedRecipeName"
-                    class="meal-title__recipe-deatail"
-                />
-                <!-- <div
-                class="d-flex justify-content-between align-items-center"
-            ></div> -->
+                <div class="meal-image__recipe-deatail">
+                    <!-- <label for="">
+                        <input type="file" class="d-none" />
+                        <img class="w-75 h-75" :src="recipeImage" alt="" />
+                    </label> -->
+                    <ImagePreview
+                        :recipeImage="editingTargetRecipe.recipe_image_path"
+                    />
+                    <!-- <p class="text-right">
+                        <i class="fas fa-upload"></i>画像をUL
+                    </p> -->
+                </div>
+
+                <div class="input-group">
+                    <input
+                        class="form-control meal-title__recipe-deatail"
+                        type="text"
+                        v-model="recipeName"
+                    />
+                </div>
             </div>
             <div class="ingredient-container__recipe-deatail">
                 <p class="ingredient-title__recipe-detail">材料</p>
                 <div class="ingredient-description__recipe-deatail">
-                    必要な材料が表示される
+                    <div
+                        v-for="ingredient in ingredientList"
+                        :key="ingredient.id"
+                    >
+                        <TextInput
+                            :index="index"
+                            :deleteIngredient="deleteIngredient"
+                            @setEditingTargetIngredientName="set"
+                            :value="ingredient.ingredient_name"
+                            @inputFormContent="ingredientName = $event"
+                        />
+                    </div>
+                </div>
+                <div class="input-group">
+                    <textarea
+                        class="form-control"
+                        v-model="ingredientName"
+                        name=""
+                        id=""
+                    ></textarea>
+                    <div class="input-group-append">
+                        <span
+                            @click="updateTargetIngredientList()"
+                            class="input-group-text"
+                            >確定</span
+                        >
+                    </div>
                 </div>
             </div>
             <div class="recipe-container__recipe-deatail">
@@ -45,7 +77,7 @@
                 <div class="recipe-description__recipe-deatail">
                     作り方が表示される
                 </div>
-                <PrimaryButton :showRecipeDetail="showRecipeDetail" />
+                <PrimaryButton :sendEditedRecipe="sendEditedRecipe" />
             </div>
         </form>
     </section>
@@ -53,15 +85,20 @@
 
 <script>
 import PrimaryButton from "../parts/PrimaryButton";
+import TextInput from "../parts/TextInput";
+import ImagePreview from "../parts/ImagePreview";
 export default {
-    components: { PrimaryButton },
+    components: { PrimaryButton, TextInput, ImagePreview },
     name: "EditRecipe",
-    props: ["editingTargetRecipe"],
+    props: ["editingTargetRecipe", "editingTargetIngredients"],
     data() {
         return {
-            revisedRecipeObj: null,
-            revisedRecipeName: "",
-            revisedRecipeImage: "",
+            editedRecipeObj: null,
+            recipeName: "",
+            recipeImage: "",
+            ingredientName: "",
+            ingredientList: [],
+            index: 0,
             csrf: document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"),
@@ -69,57 +106,46 @@ export default {
     },
     created() {},
     mounted() {
-        console.log(this.editingTargetRecipe);
-        this.revisedRecipeName = this.editingTargetRecipe.recipe_name;
+        this.recipeName = this.editingTargetRecipe.recipe_name;
+        this.ingredientList = this.editingTargetIngredients;
     },
     methods: {
-        showRecipeDetail: function () {
-            const userId = this.$store.state.userId;
-            // axios
-            //     .post("users/" + userId + "/recipes/update", "axiosテスト", {
-            //         headers: { "content-type": "multipart/form-data" },
-            //     })
-            //     .then((res) => {
-            //         // location.pathname = "/users/" + userId + "/recipes";
-            //     })
-            //     .catch((error) => {
-            //         new Error(error);
-            //     });
+        updateTargetIngredientList() {
+            if (this.ingredientName == "") {
+                return;
+            }
 
-            const revisedRecipeObj = {
+            this.ingredientList[
+                this.index
+            ].ingredient_name = this.ingredientName;
+            console.log(this.ingredientList[this.index].ingredient_name);
+            this.ingredientName = "";
+        },
+        createEditedRecipe: function (ingredientList) {
+            const editedRecipeObj = {
                 id: this.editingTargetRecipe.id,
-                revisedRecipeName: this.revisedRecipeName,
-                revisedRecipeImage: this.revisedRecipeImage,
+                editedRecipeName: this.recipeName,
+                editedRecipeImage: this.recipeImage,
+                editedIngredients: this.ingredientList,
             };
-            this.revisedRecipeObj = revisedRecipeObj;
-
-            document.createRecipeForm.action = `/users/${userId}/recipes/update`;
-            document.createRecipeForm.submit();
+            this.editedRecipeObj = editedRecipeObj;
+        },
+        sendEditedRecipe: function () {
+            this.createEditedRecipe();
+            const userId = this.$store.state.userId;
+            document.editRecipeForm.action = `/users/${userId}/recipes/update`;
+            document.editRecipeForm.submit();
+        },
+        set(value, index) {
+            this.ingredientName = value;
+            this.index = index;
+        },
+        deleteIngredient: function (index) {
+            this.ingredientList.splice(index, 1);
+            this.ingredientName = "";
         },
         returnToPreviousPage: function () {
             history.back();
-        },
-        goToRecipeEditScreen: function () {
-            const userId = this.$store.state.userId;
-            // urlから正規表現でrecipeidのみ抽出
-            const recipeId = location.pathname.match(/([^\/.]+)/g)[3];
-            console.log(recipeId);
-
-            location.pathname =
-                "/users/" +
-                this.$store.state.userId +
-                "/recipes/" +
-                "edit/" +
-                recipeId;
-
-            // location.pathname = `/users/${this.$store.state.userId} + "/" + recipeId`;
-            // const recipeId = 364;
-            // document.testForm.action = `/user/1/recipes/${recipeId}`;
-            // document.testForm.submit();
-            // let id = window.location.pathname.split("/recipe/edit")[1];
-            // if (id) {
-            //     id = id.split("/")[1];
-            // }
         },
     },
 };

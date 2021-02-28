@@ -5,6 +5,6 @@
     <!-- @if (Session::has('save_complete_message'))
     @endif -->
     <h3>レシピ詳細</h3>
-    <recipe-detail :target-recipe={{$target_recipe}}></recipe-detail>
+    <recipe-detail :target-recipe = {{$target_recipe}} :target-ingredients = {{$target_ingredients}}></recipe-detail>
 </div>
 @endsection

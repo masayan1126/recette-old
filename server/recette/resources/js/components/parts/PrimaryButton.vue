@@ -1,7 +1,7 @@
 <template>
     <button
         class="btn"
-        @click="showRecipeDetail()"
+        @click="sendEditedRecipe()"
         style="
             width: 100%;
             height: 30px;
@@ -19,7 +19,7 @@ import Button from "../../../../vendor/laravel/jetstream/stubs/inertia/resources
 export default {
     components: { Button },
     name: "EditRecipe",
-    props: ["editTargetRecipe", "showRecipeDetail"],
+    props: ["editTargetRecipe", "sendEditedRecipe"],
     data() {
         return {
             revisedRecipeObj: null,
@@ -37,29 +37,6 @@ export default {
         // console.log(this.editTargetRecipe);
     },
     methods: {
-        showRecipeDetail: function () {
-            const userId = this.$store.state.userId;
-            // axios
-            //     .post("users/" + userId + "/recipes/update", "axiosテスト", {
-            //         headers: { "content-type": "multipart/form-data" },
-            //     })
-            //     .then((res) => {
-            //         // location.pathname = "/users/" + userId + "/recipes";
-            //     })
-            //     .catch((error) => {
-            //         new Error(error);
-            //     });
-
-            const revisedRecipeObj = {
-                id: this.editTargetRecipe.id,
-                revisedRecipeName: this.revisedRecipeName,
-                revisedRecipeImage: this.revisedRecipeImage,
-            };
-            this.revisedRecipeObj = revisedRecipeObj;
-
-            document.createRecipeForm.action = `/users/${userId}/recipes/update`;
-            document.createRecipeForm.submit();
-        },
         returnToPreviousPage: function () {
             history.back();
         },

@@ -3,7 +3,7 @@
         <div class="text-right">
             <label>
                 <div class="d-flex">
-                    <p>レシピ画像をUP</p>
+                    <p>レシピ画像をUL</p>
                     <!-- <i class="fas fa-image fa-2x"></i> -->
                     <i class="fas fa-file-upload fa-2x"></i>
                 </div>
@@ -26,6 +26,7 @@
 <script>
 export default {
     name: "ImagePreview",
+    props: ["recipeImage"],
     data() {
         return {
             url: "",
@@ -35,8 +36,9 @@ export default {
         };
     },
     mounted() {
-        console.log("preview");
-        console.log(this.$refs.preview);
+        console.log(this.recipeImage);
+        // console.log(this.$refs.preview);
+        this.url = this.recipeImage;
     },
     methods: {
         uploadFile() {

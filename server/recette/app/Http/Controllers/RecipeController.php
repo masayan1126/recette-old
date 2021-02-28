@@ -89,10 +89,19 @@ class RecipeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id,$recipe_id)
+    
     {
         $target_recipe = Recipe::find($recipe_id);
+        // $ingredients = Recipe::with(["ingredients"])->get();
+        $target_ingredients = Recipe::find($recipe_id)->ingredients()
+        ->where('recipe_id', $recipe_id)
+        ->get();
+        // dd($target_ingredients);
+
         // レシピ詳細画面
-        return view('recipe.recipe_detail')->with('target_recipe', $target_recipe);
+        return view('recipe.recipe_detail')->with(
+            ['target_recipe' => $target_recipe, 'target_ingredients' => $target_ingredients],
+        );
 
     }
 
@@ -106,7 +115,15 @@ class RecipeController extends Controller
     {
         //
         $editing_target_recipe = Recipe::find($recipe_id);
-        return view('recipe.edit_recipe')->with('editing_target_recipe', $editing_target_recipe);
+        $editing_target_ingredients = Recipe::find($recipe_id)->ingredients()
+        ->where('recipe_id', $recipe_id)
+        ->get();
+        return view('recipe.edit_recipe')->with(
+            [
+                'editing_target_recipe' => $editing_target_recipe,
+                'editing_target_ingredients' => $editing_target_ingredients
+            ]
+        );
 
     }
 
@@ -119,14 +136,14 @@ class RecipeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $revised_recipe = json_decode($request->revised_recipe);
-        // dd($revised_recipe);
-        $update_target_recipe = Recipe::where('id',$revised_recipe->id)->first();
-        $update_target_recipe->recipe_name = $revised_recipe->revisedRecipeName;
-        $update_target_recipe->recipe_image_path = $revised_recipe->revisedRecipeImage;
-        // dd($update_target_recipe);
+        $edited_recipe = json_decode($request->editedRecipe);
+        $imagefile = $request->file('imagefile');
+        $path = Storage::disk('s3')->putFile('/recipes', $imagefile, 'public');
+        $update_target_recipe = Recipe::where('id',$edited_recipe->id)->first();
+        $update_target_recipe->recipe_name = $edited_recipe->editedRecipeName;
+        $update_target_recipe->recipe_image_path = Storage::disk('s3')->url($path);
         $update_target_recipe->save();
-        $url = url("/users/{$id}/recipes");
+        $url = url("/users/{$id}/recipes/{$edited_recipe->id}");
         return redirect($url);
     }
 

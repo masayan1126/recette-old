@@ -16284,11 +16284,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _assets_initialIngredientList_json__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../assets/initialIngredientList.json */ "./resources/js/assets/initialIngredientList.json");
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Top",
-  props: ["userId", "recipes"],
+  props: ["userId", "recipes", "ingredients"],
   data: function data() {
     return {
+      initialIngredientList: _assets_initialIngredientList_json__WEBPACK_IMPORTED_MODULE_0__,
       recipeName: "",
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute("content")
     };
@@ -16297,13 +16300,45 @@ __webpack_require__.r(__webpack_exports__);
     console.log(location.pathname.split("/users/")[1]);
     this.$store.commit("setUserId", this.userId);
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    console.log(JSON.stringify(this.initialIngredientList));
+  },
   methods: {
     showRecipeDetail: function showRecipeDetail(recipeId) {
       location.pathname = location.pathname + "/" + recipeId;
     },
     showRecipeList: function showRecipeList() {
       location.pathname = "/users/" + this.$store.state.userId + "/recipes/list";
+    },
+    addInitDatatoIngredientsTable: function addInitDatatoIngredientsTable() {
+      console.log(this.initialIngredientList);
+      axios.post("/api/users/" + this.$store.state.userId + "/ingredients/add", {
+        initialIngredientList: JSON.stringify(this.initialIngredientList)
+      } // {
+      //     vegs: JSON.stringify(this.initialIngredientList.vegs),
+      // },
+      // {
+      //     meats: JSON.stringify(this.initialIngredientList.meats),
+      // },
+      // {
+      //     fishes: JSON.stringify(
+      //         this.initialIngredientList.fishes
+      //     ),
+      // },
+      // {
+      //     cereals: JSON.stringify(
+      //         this.initialIngredientList.cereals
+      //     ),
+      // },
+      // {
+      //     potatoes_starches_beans_mushrooms: JSON.stringify(
+      //         this.initialIngredientList
+      //             .potatoes_starches_beans_mushrooms
+      //     ),
+      // }
+      )["catch"](function (error) {
+        console.log(error);
+      });
     }
   }
 });
@@ -16465,27 +16500,58 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "CreateRecipe",
+  props: ["ingredients"],
   components: {
     ImagePreview: _parts_ImagePreview__WEBPACK_IMPORTED_MODULE_1__.default
   },
   data: function data() {
     return {
-      recipeName: "eee",
+      newRecipeObj: null,
+      recipeName: "",
+      ingredient: "",
+      ingredientList: [],
+      editing: false,
+      editingIngredientIndex: 0,
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute("content")
     };
   },
-  mounted: function mounted() {
-    console.log("create");
-  },
+  mounted: function mounted() {},
   methods: {
     showRecipeDetail: function showRecipeDetail() {
       var recipeId = 364;
       var userId = this.$store.state.userId;
+      this.createNewRecipe();
       document.createRecipeForm.action = "/users/".concat(userId, "/recipes/store");
       document.createRecipeForm.submit(); // let id = window.location.pathname.split("/recipe/edit")[1];
       // if (id) {
       //     id = id.split("/")[1];
       // }
+    },
+    createNewRecipe: function createNewRecipe() {
+      var newRecipeObj = {
+        recipeName: this.recipeName,
+        ingredients: this.ingredientList
+      };
+      this.newRecipeObj = newRecipeObj;
+    },
+    addIngredient: function addIngredient(ingredient) {
+      if (this.editing == true) {
+        var ingredientObj = {
+          // id: index + 1,
+          ingredientName: ingredient
+        };
+        console.log(this.ingredientList[this.editingIngredientIndex]);
+        this.ingredientList.splice(this.editingIngredientIndex, 1, ingredientObj);
+        this.ingredient = "";
+        this.editing = false;
+        return;
+      }
+
+      this.ingredientList.push({
+        // id: index + 1,
+        ingredientName: ingredient
+      });
+      this.ingredient = "";
     },
     returnToPreviousPage: function returnToPreviousPage() {
       history.back();
@@ -16494,7 +16560,6 @@ __webpack_require__.r(__webpack_exports__);
       var userId = this.$store.state.userId; // urlから正規表現でrecipeidのみ抽出
 
       var recipeId = location.pathname.match(/([^\/.]+)/g)[3];
-      console.log(recipeId);
       location.pathname = "/users/" + this.$store.state.userId + "/recipes/" + "edit/" + recipeId; // location.pathname = `/users/${this.$store.state.userId} + "/" + recipeId`;
       // const recipeId = 364;
       // document.testForm.action = `/user/1/recipes/${recipeId}`;
@@ -16503,6 +16568,15 @@ __webpack_require__.r(__webpack_exports__);
       // if (id) {
       //     id = id.split("/")[1];
       // }
+    },
+    editIngredient: function editIngredient(index, ingredientName) {
+      this.ingredient = ingredientName;
+      this.editing = true;
+      this.editingIngredientIndex = index;
+    },
+    deleteIngredient: function deleteIngredient(index) {
+      this.ingredientList.splice(index, 1);
+      this.ingredient = "";
     }
   }
 });
@@ -16533,7 +16607,7 @@ __webpack_require__.r(__webpack_exports__);
     ImagePreview: _parts_ImagePreview__WEBPACK_IMPORTED_MODULE_2__.default
   },
   name: "EditRecipe",
-  props: ["editingTargetRecipe", "editingTargetIngredients"],
+  props: ["editingTargetRecipe", "editingTargetRecipeIngredients"],
   data: function data() {
     return {
       editedRecipeObj: null,
@@ -16548,7 +16622,8 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {},
   mounted: function mounted() {
     this.recipeName = this.editingTargetRecipe.recipe_name;
-    this.ingredientList = this.editingTargetIngredients;
+    this.ingredientList = this.editingTargetRecipeIngredients;
+    console.log(this.ingredientList);
   },
   methods: {
     updateTargetIngredientList: function updateTargetIngredientList() {
@@ -16556,8 +16631,8 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
 
-      this.ingredientList[this.index].ingredient_name = this.ingredientName;
-      console.log(this.ingredientList[this.index].ingredient_name);
+      this.ingredientList[this.index].recipe_ingredient_name = this.ingredientName;
+      console.log(this.ingredientList[this.index].recipe_ingredient_name);
       this.ingredientName = "";
     },
     createEditedRecipe: function createEditedRecipe(ingredientList) {
@@ -16604,7 +16679,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "RecipeDetail",
-  props: ["targetRecipe", "targetIngredients"],
+  props: ["targetRecipe", "targetRecipeIngredients"],
   data: function data() {
     return {
       targetIngredientList: []
@@ -16612,7 +16687,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     console.log(this.$store.state.userId);
-    console.log(this.targetIngredients);
+    console.log(this.targetRecipeIngredients);
   },
   methods: {
     returnToPreviousPage: function returnToPreviousPage() {
@@ -16648,7 +16723,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_0__.default
   },
-  props: ["userId", "recipes"],
+  props: ["userId", "recipes", "ingredients"],
   data: function data() {
     return {
       recipeName: "",
@@ -16756,24 +16831,23 @@ __webpack_require__.r(__webpack_exports__);
 var _hoisted_1 = {
   "class": "top-container container"
 };
-
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"top-container-upper d-flex mb-5\"><!-- 検索フォーム --><div style=\"width:80%;\"><div class=\"input-group\"><div class=\"input-group-prepend\"><span class=\"input-group-text\" id=\"basic-addon1\">@</span></div><input type=\"text\" class=\"form-control\" placeholder=\"Username\" aria-label=\"Username\" aria-describedby=\"basic-addon1\"></div></div><!-- ユーザーアイコン --><i class=\"far fa-user-circle fa-2x\"></i></div>", 1);
-
-var _hoisted_3 = {
-  "class": "top-container-recipe-title d-flex justify-content-between mt-5"
+var _hoisted_2 = {
+  "class": "top-container-upper d-flex mb-5"
 };
 
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h3", null, "マイレシピ", -1
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div style=\"width:80%;\"><div class=\"input-group\"><div class=\"input-group-prepend\"><span class=\"input-group-text\" id=\"basic-addon1\">@</span></div><input type=\"text\" class=\"form-control\" placeholder=\"Username\" aria-label=\"Username\" aria-describedby=\"basic-addon1\"></div></div>", 1);
+
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+  "class": "far fa-user-circle fa-2x"
+}, null, -1
 /* HOISTED */
 );
 
 var _hoisted_5 = {
-  "class": "top-container-recipe-content"
+  "class": "top-container-recipe-title d-flex justify-content-between mt-5"
 };
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-  "class": "top-container-recipe-title d-flex justify-content-between mt-5"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h3", null, "おすすめレシピ"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "すべて見る")], -1
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h3", null, "マイレシピ", -1
 /* HOISTED */
 );
 
@@ -16783,19 +16857,33 @@ var _hoisted_7 = {
 
 var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "top-container-recipe-title d-flex justify-content-between mt-5"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h3", null, "旬のレシピ"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "すべて見る")], -1
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h3", null, "おすすめレシピ"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "すべて見る")], -1
 /* HOISTED */
 );
 
 var _hoisted_9 = {
   "class": "top-container-recipe-content"
 };
+
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "top-container-recipe-title d-flex justify-content-between mt-5"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h3", null, "旬のレシピ"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "すべて見る")], -1
+/* HOISTED */
+);
+
+var _hoisted_11 = {
+  "class": "top-container-recipe-content"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" マイレシピ "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
     onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $options.addInitDatatoIngredientsTable();
+    })
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 検索フォーム "), _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ユーザーアイコン "), _hoisted_4]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" マイレシピ "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+    onClick: _cache[2] || (_cache[2] = function ($event) {
       return $options.showRecipeList();
     })
-  }, "すべて見る")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.recipes, function (recipe) {
+  }, "すべて見る")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.recipes, function (recipe) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
       "class": "recipe",
       onClick: function onClick($event) {
@@ -16815,7 +16903,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["onClick"]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ピックアップレシピ "), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.recipes, function (recipe) {
+  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ピックアップレシピ "), _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.recipes, function (recipe) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
       "class": "recipe",
       onClick: function onClick($event) {
@@ -16835,7 +16923,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["onClick"]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 旬のレシピ "), _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.recipes, function (recipe) {
+  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 旬のレシピ "), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.recipes, function (recipe) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
       "class": "recipe",
       onClick: function onClick($event) {
@@ -17031,55 +17119,47 @@ var _hoisted_4 = {
   "class": "meal-container__recipe-deatail"
 };
 var _hoisted_5 = {
+  "class": "recipe-container__recipe-deatail"
+};
+
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "input-group mb-3"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
+  "class": "d-block p-1"
+}, "レシピ名：")], -1
+/* HOISTED */
+);
+
+var _hoisted_7 = {
+  "class": "input-group mb-3"
+};
+var _hoisted_8 = {
   "class": "ingredient-container__recipe-deatail"
 };
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
   "class": "ingredient-title__recipe-detail"
 }, "材料", -1
 /* HOISTED */
 );
 
-var _hoisted_7 = {
-  "class": "ingredient-description__recipe-deatail"
+var _hoisted_10 = {
+  "class": ""
 };
-var _hoisted_8 = {
-  "class": "form-group"
+var _hoisted_11 = {
+  "class": ""
 };
-
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
-  "class": "d-block p-1",
-  "for": "imagefile"
-}, "レシピ名：", -1
-/* HOISTED */
-);
-
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
-  "class": "d-block p-1",
-  "for": "price"
-}, "価格：", -1
-/* HOISTED */
-);
-
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-  "class": "d-block p-1 form-control",
-  type: "text",
-  id: "price",
-  name: "reprice",
-  size: "50",
-  value: ""
-}, null, -1
-/* HOISTED */
-);
-
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
-  "class": "d-block p-1",
-  "for": "stock-quantity"
-}, "在庫数：", -1
-/* HOISTED */
-);
+var _hoisted_12 = {
+  "class": "d-flex"
+};
 
 var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "ingredient-description__recipe-deatail"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"form-group\">\n                        <input\n                            class=\"p-1 form-control\"\n                            type=\"text\"\n                            id=\"price\"\n                            name=\"ingredient_name\"\n                        />\n                    </div> ")], -1
+/* HOISTED */
+);
+
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "recipe-container__recipe-deatail"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
   "class": "recipe-title__recipe-detail"
@@ -17103,8 +17183,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     value: $data.csrf
   }, null, 8
   /* PROPS */
-  , ["value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ImagePreview)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-    "class": "d-block p-1 form-control",
+  , ["value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    type: "hidden",
+    name: "newRecipe",
+    value: JSON.stringify($data.newRecipeObj)
+  }, null, 8
+  /* PROPS */
+  , ["value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ImagePreview)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    "class": "p-1 form-control",
     type: "text",
     id: "recipe-name",
     name: "recipe_name",
@@ -17113,8 +17199,52 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.recipeName]]), _hoisted_10, _hoisted_11, _hoisted_12])])]), _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-    onClick: _cache[3] || (_cache[3] = function ($event) {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.recipeName]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [_hoisted_9, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.ingredientList, function (ingredient, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
+      key: ingredient.id
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ingredient.ingredientName), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+      onClick: function onClick($event) {
+        return $options.editIngredient(index, ingredient.ingredientName);
+      },
+      "class": "fas fa-pencil-alt"
+    }, null, 8
+    /* PROPS */
+    , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+      onClick: function onClick($event) {
+        return $options.deleteIngredient(index);
+      },
+      "class": "fas fa-trash-alt"
+    }, null, 8
+    /* PROPS */
+    , ["onClick"])])])]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+      return $data.ingredient = $event;
+    }),
+    "class": "custom-select",
+    "aria-label": "Default select example"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <option selected>Open this select menu</option> "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.ingredients, function (ingredient) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("option", {
+      value: ingredient.ingredient_name,
+      key: ingredient.id
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ingredient.ingredient_name), 9
+    /* TEXT, PROPS */
+    , ["value"]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))], 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.ingredient]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+    onClick: _cache[4] || (_cache[4] = function ($event) {
+      return $options.addIngredient($data.ingredient);
+    }),
+    "class": "far fa-check-circle fa-2x"
+  })]), _hoisted_13]), _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+    onClick: _cache[5] || (_cache[5] = function ($event) {
       return $options.showRecipeDetail();
     }),
     style: {
@@ -17243,7 +17373,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       index: $data.index,
       deleteIngredient: $options.deleteIngredient,
       onSetEditingTargetIngredientName: $options.set,
-      value: ingredient.ingredient_name,
+      value: ingredient.recipe_ingredient_name,
       onInputFormContent: _cache[3] || (_cache[3] = function ($event) {
         return $data.ingredientName = $event;
       })
@@ -17351,10 +17481,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.targetRecipe.recipe_name), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div\n                class=\"d-flex justify-content-between align-items-center\"\n            ></div> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.targetIngredients, function (targetIngredient) {
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div\n                class=\"d-flex justify-content-between align-items-center\"\n            ></div> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.targetRecipeIngredients, function (targetRecipeIngredient) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
-      key: targetIngredient.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(targetIngredient.ingredient_name), 1
+      key: targetRecipeIngredient.id
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(targetRecipeIngredient.recipe_ingredient_name), 1
     /* TEXT */
     )]);
   }), 128
@@ -54788,6 +54918,17 @@ var index = {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (index);
 
 
+
+/***/ }),
+
+/***/ "./resources/js/assets/initialIngredientList.json":
+/*!********************************************************!*\
+  !*** ./resources/js/assets/initialIngredientList.json ***!
+  \********************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse("{\"vegs\":[{\"id\":\"unspecified\",\"ingredientName\":\"未指定\",\"category\":\"未指定\"},{\"id\":\"asparagus\",\"ingredientName\":\"アスパラガス\",\"category\":\"野菜\"},{\"id\":\"green_beans\",\"ingredientName\":\"いんげんまめ\",\"category\":\"野菜\"},{\"id\":\"edamame\",\"ingredientName\":\"えだまめ\",\"category\":\"野菜\"},{\"id\":\"okra\",\"ingredientName\":\"オクラ\",\"category\":\"野菜\"},{\"id\":\"kaiware_daikon\",\"ingredientName\":\"かいわれだいこん\",\"category\":\"野菜\"},{\"id\":\"turnip\",\"ingredientName\":\"かぶ\",\"category\":\"野菜\"},{\"id\":\"pumpkin\",\"ingredientName\":\"かぼちゃ\",\"category\":\"野菜\"},{\"id\":\"cauliflower\",\"ingredientName\":\"カリフラワー\",\"category\":\"野菜\"},{\"id\":\"kanpyo\",\"ingredientName\":\"かんぴょう\",\"category\":\"野菜\"},{\"id\":\"cabbage\",\"ingredientName\":\"キャベツ\",\"category\":\"野菜\"},{\"id\":\"cucumber\",\"ingredientName\":\"きゅうり\",\"category\":\"野菜\"},{\"id\":\"green_peas\",\"ingredientName\":\"グリンピース\",\"category\":\"野菜\"},{\"id\":\"burdock\",\"ingredientName\":\"ごぼう\",\"category\":\"野菜\"},{\"id\":\"komatsuna\",\"ingredientName\":\"こまつな\",\"category\":\"野菜\"},{\"id\":\"sayaendo\",\"ingredientName\":\"さやえんどう\",\"category\":\"野菜\"},{\"id\":\"sunny_lettuce\",\"ingredientName\":\"サニーレタス\",\"category\":\"野菜\"},{\"id\":\"shiso\",\"ingredientName\":\"しそ\",\"category\":\"野菜\"},{\"id\":\"crowndaisy\",\"ingredientName\":\"春菊\",\"category\":\"野菜\"},{\"id\":\"potato\",\"ingredientName\":\"じゃがいも\",\"category\":\"野菜\"},{\"id\":\"ginger\",\"ingredientName\":\"しょうが\",\"category\":\"野菜\"},{\"id\":\"sweet_corn\",\"ingredientName\":\"スイートコーン\",\"category\":\"野菜\"},{\"id\":\"celery\",\"ingredientName\":\"セロリー\",\"category\":\"野菜\"},{\"id\":\"daikon_radish\",\"ingredientName\":\"だいこん\",\"category\":\"野菜\"},{\"id\":\"bambooshoot\",\"ingredientName\":\"たけのこ\",\"category\":\"野菜\"},{\"id\":\"onion\",\"ingredientName\":\"玉ねぎ\",\"category\":\"野菜\"},{\"id\":\"bok_choy\",\"ingredientName\":\"チンゲン菜\",\"category\":\"野菜\"},{\"id\":\"tomato\",\"ingredientName\":\"トマト\",\"category\":\"野菜\"},{\"id\":\"eggplant\",\"ingredientName\":\"なす\",\"category\":\"野菜\"},{\"id\":\"chinese_chive\",\"ingredientName\":\"にら\",\"category\":\"野菜\"},{\"id\":\"carrots\",\"ingredientName\":\"にんじん\",\"category\":\"野菜\"},{\"id\":\"garlic\",\"ingredientName\":\"にんにく\",\"category\":\"野菜\"},{\"id\":\"chinese_cabbage\",\"ingredientName\":\"はくさい\",\"category\":\"野菜\"},{\"id\":\"parsley\",\"ingredientName\":\"パセリ\",\"category\":\"野菜\"},{\"id\":\"green_pepper\",\"ingredientName\":\"ピーマン\",\"category\":\"野菜\"},{\"id\":\"broccoli\",\"ingredientName\":\"ブロッコリー\",\"category\":\"野菜\"},{\"id\":\"spinach\",\"ingredientName\":\"ほうれんそう\",\"category\":\"野菜\"},{\"id\":\"moroheiya\",\"ingredientName\":\"モロヘイヤ\",\"category\":\"野菜\"},{\"id\":\"bean_sprouts\",\"ingredientName\":\"もやし\",\"category\":\"野菜\"},{\"id\":\"mugwort\",\"ingredientName\":\"よもぎ\",\"category\":\"野菜\"},{\"id\":\"leaf_lettuce\",\"ingredientName\":\"リーフレタス\",\"category\":\"野菜\"},{\"id\":\"lettuce\",\"ingredientName\":\"レタス\",\"category\":\"野菜\"},{\"id\":\"lotus_root\",\"ingredientName\":\"れんこん\",\"category\":\"野菜\"}],\"meats\":[{\"id\":\"unspecified\",\"ingredientName\":\"未指定\",\"category\":\"未指定\"},{\"id\":\"wiener\",\"ingredientName\":\"ウインナー\",\"category\":\"肉\"},{\"id\":\"beaf\",\"ingredientName\":\"牛肉\",\"category\":\"肉\"},{\"id\":\"beef_liver\",\"ingredientName\":\"牛レバー\",\"category\":\"肉\"},{\"id\":\"sausage\",\"ingredientName\":\"ソーセージ\",\"category\":\"肉\"},{\"id\":\"chicken\",\"ingredientName\":\"鶏肉\",\"category\":\"肉\"},{\"id\":\"chicken_liver\",\"ingredientName\":\"鶏レバー\",\"category\":\"肉\"},{\"id\":\"horsemeat\",\"ingredientName\":\"馬肉\",\"category\":\"肉\"},{\"id\":\"ham\",\"ingredientName\":\"ハム\",\"category\":\"肉\"},{\"id\":\"pork\",\"ingredientName\":\"豚肉\",\"category\":\"肉\"},{\"id\":\"pork_liver\",\"ingredientName\":\"豚レバー\",\"category\":\"肉\"},{\"id\":\"bacon\",\"ingredientName\":\"ベーコン\",\"category\":\"肉\"},{\"id\":\"grilled_pork\",\"ingredientName\":\"焼き豚\",\"category\":\"肉\"}],\"fishes\":[{\"id\":\"unspecified\",\"ingredientName\":\"未指定\",\"category\":\"未指定\"},{\"id\":\"clams\",\"ingredientName\":\"アサリ\",\"category\":\"魚\"},{\"id\":\"horse_mackerel\",\"ingredientName\":\"アジ\",\"category\":\"魚\"},{\"id\":\"conger_eel\",\"ingredientName\":\"アナゴ\",\"category\":\"魚\"},{\"id\":\"squid\",\"ingredientName\":\"イカ\",\"category\":\"魚\"},{\"id\":\"sardine\",\"ingredientName\":\"イワシ\",\"category\":\"魚\"},{\"id\":\"shrimp\",\"ingredientName\":\"エビ\",\"category\":\"魚\"},{\"id\":\"swordfish\",\"ingredientName\":\"カジキ\",\"category\":\"魚\"},{\"id\":\"skipjack\",\"ingredientName\":\"カツオ\",\"category\":\"魚\"},{\"id\":\"katsuobushi\",\"ingredientName\":\"かつお節\",\"category\":\"魚\"},{\"id\":\"kamaboko\",\"ingredientName\":\"かまぼこ\",\"category\":\"魚\"},{\"id\":\"flatfish\",\"ingredientName\":\"カレイ\",\"category\":\"魚\"},{\"id\":\"salmon\",\"ingredientName\":\"サケ\",\"category\":\"魚\"},{\"id\":\"mackerel\",\"ingredientName\":\"サバ\",\"category\":\"魚\"},{\"id\":\"spanish_mackerel\",\"ingredientName\":\"サワラ\",\"category\":\"魚\"},{\"id\":\"shishamo\",\"ingredientName\":\"シシャモ\",\"category\":\"魚\"},{\"id\":\"shirasu\",\"ingredientName\":\"シラス\",\"category\":\"魚\"},{\"id\":\"sea_bass\",\"ingredientName\":\"スズキ\",\"category\":\"魚\"},{\"id\":\"thailand\",\"ingredientName\":\"タイ\",\"category\":\"魚\"},{\"id\":\"octopus\",\"ingredientName\":\"タコ\",\"category\":\"魚\"},{\"id\":\"chikuwa\",\"ingredientName\":\"ちくわ\",\"category\":\"魚\"},{\"id\":\"tuna_can\",\"ingredientName\":\"ツナ缶\",\"category\":\"魚\"},{\"id\":\"flounder\",\"ingredientName\":\"ヒラメ\",\"category\":\"魚\"},{\"id\":\"yellowtail\",\"ingredientName\":\"ブリ\",\"category\":\"魚\"},{\"id\":\"tuna\",\"ingredientName\":\"マグロ\",\"category\":\"魚\"}],\"cereals\":[{\"id\":\"unspecified\",\"ingredientName\":\"未指定\",\"category\":\"未指定\"},{\"id\":\"white_rice\",\"ingredientName\":\"白米\",\"category\":\"穀類\"},{\"id\":\"rice_porridge\",\"ingredientName\":\"おかゆ\",\"category\":\"穀類\"},{\"id\":\"red_rice\",\"ingredientName\":\"赤飯\",\"category\":\"穀類\"},{\"id\":\"plain_bread\",\"ingredientName\":\"食パン\",\"category\":\"穀類\"},{\"id\":\"french_bread\",\"ingredientName\":\"フランスパン\",\"category\":\"穀類\"},{\"id\":\"bread_rolls\",\"ingredientName\":\"ロールパン\",\"category\":\"穀類\"},{\"id\":\"croissant\",\"ingredientName\":\"クロワッサン\",\"category\":\"穀類\"},{\"id\":\"udon\",\"ingredientName\":\"うどん\",\"category\":\"穀類\"},{\"id\":\"somen\",\"ingredientName\":\"そうめん\",\"category\":\"穀類\"},{\"id\":\"chinese_noodle\",\"ingredientName\":\"中華めん\",\"category\":\"穀類\"},{\"id\":\"soba\",\"ingredientName\":\"そば\",\"category\":\"穀類\"},{\"id\":\"cake_flour\",\"ingredientName\":\"薄力粉\",\"category\":\"穀類\"},{\"id\":\"macaroni\",\"ingredientName\":\"マカロニ\",\"category\":\"穀類\"},{\"id\":\"spaghetti\",\"ingredientName\":\"スパゲティ\",\"category\":\"穀類\"},{\"id\":\"flour\",\"ingredientName\":\"小麦粉\",\"category\":\"穀類\"},{\"id\":\"pancake_mix\",\"ingredientName\":\"ホットケーキ用粉\",\"category\":\"穀類\"},{\"id\":\"dumpling_skin\",\"ingredientName\":\"ぎょうざの皮\",\"category\":\"穀類\"},{\"id\":\"bread_crumbs\",\"ingredientName\":\"パン粉\",\"category\":\"穀類\"},{\"id\":\"rice_noodles\",\"ingredientName\":\"ビーフン\",\"category\":\"穀類\"},{\"id\":\"shiratamako\",\"ingredientName\":\"白玉粉\",\"category\":\"穀類\"},{\"id\":\"corn_flakes\",\"ingredientName\":\"コーンフレーク\",\"category\":\"穀類\"}],\"potatoes_starches_beans_mushrooms\":[{\"id\":\"unspecified\",\"ingredientName\":\"未指定\",\"category\":\"未指定\"},{\"id\":\"sweet_potato\",\"ingredientName\":\"さつまいも\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"taro\",\"ingredientName\":\"さといも\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"potatoes\",\"ingredientName\":\"じゃがいも\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"nagaimo\",\"ingredientName\":\"ながいも\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"konjac\",\"ingredientName\":\"こんにゃく\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"shirataki\",\"ingredientName\":\"しらたき\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"peas\",\"ingredientName\":\"えんどうまめ\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"okara\",\"ingredientName\":\"おから\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"soy\",\"ingredientName\":\"大豆\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"soy_milk\",\"ingredientName\":\"豆乳\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"tofu\",\"ingredientName\":\"豆腐\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"natto\",\"ingredientName\":\"納豆\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"enokitake\",\"ingredientName\":\"えのきたけ\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"eringi\",\"ingredientName\":\"エリンギ\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"shiitake\",\"ingredientName\":\"しいたけ\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"ingredientNameko\",\"ingredientName\":\"なめこ\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"shimeji_mushroom\",\"ingredientName\":\"しめじ\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"maitake\",\"ingredientName\":\"まいたけ\",\"category\":\"芋・でん粉・豆・キノコ類\"},{\"id\":\"mushroom\",\"ingredientName\":\"マシュルーム\",\"category\":\"芋・でん粉・豆・キノコ類\"}]}");
 
 /***/ })
 

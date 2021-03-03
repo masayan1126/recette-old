@@ -9,9 +9,9 @@ class Recipe extends Model
 {
     use HasFactory;
 
-    public function ingredients()
+    public function recipe_ingredients()
     {
-        return $this->hasMany(Ingredient::class);
+        return $this->hasMany(RecipeIngredient::class);
     }
 }
 

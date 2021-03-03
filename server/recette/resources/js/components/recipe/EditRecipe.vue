@@ -51,7 +51,7 @@
                             :index="index"
                             :deleteIngredient="deleteIngredient"
                             @setEditingTargetIngredientName="set"
-                            :value="ingredient.ingredient_name"
+                            :value="ingredient.recipe_ingredient_name"
                             @inputFormContent="ingredientName = $event"
                         />
                     </div>
@@ -90,7 +90,7 @@ import ImagePreview from "../parts/ImagePreview";
 export default {
     components: { PrimaryButton, TextInput, ImagePreview },
     name: "EditRecipe",
-    props: ["editingTargetRecipe", "editingTargetIngredients"],
+    props: ["editingTargetRecipe", "editingTargetRecipeIngredients"],
     data() {
         return {
             editedRecipeObj: null,
@@ -107,7 +107,8 @@ export default {
     created() {},
     mounted() {
         this.recipeName = this.editingTargetRecipe.recipe_name;
-        this.ingredientList = this.editingTargetIngredients;
+        this.ingredientList = this.editingTargetRecipeIngredients;
+        console.log(this.ingredientList);
     },
     methods: {
         updateTargetIngredientList() {
@@ -117,8 +118,8 @@ export default {
 
             this.ingredientList[
                 this.index
-            ].ingredient_name = this.ingredientName;
-            console.log(this.ingredientList[this.index].ingredient_name);
+            ].recipe_ingredient_name = this.ingredientName;
+            console.log(this.ingredientList[this.index].recipe_ingredient_name);
             this.ingredientName = "";
         },
         createEditedRecipe: function (ingredientList) {

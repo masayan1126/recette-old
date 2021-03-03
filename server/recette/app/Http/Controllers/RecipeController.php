@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Recipe;
+use App\Models\RecipeIngredient;
+use App\Models\Ingredient;
 use Storage;
 
 class RecipeController extends Controller
@@ -23,12 +25,14 @@ class RecipeController extends Controller
 
         // 通常のトップ画面の一覧で全レシピを表示した場合
         $recipes = Recipe::where('user_id', $id)->get();
+        $ingredients = Ingredient::where('user_id', $id)->get();
 
         if ($uri == "recipes") {
             return view('top')->with(
                 [
                     'user_id' => $id,
-                    'recipes' => $recipes
+                    'recipes' => $recipes,
+                    'ingredients' => $ingredients,
                 ]
             );
         }
@@ -36,7 +40,8 @@ class RecipeController extends Controller
         return view('recipe.recipe_list')->with(
             [
                 'user_id' => $id,
-                'recipes' => $recipes
+                'recipes' => $recipes,
+                'ingredients' => $ingredients,
             ]
         );
 
@@ -49,9 +54,14 @@ class RecipeController extends Controller
      */
     public function create($id)
     {
-        //
-        // dd("create");
-        return view('recipe.create_recipe')->with('user_id', $id);
+        $ingredients = Ingredient::where('user_id', $id)->get();
+        $ingredients = json_encode($ingredients);
+        // dd($ingredients);
+        return view('recipe.create_recipe')->with('ingredients' , $ingredients);
+
+        // return view('recipe.recipe_detail')->with(
+        //     ['target_recipe' => $target_recipe, 'target_ingredients' => $target_ingredients],
+        // );
     }
 
     /**
@@ -62,6 +72,7 @@ class RecipeController extends Controller
      */
     public function store(Request $request,$id)
     {
+        $new_recipe = json_decode($request->newRecipe);
         $recipe = new Recipe();
         $imagefile = $request->file('imagefile');
         // $pathの中身は"products/ファイル名.jpeg"　等
@@ -70,16 +81,21 @@ class RecipeController extends Controller
         $recipe->recipe_name = $request->recipe_name;
         $recipe->user_id = $id;
         $recipe->recipe_image_path = Storage::disk('s3')->url($path);
-        // $recipe->price = $request->price;
-        // $recipe->stock_quantity = $request->stock_quantity;
         $recipe->save();
-        //
+        $last_insert_id = $recipe->id; 
+        $recipe = Recipe::find($last_insert_id);
+
+        foreach ($new_recipe->ingredients as $ingredient) {
+            $recipe->recipe_ingredients()->saveMany([
+                new RecipeIngredient([
+                    'recipe_ingredient_name' => $ingredient->ingredientName, 
+                    'recipe_ingredient_type' => 'testtype'
+                ])
+            ]);
+        }
+
         $url = url("/users/{$id}/recipes");
         return redirect($url);
-
-        return view('recipe.store_recipe')->with('user_id', $id);
-        $recipe_id = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 8);
-        // dd($recipe_id);
     }
 
     /**
@@ -91,16 +107,18 @@ class RecipeController extends Controller
     public function show($id,$recipe_id)
     
     {
-        $target_recipe = Recipe::find($recipe_id);
-        // $ingredients = Recipe::with(["ingredients"])->get();
-        $target_ingredients = Recipe::find($recipe_id)->ingredients()
-        ->where('recipe_id', $recipe_id)
-        ->get();
-        // dd($target_ingredients);
+        // $target_recipe = Recipe::find($recipe_id);
+        // (widh('モデルファイルのリレーション<メソッド>名'))
+        $target_recipe = Recipe::where('id', $recipe_id)
+        ->with('recipe_ingredients')->get();
+        // dd($target_recipe);
 
         // レシピ詳細画面
         return view('recipe.recipe_detail')->with(
-            ['target_recipe' => $target_recipe, 'target_ingredients' => $target_ingredients],
+            [
+                'target_recipe' => $target_recipe, 
+                'target_recipe_ingredients' => $target_recipe[0]->recipe_ingredients
+            ],
         );
 
     }
@@ -114,14 +132,18 @@ class RecipeController extends Controller
     public function edit($id,$recipe_id)
     {
         //
-        $editing_target_recipe = Recipe::find($recipe_id);
-        $editing_target_ingredients = Recipe::find($recipe_id)->ingredients()
-        ->where('recipe_id', $recipe_id)
-        ->get();
+        $editing_target_recipe = Recipe::where('id', $recipe_id)
+        ->with('recipe_ingredients')->get();
+        // dd($editing_target_recipe);
+
+        // $editing_target_recipe = Recipe::find($recipe_id);
+        // $editing_target_ingredients = Recipe::find($recipe_id)->ingredients()
+        // ->where('recipe_id', $recipe_id)
+        // ->get();
         return view('recipe.edit_recipe')->with(
             [
                 'editing_target_recipe' => $editing_target_recipe,
-                'editing_target_ingredients' => $editing_target_ingredients
+                'editing_target_recipe_ingredients' => $editing_target_recipe[0]->recipe_ingredients
             ]
         );
 

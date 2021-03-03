@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\IngredientController;
+// use App\Http\Controllers\IngredientController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -32,6 +32,7 @@ Route::post('/users/{id?}/recipes/store',[RecipeController::class, 'store'])->na
 Route::post('/users/{id?}/recipes/update', [RecipeController::class, 'update'])->name('recipe.update')->middleware('auth');
 Route::get('/users/{id?}/recipes/{recipe_id?}', [RecipeController::class, 'show'])->name('recipes.detail')->middleware('auth');
 Route::get('/users/{id?}/recipes/edit/{recipe_id?}', [RecipeController::class, 'edit'])->name('recipe.edit')->middleware('auth');
+// Route::post('/ingredients/add', [IngredientController::class, 'store'])->name('ingredient.store')->middleware('auth');
 
 // Route::get('/', function () {
 //     return view('home');

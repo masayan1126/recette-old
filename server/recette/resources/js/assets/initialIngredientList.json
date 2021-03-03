@@ -1,0 +1,357 @@
+{
+    "vegs": [
+        {
+            "id": "unspecified",
+            "ingredientName": "未指定",
+            "category": "未指定"
+        },
+        {
+            "id": "asparagus",
+            "ingredientName": "アスパラガス",
+            "category": "野菜"
+        },
+        {
+            "id": "green_beans",
+            "ingredientName": "いんげんまめ",
+            "category": "野菜"
+        },
+        { "id": "edamame", "ingredientName": "えだまめ", "category": "野菜" },
+        { "id": "okra", "ingredientName": "オクラ", "category": "野菜" },
+        {
+            "id": "kaiware_daikon",
+            "ingredientName": "かいわれだいこん",
+            "category": "野菜"
+        },
+        { "id": "turnip", "ingredientName": "かぶ", "category": "野菜" },
+        { "id": "pumpkin", "ingredientName": "かぼちゃ", "category": "野菜" },
+        {
+            "id": "cauliflower",
+            "ingredientName": "カリフラワー",
+            "category": "野菜"
+        },
+        { "id": "kanpyo", "ingredientName": "かんぴょう", "category": "野菜" },
+        { "id": "cabbage", "ingredientName": "キャベツ", "category": "野菜" },
+        { "id": "cucumber", "ingredientName": "きゅうり", "category": "野菜" },
+        {
+            "id": "green_peas",
+            "ingredientName": "グリンピース",
+            "category": "野菜"
+        },
+        { "id": "burdock", "ingredientName": "ごぼう", "category": "野菜" },
+        { "id": "komatsuna", "ingredientName": "こまつな", "category": "野菜" },
+        {
+            "id": "sayaendo",
+            "ingredientName": "さやえんどう",
+            "category": "野菜"
+        },
+        {
+            "id": "sunny_lettuce",
+            "ingredientName": "サニーレタス",
+            "category": "野菜"
+        },
+        { "id": "shiso", "ingredientName": "しそ", "category": "野菜" },
+        { "id": "crowndaisy", "ingredientName": "春菊", "category": "野菜" },
+        { "id": "potato", "ingredientName": "じゃがいも", "category": "野菜" },
+        { "id": "ginger", "ingredientName": "しょうが", "category": "野菜" },
+        {
+            "id": "sweet_corn",
+            "ingredientName": "スイートコーン",
+            "category": "野菜"
+        },
+        { "id": "celery", "ingredientName": "セロリー", "category": "野菜" },
+        {
+            "id": "daikon_radish",
+            "ingredientName": "だいこん",
+            "category": "野菜"
+        },
+        {
+            "id": "bambooshoot",
+            "ingredientName": "たけのこ",
+            "category": "野菜"
+        },
+        { "id": "onion", "ingredientName": "玉ねぎ", "category": "野菜" },
+        {
+            "id": "bok_choy",
+            "ingredientName": "チンゲン菜",
+            "category": "野菜"
+        },
+        { "id": "tomato", "ingredientName": "トマト", "category": "野菜" },
+        { "id": "eggplant", "ingredientName": "なす", "category": "野菜" },
+        { "id": "chinese_chive", "ingredientName": "にら", "category": "野菜" },
+        { "id": "carrots", "ingredientName": "にんじん", "category": "野菜" },
+        { "id": "garlic", "ingredientName": "にんにく", "category": "野菜" },
+        {
+            "id": "chinese_cabbage",
+            "ingredientName": "はくさい",
+            "category": "野菜"
+        },
+        { "id": "parsley", "ingredientName": "パセリ", "category": "野菜" },
+        {
+            "id": "green_pepper",
+            "ingredientName": "ピーマン",
+            "category": "野菜"
+        },
+        {
+            "id": "broccoli",
+            "ingredientName": "ブロッコリー",
+            "category": "野菜"
+        },
+        {
+            "id": "spinach",
+            "ingredientName": "ほうれんそう",
+            "category": "野菜"
+        },
+        {
+            "id": "moroheiya",
+            "ingredientName": "モロヘイヤ",
+            "category": "野菜"
+        },
+        {
+            "id": "bean_sprouts",
+            "ingredientName": "もやし",
+            "category": "野菜"
+        },
+        { "id": "mugwort", "ingredientName": "よもぎ", "category": "野菜" },
+        {
+            "id": "leaf_lettuce",
+            "ingredientName": "リーフレタス",
+            "category": "野菜"
+        },
+        { "id": "lettuce", "ingredientName": "レタス", "category": "野菜" },
+        { "id": "lotus_root", "ingredientName": "れんこん", "category": "野菜" }
+    ],
+    "meats": [
+        {
+            "id": "unspecified",
+            "ingredientName": "未指定",
+            "category": "未指定"
+        },
+        { "id": "wiener", "ingredientName": "ウインナー", "category": "肉" },
+        { "id": "beaf", "ingredientName": "牛肉", "category": "肉" },
+        { "id": "beef_liver", "ingredientName": "牛レバー", "category": "肉" },
+        { "id": "sausage", "ingredientName": "ソーセージ", "category": "肉" },
+        { "id": "chicken", "ingredientName": "鶏肉", "category": "肉" },
+        {
+            "id": "chicken_liver",
+            "ingredientName": "鶏レバー",
+            "category": "肉"
+        },
+        { "id": "horsemeat", "ingredientName": "馬肉", "category": "肉" },
+        { "id": "ham", "ingredientName": "ハム", "category": "肉" },
+        { "id": "pork", "ingredientName": "豚肉", "category": "肉" },
+        { "id": "pork_liver", "ingredientName": "豚レバー", "category": "肉" },
+        { "id": "bacon", "ingredientName": "ベーコン", "category": "肉" },
+        { "id": "grilled_pork", "ingredientName": "焼き豚", "category": "肉" }
+    ],
+
+    "fishes": [
+        {
+            "id": "unspecified",
+            "ingredientName": "未指定",
+            "category": "未指定"
+        },
+        { "id": "clams", "ingredientName": "アサリ", "category": "魚" },
+        { "id": "horse_mackerel", "ingredientName": "アジ", "category": "魚" },
+        { "id": "conger_eel", "ingredientName": "アナゴ", "category": "魚" },
+        { "id": "squid", "ingredientName": "イカ", "category": "魚" },
+        { "id": "sardine", "ingredientName": "イワシ", "category": "魚" },
+        { "id": "shrimp", "ingredientName": "エビ", "category": "魚" },
+        { "id": "swordfish", "ingredientName": "カジキ", "category": "魚" },
+        { "id": "skipjack", "ingredientName": "カツオ", "category": "魚" },
+        { "id": "katsuobushi", "ingredientName": "かつお節", "category": "魚" },
+        { "id": "kamaboko", "ingredientName": "かまぼこ", "category": "魚" },
+        { "id": "flatfish", "ingredientName": "カレイ", "category": "魚" },
+        { "id": "salmon", "ingredientName": "サケ", "category": "魚" },
+        { "id": "mackerel", "ingredientName": "サバ", "category": "魚" },
+        {
+            "id": "spanish_mackerel",
+            "ingredientName": "サワラ",
+            "category": "魚"
+        },
+        { "id": "shishamo", "ingredientName": "シシャモ", "category": "魚" },
+        { "id": "shirasu", "ingredientName": "シラス", "category": "魚" },
+        { "id": "sea_bass", "ingredientName": "スズキ", "category": "魚" },
+        { "id": "thailand", "ingredientName": "タイ", "category": "魚" },
+        { "id": "octopus", "ingredientName": "タコ", "category": "魚" },
+        { "id": "chikuwa", "ingredientName": "ちくわ", "category": "魚" },
+        { "id": "tuna_can", "ingredientName": "ツナ缶", "category": "魚" },
+        { "id": "flounder", "ingredientName": "ヒラメ", "category": "魚" },
+        { "id": "yellowtail", "ingredientName": "ブリ", "category": "魚" },
+        { "id": "tuna", "ingredientName": "マグロ", "category": "魚" }
+    ],
+    "cereals": [
+        {
+            "id": "unspecified",
+            "ingredientName": "未指定",
+            "category": "未指定"
+        },
+        { "id": "white_rice", "ingredientName": "白米", "category": "穀類" },
+        {
+            "id": "rice_porridge",
+            "ingredientName": "おかゆ",
+            "category": "穀類"
+        },
+        { "id": "red_rice", "ingredientName": "赤飯", "category": "穀類" },
+        { "id": "plain_bread", "ingredientName": "食パン", "category": "穀類" },
+        {
+            "id": "french_bread",
+            "ingredientName": "フランスパン",
+            "category": "穀類"
+        },
+        {
+            "id": "bread_rolls",
+            "ingredientName": "ロールパン",
+            "category": "穀類"
+        },
+        {
+            "id": "croissant",
+            "ingredientName": "クロワッサン",
+            "category": "穀類"
+        },
+        { "id": "udon", "ingredientName": "うどん", "category": "穀類" },
+        { "id": "somen", "ingredientName": "そうめん", "category": "穀類" },
+        {
+            "id": "chinese_noodle",
+            "ingredientName": "中華めん",
+            "category": "穀類"
+        },
+        { "id": "soba", "ingredientName": "そば", "category": "穀類" },
+        { "id": "cake_flour", "ingredientName": "薄力粉", "category": "穀類" },
+        { "id": "macaroni", "ingredientName": "マカロニ", "category": "穀類" },
+        {
+            "id": "spaghetti",
+            "ingredientName": "スパゲティ",
+            "category": "穀類"
+        },
+        { "id": "flour", "ingredientName": "小麦粉", "category": "穀類" },
+        {
+            "id": "pancake_mix",
+            "ingredientName": "ホットケーキ用粉",
+            "category": "穀類"
+        },
+        {
+            "id": "dumpling_skin",
+            "ingredientName": "ぎょうざの皮",
+            "category": "穀類"
+        },
+        {
+            "id": "bread_crumbs",
+            "ingredientName": "パン粉",
+            "category": "穀類"
+        },
+        {
+            "id": "rice_noodles",
+            "ingredientName": "ビーフン",
+            "category": "穀類"
+        },
+        { "id": "shiratamako", "ingredientName": "白玉粉", "category": "穀類" },
+        {
+            "id": "corn_flakes",
+            "ingredientName": "コーンフレーク",
+            "category": "穀類"
+        }
+    ],
+
+    "potatoes_starches_beans_mushrooms": [
+        {
+            "id": "unspecified",
+            "ingredientName": "未指定",
+            "category": "未指定"
+        },
+        {
+            "id": "sweet_potato",
+            "ingredientName": "さつまいも",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "taro",
+            "ingredientName": "さといも",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "potatoes",
+            "ingredientName": "じゃがいも",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "nagaimo",
+            "ingredientName": "ながいも",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "konjac",
+            "ingredientName": "こんにゃく",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "shirataki",
+            "ingredientName": "しらたき",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "peas",
+            "ingredientName": "えんどうまめ",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "okara",
+            "ingredientName": "おから",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "soy",
+            "ingredientName": "大豆",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "soy_milk",
+            "ingredientName": "豆乳",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "tofu",
+            "ingredientName": "豆腐",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "natto",
+            "ingredientName": "納豆",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "enokitake",
+            "ingredientName": "えのきたけ",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "eringi",
+            "ingredientName": "エリンギ",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "shiitake",
+            "ingredientName": "しいたけ",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "ingredientNameko",
+            "ingredientName": "なめこ",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "shimeji_mushroom",
+            "ingredientName": "しめじ",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "maitake",
+            "ingredientName": "まいたけ",
+            "category": "芋・でん粉・豆・キノコ類"
+        },
+        {
+            "id": "mushroom",
+            "ingredientName": "マシュルーム",
+            "category": "芋・でん粉・豆・キノコ類"
+        }
+    ]
+}

@@ -6,7 +6,7 @@
     @endif -->
     <edit-recipe 
         :editing-target-recipe={{$editing_target_recipe}} 
-        :editing-target-ingredients={{$editing_target_ingredients}}>
+        :editing-target-recipe-ingredients={{$editing_target_recipe_ingredients}}>
     </edit-recipe>
 </div>
 @endsection

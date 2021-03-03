@@ -1,6 +1,7 @@
 <template>
     <div class="top-container container">
         <div class="top-container-upper d-flex mb-5">
+            <button @click="addInitDatatoIngredientsTable()"></button>
             <!-- 検索フォーム -->
             <div style="width: 80%">
                 <div class="input-group">
@@ -97,11 +98,14 @@
 </template>
 
 <script>
+import initialIngredientList from "../assets/initialIngredientList.json";
+
 export default {
     name: "Top",
-    props: ["userId", "recipes"],
+    props: ["userId", "recipes", "ingredients"],
     data() {
         return {
+            initialIngredientList: initialIngredientList,
             recipeName: "",
             csrf: document
                 .querySelector('meta[name="csrf-token"]')
@@ -112,7 +116,9 @@ export default {
         console.log(location.pathname.split("/users/")[1]);
         this.$store.commit("setUserId", this.userId);
     },
-    mounted() {},
+    mounted() {
+        console.log(JSON.stringify(this.initialIngredientList));
+    },
     methods: {
         showRecipeDetail: function (recipeId) {
             location.pathname = location.pathname + "/" + recipeId;
@@ -120,6 +126,46 @@ export default {
         showRecipeList() {
             location.pathname =
                 "/users/" + this.$store.state.userId + "/recipes/list";
+        },
+        addInitDatatoIngredientsTable() {
+            console.log(this.initialIngredientList);
+
+            axios
+                .post(
+                    "/api/users/" +
+                        this.$store.state.userId +
+                        "/ingredients/add",
+                    {
+                        initialIngredientList: JSON.stringify(
+                            this.initialIngredientList
+                        ),
+                    }
+                    // {
+                    //     vegs: JSON.stringify(this.initialIngredientList.vegs),
+                    // },
+                    // {
+                    //     meats: JSON.stringify(this.initialIngredientList.meats),
+                    // },
+                    // {
+                    //     fishes: JSON.stringify(
+                    //         this.initialIngredientList.fishes
+                    //     ),
+                    // },
+                    // {
+                    //     cereals: JSON.stringify(
+                    //         this.initialIngredientList.cereals
+                    //     ),
+                    // },
+                    // {
+                    //     potatoes_starches_beans_mushrooms: JSON.stringify(
+                    //         this.initialIngredientList
+                    //             .potatoes_starches_beans_mushrooms
+                    //     ),
+                    // }
+                )
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
     },
 };

@@ -27,10 +27,10 @@
             <p class="ingredient-title__recipe-detail">材料</p>
             <div class="ingredient-description__recipe-deatail">
                 <ul
-                    v-for="targetIngredient in targetIngredients"
-                    :key="targetIngredient.id"
+                    v-for="targetRecipeIngredient in targetRecipeIngredients"
+                    :key="targetRecipeIngredient.id"
                 >
-                    <li>{{ targetIngredient.ingredient_name }}</li>
+                    <li>{{ targetRecipeIngredient.recipe_ingredient_name }}</li>
                 </ul>
             </div>
         </div>
@@ -46,7 +46,7 @@
 <script>
 export default {
     name: "RecipeDetail",
-    props: ["targetRecipe", "targetIngredients"],
+    props: ["targetRecipe", "targetRecipeIngredients"],
     data() {
         return {
             targetIngredientList: [],
@@ -54,7 +54,7 @@ export default {
     },
     mounted() {
         console.log(this.$store.state.userId);
-        console.log(this.targetIngredients);
+        console.log(this.targetRecipeIngredients);
     },
     methods: {
         returnToPreviousPage: function () {

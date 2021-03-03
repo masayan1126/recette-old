@@ -53,7 +53,7 @@ import PrimaryButton from "../parts/PrimaryButton";
 export default {
     name: "RecipeList",
     components: { PrimaryButton },
-    props: ["userId", "recipes"],
+    props: ["userId", "recipes", "ingredients"],
     data() {
         return {
             recipeName: "",

@@ -134,7 +134,8 @@ class RecipeController extends Controller
         //
         $editing_target_recipe = Recipe::where('id', $recipe_id)
         ->with('recipe_ingredients')->get();
-        // dd($editing_target_recipe);
+        
+        $ingredients = Ingredient::where('user_id', $id)->get();
 
         // $editing_target_recipe = Recipe::find($recipe_id);
         // $editing_target_ingredients = Recipe::find($recipe_id)->ingredients()
@@ -143,7 +144,8 @@ class RecipeController extends Controller
         return view('recipe.edit_recipe')->with(
             [
                 'editing_target_recipe' => $editing_target_recipe,
-                'editing_target_recipe_ingredients' => $editing_target_recipe[0]->recipe_ingredients
+                'editing_target_recipe_ingredients' => $editing_target_recipe[0]->recipe_ingredients,
+                'ingredients' => $ingredients,
             ]
         );
 
@@ -165,6 +167,43 @@ class RecipeController extends Controller
         $update_target_recipe->recipe_name = $edited_recipe->editedRecipeName;
         $update_target_recipe->recipe_image_path = Storage::disk('s3')->url($path);
         $update_target_recipe->save();
+        // $last_insert_id = $recipe->id; 
+        // $recipe = Recipe::find($last_insert_id);
+
+        // dd($edited_recipe);
+
+        foreach ($edited_recipe->editedIngredients as $editedIngredient) {
+            // $recipe->recipe_ingredients()->saveMany([
+            //     new RecipeIngredient([
+            //         'recipe_ingredient_name' => $ingredient->ingredientName, 
+            //         'recipe_ingredient_type' => 'testtype'
+            //     ])
+            // ]);
+
+            // 編集
+            if(isset($editedIngredient->id)) {
+                $target_recipe_ingredient = Recipeingredient::where('id', $editedIngredient->id)->get();
+                $target_recipe_ingredient->recipe_ingredient_name = $editedIngredient->recipe_ingredient_name;
+            
+            } else {
+                // 新規追加
+                // dd($editedIngredient->recipe_ingredient_name);
+                $recipe_ingredient = new RecipeIngredient;
+                $recipe_ingredient->recipe_id = $edited_recipe->id;
+                $recipe_ingredient->recipe_ingredient_name = $editedIngredient->recipe_ingredient_name;
+                $recipe_ingredient->save();
+            }
+
+            
+            // Recipeingredient::updateOrCreate(
+            //     ['id' => $editedIngredient->id ],
+            //     ['recipe_id' => $update_target_recipe->id, 
+            //         'recipe_ingredient_name' => 'Takeru', 
+            //         'recipe_ingredient_type' => '33'
+            //     ]
+            // );
+        }
+        
         $url = url("/users/{$id}/recipes/{$edited_recipe->id}");
         return redirect($url);
     }

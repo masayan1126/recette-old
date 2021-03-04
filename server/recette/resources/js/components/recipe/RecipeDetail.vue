@@ -13,15 +13,12 @@
             </div>
             <img
                 class="meal-image__recipe-deatail"
-                :src="targetRecipe.recipe_image_path"
+                :src="targetRecipe[0].recipe_image_path"
                 alt=""
             />
             <p class="meal-title__recipe-deatail">
-                {{ targetRecipe.recipe_name }}
+                {{ targetRecipe[0].recipe_name }}
             </p>
-            <!-- <div
-                class="d-flex justify-content-between align-items-center"
-            ></div> -->
         </div>
         <div class="ingredient-container__recipe-deatail">
             <p class="ingredient-title__recipe-detail">材料</p>
@@ -52,10 +49,7 @@ export default {
             targetIngredientList: [],
         };
     },
-    mounted() {
-        console.log(this.$store.state.userId);
-        console.log(this.targetRecipeIngredients);
-    },
+    mounted() {},
     methods: {
         returnToPreviousPage: function () {
             history.back();
@@ -64,7 +58,6 @@ export default {
             const userId = this.$store.state.userId;
             // urlから正規表現でrecipeidのみ抽出
             const recipeId = location.pathname.match(/([^\/.]+)/g)[3];
-            console.log(recipeId);
 
             location.pathname =
                 "/users/" +

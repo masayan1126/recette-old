@@ -16607,37 +16607,40 @@ __webpack_require__.r(__webpack_exports__);
     ImagePreview: _parts_ImagePreview__WEBPACK_IMPORTED_MODULE_2__.default
   },
   name: "EditRecipe",
-  props: ["editingTargetRecipe", "editingTargetRecipeIngredients"],
+  props: ["editingTargetRecipe", "editingTargetRecipeIngredients", "ingredients"],
   data: function data() {
     return {
       editedRecipeObj: null,
       recipeName: "",
       recipeImage: "",
-      ingredientName: "",
+      ingredient: "",
       ingredientList: [],
       index: 0,
+      editing: false,
+      editingIngredientIndex: 0,
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute("content")
     };
   },
   created: function created() {},
   mounted: function mounted() {
-    this.recipeName = this.editingTargetRecipe.recipe_name;
+    console.log(this.editingTargetRecipe[0].id);
+    this.recipeName = this.editingTargetRecipe[0].recipe_name;
     this.ingredientList = this.editingTargetRecipeIngredients;
-    console.log(this.ingredientList);
   },
   methods: {
     updateTargetIngredientList: function updateTargetIngredientList() {
-      if (this.ingredientName == "") {
+      if (this.ingredient == "") {
         return;
       }
 
-      this.ingredientList[this.index].recipe_ingredient_name = this.ingredientName;
+      this.ingredientList[this.index].recipe_ingredient_name = this.ingredient;
       console.log(this.ingredientList[this.index].recipe_ingredient_name);
-      this.ingredientName = "";
+      this.ingredient = "";
     },
     createEditedRecipe: function createEditedRecipe(ingredientList) {
+      console.log(this.editingTargetRecipe.id);
       var editedRecipeObj = {
-        id: this.editingTargetRecipe.id,
+        id: this.editingTargetRecipe[0].id,
         editedRecipeName: this.recipeName,
         editedRecipeImage: this.recipeImage,
         editedIngredients: this.ingredientList
@@ -16651,15 +16654,40 @@ __webpack_require__.r(__webpack_exports__);
       document.editRecipeForm.submit();
     },
     set: function set(value, index) {
-      this.ingredientName = value;
+      this.ingredient = value;
       this.index = index;
     },
     deleteIngredient: function deleteIngredient(index) {
       this.ingredientList.splice(index, 1);
-      this.ingredientName = "";
+      this.ingredient = "";
     },
     returnToPreviousPage: function returnToPreviousPage() {
       history.back();
+    },
+    editIngredient: function editIngredient(index, recipeIngredientName) {
+      this.ingredient = recipeIngredientName;
+      console.log(this.ingredient);
+      this.editingIngredientIndex = index;
+      this.editing = true;
+    },
+    addIngredient: function addIngredient(ingredient) {
+      if (this.editing == true) {
+        var ingredientObj = {
+          // id: index + 1,
+          recipe_ingredient_name: ingredient
+        };
+        console.log(this.ingredientList[this.editingIngredientIndex]);
+        this.ingredientList.splice(this.editingIngredientIndex, 1, ingredientObj);
+        this.ingredient = "";
+        this.editing = false;
+        return;
+      }
+
+      this.ingredientList.push({
+        // id: index + 1,
+        recipe_ingredient_name: ingredient
+      });
+      this.ingredient = "";
     }
   }
 });
@@ -16685,10 +16713,7 @@ __webpack_require__.r(__webpack_exports__);
       targetIngredientList: []
     };
   },
-  mounted: function mounted() {
-    console.log(this.$store.state.userId);
-    console.log(this.targetRecipeIngredients);
-  },
+  mounted: function mounted() {},
   methods: {
     returnToPreviousPage: function returnToPreviousPage() {
       history.back();
@@ -16697,7 +16722,6 @@ __webpack_require__.r(__webpack_exports__);
       var userId = this.$store.state.userId; // urlから正規表現でrecipeidのみ抽出
 
       var recipeId = location.pathname.match(/([^\/.]+)/g)[3];
-      console.log(recipeId);
       location.pathname = "/users/" + this.$store.state.userId + "/recipes/" + "edit/" + recipeId;
     }
   }
@@ -17305,26 +17329,32 @@ var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_9 = {
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "ingredient-description__recipe-deatail"
-};
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div\n                        v-for=\"ingredient in ingredientList\"\n                        :key=\"ingredient.id\"\n                    >\n                        <TextInput\n                            :index=\"index\"\n                            :deleteIngredient=\"deleteIngredient\"\n                            @setEditingTargetIngredientName=\"set\"\n                            :value=\"ingredient.recipe_ingredient_name\"\n                            @inputFormContent=\"ingredientName = $event\"\n                        />\n                    </div> ")], -1
+/* HOISTED */
+);
+
 var _hoisted_10 = {
-  "class": "input-group"
+  "class": ""
 };
 var _hoisted_11 = {
-  "class": "input-group-append"
+  "class": ""
 };
 var _hoisted_12 = {
+  "class": "d-flex"
+};
+var _hoisted_13 = {
   "class": "recipe-container__recipe-deatail"
 };
 
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
   "class": "recipe-title__recipe-detail"
 }, "作り方", -1
 /* HOISTED */
 );
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "recipe-description__recipe-deatail"
 }, " 作り方が表示される ", -1
 /* HOISTED */
@@ -17332,8 +17362,6 @@ var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_ImagePreview = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ImagePreview");
-
-  var _component_TextInput = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TextInput");
 
   var _component_PrimaryButton = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("PrimaryButton");
 
@@ -17366,37 +17394,51 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.recipeName]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.ingredientList, function (ingredient) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.recipeName]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [_hoisted_8, _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"input-group\">\n                    <textarea\n                        class=\"form-control\"\n                        v-model=\"ingredientName\"\n                        name=\"\"\n                        id=\"\"\n                    ></textarea>\n                    <div class=\"input-group-append\">\n                        <span\n                            @click=\"updateTargetIngredientList()\"\n                            class=\"input-group-text\"\n                            >確定</span\n                        >\n                    </div>\n                </div> "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.ingredientList, function (ingredient, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
       key: ingredient.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-      index: $data.index,
-      deleteIngredient: $options.deleteIngredient,
-      onSetEditingTargetIngredientName: $options.set,
-      value: ingredient.recipe_ingredient_name,
-      onInputFormContent: _cache[3] || (_cache[3] = function ($event) {
-        return $data.ingredientName = $event;
-      })
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ingredient.recipe_ingredient_name), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+      onClick: function onClick($event) {
+        return $options.editIngredient(index, ingredient.recipe_ingredient_name);
+      },
+      "class": "fas fa-pencil-alt"
     }, null, 8
     /* PROPS */
-    , ["index", "deleteIngredient", "onSetEditingTargetIngredientName", "value"])]);
+    , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+      onClick: function onClick($event) {
+        return $options.deleteIngredient(index);
+      },
+      "class": "fas fa-trash-alt"
+    }, null, 8
+    /* PROPS */
+    , ["onClick"])])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
-    "class": "form-control",
-    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
-      return $data.ingredientName = $event;
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+      return $data.ingredient = $event;
     }),
-    name: "",
-    id: ""
-  }, null, 512
+    "class": "custom-select",
+    "aria-label": "Default select example"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <option selected>Open this select menu</option> "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.ingredients, function (ingredient) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("option", {
+      value: ingredient.ingredient_name,
+      key: ingredient.id
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ingredient.ingredient_name), 9
+    /* TEXT, PROPS */
+    , ["value"]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.ingredientName]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-    onClick: _cache[5] || (_cache[5] = function ($event) {
-      return $options.updateTargetIngredientList();
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.ingredient]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+    onClick: _cache[4] || (_cache[4] = function ($event) {
+      return $options.addIngredient($data.ingredient);
     }),
-    "class": "input-group-text"
-  }, "確定")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_12, [_hoisted_13, _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_PrimaryButton, {
+    "class": "far fa-check-circle fa-2x"
+  })])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [_hoisted_14, _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_PrimaryButton, {
     sendEditedRecipe: $options.sendEditedRecipe
   }, null, 8
   /* PROPS */
@@ -17475,13 +17517,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, [_hoisted_4, _hoisted_5])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
     "class": "meal-image__recipe-deatail",
-    src: $props.targetRecipe.recipe_image_path,
+    src: $props.targetRecipe[0].recipe_image_path,
     alt: ""
   }, null, 8
   /* PROPS */
-  , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.targetRecipe.recipe_name), 1
+  , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.targetRecipe[0].recipe_name), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div\n                class=\"d-flex justify-content-between align-items-center\"\n            ></div> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.targetRecipeIngredients, function (targetRecipeIngredient) {
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.targetRecipeIngredients, function (targetRecipeIngredient) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
       key: targetRecipeIngredient.id
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(targetRecipeIngredient.recipe_ingredient_name), 1

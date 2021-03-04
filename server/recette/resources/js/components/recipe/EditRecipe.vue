@@ -43,7 +43,7 @@
             <div class="ingredient-container__recipe-deatail">
                 <p class="ingredient-title__recipe-detail">材料</p>
                 <div class="ingredient-description__recipe-deatail">
-                    <div
+                    <!-- <div
                         v-for="ingredient in ingredientList"
                         :key="ingredient.id"
                     >
@@ -54,9 +54,9 @@
                             :value="ingredient.recipe_ingredient_name"
                             @inputFormContent="ingredientName = $event"
                         />
-                    </div>
+                    </div> -->
                 </div>
-                <div class="input-group">
+                <!-- <div class="input-group">
                     <textarea
                         class="form-control"
                         v-model="ingredientName"
@@ -70,6 +70,51 @@
                             >確定</span
                         >
                     </div>
+                </div> -->
+                <ul
+                    v-for="(ingredient, index) in ingredientList"
+                    :key="ingredient.id"
+                >
+                    <li>
+                        {{ ingredient.recipe_ingredient_name
+                        }}<span class=""
+                            ><i
+                                @click="
+                                    editIngredient(
+                                        index,
+                                        ingredient.recipe_ingredient_name
+                                    )
+                                "
+                                class="fas fa-pencil-alt"
+                            ></i
+                        ></span>
+                        <span class=""
+                            ><i
+                                @click="deleteIngredient(index)"
+                                class="fas fa-trash-alt"
+                            ></i
+                        ></span>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <select
+                        v-model="ingredient"
+                        class="custom-select"
+                        aria-label="Default select example"
+                    >
+                        <!-- <option selected>Open this select menu</option> -->
+                        <option
+                            v-for="ingredient in ingredients"
+                            :value="ingredient.ingredient_name"
+                            :key="ingredient.id"
+                        >
+                            {{ ingredient.ingredient_name }}
+                        </option>
+                    </select>
+                    <i
+                        @click="addIngredient(ingredient)"
+                        class="far fa-check-circle fa-2x"
+                    ></i>
                 </div>
             </div>
             <div class="recipe-container__recipe-deatail">
@@ -90,15 +135,21 @@ import ImagePreview from "../parts/ImagePreview";
 export default {
     components: { PrimaryButton, TextInput, ImagePreview },
     name: "EditRecipe",
-    props: ["editingTargetRecipe", "editingTargetRecipeIngredients"],
+    props: [
+        "editingTargetRecipe",
+        "editingTargetRecipeIngredients",
+        "ingredients",
+    ],
     data() {
         return {
             editedRecipeObj: null,
             recipeName: "",
             recipeImage: "",
-            ingredientName: "",
+            ingredient: "",
             ingredientList: [],
             index: 0,
+            editing: false,
+            editingIngredientIndex: 0,
             csrf: document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"),
@@ -106,25 +157,26 @@ export default {
     },
     created() {},
     mounted() {
-        this.recipeName = this.editingTargetRecipe.recipe_name;
+        console.log(this.editingTargetRecipe[0].id);
+        this.recipeName = this.editingTargetRecipe[0].recipe_name;
         this.ingredientList = this.editingTargetRecipeIngredients;
-        console.log(this.ingredientList);
     },
     methods: {
         updateTargetIngredientList() {
-            if (this.ingredientName == "") {
+            if (this.ingredient == "") {
                 return;
             }
 
             this.ingredientList[
                 this.index
-            ].recipe_ingredient_name = this.ingredientName;
+            ].recipe_ingredient_name = this.ingredient;
             console.log(this.ingredientList[this.index].recipe_ingredient_name);
-            this.ingredientName = "";
+            this.ingredient = "";
         },
         createEditedRecipe: function (ingredientList) {
+            console.log(this.editingTargetRecipe.id);
             const editedRecipeObj = {
-                id: this.editingTargetRecipe.id,
+                id: this.editingTargetRecipe[0].id,
                 editedRecipeName: this.recipeName,
                 editedRecipeImage: this.recipeImage,
                 editedIngredients: this.ingredientList,
@@ -138,15 +190,44 @@ export default {
             document.editRecipeForm.submit();
         },
         set(value, index) {
-            this.ingredientName = value;
+            this.ingredient = value;
             this.index = index;
         },
         deleteIngredient: function (index) {
             this.ingredientList.splice(index, 1);
-            this.ingredientName = "";
+            this.ingredient = "";
         },
         returnToPreviousPage: function () {
             history.back();
+        },
+        editIngredient(index, recipeIngredientName) {
+            this.ingredient = recipeIngredientName;
+            console.log(this.ingredient);
+            this.editingIngredientIndex = index;
+            this.editing = true;
+        },
+        addIngredient(ingredient) {
+            if (this.editing == true) {
+                const ingredientObj = {
+                    // id: index + 1,
+                    recipe_ingredient_name: ingredient,
+                };
+                console.log(this.ingredientList[this.editingIngredientIndex]);
+                this.ingredientList.splice(
+                    this.editingIngredientIndex,
+                    1,
+                    ingredientObj
+                );
+                this.ingredient = "";
+                this.editing = false;
+                return;
+            }
+
+            this.ingredientList.push({
+                // id: index + 1,
+                recipe_ingredient_name: ingredient,
+            });
+            this.ingredient = "";
         },
     },
 };

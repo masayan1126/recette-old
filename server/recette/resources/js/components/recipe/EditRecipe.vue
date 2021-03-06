@@ -122,7 +122,7 @@
                 <div class="recipe-description__recipe-deatail">
                     作り方が表示される
                 </div>
-                <PrimaryButton :sendEditedRecipe="sendEditedRecipe" />
+                <PrimaryButton :propsFunc="sendEditedRecipe" />
             </div>
         </form>
     </section>

@@ -26,12 +26,13 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 // レシピ一覧を取得するルーティング
 Route::get('/users/{id?}/recipes', [RecipeController::class, 'index'])->name('recipes')->middleware('auth');
-Route::get('/users/{id?}/recipes/list', [RecipeController::class, 'index'])->name('recipes')->middleware('auth');
+Route::get('/users/{id?}/recipes/list', [RecipeController::class, 'index'])->name('recipe.list')->middleware('auth');
 Route::get('/users/{id?}/recipes/create',[RecipeController::class, 'create'])->name('recipe.create')->middleware('auth');
 Route::post('/users/{id?}/recipes/store',[RecipeController::class, 'store'])->name('recipe.store')->middleware('auth');
 Route::post('/users/{id?}/recipes/update', [RecipeController::class, 'update'])->name('recipe.update')->middleware('auth');
 Route::get('/users/{id?}/recipes/{recipe_id?}', [RecipeController::class, 'show'])->name('recipes.detail')->middleware('auth');
 Route::get('/users/{id?}/recipes/edit/{recipe_id?}', [RecipeController::class, 'edit'])->name('recipe.edit')->middleware('auth');
+Route::post('/users/{id?}/recipes/delete/{recipe_id?}', [RecipeController::class, 'destroy'])->name('recipe.destroy')->middleware('auth');
 // Route::post('/ingredients/add', [IngredientController::class, 'store'])->name('ingredient.store')->middleware('auth');
 
 // Route::get('/', function () {

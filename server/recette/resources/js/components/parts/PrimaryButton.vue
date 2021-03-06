@@ -1,7 +1,7 @@
 <template>
     <button
         class="btn"
-        @click="sendEditedRecipe()"
+        @click="propsFunc(recipeId)"
         style="
             width: 100%;
             height: 30px;
@@ -10,7 +10,7 @@
             background-color: #e4c8ad;
         "
     >
-        登録する
+        {{ buttonName }}
     </button>
 </template>
 
@@ -19,7 +19,7 @@ import Button from "../../../../vendor/laravel/jetstream/stubs/inertia/resources
 export default {
     components: { Button },
     name: "EditRecipe",
-    props: ["editTargetRecipe", "sendEditedRecipe"],
+    props: ["buttonName", "propsFunc", "recipeId"],
     data() {
         return {
             revisedRecipeObj: null,

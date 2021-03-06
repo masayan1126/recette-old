@@ -214,8 +214,27 @@ class RecipeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,$recipe_id)
     {
         //
+        // $parents = Parents::where('xxx', true)->get();
+        // foreach ($parents as $parent) {
+            //     $parent->delete();
+            // }
+            
+        $delete_target_recipe = Recipe::where('id', $recipe_id)
+        ->with('recipe_ingredients')->get();
+        $delete_target_recipe[0]->delete();
+
+        $recipes = Recipe::where('user_id', $id)->get();
+        $ingredients = Ingredient::where('user_id', $id)->get();
+
+        return view('recipe.recipe_list')->with(
+            [
+                'user_id' => $id,
+                'recipes' => $recipes,
+                'ingredients' => $ingredients,
+            ]
+        );
     }
 }

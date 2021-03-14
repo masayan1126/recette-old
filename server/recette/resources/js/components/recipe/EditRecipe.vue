@@ -122,7 +122,11 @@
                 <div class="recipe-description__recipe-deatail">
                     作り方が表示される
                 </div>
-                <PrimaryButton :propsFunc="sendEditedRecipe" />
+                <PrimaryButton
+                    :buttonName="'登録する'"
+                    :propsFunc="sendEditedRecipe"
+                    :buttonStyle="addRecipeButtonStyle"
+                />
             </div>
         </form>
     </section>
@@ -150,6 +154,13 @@ export default {
             index: 0,
             editing: false,
             editingIngredientIndex: 0,
+            addRecipeButtonStyle: {
+                color: "#fff",
+                backgroundColor: "#E4C8AD",
+                fontSize: "10px",
+                flexBasis: "70%",
+                width: "100%",
+            },
             csrf: document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"),

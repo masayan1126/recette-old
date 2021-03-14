@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\IngredientController;
 
 /*
@@ -23,6 +24,10 @@ Route::group(['middleware' => 'api'], function() {
     Route::post('users/{id?}/ingredients/add', [IngredientController::class, 'store'])->name('ingredient.store');
 });
 
-// Route::group(['middleware' => ['api']], function(){
-//     Route::resource('task', 'TaskController');
-// });
+Route::group(['middleware' => 'api'], function() {
+    Route::post('users/{user_id?}/recipes/{recipe_id?}/add/favorite', [RecipeController::class, 'addFavorite'])->name('recipe.favorite.add');
+});
+
+Route::group(['middleware' => 'api'], function() {
+    Route::post('users/{user_id?}/recipes/{recipe_id?}/remove/favorite', [RecipeController::class, 'removeFavorite'])->name('recipe.favorite.remove');
+});

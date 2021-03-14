@@ -11,76 +11,74 @@ use Storage;
 
 class RecipeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     // レシピ一覧を取得し表示する
-    public function index($id)
+    public function index($user_id)
     {   
         // 現在のURLを取得し、表示画面を分岐させる
         $uri = rtrim($_SERVER["REQUEST_URI"], '/');
         $uri = substr($uri, strrpos($uri, '/') + 1);
 
-        // 通常のトップ画面の一覧で全レシピを表示した場合
-        $recipes = Recipe::where('user_id', $id)->get();
-        $ingredients = Ingredient::where('user_id', $id)->get();
+        // １.通常の一覧で全レシピを表示
+        $recipes = Recipe::where('user_id', $user_id)->get();
+        $ingredients = Ingredient::where('user_id', $user_id)->get();
 
         if ($uri == "recipes") {
             return view('top')->with(
                 [
-                    'user_id' => $id,
+                    'user_id' => $user_id,
                     'recipes' => $recipes,
                     'ingredients' => $ingredients,
                 ]
             );
         }
-        // リスト形式の一覧で全レシピを表示した場合
+        // ２．リスト形式の一覧で全レシピを表示
         return view('recipe.recipe_list')->with(
             [
-                'user_id' => $id,
+                'user_id' => $user_id,
                 'recipes' => $recipes,
                 'ingredients' => $ingredients,
             ]
         );
-
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create($id)
+    public function create($user_id)
     {
-        $ingredients = Ingredient::where('user_id', $id)->get();
+        $ingredients = Ingredient::where('user_id', $user_id)->get();
         $ingredients = json_encode($ingredients);
-        // dd($ingredients);
         return view('recipe.create_recipe')->with('ingredients' , $ingredients);
-
-        // return view('recipe.recipe_detail')->with(
-        //     ['target_recipe' => $target_recipe, 'target_ingredients' => $target_ingredients],
-        // );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request,$id)
+    public function addFavorite($user_id, $recipe_id)
+    {
+        $target_recipe = Recipe::where('user_id', $user_id)->where('id', $recipe_id)->first();
+        $target_recipe->is_favorite = true;
+        $target_recipe->save();
+    }
+
+    public function removeFavorite($user_id, $recipe_id)
+    {
+        $target_recipe = Recipe::where('user_id', $user_id)->where('id', $recipe_id)->first();
+        $target_recipe->is_favorite = false;
+        $target_recipe->save();
+    }
+
+    public function store(Request $request,$user_id)
     {
         $new_recipe = json_decode($request->newRecipe);
-        $recipe = new Recipe();
         $imagefile = $request->file('imagefile');
         // $pathの中身は"products/ファイル名.jpeg"　等
         $path = Storage::disk('s3')->putFile('/recipes', $imagefile, 'public');
         // $product->pathの中身は上記$pathの画像ファイル名含めたs3のURL
-        $recipe->recipe_name = $request->recipe_name;
-        $recipe->user_id = $id;
+        
+        $recipe = new Recipe();
+        $recipe->recipe_name = $new_recipe->recipeName;
+        $recipe->user_id = $user_id;
         $recipe->recipe_image_path = Storage::disk('s3')->url($path);
+        // dd($new_recipe->recipeProcedure);
+
+        $recipe->recipe_procedure = $new_recipe->recipeProcedure;
+        $recipe->is_favorite = false;
+
         $recipe->save();
         $last_insert_id = $recipe->id; 
         $recipe = Recipe::find($last_insert_id);
@@ -88,29 +86,24 @@ class RecipeController extends Controller
         foreach ($new_recipe->ingredients as $ingredient) {
             $recipe->recipe_ingredients()->saveMany([
                 new RecipeIngredient([
-                    'recipe_ingredient_name' => $ingredient->ingredientName, 
-                    'recipe_ingredient_type' => 'testtype'
+                    'user_id' => $ingredient->user_id,
+                    'recipe_ingredient_name' => $ingredient->ingredient_name, 
+                    'recipe_ingredient_category' => $ingredient->ingredient_category,
                 ])
             ]);
         }
 
-        $url = url("/users/{$id}/recipes");
+        $url = url("/users/{$user_id}/recipes");
         return redirect($url);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id,$recipe_id)
-    
+    public function show($user_id,$recipe_id)
     {
         // $target_recipe = Recipe::find($recipe_id);
-        // (widh('モデルファイルのリレーション<メソッド>名'))
+        // (with('モデルファイルのリレーション<メソッド>名'))
         $target_recipe = Recipe::where('id', $recipe_id)
         ->with('recipe_ingredients')->get();
+
         // dd($target_recipe);
 
         // レシピ詳細画面
@@ -123,24 +116,12 @@ class RecipeController extends Controller
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id,$recipe_id)
+    public function edit($user_id,$recipe_id)
     {
-        //
         $editing_target_recipe = Recipe::where('id', $recipe_id)
         ->with('recipe_ingredients')->get();
         
-        $ingredients = Ingredient::where('user_id', $id)->get();
-
-        // $editing_target_recipe = Recipe::find($recipe_id);
-        // $editing_target_ingredients = Recipe::find($recipe_id)->ingredients()
-        // ->where('recipe_id', $recipe_id)
-        // ->get();
+        $ingredients = Ingredient::where('user_id', $user_id)->get();
         return view('recipe.edit_recipe')->with(
             [
                 'editing_target_recipe' => $editing_target_recipe,
@@ -148,17 +129,9 @@ class RecipeController extends Controller
                 'ingredients' => $ingredients,
             ]
         );
-
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, $user_id)
     {
         $edited_recipe = json_decode($request->editedRecipe);
         $imagefile = $request->file('imagefile');
@@ -167,19 +140,8 @@ class RecipeController extends Controller
         $update_target_recipe->recipe_name = $edited_recipe->editedRecipeName;
         $update_target_recipe->recipe_image_path = Storage::disk('s3')->url($path);
         $update_target_recipe->save();
-        // $last_insert_id = $recipe->id; 
-        // $recipe = Recipe::find($last_insert_id);
-
-        // dd($edited_recipe);
 
         foreach ($edited_recipe->editedIngredients as $editedIngredient) {
-            // $recipe->recipe_ingredients()->saveMany([
-            //     new RecipeIngredient([
-            //         'recipe_ingredient_name' => $ingredient->ingredientName, 
-            //         'recipe_ingredient_type' => 'testtype'
-            //     ])
-            // ]);
-
             // 編集
             if(isset($editedIngredient->id)) {
                 $target_recipe_ingredient = Recipeingredient::where('id', $editedIngredient->id)->get();
@@ -187,51 +149,27 @@ class RecipeController extends Controller
             
             } else {
                 // 新規追加
-                // dd($editedIngredient->recipe_ingredient_name);
                 $recipe_ingredient = new RecipeIngredient;
                 $recipe_ingredient->recipe_id = $edited_recipe->id;
                 $recipe_ingredient->recipe_ingredient_name = $editedIngredient->recipe_ingredient_name;
                 $recipe_ingredient->save();
             }
-
-            
-            // Recipeingredient::updateOrCreate(
-            //     ['id' => $editedIngredient->id ],
-            //     ['recipe_id' => $update_target_recipe->id, 
-            //         'recipe_ingredient_name' => 'Takeru', 
-            //         'recipe_ingredient_type' => '33'
-            //     ]
-            // );
         }
         
-        $url = url("/users/{$id}/recipes/{$edited_recipe->id}");
+        $url = url("/users/{$user_id}/recipes/{$edited_recipe->id}");
         return redirect($url);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id,$recipe_id)
+    public function destroy($user_id,$recipe_id)
     {
-        //
-        // $parents = Parents::where('xxx', true)->get();
-        // foreach ($parents as $parent) {
-            //     $parent->delete();
-            // }
-            
-        $delete_target_recipe = Recipe::where('id', $recipe_id)
-        ->with('recipe_ingredients')->get();
+        $delete_target_recipe = Recipe::where('id', $recipe_id)->with('recipe_ingredients')->get();
         $delete_target_recipe[0]->delete();
-
-        $recipes = Recipe::where('user_id', $id)->get();
-        $ingredients = Ingredient::where('user_id', $id)->get();
+        $recipes = Recipe::where('user_id', $user_id)->get();
+        $ingredients = Ingredient::where('user_id', $user_id)->get();
 
         return view('recipe.recipe_list')->with(
             [
-                'user_id' => $id,
+                'user_id' => $user_id,
                 'recipes' => $recipes,
                 'ingredients' => $ingredients,
             ]

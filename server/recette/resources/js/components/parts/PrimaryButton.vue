@@ -1,15 +1,10 @@
 <template>
     <button
         class="btn"
-        @click="propsFunc(recipeId)"
-        style="
-            width: 100%;
-            height: 30px;
-            border-radius: 2%;
-            color: FFFFFF;
-            background-color: #e4c8ad;
-        "
+        @click.prevent="propsFunc(recipeId, isFavorite)"
+        :style="buttonStyle"
     >
+        <i :class="icon"></i>
         {{ buttonName }}
     </button>
 </template>
@@ -19,7 +14,14 @@ import Button from "../../../../vendor/laravel/jetstream/stubs/inertia/resources
 export default {
     components: { Button },
     name: "EditRecipe",
-    props: ["buttonName", "propsFunc", "recipeId"],
+    props: [
+        "buttonName",
+        "propsFunc",
+        "recipeId",
+        "isFavorite",
+        "buttonStyle",
+        "icon",
+    ],
     data() {
         return {
             revisedRecipeObj: null,

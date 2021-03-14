@@ -50,11 +50,30 @@
                             ></i>
                         </div>
                         <p>作り方が表示されるあああaaaaaaaaaaaaaaaa</p>
-                        <PrimaryButton
-                            :buttonName="'詳細を見る'"
-                            :propsFunc="showRecipeDetail"
-                            :recipeId="recipe.id"
-                        />
+                        <div class="d-flex w-100">
+                            <PrimaryButton
+                                :buttonName="'詳細'"
+                                :buttonStyle="showRecipeDetailButtonStyle"
+                                :propsFunc="showRecipeDetail"
+                                :recipeId="recipe.id"
+                                class="mr-2"
+                            />
+                            <PrimaryButton
+                                :icon="icon"
+                                :buttonName="buttonName"
+                                :buttonStyle="addFavoriteButtonStyle"
+                                :propsFunc="toggleFavorite"
+                                :recipeId="recipe.id"
+                                :isFavorite="recipe.is_favorite"
+                            />
+                            <!-- <PrimaryButton
+                                v-else
+                                :buttonName="buttonName"
+                                :buttonStyle="addFavoriteButtonStyle"
+                                :propsFunc="removeFavorite"
+                                :recipeId="recipe.id"
+                            /> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,7 +90,22 @@ export default {
     props: ["userId", "recipes", "ingredients"],
     data() {
         return {
+            icon: "far fa-heart",
             recipeName: "",
+            showRecipeDetailButtonStyle: {
+                color: "#fff",
+                backgroundColor: "#B1C6BD",
+                fontSize: "10px",
+                flexBasis: "30%",
+            },
+            addFavoriteButtonStyle: {
+                color: "#fff",
+                backgroundColor: "#E0D29E",
+                fontSize: "10px",
+                flexBasis: "70%",
+            },
+            buttonName: "お気に入りに追加",
+            isFavorite: false,
             csrf: document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"),
@@ -116,6 +150,73 @@ export default {
             console.log(document.recipeListForm);
             deleteCheckResult == true ? document.recipeListForm.submit() : "";
         },
+        toggleFavorite(recipeId, isFavorite) {
+            let url = "";
+            this.isFavorite = !this.isFavorite;
+            console.log(this.isFavorite);
+            if (this.isFavorite == true) {
+                this.buttonName = "お気に入り解除";
+                url =
+                    "/api/users/" +
+                    this.$store.state.userId +
+                    "/recipes/" +
+                    recipeId +
+                    "/add/favorite";
+            } else {
+                this.buttonName = "お気に入り追加";
+                url =
+                    "/api/users/" +
+                    this.$store.state.userId +
+                    "/recipes/" +
+                    recipeId +
+                    "/remove/favorite";
+            }
+
+            axios
+                .post(url)
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            // if (isFavorite == 1) {
+            //     console.log(isFavorite);
+            //     url =
+            //         "/api/users/" +
+            //         this.$store.state.userId +
+            //         "/recipes/" +
+            //         recipeId +
+            //         "/remove/favorite";
+
+            //     this.buttonName = "お気に入りに追加";
+            // } else {
+            //     url =
+            //         "/api/users/" +
+            //         this.$store.state.userId +
+            //         "/recipes/" +
+            //         recipeId +
+            //         "/add/favorite";
+            // }
+
+            // console.log(url);
+        },
+        // removeFavorite(recipeId) {
+        //     this.buttonName = "お気に入りに追加";
+        //     console.log(recipeId);
+        //     axios
+        //         .post(
+        //             "/api/users/" +
+        //                 this.$store.state.userId +
+        //                 "/recipes/" +
+        //                 recipeId +
+        //                 "/remove/favorite"
+        //         )
+        //         .catch(function (error) {
+        //             console.log(error);
+        //         });
+        // },
     },
 };
 </script>

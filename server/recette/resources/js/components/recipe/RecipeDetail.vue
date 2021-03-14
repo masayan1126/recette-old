@@ -20,8 +20,9 @@
                 {{ targetRecipe[0].recipe_name }}
             </p>
         </div>
+
+        <p class="ingredient-title__recipe-detail">材料</p>
         <div class="ingredient-container__recipe-deatail">
-            <p class="ingredient-title__recipe-detail">材料</p>
             <div class="ingredient-description__recipe-deatail">
                 <ul
                     v-for="targetRecipeIngredient in targetRecipeIngredients"
@@ -34,7 +35,14 @@
         <div class="recipe-container__recipe-deatail">
             <p class="recipe-title__recipe-detail">作り方</p>
             <div class="recipe-description__recipe-deatail">
-                作り方が表示される
+                <ul
+                    class="pl-1"
+                    v-for="(recipeProcedure, index) in targetRecipe[0]
+                        .recipe_procedure"
+                    :key="recipeProcedure.toString(index)"
+                >
+                    <li>{{ index + 1 }}.{{ recipeProcedure }}</li>
+                </ul>
             </div>
         </div>
     </section>
@@ -46,10 +54,13 @@ export default {
     props: ["targetRecipe", "targetRecipeIngredients"],
     data() {
         return {
+            recipeProcedureList: [],
             targetIngredientList: [],
         };
     },
-    mounted() {},
+    mounted() {
+        console.log(this.targetRecipe);
+    },
     methods: {
         returnToPreviousPage: function () {
             history.back();

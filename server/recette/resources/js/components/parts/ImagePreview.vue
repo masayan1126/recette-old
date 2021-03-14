@@ -3,9 +3,9 @@
         <div class="text-right">
             <label>
                 <div class="d-flex">
-                    <p>レシピ画像をUL</p>
+                    <i class="fas fa-file-upload fa-2x mr-1"></i>
+                    <p>レシピ画像UL</p>
                     <!-- <i class="fas fa-image fa-2x"></i> -->
-                    <i class="fas fa-file-upload fa-2x"></i>
                 </div>
                 <input
                     class="d-none"
@@ -15,10 +15,24 @@
                     ref="preview"
                     @change="uploadFile"
                 />
+                <input
+                    class="d-none"
+                    name="noImage"
+                    id="no-imagefile"
+                    type="file"
+                    ref="noimage"
+                />
             </label>
         </div>
         <div v-if="url">
             <img :src="url" class="recipe_image_preview" />
+        </div>
+        <div v-else>
+            <img
+                name="noImage"
+                src="./no_image.png"
+                class="recipe_image_preview"
+            />
         </div>
     </div>
 </template>
@@ -36,13 +50,10 @@ export default {
         };
     },
     mounted() {
-        console.log(this.recipeImage);
-        // console.log(this.$refs.preview);
         this.url = this.recipeImage;
     },
     methods: {
         uploadFile() {
-            console.log(this.$refs.preview.files[0]);
             const file = this.$refs.preview.files[0];
             this.url = URL.createObjectURL(file);
         },

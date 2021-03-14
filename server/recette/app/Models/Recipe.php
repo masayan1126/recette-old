@@ -9,6 +9,14 @@ class Recipe extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'is_favorite'
+    ];
+
+    protected $casts = [
+        'recipe_procedure'  => 'json',
+    ];
+
     public function recipe_ingredients()
     {
         return $this->hasMany(RecipeIngredient::class);

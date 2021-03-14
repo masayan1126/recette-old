@@ -15,6 +15,7 @@ class CreateIngredientsTable extends Migration
     {
         Schema::create('ingredients', function (Blueprint $table) {
             $table->id();
+            
             $table->foreignId('user_id') // 「テーブル名の単数形」のスネークケース + '_id'
             ->nullable()
             ->comment('ユーザーテーブルへの外部キー')
@@ -27,10 +28,9 @@ class CreateIngredientsTable extends Migration
             ->constrained('recipes') // 「複数形のテーブル名」
             ->onDelete('cascade');
             
-            $table->string("ingredient_name");
-            $table->string("ingredient_image")->nullable();
-            $table->string("ingredient_type")->nullable();
-
+            $table->string("ingredient_name")->comment('食材名');
+            $table->string("ingredient_image_path")->nullable()->comment('食材の画像ファイルパス');
+            $table->string("ingredient_category")->nullable()->comment('食材のカテゴリー');
             $table->timestamps();
         });
     }

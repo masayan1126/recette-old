@@ -41,6 +41,7 @@ class IngredientController extends Controller
      */
     public function store(Request $request,$id)
     {
+
        $vegs = json_decode($request->initialIngredientList)->vegs;
        $meats = json_decode($request->initialIngredientList)->meats;
        $fishes = json_decode($request->initialIngredientList)->fishes;
@@ -51,6 +52,7 @@ class IngredientController extends Controller
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
             $ingredient->ingredient_name = $veg->ingredientName;
+            $ingredient->ingredient_category = $veg->category;
             $ingredient->save();
         }
 
@@ -58,6 +60,7 @@ class IngredientController extends Controller
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
             $ingredient->ingredient_name = $meat->ingredientName;
+            $ingredient->ingredient_category = $meat->category;
             $ingredient->save();
         }
 
@@ -65,6 +68,7 @@ class IngredientController extends Controller
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
             $ingredient->ingredient_name = $fish->ingredientName;
+            $ingredient->ingredient_category = $fish->category;
             $ingredient->save();
         }
 
@@ -72,6 +76,7 @@ class IngredientController extends Controller
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
             $ingredient->ingredient_name = $cereal->ingredientName;
+            $ingredient->ingredient_category = $cereal->category;
             $ingredient->save();
         }
 
@@ -79,6 +84,7 @@ class IngredientController extends Controller
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
             $ingredient->ingredient_name = $potatoes_starches_beans_mushroom->ingredientName;
+            $ingredient->ingredient_category = $potatoes_starches_beans_mushroom->category;
             $ingredient->save();
         }
     }

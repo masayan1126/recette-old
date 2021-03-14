@@ -15,16 +15,17 @@ class CreateRecipesTable extends Migration
     {
         Schema::create('recipes', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('user_id') // 「テーブル名の単数形」のスネークケース + '_id'
-            ->nullable()
             ->comment('ユーザーテーブルへの外部キー')
             ->constrained('users') // 「複数形のテーブル名」
             ->onDelete('cascade');
-            $table->string("recipe_name");
-            $table->string("recipe_image")->nullable();
-            $table->string("recipe_image_path")->nullable();
-            // $table->string("inquiry_source_type")->nullable()->comment('問い合わせ元(購入者 or 写真館)');
-            // $table->integer("progress_flag")->nullable()->comment('進捗(0：継続中 1：完了)');
+
+            $table->string("recipe_name")->comment('レシピ名');
+            $table->string("recipe_image_path")->comment('レシピ食材の画像ファイルパス');
+            $table->json("recipe_procedure")->comment('レシピ作成手順');
+            $table->boolean("is_favorite")->comment('お気に入りレシピかどうか');
+
             $table->timestamps();
         });
     }

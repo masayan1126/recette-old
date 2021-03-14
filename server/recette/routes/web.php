@@ -17,47 +17,27 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+// ログイン直後のリダイレクト
 Route::get('/', [HomeController::class, 'redirect']
 );
+
+// レシピ作成
+Route::get('/users/{user_id?}/recipes/create',[RecipeController::class, 'create'])->name('recipe.create')->middleware('auth');
+// レシピ保存
+Route::post('/users/{user_id?}/recipes/store',[RecipeController::class, 'store'])->name('recipe.store')->middleware('auth');
+// レシピ一覧
+Route::get('/users/{user_id?}/recipes', [RecipeController::class, 'index'])->name('recipe')->middleware('auth');
+// レシピ一覧(リスト)
+Route::get('/users/{user_id?}/recipes/list', [RecipeController::class, 'index'])->name('recipe.list')->middleware('auth');
+// レシピ詳細(1つ)
+Route::get('/users/{user_id?}/recipes/{recipe_id?}', [RecipeController::class, 'show'])->name('recipes.detail')->middleware('auth');
+// レシピ編集
+Route::get('/users/{user_id?}/recipes/edit/{recipe_id?}', [RecipeController::class, 'edit'])->name('recipe.edit')->middleware('auth');
+// レシピ更新
+Route::post('/users/{user_id?}/recipes/update', [RecipeController::class, 'update'])->name('recipe.update')->middleware('auth');
+// レシピ削除
+Route::post('/users/{user_id?}/recipes/delete/{recipe_id?}', [RecipeController::class, 'destroy'])->name('recipe.delete')->middleware('auth');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
-
-// レシピ一覧を取得するルーティング
-Route::get('/users/{id?}/recipes', [RecipeController::class, 'index'])->name('recipes')->middleware('auth');
-Route::get('/users/{id?}/recipes/list', [RecipeController::class, 'index'])->name('recipe.list')->middleware('auth');
-Route::get('/users/{id?}/recipes/create',[RecipeController::class, 'create'])->name('recipe.create')->middleware('auth');
-Route::post('/users/{id?}/recipes/store',[RecipeController::class, 'store'])->name('recipe.store')->middleware('auth');
-Route::post('/users/{id?}/recipes/update', [RecipeController::class, 'update'])->name('recipe.update')->middleware('auth');
-Route::get('/users/{id?}/recipes/{recipe_id?}', [RecipeController::class, 'show'])->name('recipes.detail')->middleware('auth');
-Route::get('/users/{id?}/recipes/edit/{recipe_id?}', [RecipeController::class, 'edit'])->name('recipe.edit')->middleware('auth');
-Route::post('/users/{id?}/recipes/delete/{recipe_id?}', [RecipeController::class, 'destroy'])->name('recipe.destroy')->middleware('auth');
-// Route::post('/ingredients/add', [IngredientController::class, 'store'])->name('ingredient.store')->middleware('auth');
-
-// Route::get('/', function () {
-//     return view('home');
-// });
-
-// // Route::get('/inquiry-list', function () {
-// //     return view('inquirylist');
-// // });
-
-// Route::get('/input-inquiry', function () {
-//     return view('inquiryinput');
-// });
-
-// Route::get('/input-inquiry-sub', [GetInquiryController::class, 'getInquiry']);
-// // Route::get('/inquiry-list', [GetInquiryController::class, 'getTargetInquiry']);
-
-// Route::get('/inquiry-edit', [EditInquiryController::class, 'getEditTargetInquiry']);
-// // Route::get('/inquiry-list', [GetInquiryController::class, 'getTargetInquiry']);
-
-// Route::post('/input-inquiry-complete', [SaveInquiryController::class, 'saveInquiry']);
-
-// Auth::routes();
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-// Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

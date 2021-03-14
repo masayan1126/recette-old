@@ -24,7 +24,7 @@ class HomeController extends Controller
      */
     public function redirect()
     {
-        //
+        // ログインしたら、レシピ一覧画面に移動
         $id = Auth::id();
         $url = url("/users/{$id}/recipes");
         return redirect($url);

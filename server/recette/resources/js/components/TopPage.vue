@@ -29,7 +29,7 @@
             <h3>マイレシピ</h3>
             <p @click="showRecipeList()">すべて見る</p>
         </div>
-        <div class="top-container-recipe-content">
+        <div class="top-container-recipe-content" v-if="recipes.length > 0">
             <div
                 class="recipe"
                 @click="showRecipeDetail(recipe.id)"
@@ -39,12 +39,19 @@
                 <img
                     class="recipe_image"
                     :src="recipe.recipe_image_path"
-                    alt=""
+                    alt="マイレシピ画像"
                 />
 
                 <p>{{ recipe.recipe_name }}</p>
                 <!-- <form action="" method="get" name="testForm"></form> -->
             </div>
+        </div>
+        <div v-else class="top-container-recipe-content mt-2">
+            <p>
+                <i class="fas fa-exclamation-circle mr-2"></i
+                >データがまだありません。<br />レシピ追加からレシピを登録してみましょう!
+            </p>
+            <!-- <p></p> -->
         </div>
         <!-- ピックアップレシピ -->
         <div

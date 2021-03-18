@@ -1,5 +1,5 @@
-<nav class="nav-fix-bottom navbar navbar-expand-md navbar-light shadow-sm">
-    <div class="container">
+<nav class="nav-fix-bottom navbar shadow-sm">
+    <!-- <div class="container"> -->
         <div class="nav-fix-bottom-container">
             <div class="text-center" style="line-height: 25px;">
                 <a href="{{ route('recipe.create', ['user_id' => Auth::id()]) }}">
@@ -67,5 +67,5 @@
             @endguest
             </ul>
         </div>
-    </div>
+    <!-- </div> -->
 </nav>

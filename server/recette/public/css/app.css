@@ -10951,12 +10951,7 @@ body {
 }
 
 #app {
-  height: 100%;
-}
-
-.recipe {
-  width: 120px;
-  margin-right: 15px;
+  height: 100vh;
 }
 
 ul {
@@ -10981,17 +10976,29 @@ input:-webkit-autofill {
   width: 75%;
 }
 
+.recipe {
+  height: 120px;
+  width: 120px;
+  margin-right: 15px;
+}
+
 .recipe_image_preview {
   width: 300px;
 }
 
-.recipe_image {
+.recipe_image__top {
+  height: 100%;
+  width: 120px;
+  background-color: #c4c4c4;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+}
+
+.recipe-image__recipe-list {
   background-color: #c4c4c4;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
   width: 120px;
-  -o-object-fit: cover;
-     object-fit: cover;
 }
 
 .nav-fix-bottom {
@@ -11016,7 +11023,30 @@ input:-webkit-autofill {
   font-size: 0.6rem;
 }
 
-@media (max-width: 375px) {
+.recipe_container-top {
+  width: 90%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.upper_content-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.top-container-recipe-content {
+  display: flex;
+  height: 140px;
+  overflow-x: scroll;
+}
+
+.navbar-dark {
+  max-width: 700px;
+}
+
+@media (max-width: 576px) {
   .nav-fix-bottom {
     position: fixed;
     right: 0;
@@ -11025,17 +11055,71 @@ input:-webkit-autofill {
     z-index: 1030;
     background-color: #454545;
   }
+
+  .navbar-top,
+  .navbar-top-hamburger {
+    display: none;
+  }
 }
 
-.top-container-upper {
-  align-items: center;
-  justify-content: space-between;
+@media (min-width: 576px) {
+  .nav-fix-bottom,
+  .navbar-top {
+    display: none;
+  }
+
+  .navbar-top-hamburger {
+    display: block;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .recipe_container-top {
+    max-width: 700px;
+  }
 }
 
-.top-container-recipe-content {
-  display: flex;
-  height: 140px;
-  overflow-x: scroll;
+@media (min-width: 768px) {
+  .nav-fix-bottom,
+  .navbar-top {
+    display: none;
+  }
+
+  .navbar-top-hamburger {
+    display: block;
+  }
+}
+
+@media (min-width: 992px) {
+  .recipe_wrapper-top {
+    display: flex;
+  }
+
+  .navbar-top-hamburger {
+    display: none;
+  }
+
+  .navbar-top {
+    width: 100%;
+    display: flex;
+    height: 53px;
+  }
+
+  .navbar-dark {
+    width: 100%;
+    max-width: none;
+  }
+
+  .recipe_container-top {
+    max-width: none;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .recipe_container-top {
+    margin: 0;
+  }
 }
 
 .recipe-detail-section {

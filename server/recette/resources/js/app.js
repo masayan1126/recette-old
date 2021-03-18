@@ -27,6 +27,7 @@ import RecipeDetail from "./components/recipe/RecipeDetail.vue";
 import EditRecipe from "./components/recipe/EditRecipe.vue";
 import CreateRecipe from "./components/recipe/CreateRecipe.vue";
 import StoreRecipe from "./components/recipe/StoreRecipe.vue";
+import Register from "./components/auth/Register.vue";
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -44,6 +45,7 @@ createApp({
         CreateRecipe,
         StoreRecipe,
         RecipeList,
+        Register,
     },
 })
     .use(store)

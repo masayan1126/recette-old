@@ -30,7 +30,7 @@
                     :key="recipe.id"
                 >
                     <img
-                        class="recipe_image mr-3"
+                        class="recipe-image__recipe-list mr-3"
                         :src="recipe.recipe_image_path"
                         alt=""
                     />

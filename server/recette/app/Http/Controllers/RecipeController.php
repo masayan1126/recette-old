@@ -65,24 +65,28 @@ class RecipeController extends Controller
     public function store(Request $request,$user_id)
     {
         $new_recipe = json_decode($request->newRecipe);
-        $imagefile = $request->file('imagefile');
-        // $pathの中身は"products/ファイル名.jpeg"　等
-        $path = Storage::disk('s3')->putFile('/recipes', $imagefile, 'public');
-        // $product->pathの中身は上記$pathの画像ファイル名含めたs3のURL
-        
         $recipe = new Recipe();
+
+        if ($request->file('imagefile') != null) {
+            $imagefile = $request->file('imagefile');
+            // $pathの中身は"products/ファイル名.jpeg"　等
+            $path = Storage::disk('s3')->putFile('/recipes', $imagefile, 'public');
+            // $product->pathの中身は上記$pathの画像ファイル名含めたs3のURL
+            $recipe->recipe_image_path = Storage::disk('s3')->url($path);
+        }
+
         $recipe->recipe_name = $new_recipe->recipeName;
         $recipe->user_id = $user_id;
-        $recipe->recipe_image_path = Storage::disk('s3')->url($path);
         // dd($new_recipe->recipeProcedure);
 
         $recipe->recipe_procedure = $new_recipe->recipeProcedure;
         $recipe->is_favorite = false;
+        $recipe->recipe_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png";
 
         $recipe->save();
         $last_insert_id = $recipe->id; 
         $recipe = Recipe::find($last_insert_id);
-
+        
         foreach ($new_recipe->ingredients as $ingredient) {
             $recipe->recipe_ingredients()->saveMany([
                 new RecipeIngredient([
@@ -135,10 +139,12 @@ class RecipeController extends Controller
     {
         $edited_recipe = json_decode($request->editedRecipe);
         $imagefile = $request->file('imagefile');
-        $path = Storage::disk('s3')->putFile('/recipes', $imagefile, 'public');
+        if ($request->file('imagefile') != null) {
+            $path = Storage::disk('s3')->putFile('/recipes', $imagefile, 'public');
+            $update_target_recipe->recipe_image_path = Storage::disk('s3')->url($path);
+        }
         $update_target_recipe = Recipe::where('id',$edited_recipe->id)->first();
         $update_target_recipe->recipe_name = $edited_recipe->editedRecipeName;
-        $update_target_recipe->recipe_image_path = Storage::disk('s3')->url($path);
         $update_target_recipe->save();
 
         foreach ($edited_recipe->editedIngredients as $editedIngredient) {

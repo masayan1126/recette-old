@@ -1,134 +1,127 @@
 <template>
-    <section class="recipe-detail-section">
-        <h3>レシピ編集</h3>
-        <i
-            @click="returnToPreviousPage()"
-            class="fas fa-long-arrow-alt-left fa-2x"
-        ></i>
-        <form
-            action=""
-            method="POST"
-            enctype="multipart/form-data"
-            id="edit-recipe-form"
-            name="editRecipeForm"
-        >
-            <input type="hidden" name="_token" :value="csrf" />
-            <input
-                type="hidden"
-                name="editedRecipe"
-                :value="JSON.stringify(editedRecipeObj)"
-            />
-            <div class="meal-container__recipe-deatail">
-                <div class="meal-image__recipe-deatail">
-                    <!-- <label for="">
-                        <input type="file" class="d-none" />
-                        <img class="w-75 h-75" :src="recipeImage" alt="" />
-                    </label> -->
-                    <ImagePreview
-                        :recipeImage="editingTargetRecipe.recipe_image_path"
-                    />
-                    <!-- <p class="text-right">
-                        <i class="fas fa-upload"></i>画像をUL
-                    </p> -->
-                </div>
+    <section class="section-recipe_edit">
+        <div class="wrapper-recipe_edit">
+            <i @click="goToPreviousPage" class="fas fa-angle-left fa-2x"></i>
 
-                <div class="input-group">
-                    <input
-                        class="form-control meal-title__recipe-deatail"
-                        type="text"
-                        v-model="recipeName"
-                    />
-                </div>
+            <ImagePreview
+                :title="'レシピ画像UL'"
+                :recipe-image-path="editingTargetRecipe[0].recipe_image_path"
+            />
+
+            <div class="container-recipe mb-4 d-flex">
+                <label>レシピ名：</label>
+                <input
+                    class="text-input"
+                    type="text"
+                    id="recipe-name"
+                    v-model="recipeName"
+                />
             </div>
-            <div class="ingredient-container__recipe-deatail">
-                <p class="ingredient-title__recipe-detail">材料</p>
-                <div class="ingredient-description__recipe-deatail">
-                    <!-- <div
-                        v-for="ingredient in ingredientList"
+
+            <div class="container-recipe_ingredient mb-4">
+                <p class="mb-0">材料</p>
+                <div class="area-ingredient">
+                    <ul
+                        class="pl-1"
+                        v-for="(ingredient, index) in ingredientList"
                         :key="ingredient.id"
                     >
-                        <TextInput
-                            :index="index"
-                            :deleteIngredient="deleteIngredient"
-                            @setEditingTargetIngredientName="set"
-                            :value="ingredient.recipe_ingredient_name"
-                            @inputFormContent="ingredientName = $event"
-                        />
-                    </div> -->
-                </div>
-                <!-- <div class="input-group">
-                    <textarea
-                        class="form-control"
-                        v-model="ingredientName"
-                        name=""
-                        id=""
-                    ></textarea>
-                    <div class="input-group-append">
-                        <span
-                            @click="updateTargetIngredientList()"
-                            class="input-group-text"
-                            >確定</span
-                        >
+                        <li>
+                            {{ ingredient.recipe_ingredient_name }}
+                            <span
+                                ><i
+                                    @click="editIngredient(ingredient, index)"
+                                    class="ml-2 fas fa-pencil-alt"
+                                ></i
+                            ></span>
+                            <span
+                                ><i
+                                    @click="deleteIngredient(index)"
+                                    class="ml-2 fas fa-trash-alt"
+                                ></i
+                            ></span>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center">
+                        <select v-model="ingredient" class="custom-select mr-1">
+                            <option
+                                v-for="ingredient in ingredients"
+                                :value="ingredient"
+                                :key="ingredient.id"
+                            >
+                                {{ ingredient.ingredient_name }}
+                            </option>
+                        </select>
+                        <i
+                            @click.prevent="addIngredient"
+                            class="far fa-check-circle fa-2x"
+                        ></i>
                     </div>
-                </div> -->
-                <ul
-                    v-for="(ingredient, index) in ingredientList"
-                    :key="ingredient.id"
-                >
-                    <li>
-                        {{ ingredient.recipe_ingredient_name
-                        }}<span class=""
-                            ><i
-                                @click="
-                                    editIngredient(
-                                        index,
-                                        ingredient.recipe_ingredient_name
-                                    )
-                                "
-                                class="fas fa-pencil-alt"
-                            ></i
-                        ></span>
-                        <span class=""
-                            ><i
-                                @click="deleteIngredient(index)"
-                                class="fas fa-trash-alt"
-                            ></i
-                        ></span>
-                    </li>
-                </ul>
-                <div class="d-flex">
-                    <select
-                        v-model="ingredient"
-                        class="custom-select"
-                        aria-label="Default select example"
-                    >
-                        <!-- <option selected>Open this select menu</option> -->
-                        <option
-                            v-for="ingredient in ingredients"
-                            :value="ingredient.ingredient_name"
-                            :key="ingredient.id"
-                        >
-                            {{ ingredient.ingredient_name }}
-                        </option>
-                    </select>
-                    <i
-                        @click="addIngredient(ingredient)"
-                        class="far fa-check-circle fa-2x"
-                    ></i>
                 </div>
             </div>
-            <div class="recipe-container__recipe-deatail">
-                <p class="recipe-title__recipe-detail">作り方</p>
-                <div class="recipe-description__recipe-deatail">
-                    作り方が表示される
+
+            <div class="container-recipe_procedure mb-4">
+                <div class="d-flex justify-content-between align-items-end">
+                    <span>作り方</span>
+                    <span>
+                        <i class="mr-1 fas fa-book-open"></i>レシピURL
+                    </span>
                 </div>
+                <div class="area-recipe_procedure p-2">
+                    <ul
+                        class="pl-1"
+                        v-for="(recipeProcedure, index) in recipeProcedureList"
+                        :key="recipeProcedure.toString(index)"
+                    >
+                        <li>
+                            {{ index + 1 }}.{{ recipeProcedure
+                            }}<i
+                                @click="
+                                    editRecipeProcedure(recipeProcedure, index)
+                                "
+                                class="ml-2 fas fa-pencil-alt"
+                            ></i>
+                            <i
+                                @click="deleteRecipeProcedure(index)"
+                                class="ml-2 fas fa-trash-alt"
+                            ></i>
+                        </li>
+                    </ul>
+                    <div class="form-group">
+                        <textarea
+                            v-model="recipeProcedureInputField"
+                            class="form-control"
+                            id="recipe-procedure-input-field"
+                            rows="2"
+                        ></textarea>
+                    </div>
+
+                    <div @click="addRecipeProcedure" class="text-right">
+                        <i class="mr-1 fas fa-plus"></i>追加
+                    </div>
+                </div>
+            </div>
+
+            <form
+                action=""
+                method="POST"
+                enctype="multipart/form-data"
+                id="edit-recipe-form"
+                name="editRecipeForm"
+            >
+                <input type="hidden" name="_token" :value="csrf" />
+                <input
+                    type="hidden"
+                    name="editedRecipe"
+                    :value="JSON.stringify(editedRecipeObj)"
+                />
                 <PrimaryButton
                     :buttonName="'登録する'"
                     :propsFunc="sendEditedRecipe"
                     :buttonStyle="addRecipeButtonStyle"
                 />
-            </div>
-        </form>
+            </form>
+        </div>
     </section>
 </template>
 
@@ -136,6 +129,8 @@
 import PrimaryButton from "../parts/PrimaryButton";
 import TextInput from "../parts/TextInput";
 import ImagePreview from "../parts/ImagePreview";
+import { mapMutations } from "vuex";
+
 export default {
     components: { PrimaryButton, TextInput, ImagePreview },
     name: "EditRecipe",
@@ -147,18 +142,11 @@ export default {
     data() {
         return {
             editedRecipeObj: null,
-            recipeName: "",
-            recipeImage: "",
-            ingredient: "",
-            ingredientList: [],
-            index: 0,
-            editing: false,
-            editingIngredientIndex: 0,
             addRecipeButtonStyle: {
                 color: "#fff",
                 backgroundColor: "#E4C8AD",
                 fontSize: "10px",
-                flexBasis: "70%",
+                height: "35px",
                 width: "100%",
             },
             csrf: document
@@ -168,77 +156,131 @@ export default {
     },
     created() {},
     mounted() {
-        console.log(this.editingTargetRecipe[0].id);
         this.recipeName = this.editingTargetRecipe[0].recipe_name;
         this.ingredientList = this.editingTargetRecipeIngredients;
     },
-    methods: {
-        updateTargetIngredientList() {
-            if (this.ingredient == "") {
-                return;
-            }
-
-            this.ingredientList[
-                this.index
-            ].recipe_ingredient_name = this.ingredient;
-            console.log(this.ingredientList[this.index].recipe_ingredient_name);
-            this.ingredient = "";
+    userId() {
+        return this.$store.getters.getUserId;
+    },
+    recipeName: {
+        get() {
+            return this.$store.getters.getRecipeName;
         },
-        createEditedRecipe: function (ingredientList) {
-            console.log(this.editingTargetRecipe.id);
+        set(val) {
+            this.setRecipeName(val);
+        },
+    },
+    ingredient: {
+        get() {
+            return this.$store.getters.getIngredient;
+        },
+        set(val) {
+            this.setIngredient(val);
+        },
+    },
+    ingredientList() {
+        return this.$store.getters.getIngredientList;
+    },
+    isEditingIngredient() {
+        return this.$store.getters.getIsEditingIngredient;
+    },
+    editingIngredientIndex() {
+        return this.$store.getters.getEditingIngredientIndex;
+    },
+    recipeProcedure() {
+        return this.$store.getters.getRecipeProcedure;
+    },
+    recipeProcedureList() {
+        return this.$store.getters.getRecipeProcedureList;
+    },
+    isEditingRecipeProcedure() {
+        return this.$store.getters.getIsEditingRecipeProcedure;
+    },
+    editingRecipeProcedureIndex() {
+        return this.$store.getters.getEditingRecipeProcedureIndex;
+    },
+    methods: {
+        ...mapMutations([
+            "setRecipeName",
+            "initRecipeName",
+            "setIngredient",
+            "initIngredient",
+            "deleteIngredient",
+            "setIngredientList",
+            "initIngredientList",
+            "setIsEditingIngredient",
+            "initIsEditingIngredient",
+            "setEditingIngredientIndex",
+            "initEditingIngredientIndex",
+            "setRecipeProcedure",
+            "initRecipeProcedure",
+            "setRecipeProcedureList",
+            "initRecipeProcedureList",
+            "setIsEditingRecipeProcedure",
+            "initIsEditingRecipeProcedure",
+            "setEditingRecipeProcedureIndex",
+            "initEditingRecipeProcedureIndex",
+        ]),
+        sendEditedRecipe() {
             const editedRecipeObj = {
                 id: this.editingTargetRecipe[0].id,
                 editedRecipeName: this.recipeName,
-                editedRecipeImage: this.recipeImage,
                 editedIngredients: this.ingredientList,
             };
             this.editedRecipeObj = editedRecipeObj;
-        },
-        sendEditedRecipe: function () {
-            this.createEditedRecipe();
-            const userId = this.$store.state.userId;
-            document.editRecipeForm.action = `/users/${userId}/recipes/update`;
+            document.editRecipeForm.action = `/users/${this.userId}/recipes/update`;
             document.editRecipeForm.submit();
         },
-        set(value, index) {
-            this.ingredient = value;
-            this.index = index;
+        addIngredient() {
+            if (this.ingredient == null) {
+                alert("食材を選択してください");
+                return;
+            }
+            this.setIngredientList({
+                ingredient: this.ingredient,
+                editingIngredientIndex: this.editingIngredientIndex,
+            });
+            this.initIngredient();
         },
-        deleteIngredient: function (index) {
-            this.ingredientList.splice(index, 1);
-            this.ingredient = "";
+        editIngredient(ingredient, index) {
+            this.setIngredient(ingredient);
+            this.setIsEditingIngredient();
+            this.setEditingIngredientIndex(index);
         },
-        returnToPreviousPage: function () {
-            history.back();
+        deleteIngredient(index) {
+            this.deleteIngredient(index);
         },
-        editIngredient(index, recipeIngredientName) {
-            this.ingredient = recipeIngredientName;
-            console.log(this.ingredient);
-            this.editingIngredientIndex = index;
-            this.editing = true;
-        },
-        addIngredient(ingredient) {
-            if (this.editing == true) {
-                const ingredientObj = {
-                    // id: index + 1,
-                    recipe_ingredient_name: ingredient,
-                };
-                console.log(this.ingredientList[this.editingIngredientIndex]);
-                this.ingredientList.splice(
-                    this.editingIngredientIndex,
+        addRecipeProcedure() {
+            if (this.isEditingRecipeProcedure == true) {
+                this.recipeProcedureList.splice(
+                    this.editingRecipeProcedureIndex,
                     1,
-                    ingredientObj
+                    this.recipeProcedureInputField
                 );
-                this.ingredient = "";
-                this.editing = false;
+                this.isEditingRecipeProcedure = false;
+                this.recipeProcedureInputField = "";
                 return;
             }
 
-            this.ingredientList.push({
-                // id: index + 1,
-                recipe_ingredient_name: ingredient,
-            });
-            this.ingredient = "";
+            if (this.recipeProcedureInputField == "") {
+                alert("作り方を入力してください。");
+                return;
+            }
+
+            this.recipeProcedureList.push(this.recipeProcedureInputField);
+            this.recipeProcedureInputField = "";
+            document.getElementById("recipe-procedure-input-field").focus();
+        },
+        editRecipeProcedure(recipeProcedure, index) {
+            this.recipeProcedureInputField = recipeProcedure;
+            this.isEditingRecipeProcedure = true;
+            this.editingRecipeProcedureIndex = index;
+        },
+        deleteRecipeProcedure(index) {
+            this.recipeProcedureList.splice(index, 1);
+        },
+        returnToPreviousPage: function () {
+            history.back();
         },
     },
 };

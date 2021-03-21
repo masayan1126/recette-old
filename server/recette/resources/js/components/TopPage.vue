@@ -2,7 +2,6 @@
     <div class="recipe_wrapper-top">
         <div class="recipe_container-top">
             <div class="upper_content-top">
-                <button @click="addInitDatatoIngredientsTable()"></button>
                 <!-- 検索フォーム -->
 
                 <div class="input-group">
@@ -107,14 +106,11 @@
 </template>
 
 <script>
-import initialIngredientList from "../assets/initialIngredientList.json";
-
 export default {
     name: "Top",
     props: ["userId", "recipes", "ingredients"],
     data() {
         return {
-            initialIngredientList: initialIngredientList,
             recipeName: "",
             csrf: document
                 .querySelector('meta[name="csrf-token"]')
@@ -123,27 +119,9 @@ export default {
     },
     created() {
         this.$store.commit("setUserId", this.userId);
-        if (this.ingredients.length == 0) {
-            axios
-                .post(
-                    "/api/users/" +
-                        this.$store.state.userId +
-                        "/ingredients/add",
-                    {
-                        initialIngredientList: JSON.stringify(
-                            this.initialIngredientList
-                        ),
-                    }
-                )
-                .catch(function (error) {
-                    console.log(error);
-                });
-        }
-        console.log(location.pathname.split("/users/")[1]);
     },
-    mounted() {
-        console.log(this.ingredients);
-    },
+    mounted() {},
+    computed: {},
     methods: {
         showRecipeDetail: function (recipeId) {
             location.pathname = location.pathname + "/" + recipeId;

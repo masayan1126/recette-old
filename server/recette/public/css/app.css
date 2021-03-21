@@ -10982,10 +10982,6 @@ input:-webkit-autofill {
   margin-right: 15px;
 }
 
-.recipe_image_preview {
-  width: 300px;
-}
-
 .recipe_image__top {
   height: 100%;
   width: 120px;
@@ -11122,42 +11118,22 @@ input:-webkit-autofill {
   }
 }
 
-.recipe-detail-section {
+.section-recipe_create,
+.section-recipe_edit {
   width: 90%;
-  max-width: 300px;
   margin: 0 auto;
 }
 
-.meal-container__recipe-deatail,
-.ingredient-container__recipe-deatail,
-.recipe-container__recipe-deatail {
-  margin: 0 auto 30px;
-  max-width: 600px;
-  width: 300px;
+.wrapper-recipe_create,
+.wrapper-recipe_edit {
+  max-width: 400px;
+  margin: 0 auto;
 }
 
-.ingredient-container__recipe-deatail {
+.area-ingredient,
+.area-recipe_procedure {
   background-color: #c4c4c4;
   color: #454545;
   padding: 10px;
-  border-radius: 5px;
-}
-
-.meal-title__recipe-deatail,
-.ingredient-title__recipe-detail,
-.recipe-title__recipe-detail {
-  margin-bottom: 0px;
-}
-
-.meal-image__recipe-deatail {
-  width: 100%;
-  height: 200px;
-}
-
-.ingredient-description__recipe-deatail,
-.recipe-description__recipe-deatail {
-  background-color: #c4c4c4;
-  color: #454545;
-  margin-bottom: 1rem;
   border-radius: 5px;
 }

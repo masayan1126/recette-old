@@ -48,15 +48,6 @@ input:-webkit-autofill {
     margin-right: 15px;
 }
 
-.recipe_image_preview {
-    // width: 100%;
-    // height: 100%;
-    // object-fit: cover;
-    // margin: 10px 2px;
-    width: 300px;
-    // height: 250px;
-}
-
 .recipe_image__top {
     height: 100%;
     width: 120px;
@@ -210,49 +201,22 @@ input:-webkit-autofill {
     }
 }
 
-// レシピ詳細画面　ーーーーーーーーーーーーーーーーーーーーー
-// 全体のセクション
-.recipe-detail-section {
+.section-recipe_create,
+.section-recipe_edit {
     width: 90%;
-    max-width: 300px;
     margin: 0 auto;
-    // background-color: yellow;
-}
-// 各コンテナ
-.meal-container__recipe-deatail,
-.ingredient-container__recipe-deatail,
-.recipe-container__recipe-deatail {
-    margin: 0 auto 30px;
-    max-width: 600px;
-    width: 300px;
 }
 
-.ingredient-container__recipe-deatail {
+.wrapper-recipe_create,
+.wrapper-recipe_edit {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.area-ingredient,
+.area-recipe_procedure {
     background-color: #c4c4c4;
     color: #454545;
-    // height: 300px;
     padding: 10px;
-    border-radius: 5px;
-}
-
-// 各コンテナ内のタイトル
-.meal-title__recipe-deatail,
-.ingredient-title__recipe-detail,
-.recipe-title__recipe-detail {
-    margin-bottom: 0px;
-}
-
-// mealコンテナ内の画像
-.meal-image__recipe-deatail {
-    width: 100%;
-    height: 200px;
-}
-
-// ingredient、recipeコンテナ内の説明文
-.ingredient-description__recipe-deatail,
-.recipe-description__recipe-deatail {
-    background-color: #c4c4c4; //グレー
-    color: #454545; //黒
-    margin-bottom: 1rem;
     border-radius: 5px;
 }

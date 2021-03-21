@@ -111,10 +111,7 @@ export default {
                 .getAttribute("content"),
         };
     },
-    created() {
-        console.log(location.pathname.split("/users/")[1]);
-        this.$store.commit("setUserId", this.userId);
-    },
+    created() {},
     mounted() {},
     methods: {
         showRecipeDetail: function (recipeId) {

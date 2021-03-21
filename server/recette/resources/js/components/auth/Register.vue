@@ -1,7 +1,17 @@
 <template>
-    <h3>aa</h3>
+    <button type="submit" class="btn btn-primary">Register</button>
 </template>
 
 <script>
-export default {};
+export default {
+    data() {
+        return {
+            csrf: document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        };
+    },
+    mounted() {},
+    methods: {},
+};
 </script>

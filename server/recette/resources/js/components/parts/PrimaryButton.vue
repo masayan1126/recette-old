@@ -1,7 +1,7 @@
 <template>
     <button
         class="btn"
-        @click.prevent="propsFunc(recipeId, isFavorite)"
+        @click.prevent="propsFunction(recipeId, isFavorite)"
         :style="buttonStyle"
     >
         <i :class="icon"></i>
@@ -16,7 +16,7 @@ export default {
     name: "EditRecipe",
     props: [
         "buttonName",
-        "propsFunc",
+        "propsFunction",
         "recipeId",
         "isFavorite",
         "buttonStyle",

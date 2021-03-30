@@ -1,95 +1,52 @@
 export default {
-    setUserId(state, userId) {
-        state.userId = userId;
-    },
     //
-    setRecipeName(state, recipeName) {
-        state.recipeName = recipeName;
+    setRecipeIngredient(state, ingredient) {
+        state.recipeIngredient = ingredient;
     },
-    initRecipeName(state) {
-        state.recipeName = "";
+    initRecipeIngredient(state) {
+        state.recipeIngredient = null;
     },
-    //
-    setIngredient(state, ingredient) {
-        state.ingredient = ingredient;
+    deleteRecipeIngredient(state, index) {
+        state.recipeIngredient = null;
+        state.recipeIngredientList.splice(index, 1);
     },
-    initIngredient(state) {
-        state.ingredient = null;
+    setRecipeIngredient(state, ingredient) {
+        state.recipeIngredient = ingredient;
     },
-    deleteIngredient(state, index) {
-        state.ingredient = null;
-        state.ingredientList.splice(index, 1);
-    },
-    setIngredient(state, ingredient) {
-        state.ingredient = ingredient;
-    },
-    setIngredientList(state, { ingredient, editingIngredientIndex }) {
+    setRecipeIngredientList(state, ingredient) {
         // 編集
-        if (state.isEditingIngredient == true) {
-            state.ingredientList.splice(editingIngredientIndex, 1, ingredient);
-            state.isEditingIngredient = false;
-            return;
-        }
-        // 新規追加
-        state.ingredientList.push(ingredient);
-    },
-    //
-    initIngredientList(state) {
-        state.ingredientList = [];
-    },
-    setIsEditingIngredient(state) {
-        state.isEditingIngredient = true;
-    },
-    initIsEditingIngredient(state) {
-        state.isEditingIngredient = false;
-    },
-    setEditingIngredientIndex(state, index) {
-        state.editingIngredientIndex = index;
-    },
-    initEditingIngredientIndex(state) {
-        state.editingIngredientIndex = 0;
-    },
-    //
-    setRecipeProcedure(state, recipeProcedure) {
-        state.recipeProcedure = recipeProcedure;
-    },
-    initRecipeProcedure(state) {
-        state.recipeProcedure = "";
-    },
-    setRecipeProcedureList(state, recipeProcedure) {
-        // 編集
-        if (state.isEditingRecipeProcedure == true) {
-            state.recipeProcedureList.splice(
-                state.editingRecipeProcedureIndex,
+        if (state.isEditingRecipeIngredient == true) {
+            state.recipeIngredientList.splice(
+                state.editingIngredientIndex,
                 1,
-                recipeProcedure
+                ingredient
             );
-            state.isEditingRecipeProcedure = false;
+            state.isEditingRecipeIngredient = false;
             return;
         }
         // 新規追加
-        state.recipeProcedureList.push(recipeProcedure);
-    },
-    initRecipeProcedureList(state) {
-        state.recipeProcedureList = [];
-    },
-    setIsEditingRecipeProcedure(state) {
-        state.isEditingRecipeProcedure = true;
-    },
-    initIsEditingRecipeProcedure(state) {
-        state.isEditingRecipeProcedure = false;
-    },
-    setEditingRecipeProcedureIndex(state, editingRecipeProcedureIndex) {
-        state.editingRecipeProcedureIndex = editingRecipeProcedureIndex;
-    },
-    initEditingRecipeProcedureIndex(state) {
-        state.editingRecipeProcedureIndex = 0;
-    },
-    deleteRecipeProcedure(state, index) {
-        state.recipeProcedureList.splice(index, 1);
+        state.recipeIngredientList.push(ingredient);
     },
     //
-    goToPreviousPage(path) {
-        window.location.pathname = path;
+    initRecipeIngredientList(state) {
+        state.recipeIngredientList = [];
+    },
+    setIsEditingRecipeIngredient(state) {
+        state.isEditingRecipeIngredient = true;
+    },
+    initIsEditingRecipeIngredient(state) {
+        state.isEditingRecipeIngredient = false;
+    },
+    setEditingRecipeIngredientIndex(state, index) {
+        state.editingRecipeIngredientIndex = index;
+    },
+    initEditingRecipeIngredientIndex(state) {
+        state.editingRecipeIngredientIndex = 0;
+    },
+    setRecipeCategory(state, recipeCategory) {
+        state.recipeCategory = recipeCategory;
+    },
+    initRecipeCategory(state) {
+        state.recipeCategory = null;
     },
 };

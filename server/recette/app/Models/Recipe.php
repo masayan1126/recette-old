@@ -17,6 +17,11 @@ class Recipe extends Model
         'recipe_procedure'  => 'json',
     ];
 
+    public function ingredients()
+    {
+        return $this->hasMany(Ingredient::class);
+    }
+
     public function recipe_ingredients()
     {
         return $this->hasMany(RecipeIngredient::class);

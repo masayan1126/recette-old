@@ -13,13 +13,14 @@
                 :recipe-image-path="'https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png'"
             />
 
-            <div class="container-recipe mb-4 d-flex">
-                <label>レシピ名：</label>
-                <input
-                    class="text-input"
-                    type="text"
-                    id="recipe-name"
-                    v-model="recipeName"
+            <div class="container-recipe mb-4 d-flex mt-2">
+                <InputLabel :id="'input-recipe-name'" :name="'レシピ名：'" />
+                <TextInput
+                    :id="'input-recipe-name'"
+                    :type="'text'"
+                    :value="recipeName"
+                    :className="'text-input'"
+                    @inputFormContent="recipeName = $event"
                 />
             </div>
             <div class="container-recipe_ingredient mb-4">
@@ -27,27 +28,32 @@
                 <div class="area-ingredient">
                     <ul
                         class="pl-1"
-                        v-for="(ingredient, index) in ingredientList"
+                        v-for="(ingredient, index) in recipeIngredientList"
                         :key="ingredient.id"
                     >
                         <li>
                             {{ ingredient.ingredient_name }}
                             <span
                                 ><i
-                                    @click="editIngredient(ingredient, index)"
+                                    @click="
+                                        editRecipeIngredient(ingredient, index)
+                                    "
                                     class="ml-2 fas fa-pencil-alt"
                                 ></i
                             ></span>
                             <span
                                 ><i
-                                    @click="_deleteIngredient(index)"
+                                    @click="_deleteRecipeIngredient(index)"
                                     class="ml-2 fas fa-trash-alt"
                                 ></i
                             ></span>
                         </li>
                     </ul>
                     <div class="d-flex align-items-center">
-                        <select v-model="ingredient" class="custom-select mr-1">
+                        <select
+                            v-model="recipeIngredient"
+                            class="custom-select mr-1"
+                        >
                             <option
                                 v-for="ingredient in ingredients"
                                 :value="ingredient"
@@ -57,7 +63,7 @@
                             </option>
                         </select>
                         <i
-                            @click.prevent="addIngredient"
+                            @click.prevent="addRecipeIngredient"
                             class="far fa-check-circle fa-2x"
                         ></i>
                     </div>
@@ -105,6 +111,27 @@
                     </div>
                 </div>
             </div>
+
+            <div class="container-recipe_ingredient mb-4">
+                <p class="mb-0">カテゴリー</p>
+                <div class="area-ingredient">
+                    <div class="input-group mb-3">
+                        <select
+                            v-model="recipeCategory"
+                            class="custom-select mr-1"
+                        >
+                            <option
+                                v-for="category in categories"
+                                :value="category"
+                                :key="category.id"
+                            >
+                                {{ category.recipe_category_name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
             <form
                 action=""
                 method="POST"
@@ -130,6 +157,8 @@
 <script>
 import ImagePreview from "../parts/ImagePreview";
 import PrimaryButton from "../parts/PrimaryButton";
+import TextInput from "../parts/TextInput";
+import InputLabel from "../parts/InputLabel";
 import Toast from "../parts/Toast";
 import initialIngredientList from "../../assets/initialIngredientList.json";
 import { mapGetters, mapMutations } from "vuex";
@@ -141,9 +170,12 @@ export default {
         ImagePreview,
         PrimaryButton,
         Toast,
+        TextInput,
+        InputLabel,
     },
     data() {
         return {
+            // 初期データの食材リスト登録状況に応じてトーストの表示を切り替えるためのフラグ
             isShow: false,
             isHide: false,
             sendNewRecipeButtonStyle: {
@@ -153,6 +185,71 @@ export default {
                 width: "100%",
                 height: "35px",
             },
+            categories: [
+                {
+                    id: 1,
+                    recipe_category_name: "肉料理",
+                    recipe_category_name_sub: "meat",
+                    recipe_category_image: "/images/肉料理.jpeg",
+                    length: 0,
+                },
+                {
+                    id: 2,
+                    recipe_category_name: "魚料理",
+                    recipe_category_name_sub: "fish",
+                    recipe_category_image: "",
+                    length: 0,
+                },
+                {
+                    id: 3,
+                    recipe_category_name: "野菜料理",
+                    recipe_category_name_sub: "veg",
+                    recipe_category_image: "",
+                    length: 0,
+                },
+                {
+                    id: 4,
+                    recipe_category_name: "麺類",
+                    recipe_category_name_sub: "noodle",
+                    recipe_category_image: "",
+                    length: 0,
+                },
+                {
+                    id: 5,
+                    recipe_category_name: "ご飯もの",
+                    recipe_category_name_sub: "rice",
+                    recipe_category_image: "",
+                    length: 0,
+                },
+                {
+                    id: 6,
+                    recipe_category_name: "スープ、汁物",
+                    recipe_category_name_sub: "soup",
+                    recipe_category_image: "",
+                    length: 0,
+                },
+                {
+                    id: 7,
+                    recipe_category_name: "パン類",
+                    recipe_category_name_sub: "bread",
+                    recipe_category_image: "",
+                    length: 0,
+                },
+                {
+                    id: 8,
+                    recipe_category_name: "お菓子",
+                    recipe_category_name_sub: "sweets",
+                    recipe_category_image: "",
+                    length: 0,
+                },
+                {
+                    id: 9,
+                    recipe_category_name: "そのほか",
+                    recipe_category_name_sub: "other",
+                    recipe_category_image: "",
+                    length: 0,
+                },
+            ],
             csrf: document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"),
@@ -161,9 +258,9 @@ export default {
     computed: {
         ...mapGetters({
             userId: "getUserId",
-            ingredientList: "getIngredientList",
-            isEditingIngredient: "getIsEditingIngredient",
-            editingIngredientIndex: "getEditingIngredientIndex",
+            recipeIngredientList: "getRecipeIngredientList",
+            isEditingIngredient: "getIsEditingRecipeIngredient",
+            editingIngredientIndex: "getEditingRecipeIngredientIndex",
             recipeProcedureList: "getRecipeProcedureList",
             isEditingRecipeProcedure: "getIsEditingRecipeProcedure",
             editingRecipeProcedureIndex: "getEditingRecipeProcedureIndex",
@@ -171,8 +268,9 @@ export default {
         newRecipe() {
             const newRecipe = {
                 recipeName: this.recipeName,
-                ingredients: this.ingredientList,
+                recipeIngredientList: this.recipeIngredientList,
                 recipeProcedure: this.recipeProcedureList,
+                recipeCategory: this.recipeCategory,
             };
             return newRecipe;
         },
@@ -184,12 +282,12 @@ export default {
                 this.setRecipeName(val);
             },
         },
-        ingredient: {
+        recipeIngredient: {
             get() {
-                return this.$store.getters.getIngredient;
+                return this.$store.getters.getRecipeIngredient;
             },
             set(val) {
-                this.setIngredient(val);
+                this.setRecipeIngredient(val);
             },
         },
         recipeProcedure: {
@@ -200,19 +298,28 @@ export default {
                 this.setRecipeProcedure(val);
             },
         },
+        recipeCategory: {
+            get() {
+                return this.$store.getters.getrecipeCategory;
+            },
+            set(val) {
+                this.setRecipeCategory(val);
+            },
+        },
     },
     mounted() {
-        console.log(this.userId, this.ingredientList);
         this.initRecipeName();
-        this.initIngredient();
-        this.initIngredientList();
-        this.initIsEditingIngredient();
-        this.initEditingIngredientIndex();
+        this.initRecipeIngredient();
+        this.initRecipeIngredientList();
+        this.initIsEditingRecipeIngredient();
+        this.initEditingRecipeIngredientIndex();
         this.initRecipeProcedure();
+        this.initRecipeCategory();
         this.initRecipeProcedureList();
         this.initIsEditingRecipeProcedure();
         this.initEditingRecipeProcedureIndex();
 
+        // 初期データの食材リストが未登録なら、トーストでメッセージを表示する
         this.ingredients.length == 0
             ? (this.isShow = true)
             : (this.isHide = true);
@@ -221,15 +328,15 @@ export default {
         ...mapMutations([
             "setRecipeName",
             "initRecipeName",
-            "setIngredient",
-            "initIngredient",
-            "deleteIngredient",
-            "setIngredientList",
-            "initIngredientList",
-            "setIsEditingIngredient",
-            "initIsEditingIngredient",
-            "setEditingIngredientIndex",
-            "initEditingIngredientIndex",
+            "setRecipeIngredient",
+            "initRecipeIngredient",
+            "deleteRecipeIngredient",
+            "setRecipeIngredientList",
+            "initRecipeIngredientList",
+            "setIsEditingRecipeIngredient",
+            "initIsEditingRecipeIngredient",
+            "setEditingRecipeIngredientIndex",
+            "initEditingRecipeIngredientIndex",
             "setRecipeProcedure",
             "initRecipeProcedure",
             "setRecipeProcedureList",
@@ -239,37 +346,28 @@ export default {
             "setEditingRecipeProcedureIndex",
             "initEditingRecipeProcedureIndex",
             "deleteRecipeProcedure",
+            "setRecipeCategory",
+            "initRecipeCategory",
         ]),
 
-        sendNewRecipe() {
-            if (this.recipeName == "") {
-                alert("レシピ名は必須です");
-                return;
-            }
-            this.initIngredientList();
-            document.createRecipeForm.action = `/users/${this.userId}/recipes/store`;
-            document.createRecipeForm.submit();
-        },
-        addIngredient() {
-            if (this.ingredient == null) {
+        addRecipeIngredient() {
+            if (this.recipeIngredient == null) {
                 alert("食材を選択してください");
                 return;
             }
-            this.setIngredientList({
-                ingredient: this.ingredient,
-                editingIngredientIndex: this.editingIngredientIndex,
-            });
-            this.initIngredient();
+            // 追加 or 編集の分岐はmutatiion側で判定
+            this.setRecipeIngredientList(this.recipeIngredient);
+            this.initRecipeIngredient();
         },
 
-        editIngredient(ingredient, index) {
-            this.setIngredient(ingredient);
-            this.setIsEditingIngredient();
-            this.setEditingIngredientIndex(index);
+        editRecipeIngredient(ingredient, index) {
+            this.setRecipeIngredient(ingredient);
+            // 食材編集モードをtrueに
+            this.setIsEditingRecipeIngredient();
+            this.setEditingRecipeIngredientIndex(index);
         },
-        _deleteIngredient(index) {
-            console.log(index);
-            this.deleteIngredient(index);
+        _deleteRecipeIngredient(index) {
+            this.deleteRecipeIngredient(index);
         },
         addRecipeProcedure() {
             if (this.recipeProcedure == "") {
@@ -277,6 +375,7 @@ export default {
                 return;
             }
 
+            // 追加 or 編集の分岐はmutatiion側で判定
             this.setRecipeProcedureList(this.recipeProcedure);
             this.initRecipeProcedure();
             document.getElementById("recipe-procedure-input-field").focus();
@@ -287,8 +386,16 @@ export default {
             this.setEditingRecipeProcedureIndex(index);
         },
         _deleteRecipeProcedure(index) {
-            console.log(index);
             this.deleteRecipeProcedure(index);
+        },
+        sendNewRecipe() {
+            if (this.recipeName == "") {
+                alert("レシピ名は必須です");
+                return;
+            }
+            this.initRecipeIngredientList();
+            document.createRecipeForm.action = `/users/${this.userId}/recipes/store`;
+            document.createRecipeForm.submit();
         },
         addInitialIngredients() {
             axios
@@ -309,13 +416,6 @@ export default {
                 "goToPreviousPage",
                 `/users/${this.userId}/recipes`
             );
-        },
-        goToRecipeEditScreen: function () {
-            // urlから正規表現でrecipeidのみ抽出
-            const recipeId = location.pathname.match(/([^\/.]+)/g)[3];
-
-            location.pathname =
-                "/users/" + this.userId + "/recipes/" + "edit/" + recipeId;
         },
     },
 };

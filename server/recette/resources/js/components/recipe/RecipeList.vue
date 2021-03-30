@@ -16,7 +16,7 @@
             <div
                 class="top-container-recipe-title d-flex justify-content-between mt-5"
             >
-                <h3>{{ "〇〇レシピ一覧" }}</h3>
+                <h3>{{ listType }}</h3>
             </div>
             <div class="mx-auto" style="max-width: 500px">
                 <div
@@ -26,7 +26,7 @@
                         position: relative;
                         z-index: 1;
                     "
-                    v-for="recipe in recipes"
+                    v-for="recipe in myRecipes"
                     :key="recipe.id"
                 >
                     <img
@@ -83,11 +83,12 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 import PrimaryButton from "../parts/PrimaryButton";
 export default {
     name: "RecipeList",
     components: { PrimaryButton },
-    props: ["userId", "recipes", "ingredients"],
+    props: ["ingredients", "listType", ""],
     data() {
         return {
             icon: "far fa-heart",
@@ -111,9 +112,23 @@ export default {
                 .getAttribute("content"),
         };
     },
+    computed: {
+        myRecipes() {
+            return this.recipes.filter(
+                (recipe) => recipe.user_id == this.userId
+            );
+        },
+        ...mapGetters({
+            userId: "getUserId",
+            recipes: "getRecipes",
+        }),
+    },
     created() {},
-    mounted() {},
+    mounted() {
+        console.log(this.recipes);
+    },
     methods: {
+        ...mapMutations(["setRecipes", "initRecipes"]),
         showRecipeDetail: function (recipeId) {
             document.recipeListForm.method = "GET";
             document.recipeListForm.action = `/users/${this.$store.state.userId}/recipes/${recipeId}`;

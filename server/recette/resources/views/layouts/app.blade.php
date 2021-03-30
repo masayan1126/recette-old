@@ -6,6 +6,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="user-id" content="{{ Auth::user()->id }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -22,12 +23,9 @@
 </head>
 <body>
     <div id="app">
-        <?php
-        // var_dump(Auth::id())
-        ?>
-        <main class="py-4">
-            @yield('content')
-        </main>
+    <?php
+        dd($userId);
+    ; ?>
     </div>
 </body>
 </html>

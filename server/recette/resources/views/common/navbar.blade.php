@@ -14,10 +14,10 @@
                 <p class="nav-fix-bottom-menu-name">お気に入り</p>
             </div>
             <div class="text-center" style="line-height: 25px;">
-                <a href="{{ route('recipe.create', ['user_id' => Auth::id()]) }}">
-                <i class="fas fa-clipboard-list fa-2x"></i>
+                <a href="{{ route('recipe.category', ['user_id' => Auth::id()]) }}">
+                <i class="fas fa-search fa-2x"></i>
                 </a>
-                <p class="nav-fix-bottom-menu-name">食材から献立</p>
+                <p class="nav-fix-bottom-menu-name">レシピ検索</p>
             </div>
             <div class="text-center" style="line-height: 25px;">
                 <a href="{{ route('recipe.create', ['user_id' => Auth::id()]) }}">

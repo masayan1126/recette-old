@@ -21,6 +21,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => 'api'], function() {
+    Route::get('recipes', [RecipeController::class, 'index'])->name('');
+});
+
+Route::group(['middleware' => 'api'], function() {
     Route::post('users/{id?}/ingredients/add', [IngredientController::class, 'store'])->name('ingredient.store');
 });
 

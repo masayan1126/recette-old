@@ -11016,7 +11016,7 @@ input:-webkit-autofill {
 }
 
 .nav-fix-bottom-menu-name {
-  font-size: 0.6rem;
+  font-size: 0.1rem;
 }
 
 .recipe_container-top {
@@ -11119,13 +11119,15 @@ input:-webkit-autofill {
 }
 
 .section-recipe_create,
-.section-recipe_edit {
+.section-recipe_edit,
+.section-recipe_search {
   width: 90%;
   margin: 0 auto;
 }
 
 .wrapper-recipe_create,
-.wrapper-recipe_edit {
+.wrapper-recipe_edit,
+.wrapper-recipe_search {
   max-width: 400px;
   margin: 0 auto;
 }

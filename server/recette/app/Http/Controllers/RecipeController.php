@@ -12,33 +12,37 @@ use Storage;
 class RecipeController extends Controller
 {
     // レシピ一覧を取得し表示する
-    public function index($user_id)
+    public function index()
     {   
-        // 現在のURLを取得し、表示画面を分岐させる
-        $uri = rtrim($_SERVER["REQUEST_URI"], '/');
-        $uri = substr($uri, strrpos($uri, '/') + 1);
+        $recipes = Recipe::all();
+        return $recipes;
 
-        // １.通常の一覧で全レシピを表示
-        $recipes = Recipe::where('user_id', $user_id)->get();
-        $ingredients = Ingredient::where('user_id', $user_id)->get();
+        // // 現在のURLを取得し、表示画面を分岐させる
+        // $uri = rtrim($_SERVER["REQUEST_URI"], '/');
+        // $uri = substr($uri, strrpos($uri, '/') + 1);
 
-        if ($uri == "recipes") {
-            return view('top')->with(
-                [
-                    'user_id' => $user_id,
-                    'recipes' => $recipes,
-                    'ingredients' => $ingredients,
-                ]
-            );
-        }
-        // ２．リスト形式の一覧で全レシピを表示
-        return view('recipe.recipe_list')->with(
-            [
-                'user_id' => $user_id,
-                'recipes' => $recipes,
-                'ingredients' => $ingredients,
-            ]
-        );
+        // // １.通常の一覧で全レシピを表示
+        // // イーガーロード可能 ?
+        // $recipes = Recipe::where('user_id', $user_id)->get();
+        // $ingredients = Ingredient::where('user_id', $user_id)->get();
+
+        // if ($uri == "recipes") {
+        //     return view('top')->with(
+        //         [
+        //             'user_id' => $user_id,
+        //             'recipes' => $recipes,
+        //             'ingredients' => $ingredients,
+        //         ]
+        //     );
+        // }
+        // // ２．リスト形式の一覧で全レシピを表示
+        // return view('recipe.recipe_list')->with(
+        //     [
+        //         'user_id' => $user_id,
+        //         'recipes' => $recipes,
+        //         'ingredients' => $ingredients,
+        //     ]
+        // );
     }
 
     public function create($user_id)
@@ -77,9 +81,8 @@ class RecipeController extends Controller
 
         $recipe->recipe_name = $new_recipe->recipeName;
         $recipe->user_id = $user_id;
-        // dd($new_recipe->recipeProcedure);
-
         $recipe->recipe_procedure = $new_recipe->recipeProcedure;
+        $recipe->recipe_category = $new_recipe->recipeCategory->recipe_category_name_sub;
         $recipe->is_favorite = false;
         $recipe->recipe_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png";
 
@@ -87,7 +90,7 @@ class RecipeController extends Controller
         $last_insert_id = $recipe->id; 
         $recipe = Recipe::find($last_insert_id);
         
-        foreach ($new_recipe->ingredients as $ingredient) {
+        foreach ($new_recipe->recipeIngredientList as $ingredient) {
             $recipe->recipe_ingredients()->saveMany([
                 new RecipeIngredient([
                     'user_id' => $ingredient->user_id,

@@ -2,7 +2,6 @@ import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import getters from "./getters";
 import mutations from "./mutations";
-import actions from "./actions";
 
 // Create a new store instance.
 export const store = createStore({
@@ -10,19 +9,20 @@ export const store = createStore({
         return {
             userId: null,
             recipeName: "",
+            recipes: [],
             // obj
-            ingredient: null,
-            ingredientList: [],
-            isEditingIngredient: false,
-            editingIngredientIndex: 0,
+            recipeIngredient: null,
+            recipeIngredientList: [],
+            isEditingRecipeIngredient: false,
+            editingRecipeIngredientIndex: 0,
             recipeProcedure: "",
             recipeProcedureList: [],
             isEditingRecipeProcedure: false,
             editingRecipeProcedureIndex: 0,
+            recipeCategory: "",
         };
     },
-    getters,
-    mutations,
-    actions,
+    getters: getters,
+    mutations: mutations,
     plugins: [createPersistedState()],
 });

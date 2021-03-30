@@ -13,11 +13,11 @@
             </div>
             <img
                 class="meal-image__recipe-deatail"
-                :src="targetRecipe[0].recipe_image_path"
+                :src="selectedRecipe[0].recipe_image_path"
                 alt=""
             />
             <p class="meal-title__recipe-deatail">
-                {{ targetRecipe[0].recipe_name }}
+                {{ selectedRecipe[0].recipe_name }}
             </p>
         </div>
 
@@ -37,7 +37,7 @@
             <div class="recipe-description__recipe-deatail">
                 <ul
                     class="pl-1"
-                    v-for="(recipeProcedure, index) in targetRecipe[0]
+                    v-for="(recipeProcedure, index) in selectedRecipe[0]
                         .recipe_procedure"
                     :key="recipeProcedure.toString(index)"
                 >
@@ -49,17 +49,27 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 export default {
     name: "RecipeDetail",
-    props: ["targetRecipe", "targetRecipeIngredients"],
+    props: ["targetRecipeIngredients", "recipeId"],
     data() {
         return {
             recipeProcedureList: [],
             targetIngredientList: [],
         };
     },
+    computed: {
+        ...mapGetters({
+            userId: "getUserId",
+            recipes: "getRecipes",
+        }),
+        selectedRecipe() {
+            return this.recipes.filter((recipe) => recipe.id == this.recipeId);
+        },
+    },
     mounted() {
-        console.log(this.targetRecipe);
+        console.log(this.selectedRecipe);
     },
     methods: {
         returnToPreviousPage: function () {

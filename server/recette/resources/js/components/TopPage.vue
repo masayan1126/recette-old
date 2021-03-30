@@ -27,7 +27,16 @@
                 class="top-container-recipe-title d-flex justify-content-between mt-5"
             >
                 <h3>マイレシピ</h3>
-                <p @click="showRecipeList()">すべて見る</p>
+                <router-link
+                    :to="{
+                        name: 'myRecipes',
+                        params: {
+                            listType: 'マイレシピ',
+                        },
+                    }"
+                >
+                    すべて見る
+                </router-link>
             </div>
             <div class="top-container-recipe-content" v-if="recipes.length > 0">
                 <div
@@ -106,30 +115,52 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 export default {
     name: "Top",
-    props: ["userId", "recipes", "ingredients"],
+    props: ["", "ingredients"],
     data() {
         return {
             recipeName: "",
             csrf: document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"),
+            userId: document
+                .querySelector('meta[name="user-id"]')
+                .getAttribute("content"),
         };
     },
     created() {
+        this.fetchAllRecipes();
         this.$store.commit("setUserId", this.userId);
     },
-    mounted() {},
-    computed: {},
+    mounted() {
+        console.log(this.userId);
+    },
+    computed: {
+        ...mapGetters({
+            userId: "getUserId",
+            recipes: "getRecipes",
+        }),
+    },
     methods: {
-        showRecipeDetail: function (recipeId) {
-            location.pathname = location.pathname + "/" + recipeId;
+        ...mapMutations(["setRecipes", "initRecipes"]),
+        fetchAllRecipes: async function () {
+            await axios
+                .get("/api/recipes/")
+                .then((response) => {
+                    this.setRecipes(response.data);
+                    console.log(this.recipes);
+                })
+                .catch((error) => {});
         },
-        showRecipeList() {
-            location.pathname =
-                "/users/" + this.$store.state.userId + "/recipes/list";
+        showRecipeDetail(recipeId) {
+            this.$router.push({
+                name: "recipeDetail",
+                params: { recipeId: recipeId },
+            });
         },
+
         addInitDatatoIngredientsTable() {
             console.log(this.initialIngredientList);
         },

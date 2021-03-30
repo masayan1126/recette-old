@@ -19,10 +19,16 @@ require("./bootstrap");
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
+import router from "./router";
+
 import { createApp } from "vue";
 import { store } from "./store";
 import TopPage from "./components/TopPage.vue";
+import App from "./components/App.vue";
 import RecipeList from "./components/recipe/RecipeList";
+import RecipeCategoryList from "./components/recipe/RecipeCategoryList";
+import RecipeCategoryDetailList from "./components/recipe/RecipeCategoryDetailList";
+// import RecipeCategoryDetail from "./components/recipe/RecipeCategoryDetail";
 import RecipeDetail from "./components/recipe/RecipeDetail.vue";
 import EditRecipe from "./components/recipe/EditRecipe.vue";
 import CreateRecipe from "./components/recipe/CreateRecipe.vue";
@@ -37,16 +43,21 @@ import Register from "./components/auth/Register.vue";
 
 // window.HelloComponent = require("./components/Hello.vue").default;
 
-createApp({
-    components: {
-        TopPage,
-        RecipeDetail,
-        EditRecipe,
-        CreateRecipe,
-        StoreRecipe,
-        RecipeList,
-        Register,
-    },
-})
+createApp(App)
+    //     {
+    //     components: {
+    //         TopPage,
+    //         RecipeDetail,
+    //         EditRecipe,
+    //         CreateRecipe,
+    //         StoreRecipe,
+    //         RecipeList,
+    //         RecipeCategoryList,
+    //         // RecipeCategoryDetail,
+    //         RecipeCategoryDetailList,
+    //         Register,
+    //     },
+    // }
+    .use(router)
     .use(store)
     .mount("#app");

@@ -1,48 +1,70 @@
 <template>
-    <section class="recipe-detail-section">
-        <i
-            @click="returnToPreviousPage()"
-            class="fas fa-long-arrow-alt-left fa-2x"
-        ></i>
+    <section class="section-recipe_create">
+        <div class="wrapper-recipe_create">
+            <ReturnButton :path-name="'recipes'" :recipe-id="recipeId" />
 
-        <div class="meal-container__recipe-deatail">
-            <div class="text-right">
-                <span @click="goToRecipeEditScreen()"
-                    ><i class="fas fa-pencil-alt mr-1"></i>編集</span
-                >
+            <div class="container-recipe mb-4 mt-2">
+                <div class="text-right">
+                    <router-link
+                        :to="{
+                            name: 'editRecipe',
+                            params: { recipeId: recipeId },
+                        }"
+                    >
+                        <i class="fas fa-pencil-alt mr-1"></i>編集
+                    </router-link>
+                </div>
+                <img
+                    class="w-100"
+                    :src="selectedRecipe[0].recipe_image_path"
+                    alt=""
+                />
+                <p class="meal-title__recipe-deatail">
+                    {{ selectedRecipe[0].recipe_name }}
+                </p>
             </div>
-            <img
-                class="meal-image__recipe-deatail"
-                :src="selectedRecipe[0].recipe_image_path"
-                alt=""
-            />
-            <p class="meal-title__recipe-deatail">
-                {{ selectedRecipe[0].recipe_name }}
-            </p>
-        </div>
 
-        <p class="ingredient-title__recipe-detail">材料</p>
-        <div class="ingredient-container__recipe-deatail">
-            <div class="ingredient-description__recipe-deatail">
-                <ul
-                    v-for="targetRecipeIngredient in targetRecipeIngredients"
-                    :key="targetRecipeIngredient.id"
-                >
-                    <li>{{ targetRecipeIngredient.recipe_ingredient_name }}</li>
-                </ul>
+            <div class="container-recipe_ingredient mb-4">
+                <p class="mb-0">材料</p>
+                <div class="area-ingredient">
+                    <ul
+                        v-for="selectedRecipeIngredient in selectedRecipe[0]
+                            .recipe_ingredients"
+                        :key="selectedRecipeIngredient.id"
+                    >
+                        <li>
+                            {{
+                                selectedRecipeIngredient.recipe_ingredient_name
+                            }}
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <div class="recipe-container__recipe-deatail">
-            <p class="recipe-title__recipe-detail">作り方</p>
-            <div class="recipe-description__recipe-deatail">
-                <ul
-                    class="pl-1"
-                    v-for="(recipeProcedure, index) in selectedRecipe[0]
-                        .recipe_procedure"
-                    :key="recipeProcedure.toString(index)"
-                >
-                    <li>{{ index + 1 }}.{{ recipeProcedure }}</li>
-                </ul>
+            <div class="container-recipe_procedure mb-4">
+                <div class="d-flex justify-content-between align-items-end">
+                    <span>作り方</span>
+                    <span class="small">
+                        <i class="mr-1 fas fa-book-open"></i>レシピURL
+                    </span>
+                </div>
+                <div class="area-recipe_procedure p-2">
+                    <ul
+                        class="pl-1"
+                        v-for="(recipeProcedure, index) in selectedRecipe[0]
+                            .recipe_procedure"
+                        :key="recipeProcedure.toString(index)"
+                    >
+                        <li>{{ index + 1 }}.{{ recipeProcedure }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="container-recipe_procedure mb-4">
+                <div class="d-flex justify-content-between align-items-end">
+                    <span>カテゴリー</span>
+                </div>
+                <div class="area-recipe_procedure p-2">
+                    {{ selectedRecipe[0].recipe_category }}
+                </div>
             </div>
         </div>
     </section>
@@ -50,9 +72,13 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import ReturnButton from "../parts/ReturnButton";
 export default {
     name: "RecipeDetail",
-    props: ["targetRecipeIngredients", "recipeId"],
+    props: ["recipeId"],
+    components: {
+        ReturnButton,
+    },
     data() {
         return {
             recipeProcedureList: [],
@@ -69,24 +95,8 @@ export default {
         },
     },
     mounted() {
-        console.log(this.selectedRecipe);
+        console.log(this.recipeId);
     },
-    methods: {
-        returnToPreviousPage: function () {
-            history.back();
-        },
-        goToRecipeEditScreen: function () {
-            const userId = this.$store.state.userId;
-            // urlから正規表現でrecipeidのみ抽出
-            const recipeId = location.pathname.match(/([^\/.]+)/g)[3];
-
-            location.pathname =
-                "/users/" +
-                this.$store.state.userId +
-                "/recipes/" +
-                "edit/" +
-                recipeId;
-        },
-    },
+    methods: {},
 };
 </script>

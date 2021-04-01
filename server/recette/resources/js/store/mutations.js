@@ -1,17 +1,21 @@
 import userMutations from "./user/mutations";
 import recipeMutations from "./recipe/mutations";
+import ingredientMutations from "./ingredient/mutations";
 import recipeIngredientMutations from "./recipeIngredient/mutations";
 import recipeProcedureMutations from "./recipeProcedure/mutations";
 import recipeCategoryMutations from "./recipeCategory/mutations";
 
 export default {
     setUserId: userMutations.setUserId,
+    setUserData: userMutations.setUserData,
     //
     setRecipeName: recipeMutations.setRecipeName,
     initRecipeName: recipeMutations.initRecipeName,
 
     setRecipes: recipeMutations.setRecipes,
     initRecipes: recipeMutations.initRecipes,
+    setIngredients: ingredientMutations.setIngredients,
+    initIngredients: ingredientMutations.initIngredients,
     //
     setRecipeIngredient: recipeIngredientMutations.setRecipeIngredient,
     initRecipeIngredient: recipeIngredientMutations.initRecipeIngredient,

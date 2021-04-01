@@ -6,8 +6,6 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="user-id" content="{{ Auth::user()->id }}">
-
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
@@ -22,10 +20,11 @@
     <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
-    <?php
-        dd($userId);
-    ; ?>
-    </div>
+    <main class="py-4">
+        <div class="container">
+            <div id="app">
+            </div>
+        </div>
+    </main>
 </body>
 </html>

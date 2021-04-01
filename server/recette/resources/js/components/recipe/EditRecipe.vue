@@ -1,11 +1,22 @@
 <template>
     <section class="section-recipe_edit">
         <div class="wrapper-recipe_edit">
-            <i @click="goToPreviousPage" class="fas fa-angle-left fa-2x"></i>
+            <!-- <ReturnButton :path-name="'recipeDetail'" :recipe-id="recipeId" /> -->
+            <router-link
+                :to="{
+                    name: 'recipeDetail',
+                    params: { recipeId: recipeId },
+                }"
+            >
+                <i class="fas fa-angle-left fa-2x"></i>
+            </router-link>
 
-            <ImagePreview
-                :title="'レシピ画像UL'"
-                :recipe-image-path="editingTargetRecipe[0].recipe_image_path"
+            <ImagePreview :title="'レシピ画像UL'" />
+
+            <img
+                class="w-100"
+                :src="selectedRecipe[0].recipe_image_path"
+                alt=""
             />
 
             <div class="container-recipe mb-4 d-flex">
@@ -70,7 +81,8 @@
                 <div class="area-recipe_procedure p-2">
                     <ul
                         class="pl-1"
-                        v-for="(recipeProcedure, index) in recipeProcedureList"
+                        v-for="(recipeProcedure, index) in selectedRecipe[0]
+                            .recipeProcedureList"
                         :key="recipeProcedure.toString(index)"
                     >
                         <li>
@@ -126,19 +138,16 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 import PrimaryButton from "../parts/PrimaryButton";
+import ReturnButton from "../parts/ReturnButton";
 import TextInput from "../parts/TextInput";
 import ImagePreview from "../parts/ImagePreview";
-import { mapMutations } from "vuex";
 
 export default {
-    components: { PrimaryButton, TextInput, ImagePreview },
+    components: { PrimaryButton, TextInput, ImagePreview, ReturnButton },
     name: "EditRecipe",
-    props: [
-        "editingTargetRecipe",
-        "editingTargetRecipeIngredients",
-        "ingredients",
-    ],
+    props: ["recipeId"],
     data() {
         return {
             editedRecipeObj: null,
@@ -154,64 +163,59 @@ export default {
                 .getAttribute("content"),
         };
     },
+    computed: {
+        ...mapGetters({
+            userId: "getUserId",
+            recipes: "getRecipes",
+            ingredients: "getIngredients",
+            recipeIngredientList: "getRecipeIngredientList",
+            isEditingIngredient: "getIsEditingRecipeIngredient",
+            editingIngredientIndex: "getEditingRecipeIngredientIndex",
+            recipeProcedureList: "getRecipeProcedureList",
+            isEditingRecipeProcedure: "getIsEditingRecipeProcedure",
+            editingRecipeProcedureIndex: "getEditingRecipeProcedureIndex",
+        }),
+        selectedRecipe() {
+            return this.recipes.filter((recipe) => recipe.id == this.recipeId);
+        },
+
+        recipeName: {
+            get() {
+                return this.$store.getters.getRecipeName;
+            },
+            set(val) {
+                this.setRecipeName(val);
+            },
+        },
+        ingredient: {
+            get() {
+                return this.$store.getters.getIngredient;
+            },
+            set(val) {
+                this.setIngredient(val);
+            },
+        },
+    },
     created() {},
     mounted() {
-        this.recipeName = this.editingTargetRecipe[0].recipe_name;
-        this.ingredientList = this.editingTargetRecipeIngredients;
+        console.log(this.selectedRecipe, this.recipeId);
+        this.recipeName = this.selectedRecipe[0].recipe_name;
+        this.ingredientList = this.ingredients;
     },
-    userId() {
-        return this.$store.getters.getUserId;
-    },
-    recipeName: {
-        get() {
-            return this.$store.getters.getRecipeName;
-        },
-        set(val) {
-            this.setRecipeName(val);
-        },
-    },
-    ingredient: {
-        get() {
-            return this.$store.getters.getIngredient;
-        },
-        set(val) {
-            this.setIngredient(val);
-        },
-    },
-    ingredientList() {
-        return this.$store.getters.getIngredientList;
-    },
-    isEditingIngredient() {
-        return this.$store.getters.getIsEditingIngredient;
-    },
-    editingIngredientIndex() {
-        return this.$store.getters.getEditingIngredientIndex;
-    },
-    recipeProcedure() {
-        return this.$store.getters.getRecipeProcedure;
-    },
-    recipeProcedureList() {
-        return this.$store.getters.getRecipeProcedureList;
-    },
-    isEditingRecipeProcedure() {
-        return this.$store.getters.getIsEditingRecipeProcedure;
-    },
-    editingRecipeProcedureIndex() {
-        return this.$store.getters.getEditingRecipeProcedureIndex;
-    },
+
     methods: {
         ...mapMutations([
             "setRecipeName",
             "initRecipeName",
-            "setIngredient",
-            "initIngredient",
-            "deleteIngredient",
-            "setIngredientList",
-            "initIngredientList",
-            "setIsEditingIngredient",
-            "initIsEditingIngredient",
-            "setEditingIngredientIndex",
-            "initEditingIngredientIndex",
+            "setRecipeIngredient",
+            "initRecipeIngredient",
+            "deleteRecipeIngredient",
+            "setRecipeIngredientList",
+            "initRecipeIngredientList",
+            "setIsEditingRecipeIngredient",
+            "initIsEditingRecipeIngredient",
+            "setEditingRecipeIngredientIndex",
+            "initEditingRecipeIngredientIndex",
             "setRecipeProcedure",
             "initRecipeProcedure",
             "setRecipeProcedureList",
@@ -220,6 +224,9 @@ export default {
             "initIsEditingRecipeProcedure",
             "setEditingRecipeProcedureIndex",
             "initEditingRecipeProcedureIndex",
+            "deleteRecipeProcedure",
+            "setRecipeCategory",
+            "initRecipeCategory",
         ]),
         sendEditedRecipe() {
             const editedRecipeObj = {

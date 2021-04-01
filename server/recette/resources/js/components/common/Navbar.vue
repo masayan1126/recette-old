@@ -1,33 +1,37 @@
-<nav class="nav-fix-bottom navbar shadow-sm">
-    <!-- <div class="container"> -->
+<template>
+    <nav class="nav-fix-bottom navbar shadow-sm">
         <div class="nav-fix-bottom-container">
-            <div class="text-center" style="line-height: 25px;">
-                <a href="{{ route('recipe.create', ['user_id' => Auth::id()]) }}">
+            <div class="text-center" style="line-height: 25px">
+                <router-link
+                    :to="{
+                        name: 'createRecipe',
+                    }"
+                >
                     <i class="fas fa-folder-plus fa-2x"></i>
-                </a>
+                </router-link>
+
                 <p class="nav-fix-bottom-menu-name">レシピ追加</p>
             </div>
-            <div class="text-center" style="line-height: 25px;">
-                <a href="{{ route('recipe.create', ['user_id' => Auth::id()]) }}">
-                <i class="fas fa-clipboard-list fa-2x"></i>
+            <div class="text-center" style="line-height: 25px">
+                <a href="">
+                    <i class="fas fa-clipboard-list fa-2x"></i>
                 </a>
                 <p class="nav-fix-bottom-menu-name">お気に入り</p>
             </div>
-            <div class="text-center" style="line-height: 25px;">
-                <a href="{{ route('recipe.category', ['user_id' => Auth::id()]) }}">
-                <i class="fas fa-search fa-2x"></i>
+            <div class="text-center" style="line-height: 25px">
+                <a href="">
+                    <i class="fas fa-search fa-2x"></i>
                 </a>
                 <p class="nav-fix-bottom-menu-name">レシピ検索</p>
             </div>
-            <div class="text-center" style="line-height: 25px;">
-                <a href="{{ route('recipe.create', ['user_id' => Auth::id()]) }}">
-                <i class="far fa-calendar-alt fa-2x"></i>
+            <div class="text-center" style="line-height: 25px">
+                <a href="">
+                    <i class="far fa-calendar-alt fa-2x"></i>
                 </a>
                 <p class="nav-fix-bottom-menu-name">カレンダー</p>
             </div>
         </div>
-    </div>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
             @guest
                 @if (Route::has('login'))
@@ -67,5 +71,32 @@
             @endguest
             </ul>
         </div>
-    <!-- </div> -->
-</nav>
+    </div> -->
+    </nav>
+</template>
+
+<script>
+import { mapGetters, mapMutations } from "vuex";
+export default {
+    name: "Navbar",
+    props: [],
+    data() {
+        return {
+            csrf: document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        };
+    },
+    created() {},
+    mounted() {},
+    computed: {
+        ...mapGetters({
+            userId: "getUserId",
+            recipes: "getRecipes",
+        }),
+    },
+    methods: {
+        ...mapMutations(["setRecipes", "initRecipes"]),
+    },
+};
+</script>

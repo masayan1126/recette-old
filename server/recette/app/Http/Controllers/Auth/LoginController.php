@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+// use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -20,7 +21,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    // use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
@@ -44,18 +45,24 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    // public function logout(Request $request) {
-    //     $this->guard()->logout();         
-    //     $request->session()->flush();         
-    //     $request->session()->regenerate();         
-    //     return redirect('/login');     
-    // }
-
-    public function logout(Request $request)
+    public function login(Request $request)
     {
-        $this->guard()->logout();
-        $request->session()->flush();
-        $request->session()->regenerate();
-        return redirect('/login');
+        $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required']
+        ]);
+
+        if (Auth::attempt($request->only('email', 'password'))){
+            return response()->json(Auth::user(), 200);
+        }
+        throw ValidationException::withMessages([
+            'email' =>['The provided credentials are incorect.']
+        ]);
     }
+
+    public function logout()
+    {
+        Auth::logout();
+    }
+
 }

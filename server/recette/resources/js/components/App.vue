@@ -1,16 +1,22 @@
 <template>
-    <div>
-        <main class="py-4">
-            <p>testu</p>
-            <div class="container">
-                <RouterView />
-            </div>
-        </main>
-    </div>
+    <section>
+        <Navbar />
+        <NavbarTop />
+        <NavbarTopHamburger />
+        <RouterView />
+    </section>
 </template>
 
 <script>
+import Navbar from "./common/Navbar";
+import NavbarTop from "./common/NavbarTop";
+import NavbarTopHamburger from "./common/NavbarTopHamburger";
 export default {
+    components: {
+        Navbar,
+        NavbarTop,
+        NavbarTopHamburger,
+    },
     name: "App",
     props: [],
     data() {

@@ -7,9 +7,16 @@ import mutations from "./mutations";
 export const store = createStore({
     state() {
         return {
+            userData: {
+                userId: null,
+                userName: null,
+                userEmailAdress: null,
+                profileImagePath: null,
+            },
             userId: null,
             recipeName: "",
             recipes: [],
+            ingredients: [],
             // obj
             recipeIngredient: null,
             recipeIngredientList: [],

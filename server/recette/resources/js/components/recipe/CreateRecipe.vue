@@ -1,20 +1,37 @@
 <template>
     <section class="section-recipe_create">
         <div class="wrapper-recipe_create">
-            <i @click="goToPreviousPage" class="fas fa-angle-left fa-2x"></i>
+            <ReturnButton :path-name="'recipes'" />
             <Toast
                 :is-show="isShow"
                 :is-hide="isHide"
                 :props-function="addInitialIngredients"
             />
 
-            <ImagePreview
-                :title="'レシピ画像UL'"
-                :recipe-image-path="'https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png'"
-            />
+            <div class="area-image_preview d-flex justify-content-between">
+                <img :src="url" class="w-75" />
+                <div class="d-flex justify-content-end w-25">
+                    <label>
+                        <i class="fas fa-file-upload mr-1"></i>
+                        <span class="small">{{ "test" }}</span>
+                        <input
+                            class="d-none"
+                            name="imagefile"
+                            id="imagefile"
+                            type="file"
+                            ref="preview"
+                            @change="uploadFile($event)"
+                        />
+                    </label>
+                </div>
+            </div>
 
-            <div class="container-recipe mb-4 d-flex mt-2">
-                <InputLabel :id="'input-recipe-name'" :name="'レシピ名：'" />
+            <div class="container-recipe mb-4 d-flex mt-2 align-items-end">
+                <InputLabel
+                    class="mb-0"
+                    :id="'input-recipe-name'"
+                    :name="'レシピ名：'"
+                />
                 <TextInput
                     :id="'input-recipe-name'"
                     :type="'text'"
@@ -132,24 +149,17 @@
                 </div>
             </div>
 
-            <form
-                action=""
-                method="POST"
-                enctype="multipart/form-data"
-                name="createRecipeForm"
-            >
-                <input type="hidden" name="_token" :value="csrf" />
-                <input
-                    type="hidden"
-                    name="newRecipe"
-                    :value="JSON.stringify(newRecipe)"
-                />
-                <PrimaryButton
-                    :buttonName="'登録する'"
-                    :props-function="sendNewRecipe"
-                    :buttonStyle="sendNewRecipeButtonStyle"
-                />
-            </form>
+            <!-- <input type="hidden" name="_token" :value="csrf" />
+            <input
+                type="hidden"
+                name="newRecipe"
+                :value="JSON.stringify(newRecipe)"
+            /> -->
+            <PrimaryButton
+                :buttonName="'登録する'"
+                :props-function="sendNewRecipe"
+                :buttonStyle="sendNewRecipeButtonStyle"
+            />
         </div>
     </section>
 </template>
@@ -157,6 +167,7 @@
 <script>
 import ImagePreview from "../parts/ImagePreview";
 import PrimaryButton from "../parts/PrimaryButton";
+import ReturnButton from "../parts/ReturnButton";
 import TextInput from "../parts/TextInput";
 import InputLabel from "../parts/InputLabel";
 import Toast from "../parts/Toast";
@@ -165,13 +176,14 @@ import { mapGetters, mapMutations } from "vuex";
 
 export default {
     name: "CreateRecipe",
-    props: ["ingredients"],
+    props: [],
     components: {
         ImagePreview,
         PrimaryButton,
         Toast,
         TextInput,
         InputLabel,
+        ReturnButton,
     },
     data() {
         return {
@@ -185,6 +197,8 @@ export default {
                 width: "100%",
                 height: "35px",
             },
+            file: null,
+            url: null,
             categories: [
                 {
                     id: 1,
@@ -264,6 +278,7 @@ export default {
             recipeProcedureList: "getRecipeProcedureList",
             isEditingRecipeProcedure: "getIsEditingRecipeProcedure",
             editingRecipeProcedureIndex: "getEditingRecipeProcedureIndex",
+            ingredients: "getIngredients",
         }),
         newRecipe() {
             const newRecipe = {
@@ -394,8 +409,32 @@ export default {
                 return;
             }
             this.initRecipeIngredientList();
-            document.createRecipeForm.action = `/users/${this.userId}/recipes/store`;
-            document.createRecipeForm.submit();
+
+            const url = "/api/users/" + this.userId + "/recipes/add";
+            let formData = new FormData();
+            const file = document.getElementById("imagefile");
+            formData.append("file", file.files[0]);
+            formData.append("newRecipe", JSON.stringify(this.newRecipe));
+            console.log(formData);
+
+            axios
+                .post(
+                    url,
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                    // newRecipe: JSON.stringify(this.newRecipe),
+                )
+                .then((res) => {
+                    console.log(res);
+                    // this.$router.push({ name: "recipes" });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
         addInitialIngredients() {
             axios
@@ -416,6 +455,11 @@ export default {
                 "goToPreviousPage",
                 `/users/${this.userId}/recipes`
             );
+        },
+        uploadFile(e) {
+            this.file = e.target.files[0];
+            this.url = URL.createObjectURL(this.file);
+            console.log(this.file);
         },
     },
 };

@@ -20,7 +20,7 @@ require("./bootstrap");
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 import router from "./router";
-
+import Nav from "./components/common/Nav.vue";
 import { createApp } from "vue";
 import { store } from "./store";
 import TopPage from "./components/TopPage.vue";
@@ -58,6 +58,7 @@ createApp(App)
     //         Register,
     //     },
     // }
+    .component("nav", Nav)
     .use(router)
     .use(store)
     .mount("#app");

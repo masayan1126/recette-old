@@ -1,9 +1,5 @@
 <template>
-    <button
-        class="btn"
-        @click.prevent="propsFunction(recipeId, isFavorite)"
-        :style="buttonStyle"
-    >
+    <button class="btn" @click.prevent="propsFunction()" :style="buttonStyle">
         <i :class="icon"></i>
         {{ buttonName }}
     </button>

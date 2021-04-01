@@ -7,119 +7,122 @@
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
     >
-        <form
-            action=""
-            method="POST"
-            enctype="multipart/form-data"
-            id="create-recipe-form"
-            name="createRecipeForm"
-        >
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">
-                            {{ modalTitle }}
-                        </h5>
-                        <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                        >
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div
-                            v-for="(ingredient, index) in ingredientList"
-                            :key="ingredient.id"
-                        >
-                            <!-- <input type="hidden" name="_token" :value="csrf" />
-                            <input
-                                type="hidden"
-                                name="revisedIngredientList[]"
-                                :value="
-                                    JSON.stringify(editingTargetIngredientList)
-                                "
-                            /> -->
-
-                            <TextInput
-                                :index="index"
-                                @setEditingTargetIngredientName="set"
-                                :value="ingredient.ingredient_name"
-                                @inputFormContent="newIngredientName = $event"
-                            />
-                            <!-- <input
-                            :value="editingTargetIngredient.ingredient_name"
-                            type="text"
-                            @click="
-                                setEditingTargetIngredientName(
-                                    editingTargetIngredient.ingredient_name
-                                )setEditingTargetIngredientName
-                            "
-                        /> -->
-                        </div>
-                        <textarea
-                            v-model="newIngredientName"
-                            name=""
-                            id=""
-                            cols="30"
-                            rows="10"
-                        ></textarea>
-                        <button
-                            @click="updateTargetIngredientList()"
-                            type="button"
-                            class="btn btn-primary"
-                        >
-                            確定
-                        </button>
-                    </div>
-                    <div class="modal-footer">
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-dismiss="modal"
-                        >
-                            Close
-                        </button>
-                        <button
-                            @click="createEditedRecipe(ingredientList)"
-                            type="button"
-                            class="btn btn-primary"
-                            data-dismiss="modal"
-                        >
-                            完了
-                        </button>
-                    </div>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        {{ modalTitle }}
+                    </h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <InputLabel
+                        :id="'profile-image'"
+                        :name="'プロフィール画像'"
+                    />
+                    <ImagePreview :title="'画像UL'" :recipe-image-path="''" />
+                    <!-- <TextInput
+                        :id="'profile-image'"
+                        :type="'text'"
+                        :value="profileImagePath"
+                        @inputFormContent="profileImagePath = $event"
+                    /> -->
+                    <InputLabel :id="'user-name'" :name="'ユーザー名：'" />
+                    <TextInput
+                        :id="'user-name'"
+                        :type="'text'"
+                        :value="newUserData.userName"
+                        @inputFormContent="newUserData.userName = $event"
+                    />
+                    <InputLabel :id="'email'" :name="'メールアドレス'" />
+                    <TextInput
+                        :id="'email'"
+                        :type="'email'"
+                        :value="newUserData.userEmailAdress"
+                        :className="'text-input'"
+                        @inputFormContent="newUserData.userEmailAdress = $event"
+                    />
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                    >
+                        キャンセル
+                    </button>
+                    <button
+                        @click.prevent="updateUserData()"
+                        type="button"
+                        class="btn btn-primary"
+                        data-dismiss="modal"
+                    >
+                        完了
+                    </button>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 import TextInput from "./TextInput";
+import InputLabel from "./InputLabel";
+import ImagePreview from "./ImagePreview";
 // import PrimaryButton from "../parts/PrimaryButton";
 
 export default {
-    name: "ImagePreview",
+    name: "Modal",
     props: ["modalTitle", "editingTargetIngredients", "createEditedRecipe"],
-    components: { TextInput },
+    components: { TextInput, InputLabel, ImagePreview },
     data() {
         return {
-            recipeName: "",
-            recipeImage: "",
-            newIngredientName: "",
-            ingredientList: [],
-            index: 0,
-            // editingTargetIngredientList: [],
+            newUserData: {
+                userId: null,
+                userName: "",
+                userEmailAdress: null,
+                profileImagePath: null,
+            },
+
             csrf: document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"),
         };
     },
     mounted() {},
+    computed: {
+        ...mapGetters({
+            userData: "getUserData",
+            userId: "getUserId",
+            recipes: "getRecipes",
+        }),
+    },
+
     methods: {
+        ...mapMutations(["setRecipes", "initRecipes", "setUserData"]),
+        updateUserData() {
+            console.log(this.newUserData.userName);
+            axios
+                .put("/api/account/" + this.userData.userId + "/edit", {
+                    newUserData: this.newUserData,
+                    userName: this.newUserData.userName,
+                })
+                .then((response) => {
+                    console.log(response);
+                    this.setUserData(response.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
         returnToPreviousPage: function () {
             history.back();
         },

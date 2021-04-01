@@ -15,12 +15,11 @@ class IngredientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($user_id)
     {
         //
-        $ingredients = Recipe::find(1)->ingredients()
-            ->first();
-        dd($ingredients);
+        $ingredients = Ingredient::where('user_id',$user_id)->get();
+        return $ingredients;
     }
 
     /**

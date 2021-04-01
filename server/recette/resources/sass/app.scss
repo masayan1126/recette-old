@@ -25,6 +25,10 @@ li {
     list-style: none;
 }
 
+.form-control {
+    border-left: none !important;
+}
+
 input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px #454545 inset;
 }
@@ -37,6 +41,20 @@ input:-webkit-autofill {
     caret-color: #c4c4c4;
     color: #c4c4c4;
     width: 75%;
+}
+
+.bg-gray {
+    background-color: #c4c4c4 !important;
+}
+
+.items {
+    height: 300px;
+}
+
+.item {
+    margin: 0 10px 10px 0;
+    width: calc(33.33333333% - 10px);
+    background-color: #c4c4c4;
 }
 
 .recipe {

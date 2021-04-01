@@ -1,33 +1,40 @@
 <template>
     <div class="recipe_wrapper-top">
         <div class="recipe_container-top">
-            <div class="upper_content-top">
-                <!-- 検索フォーム -->
-
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1"
-                            >@</span
-                        >
-                    </div>
-                    <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Username"
-                        aria-label="Username"
-                        aria-describedby="basic-addon1"
-                    />
-                </div>
-
+            <div class="upper_content-top mb-2">
+                <h4>Reccete</h4>
                 <!-- ユーザーアイコン -->
-                <i class="far fa-user-circle fa-2x"></i>
+
+                <span
+                    class="dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                >
+                    <i class="fas fa-user-circle fa-2x"></i>
+                </span>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <router-link :to="{ name: 'myPage' }" class="dropdown-item">
+                        マイページ
+                    </router-link>
+                    <a @click.prevent="logout" class="dropdown-item" href="#"
+                        >ログアウト</a
+                    >
+                </div>
             </div>
+            <!-- 検索フォーム -->
+            <SearchWindow />
             <!-- マイレシピ -->
             <div
-                class="top-container-recipe-title d-flex justify-content-between mt-5"
+                class="top-container-recipe-title d-flex justify-content-between mt-4"
             >
-                <h3>マイレシピ</h3>
+                <h5>マイレシピ</h5>
+
                 <router-link
+                    class="small"
                     :to="{
                         name: 'myRecipes',
                         params: {
@@ -35,7 +42,7 @@
                         },
                     }"
                 >
-                    すべて見る
+                    すべて見る ＞
                 </router-link>
             </div>
             <div class="top-container-recipe-content" v-if="recipes.length > 0">
@@ -51,7 +58,7 @@
                         alt="マイレシピ画像"
                     />
 
-                    <p>{{ recipe.recipe_name }}</p>
+                    <p class="small">{{ recipe.recipe_name }}</p>
                     <!-- <form action="" method="get" name="testForm"></form> -->
                 </div>
             </div>
@@ -66,8 +73,8 @@
             <div
                 class="top-container-recipe-title d-flex justify-content-between mt-5"
             >
-                <h3>おすすめレシピ</h3>
-                <p>すべて見る</p>
+                <h5>新着レシピ</h5>
+                <p class="small">すべて見る ＞</p>
             </div>
             <div class="top-container-recipe-content">
                 <div
@@ -82,7 +89,7 @@
                         alt=""
                     />
 
-                    <p>{{ recipe.recipe_name }}</p>
+                    <p class="small">{{ recipe.recipe_name }}</p>
                     <!-- <form action="" method="get" name="testForm"></form> -->
                 </div>
             </div>
@@ -90,8 +97,8 @@
             <div
                 class="top-container-recipe-title d-flex justify-content-between mt-5"
             >
-                <h3>旬のレシピ</h3>
-                <p>すべて見る</p>
+                <h4>旬のレシピ</h4>
+                <p class="small">すべて見る ＞</p>
             </div>
             <div class="top-container-recipe-content">
                 <div
@@ -106,7 +113,7 @@
                         alt=""
                     />
 
-                    <p>{{ recipe.recipe_name }}</p>
+                    <p class="small">{{ recipe.recipe_name }}</p>
                     <!-- <form action="" method="get" name="testForm"></form> -->
                 </div>
             </div>
@@ -116,35 +123,51 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import SearchWindow from "./parts/SearchWindow";
 export default {
     name: "Top",
-    props: ["", "ingredients"],
+    components: {
+        SearchWindow,
+    },
+    props: [],
     data() {
         return {
             recipeName: "",
             csrf: document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"),
-            userId: document
-                .querySelector('meta[name="user-id"]')
-                .getAttribute("content"),
+            user: null,
+            // userId: document
+            //     .querySelector('meta[name="user-id"]')
+            //     .getAttribute("content"),
         };
     },
     created() {
         this.fetchAllRecipes();
-        this.$store.commit("setUserId", this.userId);
+        this.fetchAllIngredients();
     },
     mounted() {
-        console.log(this.userId);
+        axios.get("api/user").then((res) => {
+            this.user = res.data;
+            this.setUserData(res.data);
+        });
     },
     computed: {
         ...mapGetters({
+            userData: "getUserData",
             userId: "getUserId",
             recipes: "getRecipes",
+            ingredients: "getIngredients",
         }),
     },
     methods: {
-        ...mapMutations(["setRecipes", "initRecipes"]),
+        ...mapMutations([
+            "setRecipes",
+            "initRecipes",
+            "setUserData",
+            "setIngredients",
+            "initIngredients",
+        ]),
         fetchAllRecipes: async function () {
             await axios
                 .get("/api/recipes/")
@@ -153,6 +176,20 @@ export default {
                     console.log(this.recipes);
                 })
                 .catch((error) => {});
+        },
+        fetchAllIngredients: async function () {
+            await axios
+                .get("/api/users/" + this.userId + "/ingredients/")
+                .then((response) => {
+                    this.setIngredients(response.data);
+                    console.log(this.ingredients);
+                })
+                .catch((error) => {});
+        },
+        logout() {
+            axios.post("/api/logout").then(() => {
+                this.$router.push("/login");
+            });
         },
         showRecipeDetail(recipeId) {
             this.$router.push({

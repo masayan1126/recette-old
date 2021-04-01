@@ -14,7 +14,8 @@ class RecipeController extends Controller
     // レシピ一覧を取得し表示する
     public function index()
     {   
-        $recipes = Recipe::all();
+        $recipes = Recipe::with(['recipe_ingredients'])->get();
+        
         return $recipes;
 
         // // 現在のURLを取得し、表示画面を分岐させる
@@ -22,7 +23,6 @@ class RecipeController extends Controller
         // $uri = substr($uri, strrpos($uri, '/') + 1);
 
         // // １.通常の一覧で全レシピを表示
-        // // イーガーロード可能 ?
         // $recipes = Recipe::where('user_id', $user_id)->get();
         // $ingredients = Ingredient::where('user_id', $user_id)->get();
 
@@ -69,39 +69,47 @@ class RecipeController extends Controller
     public function store(Request $request,$user_id)
     {
         $new_recipe = json_decode($request->newRecipe);
+        clock($new_recipe);
         $recipe = new Recipe();
 
-        if ($request->file('imagefile') != null) {
-            $imagefile = $request->file('imagefile');
-            // $pathの中身は"products/ファイル名.jpeg"　等
-            $path = Storage::disk('s3')->putFile('/recipes', $imagefile, 'public');
-            // $product->pathの中身は上記$pathの画像ファイル名含めたs3のURL
-            $recipe->recipe_image_path = Storage::disk('s3')->url($path);
-        }
+        
 
         $recipe->recipe_name = $new_recipe->recipeName;
         $recipe->user_id = $user_id;
+        // dd($new_recipe->recipeProcedure);
+
+        $recipe->recipe_category = $new_recipe->recipeCategory;
         $recipe->recipe_procedure = $new_recipe->recipeProcedure;
-        $recipe->recipe_category = $new_recipe->recipeCategory->recipe_category_name_sub;
         $recipe->is_favorite = false;
-        $recipe->recipe_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png";
+        // $recipe->recipe_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png";
+
+        $imagefile = $request->file('file');
+        
+        // $imagefile =$request->imagefile;
+        // $pathの中身は"products/ファイル名.jpeg"　等
+        $path = Storage::disk('s3')->putFile('/recipes', $imagefile, 'public');
+        // $product->pathの中身は上記$pathの画像ファイル名含めたs3のURL
+        $recipe->recipe_image_path = Storage::disk('s3')->url($path);
+        // if ($request->file('imagefile') != null) {
+        // }
 
         $recipe->save();
         $last_insert_id = $recipe->id; 
         $recipe = Recipe::find($last_insert_id);
         
-        foreach ($new_recipe->recipeIngredientList as $ingredient) {
+        foreach ($new_recipe->recipeIngredientList as $recipeIngredient) {
             $recipe->recipe_ingredients()->saveMany([
                 new RecipeIngredient([
-                    'user_id' => $ingredient->user_id,
-                    'recipe_ingredient_name' => $ingredient->ingredient_name, 
-                    'recipe_ingredient_category' => $ingredient->ingredient_category,
+                    'user_id' => $recipeIngredient->user_id,
+                    'recipe_ingredient_name' => $recipeIngredient->ingredient_name, 
+                    'recipe_ingredient_category' => $recipeIngredient->ingredient_category,
                 ])
             ]);
         }
 
-        $url = url("/users/{$user_id}/recipes");
-        return redirect($url);
+        $recipes=Recipe::all();
+        // $url = url("/users/{$user_id}/recipes");
+        return $recipes;
     }
 
     public function show($user_id,$recipe_id)

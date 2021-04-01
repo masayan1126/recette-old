@@ -1,29 +1,27 @@
-<div class="nav-wrapper-top shadow">    
-    <div class="container">
-        <nav class="navbar navbar-top shadow-sm">
-            <div class="navbar-dark d-flex justify-content-between align-items-center">
-                <h4 class="mb-0">Recette</h4>
-                <ul class="p-0 mb-0 d-flex justify-content-between align-items-center">
-                    <li>
-                        <a href="{{ route('recipe.create', ['user_id' => Auth::id()]) }}">
-                        レシピ追加</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('recipe.create', ['user_id' => Auth::id()]) }}">
-                        お気に入り</a>
-                    </li>
-                    <li class="text-center" style="line-height: 25px;">
-                        <a href="{{ route('recipe.create', ['user_id' => Auth::id()]) }}">
-                        食材から献立</a>
-                    </li>
-                    <li class="text-center" style="line-height: 25px;">
-                        <a href="{{ route('recipe.create', ['user_id' => Auth::id()]) }}">
-                        カレンダー</a>
-                    </li>
-                </ul>
-            </div>
+<template>
+    <nav class="navbar navbar-top shadow-sm">
+        <div
+            class="navbar-dark d-flex justify-content-between align-items-center"
+        >
+            <h4 class="mb-0">Recette</h4>
+            <ul
+                class="p-0 mb-0 d-flex justify-content-between align-items-center"
+            >
+                <li>
+                    <a href=""> レシピ追加</a>
+                </li>
+                <li>
+                    <a href=""> お気に入り</a>
+                </li>
+                <li class="text-center" style="line-height: 25px">
+                    <a href=""> 食材から献立</a>
+                </li>
+                <li class="text-center" style="line-height: 25px">
+                    <a href=""> カレンダー</a>
+                </li>
+            </ul>
         </div>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 @guest
                     @if (Route::has('login'))
@@ -62,7 +60,32 @@
                     </li>
                 @endguest
                 </ul>
-            </div>
-        </nav>
-    </div>
-</div>
+            </div> -->
+    </nav>
+</template>
+
+<script>
+import { mapGetters, mapMutations } from "vuex";
+export default {
+    name: "NavbarTop",
+    props: [],
+    data() {
+        return {
+            csrf: document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        };
+    },
+    created() {},
+    mounted() {},
+    computed: {
+        ...mapGetters({
+            userId: "getUserId",
+            recipes: "getRecipes",
+        }),
+    },
+    methods: {
+        ...mapMutations(["setRecipes", "initRecipes"]),
+    },
+};
+</script>

@@ -1,9 +1,10 @@
 <template>
-    <div class="area-image_preview">
-        <div class="d-flex justify-content-end w-100">
+    <div class="area-image_preview d-flex justify-content-between">
+        <img :src="url" class="w-75" />
+        <div class="d-flex justify-content-end w-25">
             <label>
-                <i class="fas fa-file-upload fa-2x mr-1"></i>
-                <span>{{ title }}</span>
+                <i class="fas fa-file-upload mr-1"></i>
+                <span class="small">{{ title }}</span>
                 <input
                     class="d-none"
                     name="imagefile"
@@ -14,17 +15,16 @@
                 />
             </label>
         </div>
-        <img :src="url" class="w-100" />
     </div>
 </template>
 
 <script>
 export default {
-    props: ["title", "recipeImagePath"],
+    props: ["title", "setImagefile"],
     name: "ImagePreview",
     data() {
         return {
-            url: this.recipeImagePath,
+            url: null,
         };
     },
     mounted() {},
@@ -33,6 +33,8 @@ export default {
         uploadFile() {
             const file = this.$refs.preview.files[0];
             this.url = URL.createObjectURL(file);
+            console.log(this.url);
+            this.setImagefile(URL.createObjectURL(file));
         },
         returnToPreviousPage: function () {
             history.back();

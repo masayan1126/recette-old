@@ -8,6 +8,9 @@ import RecipeDetail from "./components/recipe/RecipeDetail.vue";
 import EditRecipe from "./components/recipe/EditRecipe.vue";
 import RecipeList from "./components/recipe/RecipeList.vue";
 import CreateRecipe from "./components/recipe/CreateRecipe.vue";
+import RecipeCategoryList from "./components/recipe/RecipeCategoryList.vue";
+import RecipeCategoryDetailList from "./components/recipe/RecipeCategoryDetailList.vue";
+import FavoriteRecipeList from "./components/recipe/FavoriteRecipeList.vue";
 
 const history = createWebHistory();
 
@@ -18,12 +21,14 @@ const router = createRouter({
         {
             // routeのパス設定
             path: "/register",
+            name: "register",
             component: Register,
             props: true,
         },
         {
             // routeのパス設定
             path: "/login",
+            name: "login",
             component: Login,
             props: true,
         },
@@ -54,8 +59,8 @@ const router = createRouter({
             props: true,
         },
         {
-            path: "/recipes/my-recipes",
-            name: "myRecipes",
+            path: "/recipes/list",
+            name: "recipeList",
             component: RecipeList,
             props: true,
         },
@@ -63,6 +68,24 @@ const router = createRouter({
             path: "/recipes/create",
             name: "createRecipe",
             component: CreateRecipe,
+            props: true,
+        },
+        {
+            path: "/recipes/category",
+            name: "recipeCategoryList",
+            component: RecipeCategoryList,
+            props: true,
+        },
+        {
+            path: "/recipes/category/:categoryPath",
+            name: "recipeCategoryDetailList",
+            component: RecipeCategoryDetailList,
+            props: true,
+        },
+        {
+            path: "/recipes/favorite",
+            name: "favoriteRecipeList",
+            component: FavoriteRecipeList,
             props: true,
         },
     ],

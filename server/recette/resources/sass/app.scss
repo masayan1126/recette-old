@@ -17,6 +17,10 @@ body {
     height: 100vh;
 }
 
+a {
+    color: #7ea5d8;
+}
+
 ul {
     padding: 0;
 }
@@ -88,7 +92,7 @@ input:-webkit-autofill {
 }
 
 .nav-fix-bottom-container {
-    width: 95%;
+    width: 97%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -106,7 +110,7 @@ input:-webkit-autofill {
 
 // トップ
 .recipe_container-top {
-    width: 90%;
+    width: 97%;
     max-width: 500px;
     margin: 0 auto;
 }
@@ -221,14 +225,16 @@ input:-webkit-autofill {
 
 .section-recipe_create,
 .section-recipe_edit,
-.section-recipe_search {
-    width: 90%;
+.section-recipe_search,
+.section-favorite_recipe {
+    width: 97%;
     margin: 0 auto;
 }
 
 .wrapper-recipe_create,
 .wrapper-recipe_edit,
-.wrapper-recipe_search {
+.wrapper-recipe_search,
+.wrapper-favorite_recipe {
     max-width: 400px;
     margin: 0 auto;
 }

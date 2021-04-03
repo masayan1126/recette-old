@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,8 +16,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-        $this->call(UsersTableSeeder::class);
-        $this->call(RecipesTableSeeder::class);
+        $this->call(UsersTableSeeder::Class);
+        $this->call(RecipesTableSeeder::Class);
+        $this->call(RecipeIngredientsTableSeeder::Class);
+
     }
 }

@@ -32,6 +32,13 @@
                     Login
                 </button>
             </div>
+            <router-link
+                :to="{
+                    name: 'register',
+                }"
+            >
+                会員登録がまだの方はこちら
+            </router-link>
         </div>
     </div>
 </template>

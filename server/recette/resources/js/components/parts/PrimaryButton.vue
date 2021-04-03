@@ -1,6 +1,10 @@
 <template>
-    <button class="btn" @click.prevent="propsFunction()" :style="buttonStyle">
-        <i :class="icon"></i>
+    <button
+        class="btn"
+        @click.prevent="propsFunction(recipeId)"
+        :style="buttonStyle"
+    >
+        <i :class="icon" style="color: red"></i>
         {{ buttonName }}
     </button>
 </template>
@@ -9,15 +13,8 @@
 import Button from "../../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue";
 export default {
     components: { Button },
-    name: "EditRecipe",
-    props: [
-        "buttonName",
-        "propsFunction",
-        "recipeId",
-        "isFavorite",
-        "buttonStyle",
-        "icon",
-    ],
+    name: "PrimayButton",
+    props: ["buttonName", "propsFunction", "recipeId", "buttonStyle", "icon"],
     data() {
         return {
             revisedRecipeObj: null,

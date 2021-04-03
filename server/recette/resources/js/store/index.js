@@ -26,7 +26,7 @@ export const store = createStore({
             recipeProcedureList: [],
             isEditingRecipeProcedure: false,
             editingRecipeProcedureIndex: 0,
-            recipeCategory: "",
+            recipeCategory: null,
         };
     },
     getters: getters,

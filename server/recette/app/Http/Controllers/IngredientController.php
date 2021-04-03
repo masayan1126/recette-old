@@ -50,40 +50,41 @@ class IngredientController extends Controller
         foreach ($vegs as $veg){
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
-            $ingredient->ingredient_name = $veg->ingredientName;
-            $ingredient->ingredient_category = $veg->category;
+            $ingredient->recipe_ingredient_name = $veg->ingredientName;
+            $ingredient->recipe_ingredient_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/veg.jpeg";
+            $ingredient->recipe_ingredient_category = $veg->category;
             $ingredient->save();
         }
 
         foreach ($meats as $meat){
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
-            $ingredient->ingredient_name = $meat->ingredientName;
-            $ingredient->ingredient_category = $meat->category;
+            $ingredient->recipe_ingredient_name = $meat->ingredientName;
+            $ingredient->recipe_ingredient_category = $meat->category;
             $ingredient->save();
         }
 
         foreach ($fishes as $fish){
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
-            $ingredient->ingredient_name = $fish->ingredientName;
-            $ingredient->ingredient_category = $fish->category;
+            $ingredient->recipe_ingredient_name = $fish->ingredientName;
+            $ingredient->recipe_ingredient_category = $fish->category;
             $ingredient->save();
         }
 
         foreach ($cereals as $cereal){
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
-            $ingredient->ingredient_name = $cereal->ingredientName;
-            $ingredient->ingredient_category = $cereal->category;
+            $ingredient->recipe_ingredient_name = $cereal->ingredientName;
+            $ingredient->recipe_ingredient_category = $cereal->category;
             $ingredient->save();
         }
 
         foreach ($potatoes_starches_beans_mushrooms as $potatoes_starches_beans_mushroom){
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
-            $ingredient->ingredient_name = $potatoes_starches_beans_mushroom->ingredientName;
-            $ingredient->ingredient_category = $potatoes_starches_beans_mushroom->category;
+            $ingredient->recipe_ingredient_name = $potatoes_starches_beans_mushroom->ingredientName;
+            $ingredient->recipe_ingredient_category = $potatoes_starches_beans_mushroom->category;
             $ingredient->save();
         }
     }

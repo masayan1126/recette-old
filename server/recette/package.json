@@ -34,7 +34,10 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.2",
+        "vue-autosuggest": "^2.2.0",
         "vue-router": "^4.0.5",
+        "vue-simple-suggest": "^1.10.3",
+        "vue-suggest-input": "^0.1.4",
         "vuex-persistedstate": "^4.0.0-beta.3"
     }
 }

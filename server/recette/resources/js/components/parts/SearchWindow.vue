@@ -7,14 +7,25 @@
         </div>
         <input type="text" class="form-control bg-gray" />
     </div>
+    <!-- <div style="width: 400px">
+        <vue-suggest-input v-model="selected" :items="items" />
+    </div> -->
 </template>
 
 <script>
+import VueSuggestInput from "vue-suggest-input";
+import "vue-suggest-input/dist/vue-suggest-input.css";
 export default {
     name: "SearchWindow",
     props: ["id", "name"],
+    components: {
+        VueSuggestInput,
+    },
     data() {
-        return {};
+        return {
+            items: ["apple", "cocoa", "coffee", "cola"],
+            selected: "",
+        };
     },
     created() {},
     mounted() {},

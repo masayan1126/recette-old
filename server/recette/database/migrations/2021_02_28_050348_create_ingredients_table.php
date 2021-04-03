@@ -28,9 +28,9 @@ class CreateIngredientsTable extends Migration
             ->constrained('recipes') // 「複数形のテーブル名」
             ->onDelete('cascade');
             
-            $table->string("ingredient_name")->comment('食材名');
-            $table->string("ingredient_image_path")->nullable()->comment('食材の画像ファイルパス');
-            $table->string("ingredient_category")->nullable()->comment('食材のカテゴリー');
+            $table->string("recipe_ingredient_name")->comment('食材名');
+            $table->string("recipe_ingredient_image_path")->nullable()->comment('食材の画像ファイルパス');
+            $table->string("recipe_ingredient_category")->nullable()->comment('食材のカテゴリー');
             $table->timestamps();
         });
     }

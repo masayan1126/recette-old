@@ -76,6 +76,7 @@ export default {
                 .post("/api/register", this.form)
                 .then(() => {
                     console.log("saved");
+                    this.$router.push("/recipes");
                 })
                 .catch((error) => {
                     this.errors = error.response.data.errors;

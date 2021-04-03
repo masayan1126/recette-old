@@ -4,39 +4,29 @@
             <i @click="goToPreviousPage" class="fas fa-angle-left fa-2x"></i>
 
             <div class="container-recipe_search mb-4 mt-4">
-                <h4>カテゴリーから探す/{{}}</h4>
+                <h4>カテゴリーから探す/{{ categoryName }}</h4>
                 <div class="area-recipe_search mt-4">
-                    <form
-                        action=""
-                        method="get"
-                        enctype="multipart/form-data"
-                        name="showRecipeCategoryDetailForm"
+                    <div
+                        class="d-flex justify-content-between align-items-center"
+                        v-for="selectedRecipe in selectedRecipeCategoryList"
+                        :key="selectedRecipe.id"
+                        @click.prevent="
+                            showRecipeCategoryDetail(selectedRecipe.id)
+                        "
                     >
-                        <input type="hidden" name="_token" :value="csrf" />
-                        <input
-                            type="hidden"
-                            name="selectedRecipeCategory"
-                            :value="JSON.stringify(selectedRecipeCategoryList)"
-                        />
-                        <div
-                            class="d-flex justify-content-between align-items-center"
-                            v-for="category in categories"
-                            :key="category.id"
-                        >
-                            <ul>
-                                <li class="d-flex justify-content-start">
-                                    <img
-                                        :src="''"
-                                        alt=""
-                                        style="width: 50px; height: 50px"
-                                    />
-                                    {{ category.recipe_category_name }}
-                                </li>
-                            </ul>
-                            <span>{{ 1 }}</span>
-                        </div>
-                        <hr />
-                    </form>
+                        <ul>
+                            <li class="d-flex justify-content-start">
+                                <img
+                                    :src="''"
+                                    alt=""
+                                    style="width: 50px; height: 50px"
+                                />
+                                {{ selectedRecipe.recipe_name }}
+                            </li>
+                        </ul>
+                        <span>{{ 1 }}</span>
+                    </div>
+                    <hr />
                 </div>
             </div>
         </div>
@@ -51,8 +41,8 @@ import InputLabel from "../parts/InputLabel";
 import { mapGetters, mapMutations } from "vuex";
 
 export default {
-    name: "RecipeCategoryList",
-    props: ["recipes"],
+    name: "RecipeCategoryDetailList",
+    props: ["categoryName"],
     components: {
         ImagePreview,
         PrimaryButton,
@@ -69,7 +59,6 @@ export default {
                 width: "100%",
                 height: "35px",
             },
-            selectedRecipeCategoryList: [],
 
             categories: [
                 {
@@ -134,7 +123,14 @@ export default {
         };
     },
     computed: {
+        selectedRecipeCategoryList() {
+            const id = window.location.pathname.split("/recipes/category/")[1];
+            return this.recipes.filter(
+                (recipe) => recipe.recipe_category_sub == id
+            );
+        },
         ...mapGetters({
+            recipes: "getRecipes",
             userId: "getUserId",
             recipeIngredientList: "getRecipeIngredientList",
             isEditingIngredient: "getIsEditingRecipeIngredient",
@@ -193,16 +189,17 @@ export default {
         },
     },
     mounted() {
+        const id = window.location.pathname.split("/recipes/category/")[1];
         console.log(this.recipes);
     },
     methods: {
-        showRecipeCategoryDetail(url, recipeCategory) {
-            this.selectedRecipeCategoryList.push(recipeCategory);
-            console.log(this.selectedRecipeCategoryList);
-            document.showRecipeCategoryDetailForm.action =
-                "/users/" + this.userId + "/recipes/category/" + url;
-            console.log(document.showRecipeCategoryDetailForm);
-            document.showRecipeCategoryDetailForm.submit();
+        showRecipeCategoryDetail(recipeId) {
+            this.$router.push({
+                name: "recipeDetail",
+                params: {
+                    recipeId: recipeId,
+                },
+            });
         },
         ...mapMutations([
             "setRecipeIngredient",
@@ -223,10 +220,7 @@ export default {
             document.createRecipeForm.submit();
         },
         goToPreviousPage() {
-            this.$store.commit(
-                "goToPreviousPage",
-                `/users/${this.userId}/recipes`
-            );
+            this.$router.back();
         },
     },
 };

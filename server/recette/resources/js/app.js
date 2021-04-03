@@ -20,7 +20,6 @@ require("./bootstrap");
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 import router from "./router";
-import Nav from "./components/common/Nav.vue";
 import { createApp } from "vue";
 import { store } from "./store";
 import TopPage from "./components/TopPage.vue";
@@ -32,7 +31,6 @@ import RecipeCategoryDetailList from "./components/recipe/RecipeCategoryDetailLi
 import RecipeDetail from "./components/recipe/RecipeDetail.vue";
 import EditRecipe from "./components/recipe/EditRecipe.vue";
 import CreateRecipe from "./components/recipe/CreateRecipe.vue";
-import StoreRecipe from "./components/recipe/StoreRecipe.vue";
 import Register from "./components/auth/Register.vue";
 
 /**
@@ -57,8 +55,6 @@ createApp(App)
     //         RecipeCategoryDetailList,
     //         Register,
     //     },
-    // }
-    .component("nav", Nav)
     .use(router)
     .use(store)
     .mount("#app");

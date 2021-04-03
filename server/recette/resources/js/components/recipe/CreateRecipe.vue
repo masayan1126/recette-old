@@ -45,11 +45,13 @@
                 <div class="area-ingredient">
                     <ul
                         class="pl-1"
-                        v-for="(ingredient, index) in recipeIngredientList"
-                        :key="ingredient.id"
+                        v-for="(
+                            recipeIngredient, index
+                        ) in recipeIngredientList"
+                        :key="recipeIngredient.id"
                     >
                         <li>
-                            {{ ingredient.ingredient_name }}
+                            {{ recipeIngredient.recipe_ingredient_name }}
                             <span
                                 ><i
                                     @click="
@@ -76,7 +78,7 @@
                                 :value="ingredient"
                                 :key="ingredient.id"
                             >
-                                {{ ingredient.ingredient_name }}
+                                {{ ingredient.recipe_ingredient_name }}
                             </option>
                         </select>
                         <i
@@ -98,7 +100,7 @@
                     <ul
                         class="pl-1"
                         v-for="(recipeProcedure, index) in recipeProcedureList"
-                        :key="recipeProcedure.toString(index)"
+                        :key="recipeProcedure"
                     >
                         <li>
                             {{ index + 1 }}.{{ recipeProcedure
@@ -373,6 +375,7 @@ export default {
             // 追加 or 編集の分岐はmutatiion側で判定
             this.setRecipeIngredientList(this.recipeIngredient);
             this.initRecipeIngredient();
+            console.log(this.recipeIngredientList);
         },
 
         editRecipeIngredient(ingredient, index) {
@@ -408,7 +411,6 @@ export default {
                 alert("レシピ名は必須です");
                 return;
             }
-            this.initRecipeIngredientList();
 
             const url = "/api/users/" + this.userId + "/recipes/add";
             let formData = new FormData();
@@ -430,7 +432,8 @@ export default {
                 )
                 .then((res) => {
                     console.log(res);
-                    // this.$router.push({ name: "recipes" });
+                    this.$router.push({ name: "recipes" });
+                    this.initRecipeIngredientList();
                 })
                 .catch((error) => {
                     console.log(error);
@@ -445,6 +448,8 @@ export default {
                 })
                 .then(function (res) {
                     console.log(res);
+                    this.isShow = false;
+                    this.isHide = true;
                 })
                 .catch(function (error) {
                     console.log(error);

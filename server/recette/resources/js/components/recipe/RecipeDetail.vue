@@ -1,7 +1,7 @@
 <template>
     <section class="section-recipe_create">
         <div class="wrapper-recipe_create">
-            <ReturnButton :path-name="'recipes'" :recipe-id="recipeId" />
+            <i @click="routerBack" class="fas fa-angle-left fa-2x"></i>
 
             <div class="container-recipe mb-4 mt-2">
                 <div class="text-right">
@@ -97,6 +97,10 @@ export default {
     mounted() {
         console.log(this.recipeId);
     },
-    methods: {},
+    methods: {
+        routerBack() {
+            this.$router.back();
+        },
+    },
 };
 </script>

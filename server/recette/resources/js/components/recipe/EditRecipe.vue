@@ -11,16 +11,28 @@
                 <i class="fas fa-angle-left fa-2x"></i>
             </router-link>
 
-            <ImagePreview :title="'レシピ画像UL'" />
+            <!-- <ImagePreview :title="'レシピ画像UL'" /> -->
 
-            <img
-                class="w-100"
-                :src="selectedRecipe[0].recipe_image_path"
-                alt=""
-            />
+            <div class="area-image_preview d-flex justify-content-between">
+                <img :src="url" class="w-75" />
+                <div class="d-flex justify-content-end w-25">
+                    <label>
+                        <i class="fas fa-file-upload mr-1"></i>
+                        <span class="small">{{ "test" }}</span>
+                        <input
+                            class="d-none"
+                            name="imagefile"
+                            id="imagefile"
+                            type="file"
+                            ref="preview"
+                            @change="uploadFile($event)"
+                        />
+                    </label>
+                </div>
+            </div>
 
-            <div class="container-recipe mb-4 d-flex">
-                <label>レシピ名：</label>
+            <div class="container-recipe mt-2 mb-4 d-flex">
+                <label class="mb-0">レシピ名：</label>
                 <input
                     class="text-input"
                     type="text"
@@ -34,37 +46,44 @@
                 <div class="area-ingredient">
                     <ul
                         class="pl-1"
-                        v-for="(ingredient, index) in ingredientList"
-                        :key="ingredient.id"
+                        v-for="(
+                            recipeIngredient, index
+                        ) in recipeIngredientList"
+                        :key="recipeIngredient.id"
                     >
                         <li>
-                            {{ ingredient.recipe_ingredient_name }}
+                            {{ recipeIngredient.recipe_ingredient_name }}
                             <span
                                 ><i
-                                    @click="editIngredient(ingredient, index)"
+                                    @click="
+                                        editRecipeIngredient(ingredient, index)
+                                    "
                                     class="ml-2 fas fa-pencil-alt"
                                 ></i
                             ></span>
                             <span
                                 ><i
-                                    @click="deleteIngredient(index)"
+                                    @click="_deleteRecipeIngredient(index)"
                                     class="ml-2 fas fa-trash-alt"
                                 ></i
                             ></span>
                         </li>
                     </ul>
                     <div class="d-flex align-items-center">
-                        <select v-model="ingredient" class="custom-select mr-1">
+                        <select
+                            v-model="recipeIngredient"
+                            class="custom-select mr-1"
+                        >
                             <option
                                 v-for="ingredient in ingredients"
                                 :value="ingredient"
                                 :key="ingredient.id"
                             >
-                                {{ ingredient.ingredient_name }}
+                                {{ ingredient.recipe_ingredient_name }}
                             </option>
                         </select>
                         <i
-                            @click.prevent="addIngredient"
+                            @click.prevent="addRecipeIngredient"
                             class="far fa-check-circle fa-2x"
                         ></i>
                     </div>
@@ -81,9 +100,8 @@
                 <div class="area-recipe_procedure p-2">
                     <ul
                         class="pl-1"
-                        v-for="(recipeProcedure, index) in selectedRecipe[0]
-                            .recipeProcedureList"
-                        :key="recipeProcedure.toString(index)"
+                        v-for="(recipeProcedure, index) in recipeProcedureList"
+                        :key="recipeProcedure"
                     >
                         <li>
                             {{ index + 1 }}.{{ recipeProcedure
@@ -101,7 +119,7 @@
                     </ul>
                     <div class="form-group">
                         <textarea
-                            v-model="recipeProcedureInputField"
+                            v-model="recipeProcedure"
                             class="form-control"
                             id="recipe-procedure-input-field"
                             rows="2"
@@ -114,25 +132,31 @@
                 </div>
             </div>
 
-            <form
-                action=""
-                method="POST"
-                enctype="multipart/form-data"
-                id="edit-recipe-form"
-                name="editRecipeForm"
-            >
-                <input type="hidden" name="_token" :value="csrf" />
-                <input
-                    type="hidden"
-                    name="editedRecipe"
-                    :value="JSON.stringify(editedRecipeObj)"
-                />
-                <PrimaryButton
-                    :buttonName="'登録する'"
-                    :propsFunc="sendEditedRecipe"
-                    :buttonStyle="addRecipeButtonStyle"
-                />
-            </form>
+            <div class="container-recipe_ingredient mb-4">
+                <p class="mb-0">カテゴリー</p>
+                <div class="area-ingredient">
+                    <div class="input-group mb-3">
+                        <select
+                            v-model="recipeCategory"
+                            class="custom-select mr-1"
+                        >
+                            <option
+                                v-for="category in categories"
+                                :value="category"
+                                :key="category.id"
+                            >
+                                {{ category.recipe_category_name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <PrimaryButton
+                :buttonName="'登録する'"
+                :props-function="sendEditedRecipe"
+                :buttonStyle="addRecipeButtonStyle"
+            />
         </div>
     </section>
 </template>
@@ -151,6 +175,8 @@ export default {
     data() {
         return {
             editedRecipeObj: null,
+            file: null,
+            url: null,
             addRecipeButtonStyle: {
                 color: "#fff",
                 backgroundColor: "#E4C8AD",
@@ -158,6 +184,53 @@ export default {
                 height: "35px",
                 width: "100%",
             },
+            categories: [
+                {
+                    recipe_category_name: "肉料理",
+                    recipe_category_name_sub: "meat",
+                    recipe_category_image: "/images/肉料理.jpeg",
+                },
+                {
+                    recipe_category_name: "魚料理",
+                    recipe_category_name_sub: "fish",
+                    recipe_category_image: "",
+                },
+                {
+                    recipe_category_name: "野菜料理",
+                    recipe_category_name_sub: "veg",
+                    recipe_category_image: "",
+                },
+                {
+                    recipe_category_name: "麺類",
+                    recipe_category_name_sub: "noodle",
+                    recipe_category_image: "",
+                },
+                {
+                    recipe_category_name: "ご飯もの",
+                    recipe_category_name_sub: "rice",
+                    recipe_category_image: "",
+                },
+                {
+                    recipe_category_name: "スープ、汁物",
+                    recipe_category_name_sub: "soup",
+                    recipe_category_image: "",
+                },
+                {
+                    recipe_category_name: "パン類",
+                    recipe_category_name_sub: "bread",
+                    recipe_category_image: "",
+                },
+                {
+                    recipe_category_name: "お菓子",
+                    recipe_category_name_sub: "sweets",
+                    recipe_category_image: "",
+                },
+                {
+                    recipe_category_name: "そのほか",
+                    recipe_category_name_sub: "other",
+                    recipe_category_image: "",
+                },
+            ],
             csrf: document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"),
@@ -178,6 +251,16 @@ export default {
         selectedRecipe() {
             return this.recipes.filter((recipe) => recipe.id == this.recipeId);
         },
+        editedRecipe() {
+            const editedRecipe = {
+                id: this.selectedRecipe[0].id,
+                recipeName: this.recipeName,
+                recipeIngredientList: this.recipeIngredientList,
+                recipeProcedure: this.recipeProcedureList,
+                recipeCategory: this.recipeCategory,
+            };
+            return editedRecipe;
+        },
 
         recipeName: {
             get() {
@@ -195,12 +278,48 @@ export default {
                 this.setIngredient(val);
             },
         },
+        recipeProcedure: {
+            get() {
+                return this.$store.getters.getRecipeProcedure;
+            },
+            set(val) {
+                this.setRecipeProcedure(val);
+            },
+        },
+        recipeCategory: {
+            get() {
+                return this.$store.getters.getrecipeCategory;
+            },
+            set(val) {
+                this.setRecipeCategory(val);
+            },
+        },
     },
     created() {},
     mounted() {
-        console.log(this.selectedRecipe, this.recipeId);
+        this.initRecipeProcedureList();
+        this.selectedRecipe[0].recipe_procedure.forEach((recipe_procedure) => {
+            this.setRecipeProcedureList(recipe_procedure);
+        });
+
+        console.log(this.selectedRecipe);
+        const categoryObj = {
+            recipe_category_name: this.selectedRecipe[0].recipe_category,
+            recipe_category_name_sub: this.selectedRecipe[0]
+                .recipe_category_sub,
+            recipe_category_image: this.selectedRecipe[0].recipe_category_image,
+        };
+        this.setRecipeCategory(categoryObj);
         this.recipeName = this.selectedRecipe[0].recipe_name;
         this.ingredientList = this.ingredients;
+        this.initRecipeIngredientList();
+        this.selectedRecipe[0].recipe_ingredients.forEach(
+            (recipe_ingredient) => {
+                this.setRecipeIngredientList(recipe_ingredient);
+            }
+        );
+        // console.log(this.);
+        this.url = this.selectedRecipe[0].recipe_image_path;
     },
 
     methods: {
@@ -229,25 +348,52 @@ export default {
             "initRecipeCategory",
         ]),
         sendEditedRecipe() {
-            const editedRecipeObj = {
-                id: this.editingTargetRecipe[0].id,
-                editedRecipeName: this.recipeName,
-                editedIngredients: this.ingredientList,
-            };
-            this.editedRecipeObj = editedRecipeObj;
-            document.editRecipeForm.action = `/users/${this.userId}/recipes/update`;
-            document.editRecipeForm.submit();
+            if (this.recipeName == "") {
+                alert("レシピ名は必須です");
+                return;
+            }
+
+            const url =
+                "/api/users/" +
+                this.userId +
+                "/recipes/" +
+                this.recipeId +
+                "/edit";
+            let formData = new FormData();
+            const file = document.getElementById("imagefile");
+            formData.append("file", file.files[0]);
+            formData.append("editedRecipe", JSON.stringify(this.editedRecipe));
+            console.log(this.editedRecipe);
+
+            axios
+                .post(
+                    url,
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            "X-HTTP-Method-Override": "PUT",
+                        },
+                    }
+                    // newRecipe: JSON.stringify(this.newRecipe),
+                )
+                .then((res) => {
+                    console.log(res);
+                    this.$router.push({ name: "recipes" });
+                    this.initRecipeIngredientList();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
-        addIngredient() {
-            if (this.ingredient == null) {
+        addRecipeIngredient() {
+            if (this.recipeIngredient == null) {
                 alert("食材を選択してください");
                 return;
             }
-            this.setIngredientList({
-                ingredient: this.ingredient,
-                editingIngredientIndex: this.editingIngredientIndex,
-            });
-            this.initIngredient();
+            this.setRecipeIngredientList(this.recipeIngredient);
+            this.initRecipeIngredient();
+            console.log(this.recipeIngredientList);
         },
         editIngredient(ingredient, index) {
             this.setIngredient(ingredient);
@@ -258,36 +404,31 @@ export default {
             this.deleteIngredient(index);
         },
         addRecipeProcedure() {
-            if (this.isEditingRecipeProcedure == true) {
-                this.recipeProcedureList.splice(
-                    this.editingRecipeProcedureIndex,
-                    1,
-                    this.recipeProcedureInputField
-                );
-                this.isEditingRecipeProcedure = false;
-                this.recipeProcedureInputField = "";
-                return;
-            }
-
-            if (this.recipeProcedureInputField == "") {
+            if (this.recipeProcedure == "") {
                 alert("作り方を入力してください。");
                 return;
             }
 
-            this.recipeProcedureList.push(this.recipeProcedureInputField);
-            this.recipeProcedureInputField = "";
+            // 追加 or 編集の分岐はmutatiion側で判定
+            this.setRecipeProcedureList(this.recipeProcedure);
+            this.initRecipeProcedure();
             document.getElementById("recipe-procedure-input-field").focus();
         },
         editRecipeProcedure(recipeProcedure, index) {
-            this.recipeProcedureInputField = recipeProcedure;
-            this.isEditingRecipeProcedure = true;
-            this.editingRecipeProcedureIndex = index;
+            this.setRecipeProcedure(recipeProcedure);
+            this.setIsEditingRecipeProcedure();
+            this.setEditingRecipeProcedureIndex(index);
         },
-        deleteRecipeProcedure(index) {
-            this.recipeProcedureList.splice(index, 1);
+        _deleteRecipeProcedure(index) {
+            this.deleteRecipeProcedure(index);
         },
         returnToPreviousPage: function () {
             history.back();
+        },
+        uploadFile(e) {
+            this.file = e.target.files[0];
+            this.url = URL.createObjectURL(this.file);
+            console.log(this.url);
         },
     },
 };

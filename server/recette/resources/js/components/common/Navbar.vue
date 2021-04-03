@@ -13,15 +13,25 @@
                 <p class="nav-fix-bottom-menu-name">レシピ追加</p>
             </div>
             <div class="text-center" style="line-height: 25px">
-                <a href="">
+                <router-link
+                    :to="{
+                        name: 'favoriteRecipeList',
+                    }"
+                >
                     <i class="fas fa-clipboard-list fa-2x"></i>
-                </a>
+                </router-link>
+
                 <p class="nav-fix-bottom-menu-name">お気に入り</p>
             </div>
             <div class="text-center" style="line-height: 25px">
-                <a href="">
+                <router-link
+                    :to="{
+                        name: 'recipeCategoryList',
+                    }"
+                >
                     <i class="fas fa-search fa-2x"></i>
-                </a>
+                </router-link>
+
                 <p class="nav-fix-bottom-menu-name">レシピ検索</p>
             </div>
             <div class="text-center" style="line-height: 25px">

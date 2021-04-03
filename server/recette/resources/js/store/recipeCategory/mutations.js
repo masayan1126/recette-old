@@ -3,6 +3,6 @@ export default {
         state.recipeCategory = recipeCategory;
     },
     initRecipeCategory(state) {
-        state.recipeCategory = "";
+        state.recipeCategory = null;
     },
 };

@@ -30,7 +30,7 @@
             </button>
         </div>
         <div class="toast-body">
-            <button @click="propsFunction">登録する</button>
+            <button @click.prevent="propsFunction">登録する</button>
         </div>
     </div>
 </template>

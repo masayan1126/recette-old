@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\RecipeFavoriteController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -44,6 +45,14 @@ Route::group(['middleware' => 'api'], function() {
 });
 
 Route::group(['middleware' => 'api'], function() {
+    Route::put('users/{user_id?}/recipes/{recipe_id?}/edit', [RecipeController::class, 'update']);
+});
+
+Route::group(['middleware' => 'api'], function() {
+    Route::delete('users/{user_id?}/recipes/{recipe_id?}/delete', [RecipeController::class, 'destroy']);
+});
+
+Route::group(['middleware' => 'api'], function() {
     Route::get('users/{user_id?}/ingredients', [IngredientController::class, 'index'])->name('');
 });
 
@@ -52,15 +61,14 @@ Route::group(['middleware' => 'api'], function() {
     Route::post('users/{id?}/ingredients/add', [IngredientController::class, 'store'])->name('ingredient.store');
 });
 
-
-Route::group(['middleware' => 'api'], function() {
-    Route::post('users/{user_id?}/recipes/{recipe_id?}/add/favorite', [RecipeController::class, 'addFavorite'])->name('recipe.favorite.add');
-});
-
 Route::group(['middleware' => 'api'], function() {
     Route::put('account/{user_id?}/edit', [UserController::class, 'edit'])->name('');
 });
 
 Route::group(['middleware' => 'api'], function() {
-    Route::post('users/{user_id?}/recipes/{recipe_id?}/remove/favorite', [RecipeController::class, 'removeFavorite'])->name('recipe.favorite.remove');
+    Route::post('users/{user_id?}/recipes/{recipe_id?}/favorite/add', [RecipeFavoriteController::class, 'addFavorite'])->name('recipe.favorite.add');
+});
+
+Route::group(['middleware' => 'api'], function() {
+    Route::post('users/{user_id?}/recipes/{recipe_id?}/favorite/remove', [RecipeFavoriteController::class, 'removeFavorite'])->name('recipe.favorite.remove');
 });

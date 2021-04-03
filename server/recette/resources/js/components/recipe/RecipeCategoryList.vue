@@ -6,41 +6,30 @@
             <div class="container-recipe_search mb-4 mt-4">
                 <h4>カテゴリーから探す</h4>
                 <div class="area-recipe_search mt-4">
-                    <form
-                        action=""
-                        method="post"
-                        name="showRecipeCategoryDetailForm"
+                    <div
+                        class="d-flex justify-content-between align-items-center"
+                        v-for="category in categories"
+                        :key="category.id"
+                        @click.prevent="
+                            showRecipeCategoryDetail(
+                                category.recipe_category_name,
+                                category.url
+                            )
+                        "
                     >
-                        <input type="hidden" name="_token" :value="csrf" />
-                        <div
-                            class="d-flex justify-content-between align-items-center"
-                            v-for="category in categories"
-                            :key="category.id"
-                            @click.prevent="showRecipeCategoryDetail(category)"
-                        >
-                            <ul>
-                                <li class="d-flex justify-content-start">
-                                    <input
-                                        type="hidden"
-                                        name="selectedRecipeCategory"
-                                        :value="
-                                            JSON.stringify(
-                                                category.recipe_category_name
-                                            )
-                                        "
-                                    />
-                                    <img
-                                        :src="''"
-                                        alt=""
-                                        style="width: 50px; height: 50px"
-                                    />
-                                    {{ category.recipe_category_name }}
-                                </li>
-                            </ul>
-                            <span>{{ 1 }}</span>
-                        </div>
-                        <hr />
-                    </form>
+                        <ul>
+                            <li class="d-flex justify-content-start">
+                                <img
+                                    :src="''"
+                                    alt=""
+                                    style="width: 50px; height: 50px"
+                                />
+                                {{ category.recipe_category_name }}
+                            </li>
+                        </ul>
+                        <span>{{ 1 }}</span>
+                    </div>
+                    <hr />
                 </div>
             </div>
         </div>
@@ -85,12 +74,14 @@ export default {
                 {
                     id: 2,
                     recipe_category_name: "魚料理",
+                    url: "fish",
                     recipe_category_image: "",
                     length: 0,
                 },
                 {
                     id: 3,
                     recipe_category_name: "野菜料理",
+                    url: "veg",
                     recipe_category_image: "",
                     length: 0,
                 },
@@ -199,27 +190,15 @@ export default {
         console.log(this.userId);
     },
     methods: {
-        showRecipeCategoryDetail(category) {
-            console.log(this.userId);
-            const userId = this.userId;
-            axios
-                .post(
-                    "/users/" + userId + "/recipes/category/" + category.url,
-                    {
-                        category: category,
-                    }
-                )
-                .then(function (res) {
-                    document.showRecipeCategoryDetailForm.action =
-                        "/users/" +
-                        userId +
-                        "/recipes/category/" +
-                        category.url;
-                    document.showRecipeCategoryDetailForm.submit();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+        showRecipeCategoryDetail(recipe_category_name, url) {
+            console.log(recipe_category_name, url);
+            this.$router.push({
+                name: "recipeCategoryDetailList",
+                params: {
+                    categoryName: recipe_category_name,
+                    categoryPath: url,
+                },
+            });
         },
         ...mapMutations([
             "setRecipeIngredient",
@@ -231,10 +210,7 @@ export default {
             "initEditingRecipeIngredientIndex",
         ]),
         goToPreviousPage() {
-            this.$store.commit(
-                "goToPreviousPage",
-                `/users/${this.userId}/recipes`
-            );
+            this.$router.back();
         },
     },
 };

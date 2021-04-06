@@ -1,12 +1,12 @@
 <template>
     <section class="section-recipe_create">
         <div class="wrapper-recipe_create">
-            <ReturnButton :path-name="'recipes'" class="d-sm-none" />
+            <ReturnButton :props-function="routerBack" />
             <!-- ぱんくずリスト -->
-            <BreadCrumb
+            <!-- <BreadCrumb
                 class="breadcrumb-component"
                 :bread-crumb-list="breadCrumbList"
-            />
+            /> -->
             <Toast
                 :toast-is-show="toastIsShow"
                 :props-function="addInitialIngredients"
@@ -59,7 +59,7 @@
                     >
                         <li>
                             {{ recipeIngredient.recipe_ingredient_name }}
-                            {{ recipeIngredient.recipeIngredientQuantity }}
+                            {{ recipeIngredient.recipe_ingredient_quantity }}
                             <span
                                 ><i
                                     @click="
@@ -191,10 +191,12 @@ import Toast from "../parts/Toast";
 import initialIngredientList from "../../assets/initialIngredientList.json";
 import ReturnButton from "../parts/ReturnButton";
 import BreadCrumb from "../common/BreadcrumbTrail";
+import utilsMixin from "../../mixin/utility";
 
 export default {
     name: "CreateRecipe",
     props: [],
+    mixins: [utilsMixin],
     components: {
         ImagePreview,
         PrimaryButton,
@@ -215,6 +217,10 @@ export default {
                 width: "100%",
                 height: "35px",
             },
+            breadCrumbList: [
+                { id: 1, name: "ホーム", linkName: "recipes" },
+                { id: 2, name: "レシピ作成", linkName: "createRecipe" },
+            ],
             file: null,
             url: null,
             categories: [
@@ -285,12 +291,6 @@ export default {
         };
     },
     computed: {
-        breadCrumbList() {
-            return [
-                { id: 1, name: "ホーム", linkName: "recipes" },
-                { id: 2, name: "レシピ作成", linkName: "createRecipe" },
-            ];
-        },
         ...mapGetters({
             userId: "getUserId",
             recipeIngredientList: "getRecipeIngredientList",

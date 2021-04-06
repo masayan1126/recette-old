@@ -1,10 +1,7 @@
 <template>
     <section class="section-favorite_recipe_list">
         <div class="wrapper-favorite_recipe_list">
-            <router-link :to="{ name: 'recipes' }"
-                ><i class="fas fa-angle-left fa-2x"></i
-            ></router-link>
-            <hr />
+            <ReturnButton :props-function="routerBack" />
             <h5>お気に入りレシピ</h5>
             <div class="mb-4">
                 <div
@@ -32,8 +29,14 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import ReturnButton from "../parts/ReturnButton";
+import utilsMixin from "../../mixin/utility";
 export default {
     name: "FavoriteRecipeList",
+    mixins: [utilsMixin],
+    components: {
+        ReturnButton,
+    },
     props: [],
     data() {
         return {};

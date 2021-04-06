@@ -93,7 +93,7 @@ class RecipeController extends Controller
                     'recipe_ingredient_name' => $recipeIngredient->recipe_ingredient_name, 
                     'recipe_ingredient_image_path' => $recipeIngredient->recipe_ingredient_image_path, 
                     'recipe_ingredient_category' => $recipeIngredient->recipe_ingredient_category,
-                    'recipe_ingredient_quantity' => $recipeIngredient->recipeIngredientQuantity,
+                    'recipe_ingredient_quantity' => $recipeIngredient->recipe_ingredient_quantity,
                 ])
             ]);
         }
@@ -160,6 +160,7 @@ class RecipeController extends Controller
                 $update_target_recipe_ingredient->recipe_ingredient_name = $recipeIngredient->recipe_ingredient_name;
                 $update_target_recipe_ingredient->recipe_ingredient_image_path = $recipeIngredient->recipe_ingredient_image_path;
                 $update_target_recipe_ingredient->recipe_ingredient_category = $recipeIngredient->recipe_ingredient_category;
+                $update_target_recipe_ingredient->recipe_ingredient_quantity = $recipeIngredient->recipe_ingredient_quantity;
             
             } else {
                 // 新規追加
@@ -169,6 +170,7 @@ class RecipeController extends Controller
                         'recipe_ingredient_name' => $recipeIngredient->recipe_ingredient_name, 
                         'recipe_ingredient_image_path' => $recipeIngredient->recipe_ingredient_image_path, 
                         'recipe_ingredient_category' => $recipeIngredient->recipe_ingredient_category,
+                        'recipe_ingredient_quantity' => $recipeIngredient->recipe_ingredient_quantity,
                     ])
                 ]);
             }

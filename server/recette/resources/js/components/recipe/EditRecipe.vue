@@ -1,24 +1,24 @@
 <template>
     <section class="section-recipe_edit">
         <div class="wrapper-recipe_edit">
-            <!-- <ReturnButton :path-name="'recipeDetail'" :recipe-id="recipeId" /> -->
-            <ReturnButton :path-name="'recipes'" class="d-sm-none" />
+            <ReturnButton :props-function="routerBack" />
+
             <!-- ぱんくずリスト -->
 
-            <BreadCrumb
+            <!-- <BreadCrumb
                 class="breadcrumb-component"
                 :bread-crumb-list="breadCrumbList"
-            />
+            /> -->
 
             <!-- <ImagePreview :title="'レシピ画像UL'" /> -->
 
             <!-- レシピ画像 -->
             <div class="d-flex justify-content-between">
-                <img :src="url" class="w-75" />
-                <div class="d-flex justify-content-end w-25">
+                <img :src="url" class="w-50" />
+                <div class="d-flex justify-content-end w-50">
                     <label>
                         <i class="fas fa-file-upload mr-1"></i>
-                        <span class="small">{{ "test" }}</span>
+                        <span class="small">{{ "レシピ画像選択" }}</span>
                         <input
                             class="d-none"
                             name="imagefile"
@@ -31,7 +31,9 @@
                 </div>
             </div>
 
-            <div class="container-recipe_name-recipe_edit mt-2 mb-4 d-flex">
+            <div
+                class="container-recipe_name-recipe_edit mb-4 d-flex mt-2 align-items-end"
+            >
                 <label class="mb-0">レシピ名：</label>
                 <input
                     class="text-input-black"
@@ -53,6 +55,7 @@
                     >
                         <li>
                             {{ recipeIngredient.recipe_ingredient_name }}
+                            {{ recipeIngredient.recipe_ingredient_quantity }}
                             <span
                                 ><i
                                     @click="
@@ -104,7 +107,7 @@
             <div class="container-recipe_procedure mb-4">
                 <div class="d-flex justify-content-between align-items-end">
                     <span>作り方</span>
-                    <span>
+                    <span class="small">
                         <i class="mr-1 fas fa-book-open"></i>レシピURL
                     </span>
                 </div>
@@ -179,6 +182,7 @@ import TextInput from "../parts/TextInput";
 import ImagePreview from "../parts/ImagePreview";
 import ReturnButton from "../parts/ReturnButton";
 import BreadCrumb from "../common/BreadcrumbTrail";
+import utilsMixin from "../../mixin/utility";
 
 export default {
     components: {
@@ -189,9 +193,15 @@ export default {
         BreadCrumb,
     },
     name: "EditRecipe",
+    mixins: [utilsMixin],
     props: ["recipeId"],
     data() {
         return {
+            breadCrumbList: [
+                { id: 1, name: "ホーム", linkName: "recipes" },
+                { id: 2, name: "レシピ作成", linkName: "createRecipe" },
+                { id: 3, name: "レシピ編集", linkName: "editRecipe" },
+            ],
             editedRecipeObj: null,
             file: null,
             url: null,
@@ -252,12 +262,6 @@ export default {
         };
     },
     computed: {
-        breadCrumbList() {
-            return [
-                { id: 1, name: "ホーム", linkName: "recipes" },
-                { id: 2, name: "レシピ編集", linkName: "createRecipe" },
-            ];
-        },
         ...mapGetters({
             userId: "getUserId",
             recipes: "getRecipes",
@@ -315,9 +319,18 @@ export default {
                 this.setRecipeCategory(val);
             },
         },
+        recipeIngredientQuantity: {
+            get() {
+                return this.$store.getters.getRecipeIngredientQuantity;
+            },
+            set(val) {
+                this.setRecipeIngredientQuantity(val);
+            },
+        },
     },
     created() {},
     mounted() {
+        this.initRecipeIngredientQuantity();
         this.initRecipeProcedureList();
         this.selectedRecipe[0].recipe_procedure.forEach((recipe_procedure) => {
             this.setRecipeProcedureList(recipe_procedure);
@@ -334,9 +347,14 @@ export default {
         this.recipeName = this.selectedRecipe[0].recipe_name;
         this.ingredientList = this.ingredients;
         this.initRecipeIngredientList();
+        console.log(this.selectedRecipe[0].recipe_ingredients);
         this.selectedRecipe[0].recipe_ingredients.forEach(
             (recipe_ingredient) => {
-                this.setRecipeIngredientList(recipe_ingredient);
+                this.setRecipeIngredientList({
+                    recipeIngredient: recipe_ingredient,
+                    recipeIngredientQuantity:
+                        recipe_ingredient.recipe_ingredient_quantity,
+                });
             }
         );
         // console.log(this.);
@@ -367,6 +385,8 @@ export default {
             "deleteRecipeProcedure",
             "setRecipeCategory",
             "initRecipeCategory",
+            "setRecipeIngredientQuantity",
+            "initRecipeIngredientQuantity",
         ]),
         sendEditedRecipe() {
             if (this.recipeName == "") {
@@ -412,9 +432,13 @@ export default {
                 alert("食材を選択してください");
                 return;
             }
-            this.setRecipeIngredientList(this.recipeIngredient);
+
+            this.setRecipeIngredientList({
+                recipeIngredient: this.recipeIngredient,
+                recipeIngredientQuantity: this.recipeIngredientQuantity,
+            });
             this.initRecipeIngredient();
-            console.log(this.recipeIngredientList);
+            this.initRecipeIngredientQuantity();
         },
         editIngredient(ingredient, index) {
             this.setIngredient(ingredient);

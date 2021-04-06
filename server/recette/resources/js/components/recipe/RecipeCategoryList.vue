@@ -1,9 +1,9 @@
 <template>
     <section class="section-recipe_category_list">
         <div class="wrapper-recipe_category_list">
-            <ReturnButton :path-name="'recipes'" class="d-sm-none" />
+            <ReturnButton :props-function="routerBack" />
             <!-- ぱんくずリスト -->
-            <BreadCrumb class="breadcrumb-component" />
+            <!-- <BreadCrumb class="breadcrumb-component" /> -->
 
             <div class="mb-4 mt-4">
                 <h5>カテゴリーから探す</h5>
@@ -62,9 +62,11 @@ import BreadCrumb from "../common/BreadcrumbTrail";
 import ReturnButton from "../parts/ReturnButton";
 import RecipeCategories from "../../assets/recipeCategories";
 import RecipeCategory from "./RecipeCategory";
+import utilsMixin from "../../mixin/utility";
 
 export default {
     name: "RecipeCategoryList",
+    mixins: [utilsMixin],
     components: {
         ImagePreview,
         PrimaryButton,
@@ -129,7 +131,6 @@ export default {
                 (recipe) => recipe.recipe_category == "お菓子"
             );
         },
-
         recipeIngredient: {
             get() {
                 return this.$store.getters.getRecipeIngredient;

@@ -19,25 +19,29 @@
             </div>
             <div class="collapse" id="navbarToggleExternalContent">
                 <ul>
-                    <li>
-                        <a href="">
-                            <i class="mr-1 fas fa-folder-plus"></i>レシピ追加
-                        </a>
+                    <li
+                        class="cursor-pointer"
+                        @click="transitionToNext('createRecipe')"
+                    >
+                        <i class="mr-1 fas fa-folder-plus"></i>レシピ追加
                     </li>
-                    <li>
-                        <a href="">
-                            <i class="mr-1 fas fa-clipboard-list"></i>お気に入り
-                        </a>
+                    <li
+                        class="cursor-pointer"
+                        @click="transitionToNext('favoriteRecipeList')"
+                    >
+                        <i class="mr-1 fas fa-clipboard-list"></i>お気に入り
                     </li>
-                    <li>
-                        <a href="">
-                            <i class="mr-1 fas fa-folder-plus"></i>食材から献立
-                        </a>
+                    <li
+                        class="cursor-pointer"
+                        @click="transitionToNext('recipeCategoryList')"
+                    >
+                        <i class="mr-1 fas fa-folder-plus"></i>レシピを探す
                     </li>
-                    <li>
-                        <a href="">
-                            <i class="mr-1 far fa-calendar-alt"></i>カレンダー
-                        </a>
+                    <li
+                        class="cursor-pointer"
+                        @click="transitionToNext('recipeCategoryList')"
+                    >
+                        <i class="mr-1 far fa-calendar-alt"></i>カレンダー
                     </li>
                 </ul>
             </div>
@@ -47,8 +51,10 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import utilsMixin from "../../mixin/utility";
 export default {
     name: "NavbarTopHumburger",
+    mixins: [utilsMixin],
     props: [],
     data() {
         return {};
@@ -56,13 +62,10 @@ export default {
     created() {},
     mounted() {},
     computed: {
-        ...mapGetters({
-            userId: "getUserId",
-            recipes: "getRecipes",
-        }),
+        ...mapGetters({}),
     },
     methods: {
-        ...mapMutations(["setRecipes", "initRecipes"]),
+        ...mapMutations([]),
     },
 };
 </script>

@@ -5,69 +5,46 @@
         >
             <h4 class="mb-0">Recette</h4>
             <ul
-                class="area-navmenu_top p-0 mb-0 d-flex justify-content-between align-items-center"
+                class="container-navbar_top p-0 mb-0 d-flex justify-content-end align-items-center"
             >
-                <li>
-                    <a href=""> レシピ追加</a>
+                <li
+                    @click="transitionToNext('createRecipe')"
+                    class="text-center cursor-pointer"
+                >
+                    レシピ追加
                 </li>
-                <li>
-                    <a href=""> お気に入り</a>
+                <span>/</span>
+                <li
+                    @click="transitionToNext('favoriteRecipeList')"
+                    class="text-center cursor-pointer"
+                >
+                    お気に入り
                 </li>
-                <li class="text-center" style="line-height: 25px">
-                    <a href=""> 食材から献立</a>
+                <span>/</span>
+                <li
+                    @click="transitionToNext('recipeCategoryList')"
+                    class="text-center cursor-pointer"
+                >
+                    レシピを探す
                 </li>
-                <li class="text-center" style="line-height: 25px">
-                    <a href=""> カレンダー</a>
+                <span>/</span>
+                <li
+                    @click="transitionToNext('recipeCategoryList')"
+                    class="text-center cursor-pointer"
+                >
+                    カレンダー
                 </li>
             </ul>
         </div>
-        <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-                @guest
-                    @if (Route::has('login'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
-                    @endif
-                    
-                    @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </li>
-                    @endif
-                @else
-                    <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->name }}
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
-                                {{ __('レシピを追加 ') }}
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </div>
-                    </li>
-                @endguest
-                </ul>
-            </div> -->
     </nav>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import utilsMixin from "../../mixin/utility";
 export default {
     name: "NavbarTop",
+    mixins: [utilsMixin],
     props: [],
     data() {
         return {};
@@ -75,13 +52,10 @@ export default {
     created() {},
     mounted() {},
     computed: {
-        ...mapGetters({
-            userId: "getUserId",
-            recipes: "getRecipes",
-        }),
+        ...mapGetters({}),
     },
     methods: {
-        ...mapMutations(["setRecipes", "initRecipes"]),
+        ...mapMutations([]),
     },
 };
 </script>

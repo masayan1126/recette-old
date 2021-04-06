@@ -1,14 +1,20 @@
 <template>
     <section class="section-recipe_detail">
         <div class="wrapper-recipe_detail">
-            <ReturnButton :props-function="'routerBack'" class="d-sm-none" />
-            <BreadCrumb class="breadcrumb-component" />
+            <ReturnButton :props-function="routerBack" />
+            <h5>レシピ詳細</h5>
+            <!-- <BreadCrumb
+                class="breadcrumb-component"
+                :bread-crumb-list="breadCrumbList"
+                :paramsType="'recipeId'"
+                :params="selectedRecipeId"
+            /> -->
 
             <div class="text-right">
                 <router-link
                     :to="{
                         name: 'editRecipe',
-                        params: { recipeId: recipeId },
+                        params: { recipeId: selectedRecipeId },
                     }"
                 >
                     <i class="fas fa-pencil-alt mr-1"></i>編集
@@ -39,6 +45,9 @@
                             <li>
                                 {{
                                     selectedRecipeIngredient.recipe_ingredient_name
+                                }}
+                                {{
+                                    selectedRecipeIngredient.recipe_ingredient_quantity
                                 }}
                             </li>
                         </ul>
@@ -77,37 +86,56 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import utilsMixin from "../../mixin/utility";
 import ReturnButton from "../parts/ReturnButton";
 import BreadCrumb from "../common/BreadcrumbTrail";
 export default {
     name: "RecipeDetail",
-    props: ["recipeId"],
+    props: [],
+    mixins: [utilsMixin],
     components: {
         ReturnButton,
         BreadCrumb,
     },
     data() {
         return {
-            recipeProcedureList: [],
-            targetIngredientList: [],
+            breadCrumbList: [
+                {
+                    id: 1,
+                    name: "ホーム",
+                    linkName: "recipes",
+                },
+                {
+                    id: 2,
+                    name: "レシピ詳細",
+                    linkName: "recipeDetail",
+                },
+            ],
         };
     },
     computed: {
+        selectedRecipeId() {
+            const recipeId = window.location.pathname.split("/recipes/")[1];
+            return recipeId;
+        },
+
         ...mapGetters({
             userId: "getUserId",
             recipes: "getRecipes",
         }),
         selectedRecipe() {
-            return this.recipes.filter((recipe) => recipe.id == this.recipeId);
+            return this.recipes.filter(
+                (recipe) => recipe.id == this.selectedRecipeId
+            );
         },
     },
     mounted() {
         console.log(this.recipeId);
     },
     methods: {
-        routerBack() {
-            this.$router.back();
-        },
+        // routerBack() {
+        //     this.$router.back();
+        // },
     },
 };
 </script>

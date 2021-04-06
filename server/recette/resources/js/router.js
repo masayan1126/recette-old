@@ -19,31 +19,15 @@ const router = createRouter({
 
     routes: [
         {
-            // routeのパス設定
-            path: "/register",
-            name: "register",
-            component: Register,
+            path: "/recipes/:recipeId/edit",
+            name: "editRecipe",
+            component: EditRecipe,
             props: true,
         },
         {
-            // routeのパス設定
-            path: "/login",
-            name: "login",
-            component: Login,
-            props: true,
-        },
-        {
-            // routeのパス設定
-            path: "/my-page",
-            name: "myPage",
-            component: MyPage,
-            props: true,
-        },
-        {
-            // routeのパス設定
-            path: "/recipes",
-            name: "recipes",
-            component: Top,
+            path: "/recipes/category/:categoryPath",
+            name: "recipeCategoryDetailList",
+            component: RecipeCategoryDetailList,
             props: true,
         },
         {
@@ -59,12 +43,6 @@ const router = createRouter({
             props: true,
         },
         {
-            path: "/recipes/:recipeId/edit",
-            name: "editRecipe",
-            component: EditRecipe,
-            props: true,
-        },
-        {
             path: "/recipes/create",
             name: "createRecipe",
             component: CreateRecipe,
@@ -77,15 +55,37 @@ const router = createRouter({
             props: true,
         },
         {
-            path: "/recipes/category/:categoryPath",
-            name: "recipeCategoryDetailList",
-            component: RecipeCategoryDetailList,
-            props: true,
-        },
-        {
             path: "/recipes/favorite",
             name: "favoriteRecipeList",
             component: FavoriteRecipeList,
+            props: true,
+        },
+        {
+            // routeのパス設定
+            path: "/register",
+            name: "register",
+            component: Register,
+            props: true,
+        },
+        {
+            // routeのパス設定
+            path: "/recipes",
+            name: "recipes",
+            component: Top,
+            props: true,
+        },
+        {
+            // routeのパス設定
+            path: "/login",
+            name: "login",
+            component: Login,
+            props: true,
+        },
+        {
+            // routeのパス設定
+            path: "/my-page",
+            name: "myPage",
+            component: MyPage,
             props: true,
         },
     ],

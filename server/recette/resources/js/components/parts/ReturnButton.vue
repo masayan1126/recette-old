@@ -1,9 +1,6 @@
 <template>
-    <div class="">
-        <router-link :to="{ name: pathName, params: { recipeId: recipeId } }">
-            <i class="fas fa-angle-left fa-2x"></i>
-        </router-link>
-
+    <div @click="propsFunction" class="d-sm-none">
+        <i class="fas fa-angle-left fa-2x"></i>
         <hr />
     </div>
 </template>
@@ -11,7 +8,7 @@
 <script>
 export default {
     name: "ReturnButton",
-    props: ["pathName", "reicipeId", "props"],
+    props: ["propsFunction"],
     data() {
         return {};
     },

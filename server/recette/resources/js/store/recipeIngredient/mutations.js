@@ -17,7 +17,7 @@ export default {
         state,
         { recipeIngredient, recipeIngredientQuantity }
     ) {
-        recipeIngredient.recipeIngredientQuantity = recipeIngredientQuantity;
+        recipeIngredient.recipe_ingredient_quantity = recipeIngredientQuantity;
         // 編集
         if (state.isEditingRecipeIngredient == true) {
             state.recipeIngredientList.splice(

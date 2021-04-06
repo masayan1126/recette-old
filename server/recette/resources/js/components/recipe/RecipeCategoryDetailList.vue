@@ -1,9 +1,9 @@
 <template>
     <section class="section-recipe_category_detail_list">
         <div class="wrapper-recipe_category_detail_list">
-            <ReturnButton :path-name="'recipes'" class="d-sm-none" />
+            <ReturnButton :props-function="routerBack" />
             <!-- ぱんくずリスト -->
-            <BreadCrumb class="breadcrumb-component" />
+            <!-- <BreadCrumb class="breadcrumb-component" /> -->
 
             <div class="mb-4 mt-4">
                 <h5>
@@ -45,10 +45,12 @@
 import { mapGetters, mapMutations } from "vuex";
 import BreadCrumb from "../common/BreadcrumbTrail";
 import ReturnButton from "../parts/ReturnButton";
+import utilsMixin from "../../mixin/utility";
 
 export default {
     name: "RecipeCategoryDetailList",
     props: ["categoryName"],
+    mixins: [utilsMixin],
     components: { BreadCrumb, ReturnButton },
     data() {
         return {

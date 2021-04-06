@@ -1,17 +1,14 @@
 <template>
     <section class="section-recipelist">
         <div class="wrapper-recipelist">
-            <router-link
-                class="d-sm-none"
-                :to="{
-                    name: 'recipes',
-                }"
-            >
-                <i class="fas fa-angle-left fa-2x"></i>
-            </router-link>
-            <hr />
-
-            <BreadCrumb class="breadcrumb-component" />
+            <ReturnButton :props-function="routerBack" />
+            <!-- 
+            <BreadCrumb
+                class="breadcrumb-component"
+                :bread-crumb-list="breadCrumbList"
+                :paramsType="'listType'"
+                :params="listType"
+            /> -->
 
             <h5>{{ listName }}</h5>
             <div class="container-recipe-recipelist">
@@ -86,11 +83,14 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import PrimaryButton from "../parts/PrimaryButton";
+import ReturnButton from "../parts/ReturnButton";
 import BreadCrumb from "../common/BreadcrumbTrail";
+import utilsMixin from "../../mixin/utility";
 export default {
     name: "RecipeList",
-    components: { PrimaryButton, BreadCrumb },
-    props: ["listType"],
+    components: { PrimaryButton, BreadCrumb, ReturnButton },
+    mixins: [utilsMixin],
+    props: [],
     data() {
         return {
             listName: "",
@@ -117,7 +117,6 @@ export default {
                         (recipe) => recipe.user_id == this.userId
                     );
                 // break;
-
                 case "新着レシピ":
                     const newArrivalRecipes = this.recipes.slice();
                     newArrivalRecipes.sort(
@@ -138,11 +137,30 @@ export default {
             userId: "getUserId",
             recipes: "getRecipes",
         }),
+        listType() {
+            const listType = window.location.pathname.split(
+                "/recipes/list/"
+            )[1];
+            return listType;
+        },
+        breadCrumbList() {
+            return [
+                {
+                    id: 1,
+                    name: "ホーム",
+                    linkName: "recipes",
+                },
+                {
+                    id: 2,
+                    name: this.listName,
+                    linkName: "recipeList",
+                },
+            ];
+        },
     },
     created() {},
     mounted() {
-        const listType = window.location.pathname.split("/recipes/list/")[1];
-        listType == "my-recipes"
+        this.listType == "my-recipes"
             ? (this.listName = "マイレシピ")
             : (this.listName = "新着レシピ");
     },
@@ -161,7 +179,6 @@ export default {
             const userId = this.$store.state.userId;
             // urlから正規表現でrecipeidのみ抽出
             // const recipeId = location.pathname.match(/([^\/.]+)/g)[3];
-
             location.pathname =
                 "/users/" +
                 this.$store.state.userId +
@@ -173,7 +190,6 @@ export default {
             const deleteCheckResult = confirm(
                 "このレシピを削除してよろしいですか？"
             );
-
             if (deleteCheckResult == true) {
                 const url =
                     "/api/users/" +
@@ -199,13 +215,11 @@ export default {
                 "/recipes/" +
                 recipeId +
                 "/favorite";
-
             if (isFavorite == 1) {
                 url = url + "/remove";
             } else {
                 url = url + "/add";
             }
-
             axios
                 .post(url)
                 .then((res) => {

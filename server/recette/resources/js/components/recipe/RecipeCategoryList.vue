@@ -1,35 +1,51 @@
 <template>
-    <section class="section-recipe_search">
-        <div class="wrapper-recipe_search">
-            <i @click="goToPreviousPage" class="fas fa-angle-left fa-2x"></i>
+    <section class="section-recipe_category_list">
+        <div class="wrapper-recipe_category_list">
+            <ReturnButton :path-name="'recipes'" class="d-sm-none" />
+            <!-- ぱんくずリスト -->
+            <BreadCrumb class="breadcrumb-component" />
 
-            <div class="container-recipe_search mb-4 mt-4">
-                <h4>カテゴリーから探す</h4>
-                <div class="area-recipe_search mt-4">
-                    <div
-                        class="d-flex justify-content-between align-items-center"
-                        v-for="category in categories"
-                        :key="category.id"
-                        @click.prevent="
-                            showRecipeCategoryDetail(
-                                category.recipe_category_name,
-                                category.url
-                            )
-                        "
-                    >
-                        <ul>
-                            <li class="d-flex justify-content-start">
-                                <img
-                                    :src="''"
-                                    alt=""
-                                    style="width: 50px; height: 50px"
-                                />
-                                {{ category.recipe_category_name }}
-                            </li>
-                        </ul>
-                        <span>{{ 1 }}</span>
-                    </div>
-                    <hr />
+            <div class="mb-4 mt-4">
+                <h5>カテゴリーから探す</h5>
+                <div class="container-recipe_category_list mt-4">
+                    <ul class="mb-0">
+                        <RecipeCategory
+                            :props-function="showRecipeCategoryDetail"
+                            :recipe-category="categories[0]"
+                        />
+                        <RecipeCategory
+                            :props-function="showRecipeCategoryDetail"
+                            :recipe-category="categories[1]"
+                        />
+                        <RecipeCategory
+                            :props-function="showRecipeCategoryDetail"
+                            :recipe-category="categories[2]"
+                        />
+                        <RecipeCategory
+                            :props-function="showRecipeCategoryDetail"
+                            :recipe-category="categories[3]"
+                        />
+                        <RecipeCategory
+                            :props-function="showRecipeCategoryDetail"
+                            :recipe-category="categories[4]"
+                        />
+                        <RecipeCategory
+                            :props-function="showRecipeCategoryDetail"
+                            :recipe-category="categories[5]"
+                        />
+                        <RecipeCategory
+                            :props-function="showRecipeCategoryDetail"
+                            :recipe-category="categories[6]"
+                        />
+                        <RecipeCategory
+                            :props-function="showRecipeCategoryDetail"
+                            :recipe-category="categories[7]"
+                        />
+                        <RecipeCategory
+                            :props-function="showRecipeCategoryDetail"
+                            :recipe-category="categories[8]"
+                        />
+                    </ul>
                 </div>
             </div>
         </div>
@@ -42,94 +58,31 @@ import PrimaryButton from "../parts/PrimaryButton";
 import TextInput from "../parts/TextInput";
 import InputLabel from "../parts/InputLabel";
 import { mapGetters, mapMutations } from "vuex";
+import BreadCrumb from "../common/BreadcrumbTrail";
+import ReturnButton from "../parts/ReturnButton";
+import RecipeCategories from "../../assets/recipeCategories";
+import RecipeCategory from "./RecipeCategory";
 
 export default {
     name: "RecipeCategoryList",
-    props: ["recipes"],
     components: {
         ImagePreview,
         PrimaryButton,
         TextInput,
         InputLabel,
+        ReturnButton,
+        BreadCrumb,
+        RecipeCategory,
     },
     data() {
         return {
-            // 初期データの食材リスト登録状況に応じてトーストの表示を切り替えるためのフラグ
-            sendNewRecipeButtonStyle: {
-                color: "#fff",
-                backgroundColor: "#E4C8AD",
-                fontSize: "12px",
-                width: "100%",
-                height: "35px",
-            },
-
-            categories: [
-                {
-                    id: 1,
-                    recipe_category_name: "肉料理",
-                    url: "meat",
-                    recipe_category_image: "/images/肉料理.jpeg",
-                    length: 0,
-                },
-                {
-                    id: 2,
-                    recipe_category_name: "魚料理",
-                    url: "fish",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-                {
-                    id: 3,
-                    recipe_category_name: "野菜料理",
-                    url: "veg",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-                {
-                    id: 4,
-                    recipe_category_name: "麺類",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-                {
-                    id: 5,
-                    recipe_category_name: "ご飯もの",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-                {
-                    id: 6,
-                    recipe_category_name: "スープ、汁物",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-                {
-                    id: 7,
-                    recipe_category_name: "パン類",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-                {
-                    id: 8,
-                    recipe_category_name: "お菓子",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-                {
-                    id: 9,
-                    recipe_category_name: "そのほか",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-            ],
-            csrf: document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
+            categories: RecipeCategories.categories,
         };
     },
     computed: {
         ...mapGetters({
             userId: "getUserId",
+            recipes: "getRecipes",
             recipeIngredientList: "getRecipeIngredientList",
             isEditingIngredient: "getIsEditingRecipeIngredient",
             editingIngredientIndex: "getEditingRecipeIngredientIndex",
@@ -187,16 +140,15 @@ export default {
         },
     },
     mounted() {
-        console.log(this.userId);
+        // console.log(this.categories);
     },
     methods: {
-        showRecipeCategoryDetail(recipe_category_name, url) {
-            console.log(recipe_category_name, url);
+        showRecipeCategoryDetail(recipe_category_name, recipe_category_sub) {
             this.$router.push({
                 name: "recipeCategoryDetailList",
                 params: {
                     categoryName: recipe_category_name,
-                    categoryPath: url,
+                    categoryPath: recipe_category_sub,
                 },
             });
         },

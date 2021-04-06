@@ -11,7 +11,7 @@
 <script>
 export default {
     name: "ReturnButton",
-    props: ["pathName", "reicipeId"],
+    props: ["pathName", "reicipeId", "props"],
     data() {
         return {};
     },

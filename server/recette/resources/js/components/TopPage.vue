@@ -1,10 +1,9 @@
 <template>
-    <div class="recipe_wrapper-top">
-        <div class="recipe_container-top">
-            <div class="upper_content-top mb-2">
+    <section class="section-toppage">
+        <div class="wrapper-toppage">
+            <div class="container-header_content-toppage mb-2">
                 <h4>Reccete</h4>
-                <!-- ユーザーアイコン -->
-
+                <!-- ユーザーメニュー -->
                 <span
                     class="dropdown-toggle"
                     type="button"
@@ -25,188 +24,199 @@
                     >
                         マイページ
                     </router-link>
-                    <a @click.prevent="logout" class="dropdown-item" href="#"
+                    <a @click="logout" class="dropdown-item" href="#"
                         >ログアウト</a
                     >
                 </div>
             </div>
-            <!-- 検索フォーム -->
-            <SearchWindow />
+            <div class="container-header_content-toppage-md">
+                <!-- 検索フォーム -->
+                <SearchWindow :className="'search-window_toppage'" />
+                <div class="user_menu-md">
+                    <!-- ユーザーメニュー -->
+                    <span
+                        class="dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                    >
+                        <i class="fas fa-user-circle fa-3x"></i>
+                    </span>
+
+                    <div
+                        class="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton"
+                    >
+                        <router-link
+                            :to="{
+                                name: 'myPage',
+                            }"
+                            class="dropdown-item"
+                        >
+                            マイページ
+                        </router-link>
+                        <a @click="logout" class="dropdown-item" href="#"
+                            >ログアウト</a
+                        >
+                    </div>
+                </div>
+            </div>
             <!-- <VueSimpleSuggest
                 v-model="chosen"
                 :list="simpleSuggestionList"
                 :filter-by-query="true"
             /> -->
-            <!-- Filter by input text to only show the matching results -->
 
-            <!-- マイレシピ -->
-            <div
-                class="top-container-recipe-title d-flex justify-content-between mt-4"
-            >
+            <div class="d-flex justify-content-between mt-4">
                 <h5>マイレシピ</h5>
-
                 <router-link
                     class="small"
                     :to="{
                         name: 'recipeList',
                         params: {
-                            listName: 'マイレシピ',
-                            listType: ' myRecipes',
+                            listType: 'my-recipes',
                         },
                     }"
                 >
                     すべて見る ＞
                 </router-link>
             </div>
-            <div class="top-container-recipe-content" v-if="recipes.length > 0">
+
+            <!-- マイレシピが1つ以上登録されている場合はリストを表示する -->
+            <div class="container-myrecipe-toppage" v-if="myRecipes.length > 0">
                 <div
-                    class="recipe"
+                    class="element-recipe-toppage"
                     @click="showRecipeDetail(recipe.id)"
-                    v-for="recipe in recipes"
+                    v-for="recipe in myRecipes"
                     :key="recipe.id"
                 >
                     <img
-                        class="recipe_image__top"
+                        class="element-recipe_image-toppage"
                         :src="recipe.recipe_image_path"
                         alt="マイレシピ画像"
                     />
 
                     <p class="small">{{ recipe.recipe_name }}</p>
-                    <!-- <form action="" method="get" name="testForm"></form> -->
                 </div>
             </div>
-            <div v-else class="top-container-recipe-content mt-2">
+            <div v-else class="container-myrecipe-toppage">
                 <p>
                     <i class="fas fa-exclamation-circle mr-2"></i
                     >データがまだありません。<br />レシピ追加からレシピを登録してみましょう!
                 </p>
-                <!-- <p></p> -->
             </div>
-            <!-- ピックアップレシピ -->
-            <div
-                class="top-container-recipe-title d-flex justify-content-between mt-5"
-            >
+
+            <!-- 新着レシピ -->
+            <div class="d-flex justify-content-between mt-4">
                 <h5>新着レシピ</h5>
                 <router-link
                     class="small"
                     :to="{
                         name: 'recipeList',
                         params: {
-                            listName: '新着レシピ',
-                            listType: ' newArrivalRecipes',
+                            listType: 'new-arrival-recipes',
                         },
                     }"
                 >
                     すべて見る ＞
                 </router-link>
             </div>
-            <div class="top-container-recipe-content">
+            <div class="container-new_arrival_recipe-toppage">
                 <div
-                    class="recipe"
+                    class="element-recipe-toppage"
                     @click="showRecipeDetail(recipe.id)"
-                    v-for="recipe in recipes"
+                    v-for="recipe in newArrivalRecipes"
                     :key="recipe.id"
                 >
                     <img
-                        class="recipe_image__top"
+                        class="element-recipe_image-toppage"
                         :src="recipe.recipe_image_path"
-                        alt=""
+                        alt="新着レシピ画像"
                     />
 
                     <p class="small">{{ recipe.recipe_name }}</p>
-                    <!-- <form action="" method="get" name="testForm"></form> -->
                 </div>
             </div>
+
             <!-- 旬のレシピ -->
-            <div
-                class="top-container-recipe-title d-flex justify-content-between mt-5"
-            >
-                <h4>旬のレシピ</h4>
-                <router-link
-                    class="small"
-                    :to="{
-                        name: 'recipeList',
-                        params: {
-                            listName: '旬のレシピ',
-                            listType: ' seasonalRecipes',
-                        },
-                    }"
-                >
-                    すべて見る ＞
-                </router-link>
+            <div class="mt-4">
+                <h5>旬のレシピ</h5>
             </div>
-            <div class="top-container-recipe-content">
+            <div class="container-seasonal_recipe-toppage d-flex w-100">
                 <div
-                    class="recipe"
+                    class="w-100"
                     @click="showRecipeDetail(recipe.id)"
-                    v-for="recipe in recipes"
+                    v-for="recipe in newArrivalRecipes"
                     :key="recipe.id"
                 >
                     <img
-                        class="recipe_image__top"
+                        style="
+                            box-shadow: 0px 2px 2px rgb(0 0 0 / 25%);
+                            border-radius: 5px;
+                        "
+                        class="w-100"
                         :src="recipe.recipe_image_path"
-                        alt=""
+                        alt="旬のレシピ画像"
                     />
 
-                    <p class="small">{{ recipe.recipe_name }}</p>
-                    <!-- <form action="" method="get" name="testForm"></form> -->
+                    <p>{{ recipe.recipe_name }}</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import SearchWindow from "./parts/SearchWindow";
-import VueSimpleSuggest from "vue-simple-suggest";
-import "vue-simple-suggest/dist/styles.css"; // Optional CSS
+// import VueSimpleSuggest from "vue-simple-suggest";
+// import "vue-simple-suggest/dist/styles.css"; // Optional CSS
 export default {
-    name: "Top",
+    name: "TopPage",
     components: {
         SearchWindow,
-        VueSimpleSuggest,
+        // VueSimpleSuggest,
     },
-    props: [],
     data() {
         return {
-            chosen: "",
-            recipeName: "",
-            csrf: document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
-            user: null,
-            // userId: document
-            //     .querySelector('meta[name="user-id"]')
+            // chosen: "",
+            // csrf: document
+            //     .querySelector('meta[name="csrf-token"]')
             //     .getAttribute("content"),
         };
     },
     created() {
         this.fetchAllRecipes();
-        this.fetchAllIngredients();
-    },
-    mounted() {
+        this.fetchUserIngredients();
+        // spiから取得した認証情報をstoreにセット
         axios.get("api/user").then((res) => {
-            this.user = res.data;
             this.setUserData(res.data);
         });
     },
     computed: {
         ...mapGetters({
             userData: "getUserData",
-            userId: "getUserId",
             recipes: "getRecipes",
             ingredients: "getIngredients",
         }),
+        myRecipes() {
+            // 非破壊コピーして日付の昇順にソート
+            return this.recipes.filter(
+                (recipe) => recipe.user_id == this.userData.userId
+            );
+        },
+        newArrivalRecipes() {
+            // 非破壊コピーして日付の昇順にソート
+            const newArrivalRecipes = this.recipes.slice();
+            newArrivalRecipes.sort(
+                (a, b) => new Date(a.updated_at) - new Date(b.updated_at)
+            );
+            return newArrivalRecipes;
+        },
     },
     methods: {
-        simpleSuggestionList() {
-            [
-                { id: 1, firstName: "タロウ", lastName: "サトウ" },
-                { id: 2, firstName: "ジロウ", lastName: "イノウエ" },
-                { id: 3, firstName: "サブロウ", lastName: "タナカ" },
-            ];
-        },
         ...mapMutations([
             "setRecipes",
             "initRecipes",
@@ -214,23 +224,35 @@ export default {
             "setIngredients",
             "initIngredients",
         ]),
+        // simpleSuggestionList() {
+        //     [
+        //         { id: 1, firstName: "タロウ", lastName: "サトウ" },
+        //         { id: 2, firstName: "ジロウ", lastName: "イノウエ" },
+        //         { id: 3, firstName: "サブロウ", lastName: "タナカ" },
+        //     ];
+        // },
+        // ログインしているユーザーにかかわらず、全てのレシピを取得
         fetchAllRecipes: async function () {
             await axios
-                .get("/api/recipes/")
+                .get("/api/recipes")
                 .then((response) => {
                     this.setRecipes(response.data);
                     console.log(this.recipes);
                 })
-                .catch((error) => {});
+                .catch((error) => {
+                    console.log(error);
+                });
         },
-        fetchAllIngredients: async function () {
+        // ログインしているユーザーの食材データのみ取得
+        fetchUserIngredients: async function () {
             await axios
-                .get("/api/users/" + this.userId + "/ingredients/")
+                .get("/api/users/" + this.userData.userId + "/ingredients")
                 .then((response) => {
                     this.setIngredients(response.data);
-                    console.log(this.ingredients);
                 })
-                .catch((error) => {});
+                .catch((error) => {
+                    console.log(error);
+                });
         },
         logout() {
             axios.post("/api/logout").then(() => {
@@ -242,10 +264,6 @@ export default {
                 name: "recipeDetail",
                 params: { recipeId: recipeId },
             });
-        },
-
-        addInitDatatoIngredientsTable() {
-            console.log(this.initialIngredientList);
         },
     },
 };

@@ -1,11 +1,11 @@
 <template>
-    <nav class="navbar navbar-top shadow-sm">
+    <nav class="navbar navbar-top shadow w-100">
         <div
-            class="navbar-dark d-flex justify-content-between align-items-center"
+            class="navbar-dark d-flex justify-content-between align-items-center h-100"
         >
             <h4 class="mb-0">Recette</h4>
             <ul
-                class="p-0 mb-0 d-flex justify-content-between align-items-center"
+                class="area-navmenu_top p-0 mb-0 d-flex justify-content-between align-items-center"
             >
                 <li>
                     <a href=""> レシピ追加</a>
@@ -70,11 +70,7 @@ export default {
     name: "NavbarTop",
     props: [],
     data() {
-        return {
-            csrf: document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
-        };
+        return {};
     },
     created() {},
     mounted() {},

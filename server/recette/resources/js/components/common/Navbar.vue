@@ -1,5 +1,5 @@
 <template>
-    <nav class="nav-fix-bottom navbar shadow-sm">
+    <nav class="nav-fix-bottom navbar shadow-sm w-100">
         <div class="nav-fix-bottom-container">
             <div class="text-center" style="line-height: 25px">
                 <router-link
@@ -91,11 +91,7 @@ export default {
     name: "Navbar",
     props: [],
     data() {
-        return {
-            csrf: document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
-        };
+        return {};
     },
     created() {},
     mounted() {},

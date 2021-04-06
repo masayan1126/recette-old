@@ -4,4 +4,5 @@ export default {
     getIsEditingRecipeIngredient: (state) => state.isEditingRecipeIngredient,
     getEditingRecipeIngredientIndex: (state) =>
         state.editingRecipeIngredientIndex,
+    getRecipeIngredientQuantity: (state) => state.recipeIngredientQuantity,
 };

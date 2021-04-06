@@ -2,18 +2,18 @@
     <section class="section-recipe_edit">
         <div class="wrapper-recipe_edit">
             <!-- <ReturnButton :path-name="'recipeDetail'" :recipe-id="recipeId" /> -->
-            <router-link
-                :to="{
-                    name: 'recipeDetail',
-                    params: { recipeId: recipeId },
-                }"
-            >
-                <i class="fas fa-angle-left fa-2x"></i>
-            </router-link>
+            <ReturnButton :path-name="'recipes'" class="d-sm-none" />
+            <!-- ぱんくずリスト -->
+
+            <BreadCrumb
+                class="breadcrumb-component"
+                :bread-crumb-list="breadCrumbList"
+            />
 
             <!-- <ImagePreview :title="'レシピ画像UL'" /> -->
 
-            <div class="area-image_preview d-flex justify-content-between">
+            <!-- レシピ画像 -->
+            <div class="d-flex justify-content-between">
                 <img :src="url" class="w-75" />
                 <div class="d-flex justify-content-end w-25">
                     <label>
@@ -31,19 +31,19 @@
                 </div>
             </div>
 
-            <div class="container-recipe mt-2 mb-4 d-flex">
+            <div class="container-recipe_name-recipe_edit mt-2 mb-4 d-flex">
                 <label class="mb-0">レシピ名：</label>
                 <input
-                    class="text-input"
+                    class="text-input-black"
                     type="text"
                     id="recipe-name"
                     v-model="recipeName"
                 />
             </div>
 
-            <div class="container-recipe_ingredient mb-4">
+            <div class="mb-4">
                 <p class="mb-0">材料</p>
-                <div class="area-ingredient">
+                <div class="container-recipe_ingredient-recipe_edit">
                     <ul
                         class="pl-1"
                         v-for="(
@@ -82,9 +82,20 @@
                                 {{ ingredient.recipe_ingredient_name }}
                             </option>
                         </select>
+                        <TextInput
+                            :id="'input-recipe-ingredient-quantity'"
+                            :type="'text'"
+                            :value="recipeIngredientQuantity"
+                            :className="'text-input-white'"
+                            :placeholder="'数量(単位含む)'"
+                            @inputFormContent="
+                                recipeIngredientQuantity = $event
+                            "
+                        />
                         <i
                             @click.prevent="addRecipeIngredient"
-                            class="far fa-check-circle fa-2x"
+                            class="fas fa-check-circle"
+                            style="font-size: 1.5rem"
                         ></i>
                     </div>
                 </div>
@@ -97,7 +108,7 @@
                         <i class="mr-1 fas fa-book-open"></i>レシピURL
                     </span>
                 </div>
-                <div class="area-recipe_procedure p-2">
+                <div class="container-recipe_procedure-recipe_edit p-2">
                     <ul
                         class="pl-1"
                         v-for="(recipeProcedure, index) in recipeProcedureList"
@@ -132,9 +143,9 @@
                 </div>
             </div>
 
-            <div class="container-recipe_ingredient mb-4">
+            <div class="mb-4">
                 <p class="mb-0">カテゴリー</p>
-                <div class="area-ingredient">
+                <div class="container-recipe_category-recipe_edit">
                     <div class="input-group mb-3">
                         <select
                             v-model="recipeCategory"
@@ -164,12 +175,19 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import PrimaryButton from "../parts/PrimaryButton";
-import ReturnButton from "../parts/ReturnButton";
 import TextInput from "../parts/TextInput";
 import ImagePreview from "../parts/ImagePreview";
+import ReturnButton from "../parts/ReturnButton";
+import BreadCrumb from "../common/BreadcrumbTrail";
 
 export default {
-    components: { PrimaryButton, TextInput, ImagePreview, ReturnButton },
+    components: {
+        PrimaryButton,
+        TextInput,
+        ImagePreview,
+        ReturnButton,
+        BreadCrumb,
+    },
     name: "EditRecipe",
     props: ["recipeId"],
     data() {
@@ -231,12 +249,15 @@ export default {
                     recipe_category_image: "",
                 },
             ],
-            csrf: document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
         };
     },
     computed: {
+        breadCrumbList() {
+            return [
+                { id: 1, name: "ホーム", linkName: "recipes" },
+                { id: 2, name: "レシピ編集", linkName: "createRecipe" },
+            ];
+        },
         ...mapGetters({
             userId: "getUserId",
             recipes: "getRecipes",

@@ -27,6 +27,7 @@ export const store = createStore({
             isEditingRecipeProcedure: false,
             editingRecipeProcedureIndex: 0,
             recipeCategory: null,
+            recipeIngredientQuantity: "",
         };
     },
     getters: getters,

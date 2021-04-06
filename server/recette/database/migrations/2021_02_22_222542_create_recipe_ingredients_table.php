@@ -31,6 +31,7 @@ class CreateRecipeIngredientsTable extends Migration
             $table->string("recipe_ingredient_name");
             $table->string("recipe_ingredient_image_path")->nullable()->comment('レシピ食材の画像ファイルパス');
             $table->string("recipe_ingredient_category")->nullable()->comment('レシピ食材のカテゴリー');
+            $table->string("recipe_ingredient_quantity")->nullable()->comment('レシピ食材の数量');
             $table->timestamps();
         });
     }

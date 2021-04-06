@@ -83,6 +83,9 @@ class RecipeController extends Controller
         $last_insert_id = $recipe->id; 
         $recipe = Recipe::find($last_insert_id);
         
+
+        clock($new_recipe);
+
         foreach ($new_recipe->recipeIngredientList as $recipeIngredient) {
             $recipe->recipe_ingredients()->saveMany([
                 new RecipeIngredient([
@@ -90,6 +93,7 @@ class RecipeController extends Controller
                     'recipe_ingredient_name' => $recipeIngredient->recipe_ingredient_name, 
                     'recipe_ingredient_image_path' => $recipeIngredient->recipe_ingredient_image_path, 
                     'recipe_ingredient_category' => $recipeIngredient->recipe_ingredient_category,
+                    'recipe_ingredient_quantity' => $recipeIngredient->recipeIngredientQuantity,
                 ])
             ]);
         }

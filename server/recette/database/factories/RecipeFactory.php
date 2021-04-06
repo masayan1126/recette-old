@@ -24,20 +24,20 @@ class RecipeFactory extends Factory
     public function definition()
     {
 
-        return [
+        // return [
     
-            'recipe_name' => $this->faker->word,
-            'recipe_image_path' => "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png",
-            'recipe_procedure' => $this->faker->word,
-            'recipe_category' => $this->faker->word,
-            'recipe_category_sub' => $this->faker->word,
-            'recipe_category_image' => "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png",
-            'user_id' => 1,
-            'is_favorite' => $this->faker->boolean,
-            'created_at' => now(),
-            'updated_at' => now(),
+        //     'recipe_name' => $this->faker->word,
+        //     'recipe_image_path' => "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png",
+        //     'recipe_procedure' => $this->faker->word,
+        //     'recipe_category' => $this->faker->word,
+        //     'recipe_category_sub' => $this->faker->word,
+        //     'recipe_category_image' => "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png",
+        //     'user_id' => 1,
+        //     'is_favorite' => $this->faker->boolean,
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
     
-        ];
+        // ];
   
     }
 }

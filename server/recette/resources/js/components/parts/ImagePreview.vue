@@ -1,5 +1,5 @@
 <template>
-    <div class="area-image_preview d-flex justify-content-between">
+    <div class="d-flex justify-content-between">
         <img :src="url" class="w-75" />
         <div class="d-flex justify-content-end w-25">
             <label>

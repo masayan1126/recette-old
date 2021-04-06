@@ -1,7 +1,7 @@
 <template>
     <div
         class="toast"
-        :class="[{ show: isShow }, { hide: isHide }]"
+        :class="toastIsShow ? 'show' : 'd-none'"
         role="alert"
         aria-live="assertive"
         aria-atomic="true"
@@ -38,13 +38,10 @@
 <script>
 export default {
     name: "Toast",
-    props: ["isShow", "isHide", "propsFunction"],
+    props: ["toastIsShow", "propsFunction"],
     components: {},
     data() {
-        return {
-            show: "show",
-            hide: "none",
-        };
+        return {};
     },
     computed: {},
     mounted() {},

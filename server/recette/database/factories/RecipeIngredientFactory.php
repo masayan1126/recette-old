@@ -22,13 +22,14 @@ class RecipeIngredientFactory extends Factory
     public function definition()
     {
 
-        return [
-            'user_id' => 1,
-            'recipe_ingredient_name' => $this->faker->word,
-            'recipe_ingredient_image_path' => "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png",
-            'recipe_ingredient_category' => $this->faker->word,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ];
+        // return [
+        //     'user_id' => 1,
+        //     'recipe_ingredient_name' => $this->faker->word,
+        //     'recipe_ingredient_image_path' => "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png",
+        //     'recipe_ingredient_category' => $this->faker->word,
+        //     'recipe_ingredient_quantity' => $this->faker->word,
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ];
     }
 }

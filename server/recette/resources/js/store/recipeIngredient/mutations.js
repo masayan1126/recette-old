@@ -1,5 +1,5 @@
 export default {
-    //
+    //ingredient -> recipeIngredientに書き換える
     setRecipeIngredient(state, ingredient) {
         state.recipeIngredient = ingredient;
     },
@@ -13,19 +13,23 @@ export default {
     setRecipeIngredient(state, ingredient) {
         state.recipeIngredient = ingredient;
     },
-    setRecipeIngredientList(state, ingredient) {
+    setRecipeIngredientList(
+        state,
+        { recipeIngredient, recipeIngredientQuantity }
+    ) {
+        recipeIngredient.recipeIngredientQuantity = recipeIngredientQuantity;
         // 編集
         if (state.isEditingRecipeIngredient == true) {
             state.recipeIngredientList.splice(
                 state.editingIngredientIndex,
                 1,
-                ingredient
+                recipeIngredient
             );
             state.isEditingRecipeIngredient = false;
             return;
         }
         // 新規追加
-        state.recipeIngredientList.push(ingredient);
+        state.recipeIngredientList.push(recipeIngredient);
     },
     //
     initRecipeIngredientList(state) {
@@ -48,5 +52,11 @@ export default {
     },
     initRecipeCategory(state) {
         state.recipeCategory = null;
+    },
+    setRecipeIngredientQuantity(state, recipeIngredientQuantity) {
+        state.recipeIngredientQuantity = recipeIngredientQuantity;
+    },
+    initRecipeIngredientQuantity(state) {
+        state.recipeIngredientQuantity = null;
     },
 };

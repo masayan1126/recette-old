@@ -1,19 +1,24 @@
 <template>
     <section class="section-recipe_create">
         <div class="wrapper-recipe_create">
-            <ReturnButton :path-name="'recipes'" />
+            <ReturnButton :path-name="'recipes'" class="d-sm-none" />
+            <!-- ぱんくずリスト -->
+            <BreadCrumb
+                class="breadcrumb-component"
+                :bread-crumb-list="breadCrumbList"
+            />
             <Toast
-                :is-show="isShow"
-                :is-hide="isHide"
+                :toast-is-show="toastIsShow"
                 :props-function="addInitialIngredients"
             />
 
-            <div class="area-image_preview d-flex justify-content-between">
-                <img :src="url" class="w-75" />
-                <div class="d-flex justify-content-end w-25">
+            <!-- 画像アップロード -->
+            <div class="d-flex justify-content-between">
+                <img :src="url" class="w-50" />
+                <div class="d-flex justify-content-end w-50">
                     <label>
                         <i class="fas fa-file-upload mr-1"></i>
-                        <span class="small">{{ "test" }}</span>
+                        <span class="small">{{ "レシピ画像選択" }}</span>
                         <input
                             class="d-none"
                             name="imagefile"
@@ -26,7 +31,9 @@
                 </div>
             </div>
 
-            <div class="container-recipe mb-4 d-flex mt-2 align-items-end">
+            <div
+                class="container-recipe_name-recipe_create mb-4 d-flex mt-2 align-items-end"
+            >
                 <InputLabel
                     class="mb-0"
                     :id="'input-recipe-name'"
@@ -36,13 +43,13 @@
                     :id="'input-recipe-name'"
                     :type="'text'"
                     :value="recipeName"
-                    :className="'text-input'"
+                    :className="'text-input-black'"
                     @inputFormContent="recipeName = $event"
                 />
             </div>
-            <div class="container-recipe_ingredient mb-4">
+            <div class="mb-4">
                 <p class="mb-0">材料</p>
-                <div class="area-ingredient">
+                <div class="container-recipe_ingredient-recipe_create">
                     <ul
                         class="pl-1"
                         v-for="(
@@ -52,10 +59,14 @@
                     >
                         <li>
                             {{ recipeIngredient.recipe_ingredient_name }}
+                            {{ recipeIngredient.recipeIngredientQuantity }}
                             <span
                                 ><i
                                     @click="
-                                        editRecipeIngredient(ingredient, index)
+                                        editRecipeIngredient(
+                                            recipeIngredient,
+                                            index
+                                        )
                                     "
                                     class="ml-2 fas fa-pencil-alt"
                                 ></i
@@ -81,22 +92,33 @@
                                 {{ ingredient.recipe_ingredient_name }}
                             </option>
                         </select>
+                        <TextInput
+                            :id="'input-recipe-ingredient-quantity'"
+                            :type="'text'"
+                            :value="recipeIngredientQuantity"
+                            :className="'text-input-white'"
+                            :placeholder="'数量(単位含む)'"
+                            @inputFormContent="
+                                recipeIngredientQuantity = $event
+                            "
+                        />
                         <i
-                            @click.prevent="addRecipeIngredient"
-                            class="far fa-check-circle fa-2x"
+                            @click="addRecipeIngredient"
+                            class="fas fa-check-circle"
+                            style="font-size: 1.5rem"
                         ></i>
                     </div>
                 </div>
             </div>
 
-            <div class="container-recipe_procedure mb-4">
+            <div class="mb-4">
                 <div class="d-flex justify-content-between align-items-end">
                     <span>作り方</span>
                     <span>
                         <i class="mr-1 fas fa-book-open"></i>レシピURL
                     </span>
                 </div>
-                <div class="area-recipe_procedure p-2">
+                <div class="container-recipe_procedure-recipe_create p-2">
                     <ul
                         class="pl-1"
                         v-for="(recipeProcedure, index) in recipeProcedureList"
@@ -131,9 +153,9 @@
                 </div>
             </div>
 
-            <div class="container-recipe_ingredient mb-4">
+            <div class="mb-4">
                 <p class="mb-0">カテゴリー</p>
-                <div class="area-ingredient">
+                <div class="container-recipe_category-recipe_create">
                     <div class="input-group mb-3">
                         <select
                             v-model="recipeCategory"
@@ -150,13 +172,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- <input type="hidden" name="_token" :value="csrf" />
-            <input
-                type="hidden"
-                name="newRecipe"
-                :value="JSON.stringify(newRecipe)"
-            /> -->
             <PrimaryButton
                 :buttonName="'登録する'"
                 :props-function="sendNewRecipe"
@@ -167,14 +182,15 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 import ImagePreview from "../parts/ImagePreview";
 import PrimaryButton from "../parts/PrimaryButton";
-import ReturnButton from "../parts/ReturnButton";
 import TextInput from "../parts/TextInput";
 import InputLabel from "../parts/InputLabel";
 import Toast from "../parts/Toast";
 import initialIngredientList from "../../assets/initialIngredientList.json";
-import { mapGetters, mapMutations } from "vuex";
+import ReturnButton from "../parts/ReturnButton";
+import BreadCrumb from "../common/BreadcrumbTrail";
 
 export default {
     name: "CreateRecipe",
@@ -186,12 +202,12 @@ export default {
         TextInput,
         InputLabel,
         ReturnButton,
+        BreadCrumb,
     },
     data() {
         return {
             // 初期データの食材リスト登録状況に応じてトーストの表示を切り替えるためのフラグ
-            isShow: false,
-            isHide: false,
+            toastIsShow: false,
             sendNewRecipeButtonStyle: {
                 color: "#fff",
                 backgroundColor: "#E4C8AD",
@@ -266,12 +282,15 @@ export default {
                     length: 0,
                 },
             ],
-            csrf: document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
         };
     },
     computed: {
+        breadCrumbList() {
+            return [
+                { id: 1, name: "ホーム", linkName: "recipes" },
+                { id: 2, name: "レシピ作成", linkName: "createRecipe" },
+            ];
+        },
         ...mapGetters({
             userId: "getUserId",
             recipeIngredientList: "getRecipeIngredientList",
@@ -323,23 +342,20 @@ export default {
                 this.setRecipeCategory(val);
             },
         },
+        recipeIngredientQuantity: {
+            get() {
+                return this.$store.getters.getRecipeIngredientQuantity;
+            },
+            set(val) {
+                this.setRecipeIngredientQuantity(val);
+            },
+        },
     },
     mounted() {
-        this.initRecipeName();
-        this.initRecipeIngredient();
-        this.initRecipeIngredientList();
-        this.initIsEditingRecipeIngredient();
-        this.initEditingRecipeIngredientIndex();
-        this.initRecipeProcedure();
-        this.initRecipeCategory();
-        this.initRecipeProcedureList();
-        this.initIsEditingRecipeProcedure();
-        this.initEditingRecipeProcedureIndex();
+        this.initStoreDataSet();
 
         // 初期データの食材リストが未登録なら、トーストでメッセージを表示する
-        this.ingredients.length == 0
-            ? (this.isShow = true)
-            : (this.isHide = true);
+        this.ingredients.length == 0 ? (this.toastIsShow = true) : "";
     },
     methods: {
         ...mapMutations([
@@ -365,6 +381,8 @@ export default {
             "deleteRecipeProcedure",
             "setRecipeCategory",
             "initRecipeCategory",
+            "setRecipeIngredientQuantity",
+            "initRecipeIngredientQuantity",
         ]),
 
         addRecipeIngredient() {
@@ -373,12 +391,18 @@ export default {
                 return;
             }
             // 追加 or 編集の分岐はmutatiion側で判定
-            this.setRecipeIngredientList(this.recipeIngredient);
+            this.setRecipeIngredientList({
+                recipeIngredient: this.recipeIngredient,
+                recipeIngredientQuantity: this.recipeIngredientQuantity,
+            });
             this.initRecipeIngredient();
-            console.log(this.recipeIngredientList);
+            this.initRecipeIngredientQuantity();
         },
 
         editRecipeIngredient(ingredient, index) {
+            this.setRecipeIngredientQuantity(
+                ingredient.recipeIngredientQuantity
+            );
             this.setRecipeIngredient(ingredient);
             // 食材編集モードをtrueに
             this.setIsEditingRecipeIngredient();
@@ -417,19 +441,13 @@ export default {
             const file = document.getElementById("imagefile");
             formData.append("file", file.files[0]);
             formData.append("newRecipe", JSON.stringify(this.newRecipe));
-            console.log(formData);
 
             axios
-                .post(
-                    url,
-                    formData,
-                    {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    }
-                    // newRecipe: JSON.stringify(this.newRecipe),
-                )
+                .post(url, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
                 .then((res) => {
                     console.log(res);
                     this.$router.push({ name: "recipes" });
@@ -446,25 +464,30 @@ export default {
                         initialIngredientList
                     ),
                 })
-                .then(function (res) {
+                .then((res) => {
                     console.log(res);
-                    this.isShow = false;
-                    this.isHide = true;
+                    this.toastIsShow = false;
                 })
-                .catch(function (error) {
+                .catch((error) => {
                     console.log(error);
                 });
-        },
-        goToPreviousPage() {
-            this.$store.commit(
-                "goToPreviousPage",
-                `/users/${this.userId}/recipes`
-            );
         },
         uploadFile(e) {
             this.file = e.target.files[0];
             this.url = URL.createObjectURL(this.file);
-            console.log(this.file);
+        },
+        initStoreDataSet() {
+            this.initRecipeName();
+            this.initRecipeIngredient();
+            this.initRecipeIngredientList();
+            this.initIsEditingRecipeIngredient();
+            this.initEditingRecipeIngredientIndex();
+            this.initRecipeProcedure();
+            this.initRecipeCategory();
+            this.initRecipeProcedureList();
+            this.initIsEditingRecipeProcedure();
+            this.initEditingRecipeProcedureIndex();
+            this.initRecipeIngredientQuantity();
         },
     },
 };

@@ -1,7 +1,7 @@
 <template>
     <button
         class="btn"
-        @click.prevent="propsFunction(recipeId)"
+        @click.prevent="propsFunction(recipeId, isFavorite)"
         :style="buttonStyle"
     >
         <i :class="icon" style="color: red"></i>
@@ -14,15 +14,19 @@ import Button from "../../../../vendor/laravel/jetstream/stubs/inertia/resources
 export default {
     components: { Button },
     name: "PrimayButton",
-    props: ["buttonName", "propsFunction", "recipeId", "buttonStyle", "icon"],
+    props: [
+        "buttonName",
+        "propsFunction",
+        "recipeId",
+        "buttonStyle",
+        "icon",
+        "isFavorite",
+    ],
     data() {
         return {
             revisedRecipeObj: null,
             revisedRecipeName: "",
             revisedRecipeImage: "",
-            csrf: document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
         };
     },
     created() {

@@ -1,5 +1,5 @@
 <template>
-    <div class="input-group">
+    <div class="input-group" :class="className">
         <div class="input-group-prepend">
             <span class="input-group-text bg-gray" id="basic-addon1"
                 ><i class="fas fa-search"></i
@@ -17,7 +17,7 @@ import VueSuggestInput from "vue-suggest-input";
 import "vue-suggest-input/dist/vue-suggest-input.css";
 export default {
     name: "SearchWindow",
-    props: ["id", "name"],
+    props: ["id", "name", "className"],
     components: {
         VueSuggestInput,
     },

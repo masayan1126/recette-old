@@ -1,137 +1,130 @@
 <template>
-    <div class="top-container container">
-        <router-link
-            :to="{
-                name: 'recipes',
-            }"
-        >
-            <i class="fas fa-angle-left fa-2x"></i>
-        </router-link>
-        <!-- マイレシピ -->
-        <div
-            class="top-container-recipe-title d-flex justify-content-between mt-5"
-        >
-            <h3>{{ listName }}</h3>
-        </div>
-        <div class="mx-auto" style="max-width: 500px">
-            <div
-                class="d-flex pt-4 pb-4 align-items-center;"
-                style="
-                    border-bottom: 1px solid #c4c4c4;
-                    position: relative;
-                    z-index: 1;
-                "
-                v-for="recipe in recipeList"
-                :key="recipe.id"
+    <section class="section-recipelist">
+        <div class="wrapper-recipelist">
+            <router-link
+                class="d-sm-none"
+                :to="{
+                    name: 'recipes',
+                }"
             >
-                <img
-                    class="recipe-image__recipe-list mr-3"
-                    :src="recipe.recipe_image_path"
-                    alt=""
-                />
+                <i class="fas fa-angle-left fa-2x"></i>
+            </router-link>
+            <hr />
 
-                <div>
-                    <!-- <div class="text-right" style="">
-                        <span class="" @click="goToRecipeEditScreen(recipe.id)"
-                            ><i class="fas fa-pencil-alt mr-1"></i>編集</span
-                        >
-                    </div> -->
-                    <div class="d-flex justify-content-between">
-                        <h4>{{ recipe.recipe_name }}</h4>
+            <BreadCrumb class="breadcrumb-component" />
 
-                        <i
-                            @click="deleteRecipe(recipe.id)"
-                            class="fas fa-trash-alt"
-                        ></i>
-                    </div>
-                    <div
-                        v-for="(
-                            recipe_procedure, index
-                        ) in recipe.recipe_procedure"
-                        :key="recipe_procedure"
-                    >
-                        <span class="small">
-                            {{ index + 1 }}.{{ recipe_procedure }}
-                        </span>
-                    </div>
+            <h5>{{ listName }}</h5>
+            <div class="container-recipe-recipelist">
+                <!-- ↓レシピリスト -->
+                <div
+                    class="d-flex pt-4 pb-4 w-100"
+                    style="border-bottom: 1px solid #c4c4c4"
+                    v-for="recipe in recipeList"
+                    :key="recipe.id"
+                >
+                    <img
+                        class="element-recipe_image-recipelist mr-3"
+                        :src="recipe.recipe_image_path"
+                        alt="レシピリストのレシピ画像"
+                    />
 
-                    <div class="d-flex w-100">
-                        <PrimaryButton
-                            :buttonName="'詳細'"
-                            :buttonStyle="showRecipeDetailButtonStyle"
-                            :propsFunction="showRecipeDetail"
-                            :recipe-id="recipe.id"
-                            class="mr-2"
-                        />
+                    <!-- 右側 -->
+                    <div class="w-100">
+                        <!-- 縦方向のflex -->
+                        <div class="d-flex flex-column h-100">
+                            <div class="d-flex justify-content-between">
+                                <h6>{{ recipe.recipe_name }}</h6>
+                                <i
+                                    @click="deleteRecipe(recipe.id)"
+                                    class="fas fa-trash-alt"
+                                ></i>
+                            </div>
 
-                        <PrimaryButton
-                            v-if="recipe.is_favorite == true"
-                            :icon="icon"
-                            :buttonName="'お気に入り解除'"
-                            :buttonStyle="addFavoriteButtonStyle"
-                            :props-function="toggleFavorite"
-                            :recipe-id="recipe.id"
-                        />
-                        <PrimaryButton
-                            v-if="recipe.is_favorite == false"
-                            :icon="icon"
-                            :buttonName="'お気に入り追加'"
-                            :buttonStyle="addFavoriteButtonStyle"
-                            :props-function="toggleFavorite"
-                            :recipe-id="recipe.id"
-                        />
+                            <div class="small mb-0">
+                                <p class="mb-1">
+                                    {{ 1 }}.{{ recipe.recipe_procedure[0] }}
+                                </p>
+                            </div>
+
+                            <div
+                                class="d-flex w-100 justify-content-between mt-auto"
+                            >
+                                <PrimaryButton
+                                    :buttonName="'詳細'"
+                                    :buttonStyle="showRecipeDetailButtonStyle"
+                                    :propsFunction="showRecipeDetail"
+                                    :recipe-id="recipe.id"
+                                />
+
+                                <PrimaryButton
+                                    v-if="recipe.is_favorite == 1"
+                                    :icon="icon"
+                                    :buttonName="'お気に入り解除'"
+                                    :buttonStyle="addFavoriteButtonStyle"
+                                    :props-function="toggleFavorite"
+                                    :recipe-id="recipe.id"
+                                    :isFavorite="recipe.is_favorite"
+                                />
+                                <PrimaryButton
+                                    v-if="recipe.is_favorite == 0"
+                                    :icon="icon"
+                                    :buttonName="'お気に入り追加'"
+                                    :buttonStyle="addFavoriteButtonStyle"
+                                    :props-function="toggleFavorite"
+                                    :recipe-id="recipe.id"
+                                    :isFavorite="recipe.is_favorite"
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- ピックアップレシピ -->
-    </div>
+    </section>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import PrimaryButton from "../parts/PrimaryButton";
+import BreadCrumb from "../common/BreadcrumbTrail";
 export default {
     name: "RecipeList",
-    components: { PrimaryButton },
-    props: ["ingredients", "listName", "listType"],
+    components: { PrimaryButton, BreadCrumb },
+    props: ["listType"],
     data() {
         return {
-            icon: "fas fa-heart",
-            recipeName: "",
+            listName: "",
+            // icon: "fas fa-heart",
             showRecipeDetailButtonStyle: {
                 color: "#fff",
                 backgroundColor: "#B1C6BD",
                 fontSize: "10px",
-                flexBasis: "30%",
+                flexBasis: "32%",
             },
             addFavoriteButtonStyle: {
                 color: "#fff",
                 backgroundColor: "#E0D29E",
                 fontSize: "10px",
-                flexBasis: "70%",
+                flexBasis: "65%",
             },
-            buttonName: "お気に入り追加",
-            isFavorite: false,
-            csrf: document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
         };
     },
     computed: {
         recipeList() {
-            switch (this.listType) {
-                case "myRecipes":
+            switch (this.listName) {
+                case "マイレシピ":
                     return this.recipes.filter(
                         (recipe) => recipe.user_id == this.userId
                     );
                 // break;
 
-                case "newArrivalRecipes":
-                    return this.recipes.filter(
-                        (recipe) => recipe.user_id == this.userId
+                case "新着レシピ":
+                    const newArrivalRecipes = this.recipes.slice();
+                    newArrivalRecipes.sort(
+                        (a, b) =>
+                            new Date(a.updated_at) - new Date(b.updated_at)
                     );
+                    return newArrivalRecipes;
                 // break;
                 // seasonalRecipes
                 default:
@@ -148,12 +141,14 @@ export default {
     },
     created() {},
     mounted() {
-        console.log(this.recipeList);
+        const listType = window.location.pathname.split("/recipes/list/")[1];
+        listType == "my-recipes"
+            ? (this.listName = "マイレシピ")
+            : (this.listName = "新着レシピ");
     },
     methods: {
         ...mapMutations(["setRecipes", "initRecipes"]),
         showRecipeDetail(recipeId) {
-            console.log(recipeId);
             this.$router.push({
                 name: "recipeDetail",
                 params: { recipeId: recipeId },
@@ -197,8 +192,7 @@ export default {
                     });
             }
         },
-        toggleFavorite(recipeId) {
-            this.isFavorite = !this.isFavorite;
+        toggleFavorite(recipeId, isFavorite) {
             let url =
                 "/api/users/" +
                 this.userId +
@@ -206,12 +200,10 @@ export default {
                 recipeId +
                 "/favorite";
 
-            if (this.isFavorite == true) {
-                this.buttonName = "お気に入り解除";
-                url = url + "/add";
-            } else {
-                this.buttonName = "お気に入り追加";
+            if (isFavorite == 1) {
                 url = url + "/remove";
+            } else {
+                url = url + "/add";
             }
 
             axios

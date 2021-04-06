@@ -32,6 +32,8 @@ class RecipesTableSeeder extends Seeder
                 'recipe_category_sub' => "noodlle",
                 'recipe_category_image' => "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png",
                 'is_favorite' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'id' => 1001,
@@ -43,6 +45,8 @@ class RecipesTableSeeder extends Seeder
                 'recipe_category_sub' => "noodlle",
                 'recipe_category_image' => "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png",
                 'is_favorite' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         
         ]);

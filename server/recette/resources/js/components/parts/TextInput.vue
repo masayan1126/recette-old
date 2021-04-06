@@ -4,6 +4,7 @@
         :class="className"
         :type="type"
         :value="value"
+        :placeholder="placeholder"
         @input="$emit('inputFormContent', $event.target.value)"
     />
 </template>
@@ -11,7 +12,7 @@
 <script>
 export default {
     name: "TextInput",
-    props: ["id", "type", "value", "className"],
+    props: ["id", "type", "value", "className", "placeholder"],
     data() {
         return {};
     },

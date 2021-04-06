@@ -46,7 +46,7 @@
                         :id="'email'"
                         :type="'email'"
                         :value="newUserData.userEmailAdress"
-                        :className="'text-input'"
+                        :className="'text-input-black'"
                         @inputFormContent="newUserData.userEmailAdress = $event"
                     />
                 </div>
@@ -91,10 +91,6 @@ export default {
                 userEmailAdress: null,
                 profileImagePath: null,
             },
-
-            csrf: document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
         };
     },
     mounted() {},

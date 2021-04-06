@@ -12,8 +12,9 @@ class RecipeIngredient extends Model
     protected $fillable = [
         'user_id',
         'recipe_ingredient_name',
-        'recipe_ingredient_image',
+        'recipe_ingredient_image_path',
         'recipe_ingredient_category',
+        'recipe_ingredient_quantity',
     ];
 
     public function recipe()

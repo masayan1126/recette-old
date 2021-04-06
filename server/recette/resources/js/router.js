@@ -53,15 +53,15 @@ const router = createRouter({
             props: true,
         },
         {
-            path: "/recipes/:recipeId/edit",
-            name: "editRecipe",
-            component: EditRecipe,
+            path: "/recipes/list/:listType",
+            name: "recipeList",
+            component: RecipeList,
             props: true,
         },
         {
-            path: "/recipes/list",
-            name: "recipeList",
-            component: RecipeList,
+            path: "/recipes/:recipeId/edit",
+            name: "editRecipe",
+            component: EditRecipe,
             props: true,
         },
         {

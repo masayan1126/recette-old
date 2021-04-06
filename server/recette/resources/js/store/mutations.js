@@ -51,4 +51,8 @@ export default {
     },
     setRecipeCategory: recipeCategoryMutations.setRecipeCategory,
     initRecipeCategory: recipeCategoryMutations.initRecipeCategory,
+    setRecipeIngredientQuantity:
+        recipeIngredientMutations.setRecipeIngredientQuantity,
+    initRecipeIngredientQuantity:
+        recipeIngredientMutations.initRecipeIngredientQuantity,
 };

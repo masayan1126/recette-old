@@ -1,9 +1,11 @@
 <template>
-    <section>
+    <section class="">
         <Navbar />
         <NavbarTop />
         <NavbarTopHamburger />
-        <RouterView />
+        <div class="container pt-4" style="padding-bottom: 5rem">
+            <RouterView />
+        </div>
     </section>
 </template>
 
@@ -20,11 +22,7 @@ export default {
     name: "App",
     props: [],
     data() {
-        return {
-            csrf: document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
-        };
+        return {};
     },
     created() {},
     mounted() {},

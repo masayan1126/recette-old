@@ -28,4 +28,6 @@ export default {
     getEditingRecipeProcedureIndex:
         recipeProcedureGetters.getEditingRecipeProcedureIndex,
     getrecipeCategory: recipeCategoryGetters.getRecipeCategory,
+    getRecipeIngredientQuantity:
+        recipeIngredientGetters.getRecipeIngredientQuantity,
 };

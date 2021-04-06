@@ -1,53 +1,58 @@
 <template>
-    <section class="section-recipe_create">
-        <div class="wrapper-recipe_create">
-            <i @click="routerBack" class="fas fa-angle-left fa-2x"></i>
+    <section class="section-recipe_detail">
+        <div class="wrapper-recipe_detail">
+            <ReturnButton :props-function="'routerBack'" class="d-sm-none" />
+            <BreadCrumb class="breadcrumb-component" />
 
-            <div class="container-recipe mb-4 mt-2">
-                <div class="text-right">
-                    <router-link
-                        :to="{
-                            name: 'editRecipe',
-                            params: { recipeId: recipeId },
-                        }"
-                    >
-                        <i class="fas fa-pencil-alt mr-1"></i>編集
-                    </router-link>
-                </div>
-                <img
-                    class="w-100"
-                    :src="selectedRecipe[0].recipe_image_path"
-                    alt=""
-                />
-                <p class="meal-title__recipe-deatail">
-                    {{ selectedRecipe[0].recipe_name }}
-                </p>
+            <div class="text-right">
+                <router-link
+                    :to="{
+                        name: 'editRecipe',
+                        params: { recipeId: recipeId },
+                    }"
+                >
+                    <i class="fas fa-pencil-alt mr-1"></i>編集
+                </router-link>
             </div>
 
-            <div class="container-recipe_ingredient mb-4">
-                <p class="mb-0">材料</p>
-                <div class="area-ingredient">
-                    <ul
-                        v-for="selectedRecipeIngredient in selectedRecipe[0]
-                            .recipe_ingredients"
-                        :key="selectedRecipeIngredient.id"
-                    >
-                        <li>
-                            {{
-                                selectedRecipeIngredient.recipe_ingredient_name
-                            }}
-                        </li>
-                    </ul>
+            <div class="d-md-flex">
+                <div class="w-100">
+                    <img
+                        class="w-100"
+                        :src="selectedRecipe[0].recipe_image_path"
+                        alt=""
+                    />
+
+                    <p class="">
+                        {{ selectedRecipe[0].recipe_name }}
+                    </p>
+                </div>
+
+                <div class="mb-4 w-100">
+                    <p class="mb-0">材料</p>
+                    <div class="container-recipe_ingredient-recipe_detail">
+                        <ul
+                            v-for="selectedRecipeIngredient in selectedRecipe[0]
+                                .recipe_ingredients"
+                            :key="selectedRecipeIngredient.id"
+                        >
+                            <li>
+                                {{
+                                    selectedRecipeIngredient.recipe_ingredient_name
+                                }}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="container-recipe_procedure mb-4">
+            <div class="mb-4">
                 <div class="d-flex justify-content-between align-items-end">
                     <span>作り方</span>
                     <span class="small">
                         <i class="mr-1 fas fa-book-open"></i>レシピURL
                     </span>
                 </div>
-                <div class="area-recipe_procedure p-2">
+                <div class="container-recipe_procedure-recipe_detail p-2">
                     <ul
                         class="pl-1"
                         v-for="(recipeProcedure, index) in selectedRecipe[0]
@@ -58,11 +63,11 @@
                     </ul>
                 </div>
             </div>
-            <div class="container-recipe_procedure mb-4">
+            <div class="mb-4">
                 <div class="d-flex justify-content-between align-items-end">
                     <span>カテゴリー</span>
                 </div>
-                <div class="area-recipe_procedure p-2">
+                <div class="container-recipe_category-recipe_detail p-2">
                     {{ selectedRecipe[0].recipe_category }}
                 </div>
             </div>
@@ -73,11 +78,13 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import ReturnButton from "../parts/ReturnButton";
+import BreadCrumb from "../common/BreadcrumbTrail";
 export default {
     name: "RecipeDetail",
     props: ["recipeId"],
     components: {
         ReturnButton,
+        BreadCrumb,
     },
     data() {
         return {

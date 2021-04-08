@@ -7,6 +7,7 @@ use App\Http\Controllers\RecipeFavoriteController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\RoutingCheckController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -50,10 +51,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // });
 
 
+// Route::group(['middleware' => 'api'], function() {
+    Route::post('/check/routing', [RoutingCheckController::class, 'check'])->name('');
+// });
+
 Route::group(['middleware' => 'api'], function() {
     Route::get('recipes', [RecipeController::class, 'index'])->name('');
 });
-
 
 Route::group(['middleware' => 'api'], function() {
     Route::post('users/{user_id?}/recipes/add', [RecipeController::class, 'store']);

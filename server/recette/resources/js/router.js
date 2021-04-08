@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import App from "./components/App.vue";
 import Login from "./components//auth/Login.vue";
 import Register from "./components//auth/Register.vue";
 import Forgot from "./components//auth/Forgot.vue";
 import Reset from "./components//auth/Reset.vue";
 import MyPage from "./components//auth/MyPage.vue";
+import NotFound from "./components//common/NotFound.vue";
 import Top from "./components/TopPage.vue";
 import RecipeDetail from "./components/recipe/RecipeDetail.vue";
 import EditRecipe from "./components/recipe/EditRecipe.vue";
@@ -15,76 +15,190 @@ import RecipeCategoryDetailList from "./components/recipe/RecipeCategoryDetailLi
 import FavoriteRecipeList from "./components/recipe/FavoriteRecipeList.vue";
 
 const history = createWebHistory();
-
 const router = createRouter({
     history,
-
     routes: [
         {
             path: "/recipes/:recipeId/edit",
             name: "editRecipe",
             component: EditRecipe,
             props: true,
+            beforeEnter: (to, form, next) => {
+                axios
+                    .get("/api/athenticated")
+                    .then((res) => {
+                        axios
+                            .post("/api/check/routing", {
+                                id: to.params.recipeId,
+                            })
+                            .then((res) => {
+                                console.log(res);
+                                if (res.data.length == 0) {
+                                    next({ path: "/404" });
+                                } else {
+                                    next();
+                                }
+                            })
+                            .catch(() => {
+                                next({ path: "/404" });
+                            });
+                    })
+                    .catch(() => {
+                        return next({ name: "login" });
+                    });
+            },
         },
         {
             path: "/recipes/category/:categoryPath",
             name: "recipeCategoryDetailList",
             component: RecipeCategoryDetailList,
             props: true,
+            beforeEnter: (to, form, next) => {
+                console.log(to.params.categoryPath);
+                axios
+                    .get("/api/athenticated")
+                    .then(() => {
+                        if (
+                            to.params.categoryPath != "meat" &&
+                            to.params.categoryPath != "fish" &&
+                            to.params.categoryPath != "veg" &&
+                            to.params.categoryPath != "noodle" &&
+                            to.params.categoryPath != "rice" &&
+                            to.params.categoryPath != "soup" &&
+                            to.params.categoryPath != "bread" &&
+                            to.params.categoryPath != "sweets" &&
+                            to.params.categoryPath != "other"
+                        ) {
+                            next({ path: "/404" });
+                            return;
+                        }
+                        next();
+                    })
+                    .catch(() => {
+                        return next({ name: "login" });
+                    });
+            },
         },
         {
             path: "/recipes/:recipeId",
             name: "recipeDetail",
             component: RecipeDetail,
             props: true,
+            beforeEnter: (to, form, next) => {
+                axios
+                    .get("/api/athenticated")
+                    .then(() => {
+                        axios
+                            .post("/api/check/routing", {
+                                id: to.params.recipeId,
+                            })
+                            .then((res) => {
+                                console.log(res);
+                                if (res.data.length == 0) {
+                                    next({ path: "/404" });
+                                } else {
+                                    next();
+                                }
+                            })
+                            .catch(() => {
+                                next({ path: "/404" });
+                            });
+                    })
+                    .catch(() => {
+                        return next({ name: "login" });
+                    });
+            },
         },
         {
             path: "/recipes/list/:listType",
             name: "recipeList",
             component: RecipeList,
             props: true,
+            beforeEnter: (to, form, next) => {
+                axios
+                    .get("/api/athenticated")
+                    .then(() => {
+                        if (
+                            to.params.listType != "my-recipes" &&
+                            to.params.listType != "new-arrival-recipes"
+                        ) {
+                            next({ path: "/404" });
+                            return;
+                        }
+                        next();
+                    })
+                    .catch(() => {
+                        return next({ name: "login" });
+                    });
+            },
         },
         {
             path: "/recipes/create",
             name: "createRecipe",
             component: CreateRecipe,
             props: true,
+            beforeEnter: (to, form, next) => {
+                axios
+                    .get("/api/athenticated")
+                    .then(() => {
+                        next();
+                    })
+                    .catch(() => {
+                        return next({ name: "login" });
+                    });
+            },
         },
         {
             path: "/recipes/category",
             name: "recipeCategoryList",
             component: RecipeCategoryList,
             props: true,
+            beforeEnter: (to, form, next) => {
+                axios
+                    .get("/api/athenticated")
+                    .then(() => {
+                        next();
+                    })
+                    .catch(() => {
+                        return next({ name: "login" });
+                    });
+            },
         },
         {
             path: "/recipes/favorite",
             name: "favoriteRecipeList",
             component: FavoriteRecipeList,
             props: true,
+            beforeEnter: (to, form, next) => {
+                axios
+                    .get("/api/athenticated")
+                    .then(() => {
+                        next();
+                    })
+                    .catch(() => {
+                        return next({ name: "login" });
+                    });
+            },
         },
         {
-            // routeのパス設定
             path: "/register",
             name: "register",
             component: Register,
             props: true,
         },
         {
-            // routeのパス設定
             path: "/forgot",
             name: "forgot",
             component: Forgot,
             props: true,
         },
         {
-            // routeのパス設定
             path: "/reset",
             name: "reset",
             component: Reset,
             props: true,
         },
         {
-            // routeのパス設定
             path: "/recipes",
             name: "recipes",
             component: Top,
@@ -118,18 +232,31 @@ const router = createRouter({
             },
         },
         {
-            // routeのパス設定
             path: "/login",
             name: "login",
             component: Login,
             props: true,
         },
         {
-            // routeのパス設定
-            path: "/my-page",
+            path: "/mypage",
             name: "myPage",
             component: MyPage,
             props: true,
+            beforeEnter: (to, form, next) => {
+                axios
+                    .get("/api/athenticated")
+                    .then(() => {
+                        next();
+                    })
+                    .catch(() => {
+                        return next({ name: "login" });
+                    });
+            },
+        },
+        {
+            path: "/:pathMatch(.*)*",
+            name: "notFound",
+            component: NotFound,
         },
     ],
     mode: "history",

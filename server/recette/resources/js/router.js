@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import App from "./components/App.vue";
 import Login from "./components//auth/Login.vue";
 import Register from "./components//auth/Register.vue";
+import Forgot from "./components//auth/Forgot.vue";
+import Reset from "./components//auth/Reset.vue";
 import MyPage from "./components//auth/MyPage.vue";
 import Top from "./components/TopPage.vue";
 import RecipeDetail from "./components/recipe/RecipeDetail.vue";
@@ -69,10 +71,51 @@ const router = createRouter({
         },
         {
             // routeのパス設定
+            path: "/forgot",
+            name: "forgot",
+            component: Forgot,
+            props: true,
+        },
+        {
+            // routeのパス設定
+            path: "/reset",
+            name: "reset",
+            component: Reset,
+            props: true,
+        },
+        {
+            // routeのパス設定
             path: "/recipes",
             name: "recipes",
             component: Top,
             props: true,
+            beforeEnter: (to, form, next) => {
+                axios
+                    .get("/api/athenticated")
+                    .then(() => {
+                        next();
+                    })
+                    .catch(() => {
+                        return next({ name: "login" });
+                    });
+            },
+        },
+        {
+            // routeのパス設定
+            path: "/",
+            name: "/",
+            component: Top,
+            props: true,
+            beforeEnter: (to, form, next) => {
+                axios
+                    .get("/api/athenticated")
+                    .then(() => {
+                        return next({ name: "recipes" });
+                    })
+                    .catch(() => {
+                        return next({ name: "login" });
+                    });
+            },
         },
         {
             // routeのパス設定

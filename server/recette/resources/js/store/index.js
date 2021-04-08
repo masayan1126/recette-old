@@ -12,6 +12,7 @@ export const store = createStore({
                 userName: null,
                 userEmailAdress: null,
                 profileImagePath: null,
+                loggedIn: false,
             },
             userId: null,
             recipeName: "",

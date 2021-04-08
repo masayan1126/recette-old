@@ -5,6 +5,7 @@ use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchRecipeController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +18,11 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+Route::get('/reset-password/{token}', [ResetPasswordController::class,'resetPassword'])->name('reset-password');
+
 Route::get('/{any}', function() {
-    return view('layouts.app')->with("userId", Auth::user()->id);
-})->where('any', '.*')->middleware('auth');
+    return view('layouts.app');
+})->where('any', '.*');
 
 // // ログイン直後のリダイレクト
 // Route::get('/', [HomeController::class, 'redirect']

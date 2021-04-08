@@ -82,9 +82,7 @@ class RecipeController extends Controller
         $recipe->save();
         $last_insert_id = $recipe->id; 
         $recipe = Recipe::find($last_insert_id);
-        
-
-        clock($new_recipe);
+    
 
         foreach ($new_recipe->recipeIngredientList as $recipeIngredient) {
             $recipe->recipe_ingredients()->saveMany([
@@ -183,7 +181,7 @@ class RecipeController extends Controller
     public function destroy($user_id,$recipe_id)
     {
         $delete_target_recipe = Recipe::where('user_id', $user_id)->where('id', $recipe_id)->first();
-        clock($delete_target_recipe);
+        
         $delete_target_recipe->delete();
         $recipes = Recipe::with(['recipe_ingredients'])->get();
         return $recipes;

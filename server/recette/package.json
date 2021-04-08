@@ -34,6 +34,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.2",
+        "js-cookie": "^2.2.1",
         "vue-autosuggest": "^2.2.0",
         "vue-router": "^4.0.5",
         "vue-simple-suggest": "^1.10.3",

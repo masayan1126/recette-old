@@ -4,7 +4,7 @@
     >
         <div class="wrapper-login">
             <div class="container-login d-flex flex-column">
-                <h4 class="text-center mb-5">サインイン</h4>
+                <h4 class="text-center mb-5">パスワード再設定</h4>
 
                 <div class="w-100">
                     <InputLabel
@@ -20,24 +20,10 @@
                         @inputFormContent="form.email = $event"
                     />
                 </div>
-                <div class="w-100 mt-4">
-                    <InputLabel
-                        class="mb-0 w-100"
-                        :id="'input-password'"
-                        :name="'パスワード：'"
-                    />
-                    <TextInput
-                        :id="'input-recipe-name'"
-                        :type="'password'"
-                        :value="form.password"
-                        :className="'text-input-black w-100'"
-                        @inputFormContent="form.password = $event"
-                    />
-                </div>
 
                 <div class="w-100 mt-4 text-center">
                     <PrimaryButton
-                        :buttonName="'ログイン'"
+                        :buttonName="'送信する'"
                         :buttonStyle="loginButtonStyle"
                         :propsFunction="loginUser"
                     />
@@ -56,7 +42,7 @@
                     <router-link
                         class="small"
                         :to="{
-                            name: 'forgot',
+                            name: 'register',
                         }"
                     >
                         パスワードをお忘れの方はこちら
@@ -81,7 +67,6 @@ export default {
         return {
             form: {
                 email: "",
-                password: "",
             },
             errors: [],
             loginButtonStyle: {
@@ -93,15 +78,16 @@ export default {
             },
         };
     },
+    mounted() {},
     methods: {
         ...mapMutations(["setUserData"]),
         loginUser() {
+            console.log(this.form.email);
             axios
-                .post("/api/login", this.form)
+                .post("/api/forgot", { email: this.form.email })
                 .then((res) => {
                     console.log(res.data);
-
-                    this.$router.push("/recipes");
+                    this.$router.push("/login");
                 })
                 .catch((error) => {
                     this.errors = error.response.data.errors;

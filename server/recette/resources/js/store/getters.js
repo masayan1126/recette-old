@@ -7,7 +7,6 @@ import recipeCategoryGetters from "./recipeCategory/getters";
 
 export default {
     // auth
-    getUserId: userGetters.getUserId,
     getUserData: userGetters.getUserData,
     // recipe
     getRecipeName: recipeGetters.getRecipeName,

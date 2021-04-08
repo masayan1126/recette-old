@@ -114,7 +114,7 @@ export default {
             switch (this.listName) {
                 case "マイレシピ":
                     return this.recipes.filter(
-                        (recipe) => recipe.user_id == this.userId
+                        (recipe) => recipe.user_id == this.userData.userId
                     );
                 // break;
                 case "新着レシピ":
@@ -128,13 +128,13 @@ export default {
                 // seasonalRecipes
                 default:
                     return this.recipes.filter(
-                        (recipe) => recipe.user_id == this.userId
+                        (recipe) => recipe.user_id == this.userData.userId
                     );
                 // break;
             }
         },
         ...mapGetters({
-            userId: "getUserId",
+            userData: "getUserData",
             recipes: "getRecipes",
         }),
         listType() {
@@ -172,20 +172,6 @@ export default {
                 params: { recipeId: recipeId },
             });
         },
-        returnToPreviousPage: function () {
-            history.back();
-        },
-        goToRecipeEditScreen: function (recipeId) {
-            const userId = this.$store.state.userId;
-            // urlから正規表現でrecipeidのみ抽出
-            // const recipeId = location.pathname.match(/([^\/.]+)/g)[3];
-            location.pathname =
-                "/users/" +
-                this.$store.state.userId +
-                "/recipes/" +
-                "edit/" +
-                recipeId;
-        },
         deleteRecipe(recipeId) {
             const deleteCheckResult = confirm(
                 "このレシピを削除してよろしいですか？"
@@ -193,7 +179,7 @@ export default {
             if (deleteCheckResult == true) {
                 const url =
                     "/api/users/" +
-                    this.userId +
+                    this.userData.userId +
                     "/recipes/" +
                     recipeId +
                     "/delete";
@@ -211,7 +197,7 @@ export default {
         toggleFavorite(recipeId, isFavorite) {
             let url =
                 "/api/users/" +
-                this.userId +
+                this.userData.userId +
                 "/recipes/" +
                 recipeId +
                 "/favorite";

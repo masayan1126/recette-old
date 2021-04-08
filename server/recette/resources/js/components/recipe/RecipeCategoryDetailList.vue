@@ -66,7 +66,7 @@ export default {
         },
         ...mapGetters({
             recipes: "getRecipes",
-            userId: "getUserId",
+            userData: "getData",
             recipeIngredientList: "getRecipeIngredientList",
             isEditingIngredient: "getIsEditingRecipeIngredient",
             editingIngredientIndex: "getEditingRecipeIngredientIndex",

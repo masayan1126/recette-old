@@ -8,13 +8,11 @@ export const store = createStore({
     state() {
         return {
             userData: {
-                userId: null,
                 userName: null,
                 userEmailAdress: null,
                 profileImagePath: null,
                 loggedIn: false,
             },
-            userId: null,
             recipeName: "",
             recipes: [],
             ingredients: [],

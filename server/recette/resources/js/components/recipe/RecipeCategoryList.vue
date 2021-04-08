@@ -83,7 +83,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            userId: "getUserId",
+            userData: "getUserData",
             recipes: "getRecipes",
             recipeIngredientList: "getRecipeIngredientList",
             isEditingIngredient: "getIsEditingRecipeIngredient",

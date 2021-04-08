@@ -2,6 +2,7 @@
     <input
         :id="id"
         :class="className"
+        :style="styleName"
         :type="type"
         :value="value"
         :placeholder="placeholder"
@@ -12,7 +13,7 @@
 <script>
 export default {
     name: "TextInput",
-    props: ["id", "type", "value", "className", "placeholder"],
+    props: ["id", "type", "value", "className", "placeholder", "styleName"],
     data() {
         return {};
     },

@@ -120,7 +120,7 @@ export default {
         },
 
         ...mapGetters({
-            userId: "getUserId",
+            userData: "getUserData",
             recipes: "getRecipes",
         }),
         selectedRecipe() {

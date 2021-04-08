@@ -238,7 +238,6 @@ export default {
                 .get("/api/recipes")
                 .then((response) => {
                     this.setRecipes(response.data);
-                    console.log(this.recipes);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -258,6 +257,7 @@ export default {
         logout() {
             axios.post("/api/logout").then((res) => {
                 this.initUserData();
+                console.log(this.userData);
                 this.$router.push("/login");
             });
         },

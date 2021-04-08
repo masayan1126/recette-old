@@ -8,7 +8,7 @@
         aria-hidden="true"
     >
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content" :style="modalStyle">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
                         {{ modalTitle }}
@@ -23,10 +23,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <InputLabel
-                        :id="'profile-image'"
-                        :name="'プロフィール画像'"
-                    />
                     <ImagePreview :title="'画像UL'" :recipe-image-path="''" />
                     <!-- <TextInput
                         :id="'profile-image'"
@@ -34,21 +30,33 @@
                         :value="profileImagePath"
                         @inputFormContent="profileImagePath = $event"
                     /> -->
-                    <InputLabel :id="'user-name'" :name="'ユーザー名：'" />
-                    <TextInput
-                        :id="'user-name'"
-                        :type="'text'"
-                        :value="newUserData.userName"
-                        @inputFormContent="newUserData.userName = $event"
-                    />
-                    <InputLabel :id="'email'" :name="'メールアドレス'" />
-                    <TextInput
-                        :id="'email'"
-                        :type="'email'"
-                        :value="newUserData.userEmailAdress"
-                        :className="'text-input-black'"
-                        @inputFormContent="newUserData.userEmailAdress = $event"
-                    />
+                    <div class="w-100 mb-2">
+                        <InputLabel
+                            :id="'user-name'"
+                            :name="inputContents.userName"
+                        />
+                        <TextInput
+                            :id="'user-name'"
+                            :type="'text'"
+                            :value="newUserData.userName"
+                            :className="'text-input-black'"
+                            :style-name="inputContentsStyle"
+                            @inputFormContent="newUserData.userName = $event"
+                        />
+                    </div>
+                    <div class="w-100">
+                        <InputLabel :id="'email'" :name="inputContents.email" />
+                        <TextInput
+                            :id="'email'"
+                            :type="'email'"
+                            :value="newUserData.userEmailAdress"
+                            :className="'text-input-black'"
+                            :style-name="inputContentsStyle"
+                            @inputFormContent="
+                                newUserData.userEmailAdress = $event
+                            "
+                        />
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button
@@ -81,7 +89,7 @@ import ImagePreview from "./ImagePreview";
 
 export default {
     name: "Modal",
-    props: ["modalTitle", "editingTargetIngredients", "createEditedRecipe"],
+    props: ["modalTitle", "modalStyle", "inputContents", "inputContentsStyle"],
     components: { TextInput, InputLabel, ImagePreview },
     data() {
         return {
@@ -97,7 +105,6 @@ export default {
     computed: {
         ...mapGetters({
             userData: "getUserData",
-            userId: "getUserId",
             recipes: "getRecipes",
         }),
     },
@@ -124,11 +131,6 @@ export default {
         },
 
         update() {},
-        // sendRevisedIngredientList() {
-        //     const userId = this.$store.state.userId;
-        //     document.createRecipeForm.action = `/users/${userId}/recipes/update`;
-        //     document.createRecipeForm.submit();
-        // },
     },
 };
 </script>

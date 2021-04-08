@@ -1,73 +1,36 @@
 <template>
-    <section class="section-recipe_create">
-        <ReturnButton :path-name="'recipes'" />
-        <p class="text-right">
-            <i
-                data-toggle="modal"
-                data-target="#exampleModal"
-                class="far fa-edit"
-            ></i>
-        </p>
-        <Modal :modal-title="'アカウント情報の編集'" />
-        <div class="wrapper-recipe_create">
-            <div class="recipe_container-top text-center">
+    <section class="section-mypage h-100">
+        <ReturnButton :props-function="routerBack" />
+        <Modal
+            :modal-title="'アカウント情報の編集'"
+            :modal-style="modalStyle"
+            :input-contents="inputContents"
+            :input-contents-style="inputContentsStyle"
+        />
+        <div
+            class="wrapper-mypage mt-5 mt-sm-0 align-items-center d-flex justify-content-center"
+        >
+            <div class="container-mypage text-center">
+                <p
+                    class="text-right"
+                    data-toggle="modal"
+                    data-target="#exampleModal"
+                >
+                    <i class="far fa-edit mr-1"></i>編集する
+                </p>
                 <i class="fas fa-user-circle fa-6x"></i>
-                <p class="mb-0">{{ userData.userName }}</p>
+                <p class="mb-0">ユーザー名：{{ userData.userName }}</p>
                 <p class="mb-0">
                     メールアドレス：{{ userData.userEmailAdress }}
                 </p>
-                <span>登録済みレシピの数：{{ recipes.length }}</span>
+                <span>登録済みレシピ：{{ recipes.length }}</span>
             </div>
         </div>
-        <!-- <div
-            class="top-container-recipe-title d-flex justify-content-between mt-5"
-        >
-            <h5>マイレシピ</h5>
-
-            <router-link
-                class="small"
-                :to="{
-                    name: 'myRecipes',
-                    params: {
-                        listType: 'マイレシピ',
-                    },
-                }"
-            >
-                すべて見る ＞
-            </router-link>
-        </div>
-        <div class="items d-flex flex-wrap">
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-            <div class="item"></div>
-        </div>
-
-        <div
-            class="top-container-recipe-title d-flex justify-content-between mt-5"
-        >
-            <h5>お気に入りレシピ</h5>
-
-            <router-link
-                class="small"
-                :to="{
-                    name: 'myRecipes',
-                    params: {
-                        listType: 'マイレシピ',
-                    },
-                }"
-            >
-                すべて見る ＞
-            </router-link>
-        </div> -->
     </section>
 </template>
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import utilsMixin from "../../mixin/utility";
 import ReturnButton from "../parts/ReturnButton";
 import Modal from "../parts/Modal";
 export default {
@@ -75,8 +38,21 @@ export default {
         ReturnButton,
         Modal,
     },
+    mixins: [utilsMixin],
     data() {
-        return {};
+        return {
+            modalStyle: {
+                backgroundColor: "#454545",
+            },
+            inputContents: {
+                profileImage: "ユーザー画像",
+                userName: "ユーザーネーム",
+                email: "メールアドレス",
+            },
+            inputContentsStyle: {
+                width: "100%",
+            },
+        };
     },
     mounted() {
         console.log(this.userData);
@@ -84,12 +60,11 @@ export default {
     computed: {
         ...mapGetters({
             userData: "getUserData",
-            userId: "getUserId",
             recipes: "getRecipes",
         }),
     },
     methods: {
-        ...mapMutations(["setRecipes", "initRecipes", "setUserData"]),
+        ...mapMutations(["setUserData"]),
     },
 };
 </script>

@@ -292,7 +292,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            userId: "getUserId",
+            userData: "getUserData",
             recipeIngredientList: "getRecipeIngredientList",
             isEditingIngredient: "getIsEditingRecipeIngredient",
             editingIngredientIndex: "getEditingRecipeIngredientIndex",
@@ -436,7 +436,7 @@ export default {
                 return;
             }
 
-            const url = "/api/users/" + this.userId + "/recipes/add";
+            const url = "/api/users/" + this.userData.userId + "/recipes/add";
             let formData = new FormData();
             const file = document.getElementById("imagefile");
             formData.append("file", file.files[0]);
@@ -459,11 +459,14 @@ export default {
         },
         addInitialIngredients() {
             axios
-                .post("/api/users/" + this.userId + "/ingredients/add", {
-                    initialIngredientList: JSON.stringify(
-                        initialIngredientList
-                    ),
-                })
+                .post(
+                    "/api/users/" + this.userData.userId + "/ingredients/add",
+                    {
+                        initialIngredientList: JSON.stringify(
+                            initialIngredientList
+                        ),
+                    }
+                )
                 .then((res) => {
                     console.log(res);
                     this.toastIsShow = false;

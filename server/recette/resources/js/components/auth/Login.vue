@@ -93,14 +93,19 @@ export default {
             },
         };
     },
+    computed: {
+        ...mapGetters({
+            userData: "getUserData",
+        }),
+    },
     methods: {
         ...mapMutations(["setUserData"]),
         loginUser() {
             axios
                 .post("/api/login", this.form)
                 .then((res) => {
-                    console.log(res.data);
-
+                    this.setUserData(res.data);
+                    console.log(this.userData);
                     this.$router.push("/recipes");
                 })
                 .catch((error) => {

@@ -1,6 +1,4 @@
 export default {
-    getUserId: (state) => state.userId,
-    //
     getRecipeName: (state) => state.recipeName,
     //
     getIngredient: (state) => state.ingredient,

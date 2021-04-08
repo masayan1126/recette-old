@@ -6,7 +6,6 @@ import recipeProcedureMutations from "./recipeProcedure/mutations";
 import recipeCategoryMutations from "./recipeCategory/mutations";
 
 export default {
-    setUserId: userMutations.setUserId,
     setUserData: userMutations.setUserData,
     initUserData: userMutations.initUserData,
     //

@@ -263,7 +263,7 @@ export default {
     },
     computed: {
         ...mapGetters({
-            userId: "getUserId",
+            userData: "getUserData",
             recipes: "getRecipes",
             ingredients: "getIngredients",
             recipeIngredientList: "getRecipeIngredientList",
@@ -396,7 +396,7 @@ export default {
 
             const url =
                 "/api/users/" +
-                this.userId +
+                this.userData.userId +
                 "/recipes/" +
                 this.recipeId +
                 "/edit";

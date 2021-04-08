@@ -40,6 +40,14 @@ li {
     border-left: none !important;
 }
 
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
 input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px #454545 inset;
 }
@@ -218,6 +226,10 @@ input:-webkit-autofill {
 // ↓レスポンシブ
 
 @media (max-width: 576px) {
+    .wrapper-mypage {
+        height: 25%;
+    }
+
     .element-category_image-recipe_category_list,
     .element-category_image-recipe_category_detail_list {
         width: 50px;
@@ -260,6 +272,10 @@ input:-webkit-autofill {
 
 // スマホ横
 @media (min-width: 576px) {
+    .wrapper-mypage {
+        height: 40%;
+    }
+
     .element-category_image-recipe_category_list,
     .element-category_image-recipe_category_detail_list {
         width: 100px;
@@ -279,7 +295,8 @@ input:-webkit-autofill {
         height: 180px;
     }
 
-    .wrapper-recipe_create {
+    .wrapper-recipe_create,
+    .wrapper-mypage {
         max-width: 700px;
         margin: 0 auto;
     }
@@ -333,6 +350,10 @@ input:-webkit-autofill {
 
 // タブレット
 @media (min-width: 768px) {
+    .wrapper-mypage {
+        height: 40%;
+    }
+
     .navbar-top-hamburger .collapse {
         max-width: 700px !important;
         margin: 0 auto;

@@ -16428,8 +16428,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 _context.next = 2;
                 return axios.get("/api/recipes").then(function (response) {
                   _this3.setRecipes(response.data);
-
-                  console.log(_this3.recipes);
                 })["catch"](function (error) {
                   console.log(error);
                 });
@@ -16483,6 +16481,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       axios.post("/api/logout").then(function (res) {
         _this5.initUserData();
+
+        console.log(_this5.userData);
 
         _this5.$router.push("/login");
       });
@@ -16614,12 +16614,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     };
   },
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
+    userData: "getUserData"
+  })),
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)(["setUserData"])), {}, {
     loginUser: function loginUser() {
       var _this = this;
 
       axios.post("/api/login", this.form).then(function (res) {
-        console.log(res.data);
+        _this.setUserData(res.data);
+
+        console.log(_this.userData);
 
         _this.$router.push("/recipes");
       })["catch"](function (error) {
@@ -16642,9 +16647,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
-/* harmony import */ var _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/ReturnButton */ "./resources/js/components/parts/ReturnButton.vue");
-/* harmony import */ var _parts_Modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/Modal */ "./resources/js/components/parts/Modal.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
+/* harmony import */ var _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/ReturnButton */ "./resources/js/components/parts/ReturnButton.vue");
+/* harmony import */ var _parts_Modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/Modal */ "./resources/js/components/parts/Modal.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -16654,23 +16660,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_0__.default,
-    Modal: _parts_Modal__WEBPACK_IMPORTED_MODULE_1__.default
+    ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_1__.default,
+    Modal: _parts_Modal__WEBPACK_IMPORTED_MODULE_2__.default
   },
+  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_0__.default],
   data: function data() {
-    return {};
+    return {
+      modalStyle: {
+        backgroundColor: "#454545"
+      },
+      inputContents: {
+        profileImage: "ユーザー画像",
+        userName: "ユーザーネーム",
+        email: "メールアドレス"
+      },
+      inputContentsStyle: {
+        width: "100%"
+      }
+    };
   },
   mounted: function mounted() {
     console.log(this.userData);
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)({
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
     userData: "getUserData",
-    userId: "getUserId",
     recipes: "getRecipes"
   })),
-  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapMutations)(["setRecipes", "initRecipes", "setUserData"]))
+  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)(["setUserData"]))
 });
 
 /***/ }),
@@ -17064,7 +17083,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Modal",
-  props: ["modalTitle", "editingTargetIngredients", "createEditedRecipe"],
+  props: ["modalTitle", "modalStyle", "inputContents", "inputContentsStyle"],
   components: {
     TextInput: _TextInput__WEBPACK_IMPORTED_MODULE_0__.default,
     InputLabel: _InputLabel__WEBPACK_IMPORTED_MODULE_1__.default,
@@ -17083,7 +17102,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mounted: function mounted() {},
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
     userData: "getUserData",
-    userId: "getUserId",
     recipes: "getRecipes"
   })),
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)(["setRecipes", "initRecipes", "setUserData"])), {}, {
@@ -17105,12 +17123,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     returnToPreviousPage: function returnToPreviousPage() {
       history.back();
     },
-    update: function update() {} // sendRevisedIngredientList() {
-    //     const userId = this.$store.state.userId;
-    //     document.createRecipeForm.action = `/users/${userId}/recipes/update`;
-    //     document.createRecipeForm.submit();
-    // },
-
+    update: function update() {}
   })
 });
 
@@ -17127,12 +17140,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _vendor_laravel_jetstream_stubs_inertia_resources_js_Jetstream_Button_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue */ "./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue");
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  components: {
-    Button: _vendor_laravel_jetstream_stubs_inertia_resources_js_Jetstream_Button_vue__WEBPACK_IMPORTED_MODULE_0__.default
-  },
   name: "PrimayButton",
   props: ["buttonName", "propsFunction", "recipeId", "buttonStyle", "icon", "isFavorite"],
   data: function data() {
@@ -17141,29 +17149,6 @@ __webpack_require__.r(__webpack_exports__);
       revisedRecipeName: "",
       revisedRecipeImage: ""
     };
-  },
-  created: function created() {// this.revisedRecipeName = this.editTargetRecipe.recipe_name;
-  },
-  mounted: function mounted() {// console.log(this.editTargetRecipe);
-  },
-  methods: {
-    returnToPreviousPage: function returnToPreviousPage() {
-      history.back();
-    },
-    goToRecipeEditScreen: function goToRecipeEditScreen() {
-      var userId = this.$store.state.userId; // urlから正規表現でrecipeidのみ抽出
-
-      var recipeId = location.pathname.match(/([^\/.]+)/g)[3];
-      console.log(recipeId);
-      location.pathname = "/users/" + this.$store.state.userId + "/recipes/" + "edit/" + recipeId; // location.pathname = `/users/${this.$store.state.userId} + "/" + recipeId`;
-      // const recipeId = 364;
-      // document.testForm.action = `/user/1/recipes/${recipeId}`;
-      // document.testForm.submit();
-      // let id = window.location.pathname.split("/recipe/edit")[1];
-      // if (id) {
-      //     id = id.split("/")[1];
-      // }
-    }
   }
 });
 
@@ -17241,7 +17226,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "TextInput",
-  props: ["id", "type", "value", "className", "placeholder"],
+  props: ["id", "type", "value", "className", "placeholder", "styleName"],
   data: function data() {
     return {};
   },
@@ -17407,7 +17392,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_9__.mapGetters)({
-    userId: "getUserId",
+    userData: "getUserData",
     recipeIngredientList: "getRecipeIngredientList",
     isEditingIngredient: "getIsEditingRecipeIngredient",
     editingIngredientIndex: "getEditingRecipeIngredientIndex",
@@ -17523,7 +17508,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return;
       }
 
-      var url = "/api/users/" + this.userId + "/recipes/add";
+      var url = "/api/users/" + this.userData.userId + "/recipes/add";
       var formData = new FormData();
       var file = document.getElementById("imagefile");
       formData.append("file", file.files[0]);
@@ -17547,7 +17532,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     addInitialIngredients: function addInitialIngredients() {
       var _this2 = this;
 
-      axios.post("/api/users/" + this.userId + "/ingredients/add", {
+      axios.post("/api/users/" + this.userData.userId + "/ingredients/add", {
         initialIngredientList: JSON.stringify(_assets_initialIngredientList_json__WEBPACK_IMPORTED_MODULE_5__)
       }).then(function (res) {
         console.log(res);
@@ -17685,7 +17670,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapGetters)({
-    userId: "getUserId",
+    userData: "getUserData",
     recipes: "getRecipes",
     ingredients: "getIngredients",
     recipeIngredientList: "getRecipeIngredientList",
@@ -17791,7 +17776,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return;
       }
 
-      var url = "/api/users/" + this.userId + "/recipes/" + this.recipeId + "/edit";
+      var url = "/api/users/" + this.userData.userId + "/recipes/" + this.recipeId + "/edit";
       var formData = new FormData();
       var file = document.getElementById("imagefile");
       formData.append("file", file.files[0]);
@@ -18021,7 +18006,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
     recipes: "getRecipes",
-    userId: "getUserId",
+    userData: "getData",
     recipeIngredientList: "getRecipeIngredientList",
     isEditingIngredient: "getIsEditingRecipeIngredient",
     editingIngredientIndex: "getEditingRecipeIngredientIndex"
@@ -18104,7 +18089,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_9__.mapGetters)({
-    userId: "getUserId",
+    userData: "getUserData",
     recipes: "getRecipes",
     recipeIngredientList: "getRecipeIngredientList",
     isEditingIngredient: "getIsEditingRecipeIngredient",
@@ -18232,7 +18217,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return recipeId;
     }
   }, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
-    userId: "getUserId",
+    userData: "getUserData",
     recipes: "getRecipes"
   })), {}, {
     selectedRecipe: function selectedRecipe() {
@@ -18315,7 +18300,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       switch (this.listName) {
         case "マイレシピ":
           return this.recipes.filter(function (recipe) {
-            return recipe.user_id == _this.userId;
+            return recipe.user_id == _this.userData.userId;
           });
         // break;
 
@@ -18330,13 +18315,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         default:
           return this.recipes.filter(function (recipe) {
-            return recipe.user_id == _this.userId;
+            return recipe.user_id == _this.userData.userId;
           });
         // break;
       }
     }
   }, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapGetters)({
-    userId: "getUserId",
+    userData: "getUserData",
     recipes: "getRecipes"
   })), {}, {
     listType: function listType() {
@@ -18368,22 +18353,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
     },
-    returnToPreviousPage: function returnToPreviousPage() {
-      history.back();
-    },
-    goToRecipeEditScreen: function goToRecipeEditScreen(recipeId) {
-      var userId = this.$store.state.userId; // urlから正規表現でrecipeidのみ抽出
-      // const recipeId = location.pathname.match(/([^\/.]+)/g)[3];
-
-      location.pathname = "/users/" + this.$store.state.userId + "/recipes/" + "edit/" + recipeId;
-    },
     deleteRecipe: function deleteRecipe(recipeId) {
       var _this2 = this;
 
       var deleteCheckResult = confirm("このレシピを削除してよろしいですか？");
 
       if (deleteCheckResult == true) {
-        var url = "/api/users/" + this.userId + "/recipes/" + recipeId + "/delete";
+        var url = "/api/users/" + this.userData.userId + "/recipes/" + recipeId + "/delete";
         axios["delete"](url).then(function (res) {
           _this2.$router.push({
             name: "myRecipes"
@@ -18398,7 +18374,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     toggleFavorite: function toggleFavorite(recipeId, isFavorite) {
       var _this3 = this;
 
-      var url = "/api/users/" + this.userId + "/recipes/" + recipeId + "/favorite";
+      var url = "/api/users/" + this.userData.userId + "/recipes/" + recipeId + "/favorite";
 
       if (isFavorite == 1) {
         url = url + "/remove";
@@ -18415,28 +18391,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     }
   })
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue?vue&type=script&lang=js":
-/*!**************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue?vue&type=script&lang=js ***!
-  \**************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: {
-    type: {
-      type: String,
-      "default": 'submit'
-    }
-  }
 });
 
 /***/ }),
@@ -18991,25 +18945,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "section-recipe_create"
+  "class": "section-mypage h-100"
+};
+var _hoisted_2 = {
+  "class": "wrapper-mypage mt-5 mt-sm-0 align-items-center d-flex justify-content-center"
+};
+var _hoisted_3 = {
+  "class": "container-mypage text-center"
 };
 
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
-  "class": "text-right"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+  "class": "text-right",
   "data-toggle": "modal",
-  "data-target": "#exampleModal",
-  "class": "far fa-edit"
-})], -1
+  "data-target": "#exampleModal"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+  "class": "far fa-edit mr-1"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("編集する ")], -1
 /* HOISTED */
 );
-
-var _hoisted_3 = {
-  "class": "wrapper-recipe_create"
-};
-var _hoisted_4 = {
-  "class": "recipe_container-top text-center"
-};
 
 var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
   "class": "fas fa-user-circle fa-6x"
@@ -19029,16 +18982,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Modal");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("section", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ReturnButton, {
-    "path-name": 'recipes'
-  }), _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Modal, {
-    "modal-title": 'アカウント情報の編集'
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.userData.userName), 1
+    "props-function": _ctx.routerBack
+  }, null, 8
+  /* PROPS */
+  , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Modal, {
+    "modal-title": 'アカウント情報の編集',
+    "modal-style": $data.modalStyle,
+    "input-contents": $data.inputContents,
+    "input-contents-style": $data.inputContentsStyle
+  }, null, 8
+  /* PROPS */
+  , ["modal-style", "input-contents", "input-contents-style"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_6, "ユーザー名：" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.userData.userName), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_7, " メールアドレス：" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.userData.userEmailAdress), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "登録済みレシピの数：" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.recipes.length), 1
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "登録済みレシピ：" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.recipes.length), 1
   /* TEXT */
-  )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div\n            class=\"top-container-recipe-title d-flex justify-content-between mt-5\"\n        >\n            <h5>マイレシピ</h5>\n\n            <router-link\n                class=\"small\"\n                :to=\"{\n                    name: 'myRecipes',\n                    params: {\n                        listType: 'マイレシピ',\n                    },\n                }\"\n            >\n                すべて見る ＞\n            </router-link>\n        </div>\n        <div class=\"items d-flex flex-wrap\">\n            <div class=\"item\"></div>\n            <div class=\"item\"></div>\n            <div class=\"item\"></div>\n            <div class=\"item\"></div>\n            <div class=\"item\"></div>\n            <div class=\"item\"></div>\n            <div class=\"item\"></div>\n            <div class=\"item\"></div>\n        </div>\n\n        <div\n            class=\"top-container-recipe-title d-flex justify-content-between mt-5\"\n        >\n            <h5>お気に入りレシピ</h5>\n\n            <router-link\n                class=\"small\"\n                :to=\"{\n                    name: 'myRecipes',\n                    params: {\n                        listType: 'マイレシピ',\n                    },\n                }\"\n            >\n                すべて見る ＞\n            </router-link>\n        </div> ")]);
+  )])])]);
 }
 
 /***/ }),
@@ -19721,17 +19681,14 @@ var _hoisted_2 = {
   role: "document"
 };
 var _hoisted_3 = {
-  "class": "modal-content"
-};
-var _hoisted_4 = {
   "class": "modal-header"
 };
-var _hoisted_5 = {
+var _hoisted_4 = {
   "class": "modal-title",
   id: "exampleModalLabel"
 };
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
   type: "button",
   "class": "close",
   "data-dismiss": "modal",
@@ -19742,14 +19699,20 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_7 = {
+var _hoisted_6 = {
   "class": "modal-body"
 };
+var _hoisted_7 = {
+  "class": "w-100 mb-2"
+};
 var _hoisted_8 = {
+  "class": "w-100"
+};
+var _hoisted_9 = {
   "class": "modal-footer"
 };
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
   type: "button",
   "class": "btn btn-secondary",
   "data-dismiss": "modal"
@@ -19758,53 +19721,62 @@ var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 );
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_InputLabel = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("InputLabel");
-
   var _component_ImagePreview = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ImagePreview");
+
+  var _component_InputLabel = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("InputLabel");
 
   var _component_TextInput = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TextInput");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h5", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.modalTitle), 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+    "class": "modal-content",
+    style: $props.modalStyle
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h5", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.modalTitle), 1
   /* TEXT */
-  ), _hoisted_6]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    id: 'profile-image',
-    name: 'プロフィール画像'
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ImagePreview, {
+  ), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ImagePreview, {
     title: '画像UL',
     "recipe-image-path": ''
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <TextInput\n                        :id=\"'profile-image'\"\n                        :type=\"'text'\"\n                        :value=\"profileImagePath\"\n                        @inputFormContent=\"profileImagePath = $event\"\n                    /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <TextInput\n                        :id=\"'profile-image'\"\n                        :type=\"'text'\"\n                        :value=\"profileImagePath\"\n                        @inputFormContent=\"profileImagePath = $event\"\n                    /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
     id: 'user-name',
-    name: 'ユーザー名：'
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
+    name: $props.inputContents.userName
+  }, null, 8
+  /* PROPS */
+  , ["name"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
     id: 'user-name',
     type: 'text',
     value: $data.newUserData.userName,
+    className: 'text-input-black',
+    "style-name": $props.inputContentsStyle,
     onInputFormContent: _cache[1] || (_cache[1] = function ($event) {
       return $data.newUserData.userName = $event;
     })
   }, null, 8
   /* PROPS */
-  , ["value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
+  , ["value", "style-name"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
     id: 'email',
-    name: 'メールアドレス'
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
+    name: $props.inputContents.email
+  }, null, 8
+  /* PROPS */
+  , ["name"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
     id: 'email',
     type: 'email',
     value: $data.newUserData.userEmailAdress,
     className: 'text-input-black',
+    "style-name": $props.inputContentsStyle,
     onInputFormContent: _cache[2] || (_cache[2] = function ($event) {
       return $data.newUserData.userEmailAdress = $event;
     })
   }, null, 8
   /* PROPS */
-  , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+  , ["value", "style-name"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
     onClick: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.updateUserData();
     }, ["prevent"])),
     type: "button",
     "class": "btn btn-primary",
     "data-dismiss": "modal"
-  }, " 完了 ")])])])]);
+  }, " 完了 ")])], 4
+  /* STYLE */
+  )])]);
 }
 
 /***/ }),
@@ -19941,14 +19913,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("input", {
     id: $props.id,
     "class": $props.className,
+    style: $props.styleName,
     type: $props.type,
     value: $props.value,
     placeholder: $props.placeholder,
     onInput: _cache[1] || (_cache[1] = function ($event) {
       return _ctx.$emit('inputFormContent', $event.target.value);
     })
-  }, null, 42
-  /* CLASS, PROPS, HYDRATE_EVENTS */
+  }, null, 46
+  /* CLASS, STYLE, PROPS, HYDRATE_EVENTS */
   , ["id", "type", "value", "placeholder"]);
 }
 
@@ -21078,30 +21051,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue?vue&type=template&id=81dfb240":
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue?vue&type=template&id=81dfb240 ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render)
-/* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-
-function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("button", {
-    type: $props.type,
-    "class": "inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")], 8
-  /* PROPS */
-  , ["type"]);
-}
-
-/***/ }),
-
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -21532,13 +21481,11 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
   state: function state() {
     return {
       userData: {
-        userId: null,
         userName: null,
         userEmailAdress: null,
         profileImagePath: null,
         loggedIn: false
       },
-      userId: null,
       recipeName: "",
       recipes: [],
       ingredients: [],
@@ -21627,7 +21574,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  setUserId: _user_mutations__WEBPACK_IMPORTED_MODULE_0__.default.setUserId,
   setUserData: _user_mutations__WEBPACK_IMPORTED_MODULE_0__.default.setUserData,
   initUserData: _user_mutations__WEBPACK_IMPORTED_MODULE_0__.default.initUserData,
   //
@@ -21946,9 +21892,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  getUserId: function getUserId(state) {
-    return state.userId;
-  },
   getUserData: function getUserData(state) {
     return state.userData;
   }
@@ -21968,9 +21911,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  setUserId: function setUserId(state, userId) {
-    state.userId = userId;
-  },
   setUserData: function setUserData(state, userData) {
     state.userData.userId = userData.id;
     state.userData.userName = userData.name;
@@ -59167,32 +59107,6 @@ _RecipeList_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__f
 
 /***/ }),
 
-/***/ "./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue":
-/*!**********************************************************************************!*\
-  !*** ./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue ***!
-  \**********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _Button_vue_vue_type_template_id_81dfb240__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Button.vue?vue&type=template&id=81dfb240 */ "./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue?vue&type=template&id=81dfb240");
-/* harmony import */ var _Button_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Button.vue?vue&type=script&lang=js */ "./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue?vue&type=script&lang=js");
-
-
-
-_Button_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.render = _Button_vue_vue_type_template_id_81dfb240__WEBPACK_IMPORTED_MODULE_0__.render
-/* hot reload */
-if (false) {}
-
-_Button_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default.__file = "vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue"
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_Button_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__.default);
-
-/***/ }),
-
 /***/ "./resources/js/components/App.vue?vue&type=script&lang=js":
 /*!*****************************************************************!*\
   !*** ./resources/js/components/App.vue?vue&type=script&lang=js ***!
@@ -59625,22 +59539,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue?vue&type=script&lang=js":
-/*!**********************************************************************************************************!*\
-  !*** ./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue?vue&type=script&lang=js ***!
-  \**********************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Button_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__.default)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Button_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Button.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue?vue&type=script&lang=js");
- 
-
-/***/ }),
-
 /***/ "./resources/js/components/App.vue?vue&type=template&id=332fccf4":
 /*!***********************************************************************!*\
   !*** ./resources/js/components/App.vue?vue&type=template&id=332fccf4 ***!
@@ -60069,22 +59967,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_RecipeList_vue_vue_type_template_id_d031355c__WEBPACK_IMPORTED_MODULE_0__.render)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_RecipeList_vue_vue_type_template_id_d031355c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./RecipeList.vue?vue&type=template&id=d031355c */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/recipe/RecipeList.vue?vue&type=template&id=d031355c");
-
-
-/***/ }),
-
-/***/ "./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue?vue&type=template&id=81dfb240":
-/*!****************************************************************************************************************!*\
-  !*** ./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue?vue&type=template&id=81dfb240 ***!
-  \****************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Button_vue_vue_type_template_id_81dfb240__WEBPACK_IMPORTED_MODULE_0__.render)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_Button_vue_vue_type_template_id_81dfb240__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../../../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./Button.vue?vue&type=template&id=81dfb240 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./vendor/laravel/jetstream/stubs/inertia/resources/js/Jetstream/Button.vue?vue&type=template&id=81dfb240");
 
 
 /***/ }),

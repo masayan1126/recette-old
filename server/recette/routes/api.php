@@ -8,6 +8,8 @@ use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,9 +33,22 @@ Route::post('/register', [RegisterController::class,'register']);
 Route::post('/login', [LoginController::class,'login']);
 Route::post('/logout', [LoginController::class,'logout']);
 
+// forgot
+Route::post('/forgot', [ForgotPasswordController::class,'forgot'])->name('forgot');
+// reset
+Route::post('/reset', [ResetPasswordController::class,'reset'])->name('reset');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Route::group(['middleware' => 'api'], function() {
+//     Route::post('forgot', [ForgotPasswordController::class, 'forgot']);
+// });
+// Route::group(['middleware' => 'api'], function() {
+//     Route::post('reset', [ForgotPasswordController::class, 'reset']);
+// });
+
 
 Route::group(['middleware' => 'api'], function() {
     Route::get('recipes', [RecipeController::class, 'index'])->name('');

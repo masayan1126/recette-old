@@ -1,64 +1,107 @@
 <template>
-    <div class="flex flex-wrap w-full justify-center items-center pt-56">
-        <div class="flex flex-wrap max-w-xl">
-            <div class="p-2 text-2xl text-gray-800 font-semibold">
-                <h1>Register an account</h1>
-            </div>
-            <div class="p-2 w-full">
-                <label class="w-full" for="name">Name</label>
-                <span class="w-full text-red-500" v-if="errors.name">{{
-                    errors.name[0]
-                }}</span>
-                <input
-                    class="w-full bg-gray-100 rounded border border-gray-400 focus:outline-none focus:border-indigo-500 text-base px-4 py-2"
-                    placeholder="Name"
-                    type="text"
-                    v-model="form.name"
+    <section
+        class="register h-100 d-flex align-items-center justify-content-center"
+    >
+        <div class="wrapper-register d-md-flex">
+            <div class="w-50 d-none d-md-block">
+                <img
+                    class="w-100 element-register_image-register"
+                    src="/images/undraw_cooking_lyxy.svg"
+                    alt=""
                 />
             </div>
-            <div class="p-2 w-full">
-                <label for="email">Your e-mail</label>
-                <input
-                    class="w-full bg-gray-100 rounded border border-gray-400 focus:outline-none focus:border-indigo-500 text-base px-4 py-2"
-                    placeholder="Email"
-                    type="email"
-                    v-model="form.email"
-                />
-            </div>
-            <div class="p-2 w-full">
-                <label for="password">Password</label>
-                <input
-                    class="w-full bg-gray-100 rounded border border-gray-400 focus:outline-none focus:border-indigo-500 text-base px-4 py-2"
-                    placeholder="Password"
-                    type="password"
-                    v-model="form.password"
-                    name="password"
-                />
-            </div>
-            <div class="p-2 w-full">
-                <label for="confirm_password">Confirm Password</label>
-                <input
-                    class="w-full bg-gray-100 rounded border border-gray-400 focus:outline-none focus:border-indigo-500 text-base px-4 py-2"
-                    placeholder="Confirm Password"
-                    type="password"
-                    v-model="form.password_confirmation"
-                    name="password_confirmation"
-                />
-            </div>
-            <div class="p-2 w-full mt-4">
-                <button
-                    @click.prevent="saveForm"
-                    type="submit"
-                    class="flex text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
-                >
-                    Register
-                </button>
+            <div class="w-100 w-md-50 container-login d-flex flex-column">
+                <h4 class="mb-5">アカウント登録</h4>
+
+                <div class="w-100">
+                    <InputLabel
+                        class="mb-0 w-100"
+                        :id="'input-user-name'"
+                        :name="'ユーザー名'"
+                    />
+                    <TextInput
+                        :id="'input-user-name'"
+                        :type="'text'"
+                        :value="form.name"
+                        :className="'text-input-black w-100'"
+                        @inputFormContent="form.name = $event"
+                    />
+                </div>
+                <div class="w-100 mt-4">
+                    <InputLabel
+                        class="mb-0 w-100"
+                        :id="'input-email'"
+                        :name="'メールアドレス'"
+                    />
+                    <TextInput
+                        :id="'input-email'"
+                        :type="'email'"
+                        :value="form.email"
+                        :className="'text-input-black w-100'"
+                        @inputFormContent="form.email = $event"
+                    />
+                </div>
+                <div class="w-100 mt-4">
+                    <InputLabel
+                        class="mb-0 w-100"
+                        :id="'input-password'"
+                        :name="'パスワード：'"
+                    />
+                    <TextInput
+                        :id="'input-password'"
+                        :type="'password'"
+                        :value="form.password"
+                        :className="'text-input-black w-100'"
+                        @inputFormContent="form.password = $event"
+                    />
+                </div>
+                <div class="w-100 mt-4">
+                    <InputLabel
+                        class="mb-0 w-100"
+                        :id="'input-password_confirmation'"
+                        :name="'確認用パスワード：'"
+                    />
+                    <TextInput
+                        :id="'input-password_confirmation'"
+                        :type="'password'"
+                        :value="form.password_confirmation"
+                        :className="'text-input-black w-100'"
+                        @inputFormContent="form.password_confirmation = $event"
+                    />
+                </div>
+
+                <div class="w-100 mt-4 text-center">
+                    <PrimaryButton
+                        :buttonName="'ログイン'"
+                        :buttonStyle="loginButtonStyle"
+                        :propsFunction="loginUser"
+                    />
+                </div>
+                <div class="w-100 mt-4 text-center">
+                    <router-link
+                        class="small"
+                        :to="{
+                            name: 'login',
+                        }"
+                    >
+                        すでにアカウントをお持ちの方はこちら
+                    </router-link>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 </template>
 <script>
+import { mapGetters, mapMutations } from "vuex";
+import PrimaryButton from "../parts/PrimaryButton";
+import TextInput from "../parts/TextInput";
+import InputLabel from "../parts/InputLabel";
 export default {
+    components: {
+        PrimaryButton,
+        TextInput,
+        InputLabel,
+    },
     data() {
         return {
             form: {
@@ -68,14 +111,21 @@ export default {
                 password_confirmation: "",
             },
             errors: [],
+            loginButtonStyle: {
+                color: "#fff",
+                backgroundColor: "#E4C8AD",
+                fontSize: "12px",
+                width: "100%",
+                height: "35px",
+            },
         };
     },
     methods: {
         saveForm() {
             axios
                 .post("/api/register", this.form)
-                .then(() => {
-                    console.log("saved");
+                .then((res) => {
+                    console.log(res.data);
                     this.$router.push("/recipes");
                 })
                 .catch((error) => {

@@ -221,6 +221,7 @@ export default {
             "setRecipes",
             "initRecipes",
             "setUserData",
+            "initUserData",
             "setIngredients",
             "initIngredients",
         ]),
@@ -255,7 +256,8 @@ export default {
                 });
         },
         logout() {
-            axios.post("/api/logout").then(() => {
+            axios.post("/api/logout").then((res) => {
+                this.initUserData();
                 this.$router.push("/login");
             });
         },

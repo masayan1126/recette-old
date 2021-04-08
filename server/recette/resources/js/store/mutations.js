@@ -8,6 +8,7 @@ import recipeCategoryMutations from "./recipeCategory/mutations";
 export default {
     setUserId: userMutations.setUserId,
     setUserData: userMutations.setUserData,
+    initUserData: userMutations.initUserData,
     //
     setRecipeName: recipeMutations.setRecipeName,
     initRecipeName: recipeMutations.initRecipeName,

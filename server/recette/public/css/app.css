@@ -10993,6 +10993,11 @@ input:-webkit-autofill {
   border-radius: 0.2rem;
 }
 
+.container-login {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
 .text-input-black {
   border: none;
   border-bottom: 1px #c4c4c4 solid !important;
@@ -11000,7 +11005,6 @@ input:-webkit-autofill {
   outline: none;
   caret-color: #c4c4c4;
   color: #c4c4c4;
-  width: 75%;
 }
 
 .text-input-white {
@@ -11010,7 +11014,6 @@ input:-webkit-autofill {
   outline: none;
   caret-color: #454545;
   color: #454545;
-  width: 80%;
 }
 
 .bg-gray {
@@ -11130,6 +11133,11 @@ input:-webkit-autofill {
   color: #454545;
   padding: 10px;
   border-radius: 5px;
+}
+
+.element-register_image-register {
+  max-width: 400px;
+  max-height: 400px;
 }
 
 @media (max-width: 576px) {

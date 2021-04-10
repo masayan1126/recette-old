@@ -16614,10 +16614,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     };
   },
+  created: function created() {
+    this.initUserData();
+    console.log(this.userData);
+  },
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
     userData: "getUserData"
   })),
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)(["setUserData"])), {}, {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)(["setUserData", "initUserData"])), {}, {
     loginUser: function loginUser() {
       var _this = this;
 
@@ -16669,16 +16673,66 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_0__.default],
   data: function data() {
     return {
-      modalStyle: {
-        backgroundColor: "#454545"
+      // modalContents: {
+      //     newUserData: {
+      //         userId: null,
+      //         userName: "",
+      //         userEmailAdress: null,
+      //         profileImagePath: null,
+      //     },
+      //     modalStyle: {
+      //         backgroundColor: "#454545",
+      //     },
+      //     inputContents: {
+      //         profileImage: "ユーザー画像",
+      //         userName: "ユーザーネーム",
+      //         email: "メールアドレス",
+      //     },
+      //     inputContentsStyle: {
+      //         width: "100%",
+      //     },
+      // },
+      contents: {
+        modalContents: {
+          modalTitle: "ユーザー情報の編集"
+        },
+        inputContents: {
+          label: {
+            one: {
+              id: "input-username",
+              name: "ユーザーネーム"
+            },
+            two: {
+              id: "input-mail",
+              name: "メールアドレス"
+            }
+          },
+          input: {
+            one: {
+              id: "input-username",
+              value: "",
+              type: "text"
+            },
+            two: {
+              id: "input-mail",
+              value: "",
+              type: "email"
+            }
+          }
+        }
       },
-      inputContents: {
-        profileImage: "ユーザー画像",
-        userName: "ユーザーネーム",
-        email: "メールアドレス"
+      style: {
+        modalStyle: {
+          backgroundColor: "#454545"
+        },
+        unnecessaryElementStyle: {// display: "none !important",
+        },
+        inputContentsStyle: {
+          width: "100%"
+        }
       },
-      inputContentsStyle: {
-        width: "100%"
+      propsFunction: {
+        initInputValue: this.initInputValue
       }
     };
   },
@@ -16689,7 +16743,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     userData: "getUserData",
     recipes: "getRecipes"
   })),
-  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)(["setUserData"]))
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)(["setUserData"])), {}, {
+    initInputValue: function initInputValue() {
+      this.contents.inputContents.input.one.value = "";
+      this.contents.inputContents.input.two.value = "";
+    },
+    updateUserData: function updateUserData() {
+      var _this = this;
+
+      axios.put("/api/account/" + this.userData.userId + "/edit", {
+        newUserData: this.newUserData,
+        userName: this.newUserData.userName
+      }).then(function (response) {
+        console.log(response);
+
+        _this.setUserData(response.data);
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    }
+  })
 });
 
 /***/ }),
@@ -17043,7 +17116,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ["title", "setImagefile"],
+  props: ["title", "setImagefile", "uploadIconStyle"],
   name: "ImagePreview",
   data: function data() {
     return {
@@ -17119,48 +17192,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Modal",
-  props: ["modalTitle", "modalStyle", "inputContents", "inputContentsStyle"],
+  props: ["contents", "style", "propsFunction"],
   components: {
     TextInput: _TextInput__WEBPACK_IMPORTED_MODULE_0__.default,
     InputLabel: _InputLabel__WEBPACK_IMPORTED_MODULE_1__.default,
     ImagePreview: _ImagePreview__WEBPACK_IMPORTED_MODULE_2__.default
   },
   data: function data() {
-    return {
-      newUserData: {
-        userId: null,
-        userName: "",
-        userEmailAdress: null,
-        profileImagePath: null
-      }
-    };
+    return {};
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    this.propsFunction();
+  },
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
     userData: "getUserData",
     recipes: "getRecipes"
   })),
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)(["setRecipes", "initRecipes", "setUserData"])), {}, {
-    updateUserData: function updateUserData() {
-      var _this = this;
-
-      console.log(this.newUserData.userName);
-      axios.put("/api/account/" + this.userData.userId + "/edit", {
-        newUserData: this.newUserData,
-        userName: this.newUserData.userName
-      }).then(function (response) {
-        console.log(response);
-
-        _this.setUserData(response.data);
-      })["catch"](function (err) {
-        console.log(err);
-      });
-    },
-    returnToPreviousPage: function returnToPreviousPage() {
-      history.back();
-    },
-    update: function update() {}
-  })
+  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)(["setRecipes", "initRecipes", "setUserData"]))
 });
 
 /***/ }),
@@ -17309,7 +17357,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var _parts_ImagePreview__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/ImagePreview */ "./resources/js/components/parts/ImagePreview.vue");
 /* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
 /* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
@@ -17319,11 +17367,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../parts/ReturnButton */ "./resources/js/components/parts/ReturnButton.vue");
 /* harmony import */ var _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common/BreadcrumbTrail */ "./resources/js/components/common/BreadcrumbTrail.vue");
 /* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
+/* harmony import */ var _parts_Modal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../parts/Modal */ "./resources/js/components/parts/Modal.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -17346,12 +17396,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_2__.default,
     InputLabel: _parts_InputLabel__WEBPACK_IMPORTED_MODULE_3__.default,
     ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_6__.default,
-    BreadCrumb: _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_7__.default
+    BreadCrumb: _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_7__.default,
+    Modal: _parts_Modal__WEBPACK_IMPORTED_MODULE_9__.default
   },
   data: function data() {
     return {
-      // 初期データの食材リスト登録状況に応じてトーストの表示を切り替えるためのフラグ
-      toastIsShow: false,
       sendNewRecipeButtonStyle: {
         color: "#fff",
         backgroundColor: "#E4C8AD",
@@ -17359,6 +17408,41 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         width: "100%",
         height: "35px"
       },
+      contents: {
+        modalContents: {
+          modalTitle: "レシピURLの登録"
+        },
+        inputContents: {
+          label: {
+            one: {
+              id: "primary-input-recipe-url",
+              name: "URL1"
+            },
+            two: {}
+          },
+          input: {
+            one: {
+              id: "primary-input-recipe-url",
+              value: "",
+              type: "text"
+            },
+            two: {}
+          }
+        }
+      },
+      style: {
+        modalStyle: {
+          backgroundColor: "#454545"
+        },
+        inputContentsStyle: {
+          width: "100%"
+        },
+        unnecessaryElementStyle: {
+          display: "none !important"
+        }
+      },
+      propsFunction: this.initInputValue,
+      toastIsShow: false,
       breadCrumbList: [{
         id: 1,
         name: "ホーム",
@@ -17369,7 +17453,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         linkName: "createRecipe"
       }],
       file: null,
-      url: null,
+      url: "/images/no_image.png",
       categories: [{
         id: 1,
         recipe_category_name: "肉料理",
@@ -17427,7 +17511,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }]
     };
   },
-  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_9__.mapGetters)({
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_10__.mapGetters)({
     userData: "getUserData",
     recipeIngredientList: "getRecipeIngredientList",
     isEditingIngredient: "getIsEditingRecipeIngredient",
@@ -17442,7 +17526,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         recipeName: this.recipeName,
         recipeIngredientList: this.recipeIngredientList,
         recipeProcedure: this.recipeProcedureList,
-        recipeCategory: this.recipeCategory
+        recipeCategory: this.recipeCategory,
+        recipeUrl: this.contents.inputContents.input.one.value
       };
       return newRecipe;
     },
@@ -17488,11 +17573,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }),
   mounted: function mounted() {
-    this.initStoreDataSet(); // 初期データの食材リストが未登録なら、トーストでメッセージを表示する
+    var _this = this;
+
+    this.initStoreDataSet();
+    fetch("/images/no_image.png").then(function (response) {
+      return response.blob();
+    }).then(function (blob) {
+      return new File([blob], "image.jpg");
+    }).then(function (file) {
+      console.log(file);
+
+      _this.uploadFile(file); // fileはFileオブジェクト
+
+    }); // const file = new File(["blob"], "/images/no_image.png", {
+    //     type: "image/jpeg",
+    // });
+    // 初期データの食材リストが未登録なら、トーストでメッセージを表示する
 
     this.ingredients.length == 0 ? this.toastIsShow = true : "";
   },
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_9__.mapMutations)(["setRecipeName", "initRecipeName", "setRecipeIngredient", "initRecipeIngredient", "deleteRecipeIngredient", "setRecipeIngredientList", "initRecipeIngredientList", "setIsEditingRecipeIngredient", "initIsEditingRecipeIngredient", "setEditingRecipeIngredientIndex", "initEditingRecipeIngredientIndex", "setRecipeProcedure", "initRecipeProcedure", "setRecipeProcedureList", "initRecipeProcedureList", "setIsEditingRecipeProcedure", "initIsEditingRecipeProcedure", "setEditingRecipeProcedureIndex", "initEditingRecipeProcedureIndex", "deleteRecipeProcedure", "setRecipeCategory", "initRecipeCategory", "setRecipeIngredientQuantity", "initRecipeIngredientQuantity"])), {}, {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_10__.mapMutations)(["setRecipeName", "initRecipeName", "setRecipeIngredient", "initRecipeIngredient", "deleteRecipeIngredient", "setRecipeIngredientList", "initRecipeIngredientList", "setIsEditingRecipeIngredient", "initIsEditingRecipeIngredient", "setEditingRecipeIngredientIndex", "initEditingRecipeIngredientIndex", "setRecipeProcedure", "initRecipeProcedure", "setRecipeProcedureList", "initRecipeProcedureList", "setIsEditingRecipeProcedure", "initIsEditingRecipeProcedure", "setEditingRecipeProcedureIndex", "initEditingRecipeProcedureIndex", "deleteRecipeProcedure", "setRecipeCategory", "initRecipeCategory", "setRecipeIngredientQuantity", "initRecipeIngredientQuantity", "setIngredients", "initIngredients"])), {}, {
     addRecipeIngredient: function addRecipeIngredient() {
       if (this.recipeIngredient == null) {
         alert("食材を選択してください");
@@ -17537,7 +17637,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.deleteRecipeProcedure(index);
     },
     sendNewRecipe: function sendNewRecipe() {
-      var _this = this;
+      var _this2 = this;
 
       if (this.recipeName == "") {
         alert("レシピ名は必須です");
@@ -17556,29 +17656,40 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (res) {
         console.log(res);
 
-        _this.$router.push({
+        _this2.$router.push({
           name: "recipes"
         });
 
-        _this.initRecipeIngredientList();
+        _this2.initRecipeIngredientList();
       })["catch"](function (error) {
         console.log(error);
       });
     },
     addInitialIngredients: function addInitialIngredients() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.post("/api/users/" + this.userData.userId + "/ingredients/add", {
         initialIngredientList: JSON.stringify(_assets_initialIngredientList_json__WEBPACK_IMPORTED_MODULE_5__)
       }).then(function (res) {
         console.log(res);
-        _this2.toastIsShow = false;
+
+        _this3.setIngredients(res.data);
+
+        _this3.toastIsShow = false;
       })["catch"](function (error) {
         console.log(error);
       });
     },
     uploadFile: function uploadFile(e) {
+      if (this.url == "/images/no_image.png") {
+        console.log(e);
+        this.file = e;
+        this.url = URL.createObjectURL(this.file);
+        return;
+      }
+
       this.file = e.target.files[0];
+      console.log(e.target.files[0]);
       this.url = URL.createObjectURL(this.file);
     },
     initStoreDataSet: function initStoreDataSet() {
@@ -17593,6 +17704,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.initIsEditingRecipeProcedure();
       this.initEditingRecipeProcedureIndex();
       this.initRecipeIngredientQuantity();
+    },
+    initInputValue: function initInputValue() {
+      this.contents.inputContents.input.one.value = "";
+      this.contents.inputContents.input.two.value = "";
     }
   })
 });
@@ -17610,18 +17725,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
 /* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
 /* harmony import */ var _parts_ImagePreview__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/ImagePreview */ "./resources/js/components/parts/ImagePreview.vue");
 /* harmony import */ var _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../parts/ReturnButton */ "./resources/js/components/parts/ReturnButton.vue");
 /* harmony import */ var _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/BreadcrumbTrail */ "./resources/js/components/common/BreadcrumbTrail.vue");
 /* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
+/* harmony import */ var _parts_Modal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../parts/Modal */ "./resources/js/components/parts/Modal.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -17636,13 +17753,48 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_1__.default,
     ImagePreview: _parts_ImagePreview__WEBPACK_IMPORTED_MODULE_2__.default,
     ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_3__.default,
-    BreadCrumb: _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_4__.default
+    BreadCrumb: _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_4__.default,
+    Modal: _parts_Modal__WEBPACK_IMPORTED_MODULE_6__.default
   },
   name: "EditRecipe",
   mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_5__.default],
   props: ["recipeId"],
   data: function data() {
     return {
+      contents: {
+        modalContents: {
+          modalTitle: "レシピURLの登録"
+        },
+        inputContents: {
+          label: {
+            one: {
+              id: "primary-input-recipe-url",
+              name: "URL1"
+            },
+            two: {}
+          },
+          input: {
+            one: {
+              id: "primary-input-recipe-url",
+              value: "",
+              type: "text"
+            },
+            two: {}
+          }
+        }
+      },
+      style: {
+        modalStyle: {
+          backgroundColor: "#454545"
+        },
+        inputContentsStyle: {
+          width: "100%"
+        },
+        unnecessaryElementStyle: {
+          display: "none !important"
+        }
+      },
+      propsFunction: this.setInputValue,
       breadCrumbList: [{
         id: 1,
         name: "ホーム",
@@ -17705,7 +17857,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }]
     };
   },
-  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapGetters)({
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_7__.mapGetters)({
     userData: "getUserData",
     recipes: "getRecipes",
     ingredients: "getIngredients",
@@ -17729,7 +17881,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         recipeName: this.recipeName,
         recipeIngredientList: this.recipeIngredientList,
         recipeProcedure: this.recipeProcedureList,
-        recipeCategory: this.recipeCategory
+        recipeCategory: this.recipeCategory,
+        recipeUrl: this.contents.inputContents.input.one.value
       };
       return editedRecipe;
     },
@@ -17803,7 +17956,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     this.url = this.selectedRecipe[0].recipe_image_path;
   },
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_6__.mapMutations)(["setRecipeName", "initRecipeName", "setRecipeIngredient", "initRecipeIngredient", "deleteRecipeIngredient", "setRecipeIngredientList", "initRecipeIngredientList", "setIsEditingRecipeIngredient", "initIsEditingRecipeIngredient", "setEditingRecipeIngredientIndex", "initEditingRecipeIngredientIndex", "setRecipeProcedure", "initRecipeProcedure", "setRecipeProcedureList", "initRecipeProcedureList", "setIsEditingRecipeProcedure", "initIsEditingRecipeProcedure", "setEditingRecipeProcedureIndex", "initEditingRecipeProcedureIndex", "deleteRecipeProcedure", "setRecipeCategory", "initRecipeCategory", "setRecipeIngredientQuantity", "initRecipeIngredientQuantity"])), {}, {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_7__.mapMutations)(["setRecipeName", "initRecipeName", "setRecipeIngredient", "initRecipeIngredient", "deleteRecipeIngredient", "setRecipeIngredientList", "initRecipeIngredientList", "setIsEditingRecipeIngredient", "initIsEditingRecipeIngredient", "setEditingRecipeIngredientIndex", "initEditingRecipeIngredientIndex", "setRecipeProcedure", "initRecipeProcedure", "setRecipeProcedureList", "initRecipeProcedureList", "setIsEditingRecipeProcedure", "initIsEditingRecipeProcedure", "setEditingRecipeProcedureIndex", "initEditingRecipeProcedureIndex", "deleteRecipeProcedure", "setRecipeCategory", "initRecipeCategory", "setRecipeIngredientQuantity", "initRecipeIngredientQuantity"])), {}, {
     sendEditedRecipe: function sendEditedRecipe() {
       var _this3 = this;
 
@@ -17883,6 +18036,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.file = e.target.files[0];
       this.url = URL.createObjectURL(this.file);
       console.log(this.url);
+    },
+    setInputValue: function setInputValue() {
+      this.contents.inputContents.input.one.value = this.selectedRecipe[0].recipe_url;
     }
   })
 });
@@ -18265,7 +18421,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }),
   mounted: function mounted() {
-    console.log(this.recipeId);
+    console.log(this.selectedRecipe);
   },
   methods: {// routerBack() {
     //     this.$router.back();
@@ -18518,10 +18674,10 @@ var _hoisted_6 = {
 var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" マイページ ");
 
 var _hoisted_8 = {
-  "class": "container-header_content-toppage-md"
+  "class": "container-header_content-toppage-sm"
 };
 var _hoisted_9 = {
-  "class": "user_menu-md"
+  "class": "user_menu-sm"
 };
 
 var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
@@ -18713,7 +18869,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* KEYED_FRAGMENT */
   ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 旬のレシピ "), _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_26, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.newArrivalRecipes, function (recipe) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
-      "class": "w-100",
+      "class": "w-100 cursor-pointer",
       onClick: function onClick($event) {
         return $options.showRecipeDetail(recipe.id);
       },
@@ -19022,13 +19178,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, null, 8
   /* PROPS */
   , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Modal, {
-    "modal-title": 'アカウント情報の編集',
-    "modal-style": $data.modalStyle,
-    "input-contents": $data.inputContents,
-    "input-contents-style": $data.inputContentsStyle
+    contents: $data.contents,
+    style: $data.style,
+    "props-function": $data.propsFunction
   }, null, 8
   /* PROPS */
-  , ["modal-style", "input-contents", "input-contents-style"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_6, "ユーザー名：" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.userData.userName), 1
+  , ["contents", "style", "props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_6, "ユーザー名：" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.userData.userName), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_7, " メールアドレス：" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.userData.userEmailAdress), 1
   /* TEXT */
@@ -19465,16 +19620,13 @@ var _hoisted_1 = {
 var _hoisted_2 = {
   "class": "navbar-dark d-flex justify-content-between align-items-center h-100"
 };
-
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h4", {
-  "class": "mb-0"
-}, "Recette", -1
-/* HOISTED */
-);
-
-var _hoisted_4 = {
+var _hoisted_3 = {
   "class": "container-navbar_top p-0 mb-0 d-flex justify-content-end align-items-center"
 };
+
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "/", -1
+/* HOISTED */
+);
 
 var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "/", -1
 /* HOISTED */
@@ -19484,28 +19636,29 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "/", -1
-/* HOISTED */
-);
-
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("nav", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("nav", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h4", {
     onClick: _cache[1] || (_cache[1] = function ($event) {
+      return _ctx.transitionToNext('recipes');
+    }),
+    "class": "mb-0 cursor-pointer"
+  }, " Recette "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
+    onClick: _cache[2] || (_cache[2] = function ($event) {
       return _ctx.transitionToNext('createRecipe');
     }),
     "class": "text-center cursor-pointer"
-  }, " レシピ追加 "), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
-    onClick: _cache[2] || (_cache[2] = function ($event) {
+  }, " レシピ追加 "), _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
+    onClick: _cache[3] || (_cache[3] = function ($event) {
       return _ctx.transitionToNext('favoriteRecipeList');
     }),
     "class": "text-center cursor-pointer"
-  }, " お気に入り "), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
-    onClick: _cache[3] || (_cache[3] = function ($event) {
+  }, " お気に入り "), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
+    onClick: _cache[4] || (_cache[4] = function ($event) {
       return _ctx.transitionToNext('recipeCategoryList');
     }),
     "class": "text-center cursor-pointer"
-  }, " レシピを探す "), _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
-    onClick: _cache[4] || (_cache[4] = function ($event) {
+  }, " レシピを探す "), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
+    onClick: _cache[5] || (_cache[5] = function ($event) {
       return _ctx.transitionToNext('recipeCategoryList');
     }),
     "class": "text-center cursor-pointer"
@@ -19533,12 +19686,11 @@ var _hoisted_1 = {
 var _hoisted_2 = {
   "class": "navbar navbar-top-hamburger"
 };
-
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_3 = {
   "class": "navbar-dark d-flex justify-content-between align-items-center"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h4", {
-  "class": "mb-0"
-}, "Recette"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+};
+
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
   "class": "navbar-toggler",
   type: "button",
   "data-toggle": "collapse",
@@ -19548,69 +19700,74 @@ var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
   "aria-label": "Toggle navigation"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
   "class": "navbar-toggler-icon"
-})])], -1
+})], -1
 /* HOISTED */
 );
 
-var _hoisted_4 = {
+var _hoisted_5 = {
   "class": "collapse",
   id: "navbarToggleExternalContent"
 };
 
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
   "class": "mr-1 fas fa-folder-plus"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("レシピ追加 ");
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("レシピ追加 ");
 
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
   "class": "mr-1 fas fa-clipboard-list"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("お気に入り ");
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("お気に入り ");
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
   "class": "mr-1 fas fa-folder-plus"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("レシピを探す ");
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("レシピを探す ");
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
   "class": "mr-1 far fa-calendar-alt"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("カレンダー ");
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("カレンダー ");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("nav", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
-    "class": "cursor-pointer",
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("nav", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h4", {
     onClick: _cache[1] || (_cache[1] = function ($event) {
-      return _ctx.transitionToNext('createRecipe');
-    })
-  }, [_hoisted_5, _hoisted_6]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
+      return _ctx.transitionToNext('recipes');
+    }),
+    "class": "mb-0 cursor-pointer"
+  }, " Recette "), _hoisted_4]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
     "class": "cursor-pointer",
     onClick: _cache[2] || (_cache[2] = function ($event) {
-      return _ctx.transitionToNext('favoriteRecipeList');
+      return _ctx.transitionToNext('createRecipe');
     })
-  }, [_hoisted_7, _hoisted_8]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
+  }, [_hoisted_6, _hoisted_7]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
     "class": "cursor-pointer",
     onClick: _cache[3] || (_cache[3] = function ($event) {
-      return _ctx.transitionToNext('recipeCategoryList');
+      return _ctx.transitionToNext('favoriteRecipeList');
     })
-  }, [_hoisted_9, _hoisted_10]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
+  }, [_hoisted_8, _hoisted_9]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
     "class": "cursor-pointer",
     onClick: _cache[4] || (_cache[4] = function ($event) {
       return _ctx.transitionToNext('recipeCategoryList');
     })
-  }, [_hoisted_11, _hoisted_12])])])])]);
+  }, [_hoisted_10, _hoisted_11]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", {
+    "class": "cursor-pointer",
+    onClick: _cache[5] || (_cache[5] = function ($event) {
+      return _ctx.transitionToNext('recipeCategoryList');
+    })
+  }, [_hoisted_12, _hoisted_13])])])])]);
 }
 
 /***/ }),
@@ -19698,28 +19855,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "d-flex justify-content-between"
-};
-var _hoisted_2 = {
   "class": "d-flex justify-content-end w-25"
 };
 
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
   "class": "fas fa-file-upload mr-1"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_4 = {
+var _hoisted_3 = {
   "class": "small"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
+    style: $props.uploadIconStyle,
+    "class": "d-flex justify-content-between"
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
     src: $data.url,
     "class": "w-75"
   }, null, 8
   /* PROPS */
-  , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", null, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.title), 1
+  , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", null, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.title), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
     "class": "d-none",
@@ -19732,7 +19889,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  )])])]);
+  )])])], 4
+  /* STYLE */
+  );
 }
 
 /***/ }),
@@ -19811,13 +19970,10 @@ var _hoisted_7 = {
   "class": "w-100 mb-2"
 };
 var _hoisted_8 = {
-  "class": "w-100"
-};
-var _hoisted_9 = {
   "class": "modal-footer"
 };
 
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
   type: "button",
   "class": "btn btn-secondary",
   "data-dismiss": "modal"
@@ -19834,47 +19990,55 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     "class": "modal-content",
-    style: $props.modalStyle
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h5", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.modalTitle), 1
+    style: $props.style.modalStyle
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h5", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.contents.modalContents.modalTitle), 1
   /* TEXT */
   ), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ImagePreview, {
+    "upload-icon-style": $props.style.unnecessaryElementStyle,
     title: '画像UL',
     "recipe-image-path": ''
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <TextInput\n                        :id=\"'profile-image'\"\n                        :type=\"'text'\"\n                        :value=\"profileImagePath\"\n                        @inputFormContent=\"profileImagePath = $event\"\n                    /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    id: 'user-name',
-    name: $props.inputContents.userName
   }, null, 8
   /* PROPS */
-  , ["name"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-    id: 'user-name',
-    type: 'text',
-    value: $data.newUserData.userName,
+  , ["upload-icon-style"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
+    id: $props.contents.inputContents.label.one.id,
+    name: $props.contents.inputContents.label.one.name
+  }, null, 8
+  /* PROPS */
+  , ["id", "name"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
+    id: $props.contents.inputContents.input.one.id,
+    type: $props.contents.inputContents.input.one.type,
+    value: $props.contents.inputContents.input.one.value,
     className: 'text-input-black',
-    "style-name": $props.inputContentsStyle,
+    "style-name": $props.style.inputContentsStyle,
     onInputFormContent: _cache[1] || (_cache[1] = function ($event) {
-      return $data.newUserData.userName = $event;
+      return $props.contents.inputContents.input.one.value = $event;
     })
   }, null, 8
   /* PROPS */
-  , ["value", "style-name"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    id: 'email',
-    name: $props.inputContents.email
+  , ["id", "type", "value", "style-name"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+    "class": "w-100",
+    style: $props.style.unnecessaryElementStyle
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
+    id: $props.contents.inputContents.label.two.id,
+    name: $props.contents.inputContents.label.two.name
   }, null, 8
   /* PROPS */
-  , ["name"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-    id: 'email',
-    type: 'email',
-    value: $data.newUserData.userEmailAdress,
+  , ["id", "name"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
+    id: $props.contents.inputContents.input.two.id,
+    type: $props.contents.inputContents.input.two.type,
+    value: $props.contents.inputContents.input.two.value,
     className: 'text-input-black',
-    "style-name": $props.inputContentsStyle,
+    "style-name": $props.style.inputContentsStyle,
     onInputFormContent: _cache[2] || (_cache[2] = function ($event) {
-      return $data.newUserData.userEmailAdress = $event;
+      return $props.contents.inputContents.input.two.value = $event;
     })
   }, null, 8
   /* PROPS */
-  , ["value", "style-name"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+  , ["id", "type", "value", "style-name"])], 4
+  /* STYLE */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
     onClick: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-      return $options.updateUserData();
+      return _ctx.updateUserData();
     }, ["prevent"])),
     type: "button",
     "class": "btn btn-primary",
@@ -20128,7 +20292,7 @@ var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 );
 
 var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-  "class": "small"
+  "class": "small font_size-md"
 }, /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("レシピ画像選択"), -1
 /* HOISTED */
 );
@@ -20150,7 +20314,7 @@ var _hoisted_10 = {
   "class": "container-recipe_ingredient-recipe_create"
 };
 var _hoisted_11 = {
-  "class": "d-flex align-items-center"
+  "class": "d-flex align-items-center justify-content-between"
 };
 var _hoisted_12 = {
   "class": "mb-4"
@@ -20158,7 +20322,11 @@ var _hoisted_12 = {
 
 var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "d-flex justify-content-between align-items-end"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "作り方"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "作り方"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
+  "data-toggle": "modal",
+  "data-target": "#exampleModal",
+  "class": "cursor-pointer"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
   "class": "mr-1 fas fa-book-open"
 }), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("レシピURL ")])], -1
 /* HOISTED */
@@ -20190,7 +20358,7 @@ var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 );
 
 var _hoisted_20 = {
-  "class": "container-recipe_category-recipe_create"
+  "class": "container-recipe_category-recipe_create d-flex"
 };
 var _hoisted_21 = {
   "class": "input-group mb-3"
@@ -20199,6 +20367,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_ReturnButton = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ReturnButton");
 
   var _component_Toast = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Toast");
+
+  var _component_Modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Modal");
 
   var _component_InputLabel = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("InputLabel");
 
@@ -20215,7 +20385,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "props-function": $options.addInitialIngredients
   }, null, 8
   /* PROPS */
-  , ["toast-is-show", "props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 画像アップロード "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+  , ["toast-is-show", "props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Modal, {
+    contents: $data.contents,
+    style: $data.style,
+    "props-function": $data.propsFunction
+  }, null, 8
+  /* PROPS */
+  , ["contents", "style", "props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 画像アップロード "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
     src: $data.url,
     "class": "w-50"
   }, null, 8
@@ -20236,6 +20412,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     id: 'input-recipe-name',
     name: 'レシピ名：'
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
+    "class": "w-60",
     id: 'input-recipe-name',
     type: 'text',
     value: $options.recipeName,
@@ -20272,7 +20449,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $options.recipeIngredient = $event;
     }),
-    "class": "custom-select mr-1"
+    "class": "custom-select w-60"
   }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.ingredients, function (ingredient) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("option", {
       value: ingredient,
@@ -20285,6 +20462,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ))], 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $options.recipeIngredient]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
+    "class": "w-30",
     id: 'input-recipe-ingredient-quantity',
     type: 'text',
     value: $options.recipeIngredientQuantity,
@@ -20387,10 +20565,10 @@ var _hoisted_2 = {
   "class": "wrapper-recipe_edit"
 };
 var _hoisted_3 = {
-  "class": "d-flex justify-content-between"
+  "class": "d-none d-md-block text-right"
 };
 var _hoisted_4 = {
-  "class": "d-flex justify-content-end w-50"
+  "class": ""
 };
 
 var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
@@ -20399,85 +20577,129 @@ var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-  "class": "small"
-}, /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("レシピ画像選択"), -1
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("レシピ画像選択"), -1
 /* HOISTED */
 );
 
 var _hoisted_7 = {
-  "class": "container-recipe_name-recipe_edit mb-4 d-flex mt-2 align-items-end"
+  "class": "d-flex justify-content-between"
+};
+var _hoisted_8 = {
+  "class": "d-md-none"
 };
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
-  "class": "mb-0"
-}, "レシピ名：", -1
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+  "class": "fas fa-file-upload mr-1"
+}, null, -1
 /* HOISTED */
 );
 
-var _hoisted_9 = {
-  "class": "mb-4"
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("レシピ画像選択"), -1
+/* HOISTED */
+);
+
+var _hoisted_11 = {
+  "class": "w-45 mb-4 d-none d-md-block"
 };
 
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
   "class": "mb-0"
 }, "材料", -1
 /* HOISTED */
 );
 
-var _hoisted_11 = {
+var _hoisted_13 = {
   "class": "container-recipe_ingredient-recipe_edit"
 };
-var _hoisted_12 = {
+var _hoisted_14 = {
   "class": "d-flex align-items-center"
 };
-var _hoisted_13 = {
-  "class": "container-recipe_procedure mb-4"
+var _hoisted_15 = {
+  "class": "d-md-flex"
+};
+var _hoisted_16 = {
+  "class": "container-recipe_name-recipe_edit mb-4 d-flex mt-2 align-items-end"
 };
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
+  "class": "mb-0"
+}, "レシピ名：", -1
+/* HOISTED */
+);
+
+var _hoisted_18 = {
+  "class": "mb-4 d-md-none",
+  style: {
+    "flex-basis": "50%"
+  }
+};
+
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+  "class": "mb-0"
+}, "材料", -1
+/* HOISTED */
+);
+
+var _hoisted_20 = {
+  "class": "container-recipe_ingredient-recipe_edit"
+};
+var _hoisted_21 = {
+  "class": "d-flex align-items-center"
+};
+var _hoisted_22 = {
+  "class": "d-md-flex justify-content-between"
+};
+var _hoisted_23 = {
+  "class": "mb-4 w-md-65"
+};
+
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "d-flex justify-content-between align-items-end"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "作り方"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-  "class": "small"
+  "data-toggle": "modal",
+  "data-target": "#exampleModal",
+  "class": "cursor-pointer"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
   "class": "mr-1 fas fa-book-open"
 }), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("レシピURL ")])], -1
 /* HOISTED */
 );
 
-var _hoisted_15 = {
+var _hoisted_25 = {
   "class": "container-recipe_procedure-recipe_edit p-2"
 };
-var _hoisted_16 = {
+var _hoisted_26 = {
   "class": "form-group"
 };
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
   "class": "mr-1 fas fa-plus"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("追加 ");
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("追加 ");
 
-var _hoisted_19 = {
-  "class": "mb-4"
+var _hoisted_29 = {
+  "class": "mb-4 w-md-30"
 };
 
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
   "class": "mb-0"
 }, "カテゴリー", -1
 /* HOISTED */
 );
 
-var _hoisted_21 = {
+var _hoisted_31 = {
   "class": "container-recipe_category-recipe_edit"
 };
-var _hoisted_22 = {
+var _hoisted_32 = {
   "class": "input-group mb-3"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_ReturnButton = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ReturnButton");
+
+  var _component_Modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Modal");
 
   var _component_TextInput = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TextInput");
 
@@ -20487,12 +20709,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "props-function": _ctx.routerBack
   }, null, 8
   /* PROPS */
-  , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ぱんくずリスト "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <BreadCrumb\n                class=\"breadcrumb-component\"\n                :bread-crumb-list=\"breadCrumbList\"\n            /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <ImagePreview :title=\"'レシピ画像UL'\" /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" レシピ画像 "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
-    src: $data.url,
-    "class": "w-50"
+  , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ぱんくずリスト "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <BreadCrumb\n                class=\"breadcrumb-component\"\n                :bread-crumb-list=\"breadCrumbList\"\n            /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Modal, {
+    contents: $data.contents,
+    style: $data.style,
+    "props-function": $data.propsFunction
   }, null, 8
   /* PROPS */
-  , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", null, [_hoisted_5, _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+  , ["contents", "style", "props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <ImagePreview :title=\"'レシピ画像UL'\" /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_4, [_hoisted_5, _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
     "class": "d-none",
     name: "imagefile",
     id: "imagefile",
@@ -20503,16 +20726,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  )])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-    "class": "text-input-black",
-    type: "text",
-    id: "recipe-name",
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-      return $options.recipeName = $event;
+  )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" レシピ画像 "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+    src: $data.url,
+    "class": "w-50"
+  }, null, 8
+  /* PROPS */
+  , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_8, [_hoisted_9, _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    "class": "d-none",
+    name: "imagefile",
+    id: "imagefile",
+    type: "file",
+    ref: "preview",
+    onChange: _cache[2] || (_cache[2] = function ($event) {
+      return $options.uploadFile($event);
     })
-  }, null, 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $options.recipeName]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeIngredientList, function (recipeIngredient, index) {
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeIngredientList, function (recipeIngredient, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
       "class": "pl-1",
       key: recipeIngredient.id
@@ -20535,7 +20765,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["onClick"])])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
     "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return _ctx.recipeIngredient = $event;
     }),
@@ -20570,7 +20800,74 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     style: {
       "font-size": "1.5rem"
     }
-  })])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeProcedureList, function (recipeProcedure, index) {
+  })])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    "class": "text-input-black w-75",
+    type: "text",
+    id: "recipe-name",
+    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+      return $options.recipeName = $event;
+    })
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $options.recipeName]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_18, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_20, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeIngredientList, function (recipeIngredient, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
+      "class": "pl-1",
+      key: recipeIngredient.id
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(recipeIngredient.recipe_ingredient_name) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(recipeIngredient.recipe_ingredient_quantity) + " ", 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+      onClick: function onClick($event) {
+        return _ctx.editRecipeIngredient($options.ingredient, index);
+      },
+      "class": "ml-2 fas fa-pencil-alt"
+    }, null, 8
+    /* PROPS */
+    , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+      onClick: function onClick($event) {
+        return _ctx._deleteRecipeIngredient(index);
+      },
+      "class": "ml-2 fas fa-trash-alt"
+    }, null, 8
+    /* PROPS */
+    , ["onClick"])])])]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
+    "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
+      return _ctx.recipeIngredient = $event;
+    }),
+    "class": "custom-select mr-1"
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.ingredients, function (ingredient) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("option", {
+      value: ingredient,
+      key: ingredient.id
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ingredient.recipe_ingredient_name), 9
+    /* TEXT, PROPS */
+    , ["value"]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))], 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, _ctx.recipeIngredient]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
+    id: 'input-recipe-ingredient-quantity',
+    type: 'text',
+    value: $options.recipeIngredientQuantity,
+    className: 'text-input-white',
+    placeholder: '数量(単位含む)',
+    onInputFormContent: _cache[8] || (_cache[8] = function ($event) {
+      return $options.recipeIngredientQuantity = $event;
+    })
+  }, null, 8
+  /* PROPS */
+  , ["value", "placeholder"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+    onClick: _cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+      return $options.addRecipeIngredient && $options.addRecipeIngredient.apply($options, arguments);
+    }, ["prevent"])),
+    "class": "fas fa-check-circle",
+    style: {
+      "font-size": "1.5rem"
+    }
+  })])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_25, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeProcedureList, function (recipeProcedure, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
       "class": "pl-1",
       key: recipeProcedure
@@ -20593,8 +20890,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["onClick"])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
-    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
+    "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
       return $options.recipeProcedure = $event;
     }),
     "class": "form-control",
@@ -20603,12 +20900,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $options.recipeProcedure]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-    onClick: _cache[7] || (_cache[7] = function () {
+    onClick: _cache[11] || (_cache[11] = function () {
       return $options.addRecipeProcedure && $options.addRecipeProcedure.apply($options, arguments);
     }),
     "class": "text-right"
-  }, [_hoisted_17, _hoisted_18])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
-    "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
+  }, [_hoisted_27, _hoisted_28])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_29, [_hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
+    "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
       return $options.recipeCategory = $event;
     }),
     "class": "custom-select mr-1"
@@ -20623,7 +20920,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* KEYED_FRAGMENT */
   ))], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $options.recipeCategory]])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_PrimaryButton, {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $options.recipeCategory]])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_PrimaryButton, {
     buttonName: '登録する',
     "props-function": $options.sendEditedRecipe,
     buttonStyle: $data.addRecipeButtonStyle
@@ -20962,31 +21259,53 @@ var _hoisted_12 = {
 var _hoisted_13 = {
   "class": "mb-4"
 };
-
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_14 = {
   "class": "d-flex justify-content-between align-items-end"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "作り方"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-  "class": "small"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
-  "class": "mr-1 fas fa-book-open"
-}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("レシピURL ")])], -1
+};
+
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "作り方", -1
 /* HOISTED */
 );
 
-var _hoisted_15 = {
+var _hoisted_16 = {
+  key: 0,
+  "class": "color-link_menu"
+};
+
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+  "class": "mr-1 fas fa-book-open"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("レシピURL");
+
+var _hoisted_19 = {
+  key: 1
+};
+
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+  "class": "mr-1 fas fa-book-open"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("レシピURL ");
+
+var _hoisted_22 = {
   "class": "container-recipe_procedure-recipe_detail p-2"
 };
-var _hoisted_16 = {
+var _hoisted_23 = {
   "class": "mb-4"
 };
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "d-flex justify-content-between align-items-end"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "カテゴリー")], -1
 /* HOISTED */
 );
 
-var _hoisted_18 = {
+var _hoisted_25 = {
   "class": "container-recipe_category-recipe_detail p-2"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -21030,7 +21349,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     )]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.selectedRecipe[0].recipe_procedure, function (recipeProcedure, index) {
+  ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [_hoisted_15, $options.selectedRecipe[0].recipe_url != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
+    href: $options.selectedRecipe[0].recipe_url,
+    target: "_blank",
+    rel: "noopener"
+  }, [_hoisted_17, _hoisted_18], 8
+  /* PROPS */
+  , ["href"])])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_19, [_hoisted_20, _hoisted_21]))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_22, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.selectedRecipe[0].recipe_procedure, function (recipeProcedure, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
       "class": "pl-1",
       key: recipeProcedure.toString(index)
@@ -21039,7 +21364,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     )]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.selectedRecipe[0].recipe_category), 1
+  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.selectedRecipe[0].recipe_category), 1
   /* TEXT */
   )])])]);
 }
@@ -21116,7 +21441,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.deleteRecipe(recipe.id);
       },
-      "class": "fas fa-trash-alt"
+      "class": "fas fa-trash-alt font_size-sm cursor-pointer"
     }, null, 8
     /* PROPS */
     , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(1) + "." + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(recipe.recipe_procedure[0]), 1
@@ -21212,22 +21537,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // window
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-// window.HelloComponent = require("./components/Hello.vue").default;
 
-(0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)(_components_App_vue__WEBPACK_IMPORTED_MODULE_4__.default) //     {
-//     components: {
-//         TopPage,
-//         RecipeDetail,
-//         EditRecipe,
-//         CreateRecipe,
-//         StoreRecipe,
-//         RecipeList,
-//         RecipeCategoryList,
-//         // RecipeCategoryDetail,
-//         RecipeCategoryDetailList,
-//         Register,
-//     },
-.use(_router__WEBPACK_IMPORTED_MODULE_0__.default).use(_store__WEBPACK_IMPORTED_MODULE_2__.store).mount("#app");
+(0,vue__WEBPACK_IMPORTED_MODULE_1__.createApp)(_components_App_vue__WEBPACK_IMPORTED_MODULE_4__.default).use(_router__WEBPACK_IMPORTED_MODULE_0__.default).use(_store__WEBPACK_IMPORTED_MODULE_2__.store).mount("#app");
 
 /***/ }),
 
@@ -21363,7 +21674,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$router.back();
     },
     transitionToNext: function transitionToNext(pathName) {
-      document.getElementById("navbarToggleExternalContent").classList.toggle("show");
+      document.getElementById("navbarToggleExternalContent").classList.remove("show");
       this.$router.push({
         name: pathName
       });
@@ -21416,6 +21727,13 @@ __webpack_require__.r(__webpack_exports__);
 
 var history = (0,vue_router__WEBPACK_IMPORTED_MODULE_14__.createWebHistory)();
 var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_14__.createRouter)({
+  scrollBehavior: function scrollBehavior(to, from, savedPosition) {
+    // always scroll to top
+    return {
+      el: "#app",
+      top: 0
+    };
+  },
   history: history,
   routes: [{
     path: "/recipes/:recipeId/edit",

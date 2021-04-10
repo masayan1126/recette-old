@@ -6,7 +6,7 @@ export default {
         transitionToNext(pathName) {
             document
                 .getElementById("navbarToggleExternalContent")
-                .classList.toggle("show");
+                .classList.remove("show");
             this.$router.push({ name: pathName });
         },
     },

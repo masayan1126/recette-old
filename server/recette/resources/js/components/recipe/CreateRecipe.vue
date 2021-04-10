@@ -11,6 +11,11 @@
                 :toast-is-show="toastIsShow"
                 :props-function="addInitialIngredients"
             />
+            <Modal
+                :contents="contents"
+                :style="style"
+                :props-function="propsFunction"
+            />
 
             <!-- 画像アップロード -->
             <div class="d-flex justify-content-between">
@@ -18,7 +23,9 @@
                 <div class="d-flex justify-content-end w-50">
                     <label>
                         <i class="fas fa-file-upload mr-1"></i>
-                        <span class="small">{{ "レシピ画像選択" }}</span>
+                        <span class="small font_size-md">{{
+                            "レシピ画像選択"
+                        }}</span>
                         <input
                             class="d-none"
                             name="imagefile"
@@ -40,6 +47,7 @@
                     :name="'レシピ名：'"
                 />
                 <TextInput
+                    class="w-60"
                     :id="'input-recipe-name'"
                     :type="'text'"
                     :value="recipeName"
@@ -79,10 +87,12 @@
                             ></span>
                         </li>
                     </ul>
-                    <div class="d-flex align-items-center">
+                    <div
+                        class="d-flex align-items-center justify-content-between"
+                    >
                         <select
                             v-model="recipeIngredient"
-                            class="custom-select mr-1"
+                            class="custom-select w-60"
                         >
                             <option
                                 v-for="ingredient in ingredients"
@@ -93,6 +103,7 @@
                             </option>
                         </select>
                         <TextInput
+                            class="w-30"
                             :id="'input-recipe-ingredient-quantity'"
                             :type="'text'"
                             :value="recipeIngredientQuantity"
@@ -114,7 +125,11 @@
             <div class="mb-4">
                 <div class="d-flex justify-content-between align-items-end">
                     <span>作り方</span>
-                    <span>
+                    <span
+                        data-toggle="modal"
+                        data-target="#exampleModal"
+                        class="cursor-pointer"
+                    >
                         <i class="mr-1 fas fa-book-open"></i>レシピURL
                     </span>
                 </div>
@@ -155,7 +170,7 @@
 
             <div class="mb-4">
                 <p class="mb-0">カテゴリー</p>
-                <div class="container-recipe_category-recipe_create">
+                <div class="container-recipe_category-recipe_create d-flex">
                     <div class="input-group mb-3">
                         <select
                             v-model="recipeCategory"
@@ -192,6 +207,7 @@ import initialIngredientList from "../../assets/initialIngredientList.json";
 import ReturnButton from "../parts/ReturnButton";
 import BreadCrumb from "../common/BreadcrumbTrail";
 import utilsMixin from "../../mixin/utility";
+import Modal from "../parts/Modal";
 
 export default {
     name: "CreateRecipe",
@@ -205,11 +221,10 @@ export default {
         InputLabel,
         ReturnButton,
         BreadCrumb,
+        Modal,
     },
     data() {
         return {
-            // 初期データの食材リスト登録状況に応じてトーストの表示を切り替えるためのフラグ
-            toastIsShow: false,
             sendNewRecipeButtonStyle: {
                 color: "#fff",
                 backgroundColor: "#E4C8AD",
@@ -217,12 +232,45 @@ export default {
                 width: "100%",
                 height: "35px",
             },
+            contents: {
+                modalContents: {
+                    modalTitle: "レシピURLの登録",
+                },
+                inputContents: {
+                    label: {
+                        one: { id: "primary-input-recipe-url", name: "URL1" },
+                        two: {},
+                    },
+                    input: {
+                        one: {
+                            id: "primary-input-recipe-url",
+                            value: "",
+                            type: "text",
+                        },
+                        two: {},
+                    },
+                },
+            },
+            style: {
+                modalStyle: {
+                    backgroundColor: "#454545",
+                },
+                inputContentsStyle: {
+                    width: "100%",
+                },
+                unnecessaryElementStyle: {
+                    display: "none !important",
+                },
+            },
+            propsFunction: this.initInputValue,
+            toastIsShow: false,
+
             breadCrumbList: [
                 { id: 1, name: "ホーム", linkName: "recipes" },
                 { id: 2, name: "レシピ作成", linkName: "createRecipe" },
             ],
             file: null,
-            url: null,
+            url: "/images/no_image.png",
             categories: [
                 {
                     id: 1,
@@ -307,6 +355,7 @@ export default {
                 recipeIngredientList: this.recipeIngredientList,
                 recipeProcedure: this.recipeProcedureList,
                 recipeCategory: this.recipeCategory,
+                recipeUrl: this.contents.inputContents.input.one.value,
             };
             return newRecipe;
         },
@@ -353,7 +402,17 @@ export default {
     },
     mounted() {
         this.initStoreDataSet();
-
+        fetch("/images/no_image.png")
+            .then((response) => response.blob())
+            .then((blob) => new File([blob], "image.jpg"))
+            .then((file) => {
+                console.log(file);
+                this.uploadFile(file);
+                // fileはFileオブジェクト
+            });
+        // const file = new File(["blob"], "/images/no_image.png", {
+        //     type: "image/jpeg",
+        // });
         // 初期データの食材リストが未登録なら、トーストでメッセージを表示する
         this.ingredients.length == 0 ? (this.toastIsShow = true) : "";
     },
@@ -383,6 +442,8 @@ export default {
             "initRecipeCategory",
             "setRecipeIngredientQuantity",
             "initRecipeIngredientQuantity",
+            "setIngredients",
+            "initIngredients",
         ]),
 
         addRecipeIngredient() {
@@ -469,6 +530,7 @@ export default {
                 )
                 .then((res) => {
                     console.log(res);
+                    this.setIngredients(res.data);
                     this.toastIsShow = false;
                 })
                 .catch((error) => {
@@ -476,7 +538,14 @@ export default {
                 });
         },
         uploadFile(e) {
+            if (this.url == "/images/no_image.png") {
+                console.log(e);
+                this.file = e;
+                this.url = URL.createObjectURL(this.file);
+                return;
+            }
             this.file = e.target.files[0];
+            console.log(e.target.files[0]);
             this.url = URL.createObjectURL(this.file);
         },
         initStoreDataSet() {
@@ -491,6 +560,10 @@ export default {
             this.initIsEditingRecipeProcedure();
             this.initEditingRecipeProcedureIndex();
             this.initRecipeIngredientQuantity();
+        },
+        initInputValue() {
+            this.contents.inputContents.input.one.value = "";
+            this.contents.inputContents.input.two.value = "";
         },
     },
 };

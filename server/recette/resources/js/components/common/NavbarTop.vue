@@ -3,7 +3,12 @@
         <div
             class="navbar-dark d-flex justify-content-between align-items-center h-100"
         >
-            <h4 class="mb-0">Recette</h4>
+            <h4
+                @click="transitionToNext('recipes')"
+                class="mb-0 cursor-pointer"
+            >
+                Recette
+            </h4>
             <ul
                 class="container-navbar_top p-0 mb-0 d-flex justify-content-end align-items-center"
             >

@@ -28,6 +28,7 @@ class CreateRecipesTable extends Migration
             $table->string("recipe_category_sub")->comment('レシピカテゴリーサブ');
             $table->string("recipe_category_image")->comment('レシピカテゴリーの画像')->nullable();
             $table->boolean("is_favorite")->comment('お気に入りレシピかどうか');
+            $table->string("recipe_url")->comment('レシピの外部URL')->nullable();
 
             $table->timestamps();
         });

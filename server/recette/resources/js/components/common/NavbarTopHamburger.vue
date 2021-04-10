@@ -4,7 +4,12 @@
             <div
                 class="navbar-dark d-flex justify-content-between align-items-center"
             >
-                <h4 class="mb-0">Recette</h4>
+                <h4
+                    @click="transitionToNext('recipes')"
+                    class="mb-0 cursor-pointer"
+                >
+                    Recette
+                </h4>
                 <button
                     class="navbar-toggler"
                     type="button"

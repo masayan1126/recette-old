@@ -10,158 +10,257 @@
                 :bread-crumb-list="breadCrumbList"
             /> -->
 
+            <Modal
+                :contents="contents"
+                :style="style"
+                :props-function="propsFunction"
+            />
             <!-- <ImagePreview :title="'レシピ画像UL'" /> -->
-
+            <div class="d-none d-md-block text-right">
+                <label class="">
+                    <i class="fas fa-file-upload mr-1"></i>
+                    <span>{{ "レシピ画像選択" }}</span>
+                    <input
+                        class="d-none"
+                        name="imagefile"
+                        id="imagefile"
+                        type="file"
+                        ref="preview"
+                        @change="uploadFile($event)"
+                    />
+                </label>
+            </div>
             <!-- レシピ画像 -->
             <div class="d-flex justify-content-between">
                 <img :src="url" class="w-50" />
-                <div class="d-flex justify-content-end w-50">
-                    <label>
-                        <i class="fas fa-file-upload mr-1"></i>
-                        <span class="small">{{ "レシピ画像選択" }}</span>
-                        <input
-                            class="d-none"
-                            name="imagefile"
-                            id="imagefile"
-                            type="file"
-                            ref="preview"
-                            @change="uploadFile($event)"
-                        />
-                    </label>
+                <label class="d-md-none">
+                    <i class="fas fa-file-upload mr-1"></i>
+                    <span>{{ "レシピ画像選択" }}</span>
+                    <input
+                        class="d-none"
+                        name="imagefile"
+                        id="imagefile"
+                        type="file"
+                        ref="preview"
+                        @change="uploadFile($event)"
+                    />
+                </label>
+                <div class="w-45 mb-4 d-none d-md-block">
+                    <p class="mb-0">材料</p>
+                    <div class="container-recipe_ingredient-recipe_edit">
+                        <ul
+                            class="pl-1"
+                            v-for="(
+                                recipeIngredient, index
+                            ) in recipeIngredientList"
+                            :key="recipeIngredient.id"
+                        >
+                            <li>
+                                {{ recipeIngredient.recipe_ingredient_name }}
+                                {{
+                                    recipeIngredient.recipe_ingredient_quantity
+                                }}
+                                <span
+                                    ><i
+                                        @click="
+                                            editRecipeIngredient(
+                                                ingredient,
+                                                index
+                                            )
+                                        "
+                                        class="ml-2 fas fa-pencil-alt"
+                                    ></i
+                                ></span>
+                                <span
+                                    ><i
+                                        @click="_deleteRecipeIngredient(index)"
+                                        class="ml-2 fas fa-trash-alt"
+                                    ></i
+                                ></span>
+                            </li>
+                        </ul>
+                        <div class="d-flex align-items-center">
+                            <select
+                                v-model="recipeIngredient"
+                                class="custom-select mr-1"
+                            >
+                                <option
+                                    v-for="ingredient in ingredients"
+                                    :value="ingredient"
+                                    :key="ingredient.id"
+                                >
+                                    {{ ingredient.recipe_ingredient_name }}
+                                </option>
+                            </select>
+                            <TextInput
+                                :id="'input-recipe-ingredient-quantity'"
+                                :type="'text'"
+                                :value="recipeIngredientQuantity"
+                                :className="'text-input-white'"
+                                :placeholder="'数量(単位含む)'"
+                                @inputFormContent="
+                                    recipeIngredientQuantity = $event
+                                "
+                            />
+                            <i
+                                @click.prevent="addRecipeIngredient"
+                                class="fas fa-check-circle"
+                                style="font-size: 1.5rem"
+                            ></i>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div
-                class="container-recipe_name-recipe_edit mb-4 d-flex mt-2 align-items-end"
-            >
-                <label class="mb-0">レシピ名：</label>
-                <input
-                    class="text-input-black"
-                    type="text"
-                    id="recipe-name"
-                    v-model="recipeName"
-                />
+            <div class="d-md-flex">
+                <div
+                    class="container-recipe_name-recipe_edit mb-4 d-flex mt-2 align-items-end"
+                >
+                    <label class="mb-0">レシピ名：</label>
+                    <input
+                        class="text-input-black w-75"
+                        type="text"
+                        id="recipe-name"
+                        v-model="recipeName"
+                    />
+                </div>
+
+                <div class="mb-4 d-md-none" style="flex-basis: 50%">
+                    <p class="mb-0">材料</p>
+                    <div class="container-recipe_ingredient-recipe_edit">
+                        <ul
+                            class="pl-1"
+                            v-for="(
+                                recipeIngredient, index
+                            ) in recipeIngredientList"
+                            :key="recipeIngredient.id"
+                        >
+                            <li>
+                                {{ recipeIngredient.recipe_ingredient_name }}
+                                {{
+                                    recipeIngredient.recipe_ingredient_quantity
+                                }}
+                                <span
+                                    ><i
+                                        @click="
+                                            editRecipeIngredient(
+                                                ingredient,
+                                                index
+                                            )
+                                        "
+                                        class="ml-2 fas fa-pencil-alt"
+                                    ></i
+                                ></span>
+                                <span
+                                    ><i
+                                        @click="_deleteRecipeIngredient(index)"
+                                        class="ml-2 fas fa-trash-alt"
+                                    ></i
+                                ></span>
+                            </li>
+                        </ul>
+                        <div class="d-flex align-items-center">
+                            <select
+                                v-model="recipeIngredient"
+                                class="custom-select mr-1"
+                            >
+                                <option
+                                    v-for="ingredient in ingredients"
+                                    :value="ingredient"
+                                    :key="ingredient.id"
+                                >
+                                    {{ ingredient.recipe_ingredient_name }}
+                                </option>
+                            </select>
+                            <TextInput
+                                :id="'input-recipe-ingredient-quantity'"
+                                :type="'text'"
+                                :value="recipeIngredientQuantity"
+                                :className="'text-input-white'"
+                                :placeholder="'数量(単位含む)'"
+                                @inputFormContent="
+                                    recipeIngredientQuantity = $event
+                                "
+                            />
+                            <i
+                                @click.prevent="addRecipeIngredient"
+                                class="fas fa-check-circle"
+                                style="font-size: 1.5rem"
+                            ></i>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="mb-4">
-                <p class="mb-0">材料</p>
-                <div class="container-recipe_ingredient-recipe_edit">
-                    <ul
-                        class="pl-1"
-                        v-for="(
-                            recipeIngredient, index
-                        ) in recipeIngredientList"
-                        :key="recipeIngredient.id"
-                    >
-                        <li>
-                            {{ recipeIngredient.recipe_ingredient_name }}
-                            {{ recipeIngredient.recipe_ingredient_quantity }}
-                            <span
-                                ><i
+            <div class="d-md-flex justify-content-between">
+                <div class="mb-4 w-md-65">
+                    <div class="d-flex justify-content-between align-items-end">
+                        <span>作り方</span>
+                        <span
+                            data-toggle="modal"
+                            data-target="#exampleModal"
+                            class="cursor-pointer"
+                        >
+                            <i class="mr-1 fas fa-book-open"></i>レシピURL
+                        </span>
+                    </div>
+                    <div class="container-recipe_procedure-recipe_edit p-2">
+                        <ul
+                            class="pl-1"
+                            v-for="(
+                                recipeProcedure, index
+                            ) in recipeProcedureList"
+                            :key="recipeProcedure"
+                        >
+                            <li>
+                                {{ index + 1 }}.{{ recipeProcedure
+                                }}<i
                                     @click="
-                                        editRecipeIngredient(ingredient, index)
+                                        editRecipeProcedure(
+                                            recipeProcedure,
+                                            index
+                                        )
                                     "
                                     class="ml-2 fas fa-pencil-alt"
-                                ></i
-                            ></span>
-                            <span
-                                ><i
-                                    @click="_deleteRecipeIngredient(index)"
+                                ></i>
+                                <i
+                                    @click="deleteRecipeProcedure(index)"
                                     class="ml-2 fas fa-trash-alt"
-                                ></i
-                            ></span>
-                        </li>
-                    </ul>
-                    <div class="d-flex align-items-center">
-                        <select
-                            v-model="recipeIngredient"
-                            class="custom-select mr-1"
-                        >
-                            <option
-                                v-for="ingredient in ingredients"
-                                :value="ingredient"
-                                :key="ingredient.id"
+                                ></i>
+                            </li>
+                        </ul>
+                        <div class="form-group">
+                            <textarea
+                                v-model="recipeProcedure"
+                                class="form-control"
+                                id="recipe-procedure-input-field"
+                                rows="2"
+                            ></textarea>
+                        </div>
+
+                        <div @click="addRecipeProcedure" class="text-right">
+                            <i class="mr-1 fas fa-plus"></i>追加
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4 w-md-30">
+                    <p class="mb-0">カテゴリー</p>
+                    <div class="container-recipe_category-recipe_edit">
+                        <div class="input-group mb-3">
+                            <select
+                                v-model="recipeCategory"
+                                class="custom-select mr-1"
                             >
-                                {{ ingredient.recipe_ingredient_name }}
-                            </option>
-                        </select>
-                        <TextInput
-                            :id="'input-recipe-ingredient-quantity'"
-                            :type="'text'"
-                            :value="recipeIngredientQuantity"
-                            :className="'text-input-white'"
-                            :placeholder="'数量(単位含む)'"
-                            @inputFormContent="
-                                recipeIngredientQuantity = $event
-                            "
-                        />
-                        <i
-                            @click.prevent="addRecipeIngredient"
-                            class="fas fa-check-circle"
-                            style="font-size: 1.5rem"
-                        ></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container-recipe_procedure mb-4">
-                <div class="d-flex justify-content-between align-items-end">
-                    <span>作り方</span>
-                    <span class="small">
-                        <i class="mr-1 fas fa-book-open"></i>レシピURL
-                    </span>
-                </div>
-                <div class="container-recipe_procedure-recipe_edit p-2">
-                    <ul
-                        class="pl-1"
-                        v-for="(recipeProcedure, index) in recipeProcedureList"
-                        :key="recipeProcedure"
-                    >
-                        <li>
-                            {{ index + 1 }}.{{ recipeProcedure
-                            }}<i
-                                @click="
-                                    editRecipeProcedure(recipeProcedure, index)
-                                "
-                                class="ml-2 fas fa-pencil-alt"
-                            ></i>
-                            <i
-                                @click="deleteRecipeProcedure(index)"
-                                class="ml-2 fas fa-trash-alt"
-                            ></i>
-                        </li>
-                    </ul>
-                    <div class="form-group">
-                        <textarea
-                            v-model="recipeProcedure"
-                            class="form-control"
-                            id="recipe-procedure-input-field"
-                            rows="2"
-                        ></textarea>
-                    </div>
-
-                    <div @click="addRecipeProcedure" class="text-right">
-                        <i class="mr-1 fas fa-plus"></i>追加
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-4">
-                <p class="mb-0">カテゴリー</p>
-                <div class="container-recipe_category-recipe_edit">
-                    <div class="input-group mb-3">
-                        <select
-                            v-model="recipeCategory"
-                            class="custom-select mr-1"
-                        >
-                            <option
-                                v-for="category in categories"
-                                :value="category"
-                                :key="category.id"
-                            >
-                                {{ category.recipe_category_name }}
-                            </option>
-                        </select>
+                                <option
+                                    v-for="category in categories"
+                                    :value="category"
+                                    :key="category.id"
+                                >
+                                    {{ category.recipe_category_name }}
+                                </option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -183,6 +282,7 @@ import ImagePreview from "../parts/ImagePreview";
 import ReturnButton from "../parts/ReturnButton";
 import BreadCrumb from "../common/BreadcrumbTrail";
 import utilsMixin from "../../mixin/utility";
+import Modal from "../parts/Modal";
 
 export default {
     components: {
@@ -191,12 +291,44 @@ export default {
         ImagePreview,
         ReturnButton,
         BreadCrumb,
+        Modal,
     },
     name: "EditRecipe",
     mixins: [utilsMixin],
     props: ["recipeId"],
     data() {
         return {
+            contents: {
+                modalContents: {
+                    modalTitle: "レシピURLの登録",
+                },
+                inputContents: {
+                    label: {
+                        one: { id: "primary-input-recipe-url", name: "URL1" },
+                        two: {},
+                    },
+                    input: {
+                        one: {
+                            id: "primary-input-recipe-url",
+                            value: "",
+                            type: "text",
+                        },
+                        two: {},
+                    },
+                },
+            },
+            style: {
+                modalStyle: {
+                    backgroundColor: "#454545",
+                },
+                inputContentsStyle: {
+                    width: "100%",
+                },
+                unnecessaryElementStyle: {
+                    display: "none !important",
+                },
+            },
+            propsFunction: this.setInputValue,
             breadCrumbList: [
                 { id: 1, name: "ホーム", linkName: "recipes" },
                 { id: 2, name: "レシピ作成", linkName: "createRecipe" },
@@ -283,6 +415,7 @@ export default {
                 recipeIngredientList: this.recipeIngredientList,
                 recipeProcedure: this.recipeProcedureList,
                 recipeCategory: this.recipeCategory,
+                recipeUrl: this.contents.inputContents.input.one.value,
             };
             return editedRecipe;
         },
@@ -474,6 +607,9 @@ export default {
             this.file = e.target.files[0];
             this.url = URL.createObjectURL(this.file);
             console.log(this.url);
+        },
+        setInputValue() {
+            this.contents.inputContents.input.one.value = this.selectedRecipe[0].recipe_url;
         },
     },
 };

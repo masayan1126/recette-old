@@ -57,7 +57,19 @@
             <div class="mb-4">
                 <div class="d-flex justify-content-between align-items-end">
                     <span>作り方</span>
-                    <span class="small">
+
+                    <span
+                        v-if="selectedRecipe[0].recipe_url != null"
+                        class="color-link_menu"
+                    >
+                        <a
+                            :href="selectedRecipe[0].recipe_url"
+                            target="_blank"
+                            rel="noopener"
+                            ><i class="mr-1 fas fa-book-open"></i>レシピURL</a
+                        >
+                    </span>
+                    <span v-else>
                         <i class="mr-1 fas fa-book-open"></i>レシピURL
                     </span>
                 </div>
@@ -130,7 +142,7 @@ export default {
         },
     },
     mounted() {
-        console.log(this.recipeId);
+        console.log(this.selectedRecipe);
     },
     methods: {
         // routerBack() {

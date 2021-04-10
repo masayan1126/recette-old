@@ -87,6 +87,9 @@ class IngredientController extends Controller
             $ingredient->recipe_ingredient_category = $potatoes_starches_beans_mushroom->category;
             $ingredient->save();
         }
+
+        $ingredients = Ingredient::where('user_id', $id)->get();        
+        return $ingredients;
     }
 
     /**

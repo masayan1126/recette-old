@@ -29,10 +29,10 @@
                     >
                 </div>
             </div>
-            <div class="container-header_content-toppage-md">
+            <div class="container-header_content-toppage-sm">
                 <!-- 検索フォーム -->
                 <SearchWindow :className="'search-window_toppage'" />
-                <div class="user_menu-md">
+                <div class="user_menu-sm">
                     <!-- ユーザーメニュー -->
                     <span
                         class="dropdown-toggle"
@@ -146,7 +146,7 @@
             </div>
             <div class="container-seasonal_recipe-toppage d-flex w-100">
                 <div
-                    class="w-100"
+                    class="w-100 cursor-pointer"
                     @click="showRecipeDetail(recipe.id)"
                     v-for="recipe in newArrivalRecipes"
                     :key="recipe.id"

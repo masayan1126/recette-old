@@ -60,25 +60,24 @@ class RecipeController extends Controller
 
         $recipe->recipe_name = $new_recipe->recipeName;
         $recipe->user_id = $user_id;
-        // dd($new_recipe->recipeProcedure);
-
         $recipe->recipe_category = $new_recipe->recipeCategory->recipe_category_name;
         $recipe->recipe_category_sub = $new_recipe->recipeCategory->recipe_category_name_sub;
         $recipe->recipe_category_image = $new_recipe->recipeCategory->recipe_category_image;
         $recipe->recipe_procedure = $new_recipe->recipeProcedure;
         $recipe->is_favorite = false;
-        // $recipe->recipe_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png";
+        $recipe->recipe_url = $new_recipe->recipeUrl;
+        $recipe->recipe_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png";
 
-        $imagefile = $request->file('file');
+        clock($request->file('file'));
+        if ($request->file('file') != null) {
+            $imagefile = $request->file('file');
+            // $imagefile =$request->imagefile;
+            // $pathの中身は"products/ファイル名.jpeg"　等
+            $path = Storage::disk('s3')->putFile('/recipes', $imagefile, 'public');
+            // $product->pathの中身は上記$pathの画像ファイル名含めたs3のURL
+            $recipe->recipe_image_path = Storage::disk('s3')->url($path);
+        }
         
-        // $imagefile =$request->imagefile;
-        // $pathの中身は"products/ファイル名.jpeg"　等
-        $path = Storage::disk('s3')->putFile('/recipes', $imagefile, 'public');
-        // $product->pathの中身は上記$pathの画像ファイル名含めたs3のURL
-        $recipe->recipe_image_path = Storage::disk('s3')->url($path);
-        // if ($request->file('imagefile') != null) {
-        // }
-
         $recipe->save();
         $last_insert_id = $recipe->id; 
         $recipe = Recipe::find($last_insert_id);
@@ -137,14 +136,27 @@ class RecipeController extends Controller
     public function update(Request $request, $user_id,$recipe_id)
     {
         $edited_recipe = json_decode($request->editedRecipe);
-        $imagefile = $request->file('file');
-        // $pathの中身は"products/ファイル名.jpeg"　等
-        $path = Storage::disk('s3')->putFile('/recipes', $imagefile, 'public');
-        // $product->pathの中身は上記$pathの画像ファイル名含めたs3のURL
         $update_target_recipe = Recipe::where('id',$edited_recipe->id)->first();
         $update_target_recipe->recipe_name = $edited_recipe->recipeName;
-        $update_target_recipe->recipe_image_path = Storage::disk('s3')->url($path);
         $update_target_recipe->recipe_procedure = $edited_recipe->recipeProcedure;
+        $update_target_recipe->recipe_category = $edited_recipe->recipeCategory->recipe_category_name;
+        $update_target_recipe->recipe_category_sub = $edited_recipe->recipeCategory->recipe_category_name_sub;
+        $update_target_recipe->recipe_category_image = $edited_recipe->recipeCategory->recipe_category_image;
+        $update_target_recipe->recipe_url = $edited_recipe->recipeUrl;
+
+        clock($request->file('file'));
+        if ($request->file('file') == null) {
+           return;
+        } else {
+            $imagefile = $request->file('file');
+            // $imagefile =$request->imagefile;
+            // $pathの中身は"products/ファイル名.jpeg"　等
+            $path = Storage::disk('s3')->putFile('/recipes', $imagefile, 'public');
+            // $product->pathの中身は上記$pathの画像ファイル名含めたs3のURL
+            $recipe->recipe_image_path = Storage::disk('s3')->url($path);
+            $update_target_recipe->recipe_image_path = Storage::disk('s3')->url($path);
+        }
+        
         $update_target_recipe->save();
         
         $last_insert_id = $update_target_recipe->id; 

@@ -8,10 +8,10 @@
         aria-hidden="true"
     >
         <div class="modal-dialog" role="document">
-            <div class="modal-content" :style="modalStyle">
+            <div class="modal-content" :style="style.modalStyle">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
-                        {{ modalTitle }}
+                        {{ contents.modalContents.modalTitle }}
                     </h5>
                     <button
                         type="button"
@@ -23,37 +23,40 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <ImagePreview :title="'画像UL'" :recipe-image-path="''" />
-                    <!-- <TextInput
-                        :id="'profile-image'"
-                        :type="'text'"
-                        :value="profileImagePath"
-                        @inputFormContent="profileImagePath = $event"
-                    /> -->
+                    <ImagePreview
+                        :upload-icon-style="style.unnecessaryElementStyle"
+                        :title="'画像UL'"
+                        :recipe-image-path="''"
+                    />
                     <div class="w-100 mb-2">
                         <InputLabel
-                            :id="'user-name'"
-                            :name="inputContents.userName"
+                            :id="contents.inputContents.label.one.id"
+                            :name="contents.inputContents.label.one.name"
                         />
                         <TextInput
-                            :id="'user-name'"
-                            :type="'text'"
-                            :value="newUserData.userName"
+                            :id="contents.inputContents.input.one.id"
+                            :type="contents.inputContents.input.one.type"
+                            :value="contents.inputContents.input.one.value"
                             :className="'text-input-black'"
-                            :style-name="inputContentsStyle"
-                            @inputFormContent="newUserData.userName = $event"
+                            :style-name="style.inputContentsStyle"
+                            @inputFormContent="
+                                contents.inputContents.input.one.value = $event
+                            "
                         />
                     </div>
-                    <div class="w-100">
-                        <InputLabel :id="'email'" :name="inputContents.email" />
+                    <div class="w-100" :style="style.unnecessaryElementStyle">
+                        <InputLabel
+                            :id="contents.inputContents.label.two.id"
+                            :name="contents.inputContents.label.two.name"
+                        />
                         <TextInput
-                            :id="'email'"
-                            :type="'email'"
-                            :value="newUserData.userEmailAdress"
+                            :id="contents.inputContents.input.two.id"
+                            :type="contents.inputContents.input.two.type"
+                            :value="contents.inputContents.input.two.value"
                             :className="'text-input-black'"
-                            :style-name="inputContentsStyle"
+                            :style-name="style.inputContentsStyle"
                             @inputFormContent="
-                                newUserData.userEmailAdress = $event
+                                contents.inputContents.input.two.value = $event
                             "
                         />
                     </div>
@@ -89,19 +92,14 @@ import ImagePreview from "./ImagePreview";
 
 export default {
     name: "Modal",
-    props: ["modalTitle", "modalStyle", "inputContents", "inputContentsStyle"],
+    props: ["contents", "style", "propsFunction"],
     components: { TextInput, InputLabel, ImagePreview },
     data() {
-        return {
-            newUserData: {
-                userId: null,
-                userName: "",
-                userEmailAdress: null,
-                profileImagePath: null,
-            },
-        };
+        return {};
     },
-    mounted() {},
+    mounted() {
+        this.propsFunction();
+    },
     computed: {
         ...mapGetters({
             userData: "getUserData",
@@ -111,26 +109,6 @@ export default {
 
     methods: {
         ...mapMutations(["setRecipes", "initRecipes", "setUserData"]),
-        updateUserData() {
-            console.log(this.newUserData.userName);
-            axios
-                .put("/api/account/" + this.userData.userId + "/edit", {
-                    newUserData: this.newUserData,
-                    userName: this.newUserData.userName,
-                })
-                .then((response) => {
-                    console.log(response);
-                    this.setUserData(response.data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        },
-        returnToPreviousPage: function () {
-            history.back();
-        },
-
-        update() {},
     },
 };
 </script>

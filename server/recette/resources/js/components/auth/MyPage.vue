@@ -2,10 +2,9 @@
     <section class="section-mypage h-100">
         <ReturnButton :props-function="routerBack" />
         <Modal
-            :modal-title="'アカウント情報の編集'"
-            :modal-style="modalStyle"
-            :input-contents="inputContents"
-            :input-contents-style="inputContentsStyle"
+            :contents="contents"
+            :style="style"
+            :props-function="propsFunction"
         />
         <div
             class="wrapper-mypage mt-5 mt-sm-0 align-items-center d-flex justify-content-center"
@@ -41,16 +40,61 @@ export default {
     mixins: [utilsMixin],
     data() {
         return {
-            modalStyle: {
-                backgroundColor: "#454545",
+            // modalContents: {
+            //     newUserData: {
+            //         userId: null,
+            //         userName: "",
+            //         userEmailAdress: null,
+            //         profileImagePath: null,
+            //     },
+            //     modalStyle: {
+            //         backgroundColor: "#454545",
+            //     },
+            //     inputContents: {
+            //         profileImage: "ユーザー画像",
+            //         userName: "ユーザーネーム",
+            //         email: "メールアドレス",
+            //     },
+            //     inputContentsStyle: {
+            //         width: "100%",
+            //     },
+            // },
+            contents: {
+                modalContents: {
+                    modalTitle: "ユーザー情報の編集",
+                },
+                inputContents: {
+                    label: {
+                        one: { id: "input-username", name: "ユーザーネーム" },
+                        two: { id: "input-mail", name: "メールアドレス" },
+                    },
+                    input: {
+                        one: {
+                            id: "input-username",
+                            value: "",
+                            type: "text",
+                        },
+                        two: {
+                            id: "input-mail",
+                            value: "",
+                            type: "email",
+                        },
+                    },
+                },
             },
-            inputContents: {
-                profileImage: "ユーザー画像",
-                userName: "ユーザーネーム",
-                email: "メールアドレス",
+            style: {
+                modalStyle: {
+                    backgroundColor: "#454545",
+                },
+                unnecessaryElementStyle: {
+                    // display: "none !important",
+                },
+                inputContentsStyle: {
+                    width: "100%",
+                },
             },
-            inputContentsStyle: {
-                width: "100%",
+            propsFunction: {
+                initInputValue: this.initInputValue,
             },
         };
     },
@@ -65,6 +109,24 @@ export default {
     },
     methods: {
         ...mapMutations(["setUserData"]),
+        initInputValue() {
+            this.contents.inputContents.input.one.value = "";
+            this.contents.inputContents.input.two.value = "";
+        },
+        updateUserData() {
+            axios
+                .put("/api/account/" + this.userData.userId + "/edit", {
+                    newUserData: this.newUserData,
+                    userName: this.newUserData.userName,
+                })
+                .then((response) => {
+                    console.log(response);
+                    this.setUserData(response.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
     },
 };
 </script>

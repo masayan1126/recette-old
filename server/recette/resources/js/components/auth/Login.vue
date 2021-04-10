@@ -71,6 +71,7 @@ import { mapGetters, mapMutations } from "vuex";
 import PrimaryButton from "../parts/PrimaryButton";
 import TextInput from "../parts/TextInput";
 import InputLabel from "../parts/InputLabel";
+
 export default {
     components: {
         PrimaryButton,
@@ -93,13 +94,17 @@ export default {
             },
         };
     },
+    created() {
+        this.initUserData();
+        console.log(this.userData);
+    },
     computed: {
         ...mapGetters({
             userData: "getUserData",
         }),
     },
     methods: {
-        ...mapMutations(["setUserData"]),
+        ...mapMutations(["setUserData", "initUserData"]),
         loginUser() {
             axios
                 .post("/api/login", this.form)

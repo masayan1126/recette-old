@@ -39,22 +39,4 @@ import Register from "./components/auth/Register.vue";
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// window.HelloComponent = require("./components/Hello.vue").default;
-
-createApp(App)
-    //     {
-    //     components: {
-    //         TopPage,
-    //         RecipeDetail,
-    //         EditRecipe,
-    //         CreateRecipe,
-    //         StoreRecipe,
-    //         RecipeList,
-    //         RecipeCategoryList,
-    //         // RecipeCategoryDetail,
-    //         RecipeCategoryDetailList,
-    //         Register,
-    //     },
-    .use(router)
-    .use(store)
-    .mount("#app");
+createApp(App).use(router).use(store).mount("#app");

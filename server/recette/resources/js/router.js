@@ -16,6 +16,14 @@ import FavoriteRecipeList from "./components/recipe/FavoriteRecipeList.vue";
 
 const history = createWebHistory();
 const router = createRouter({
+    scrollBehavior(to, from, savedPosition) {
+        // always scroll to top
+
+        return {
+            el: "#app",
+            top: 0,
+        };
+    },
     history,
     routes: [
         {

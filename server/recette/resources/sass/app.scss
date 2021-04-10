@@ -27,6 +27,10 @@ ol {
     padding: 0;
 }
 
+.color-link_menu {
+    color: #7ea5d8;
+}
+
 li {
     list-style: none;
 }
@@ -62,6 +66,34 @@ input:-webkit-autofill {
 
 .btn {
     border-radius: 0.2rem;
+}
+
+.w-10 {
+    width: 10% !important;
+}
+.w-20 {
+    width: 20% !important;
+}
+.w-30 {
+    width: 30% !important;
+}
+.w-40 {
+    width: 40% !important;
+}
+.w-45 {
+    width: 45% !important;
+}
+.w-60 {
+    width: 60% !important;
+}
+.w-70 {
+    width: 70% !important;
+}
+.w-80 {
+    width: 80% !important;
+}
+.w-90 {
+    width: 90% !important;
 }
 
 .container-login {
@@ -100,6 +132,15 @@ input:-webkit-autofill {
     font-size: 0.7rem;
 }
 
+.element-recipe-favorite_recipe_list img {
+    cursor: pointer;
+}
+
+.container-recipe_category_list li,
+.container-recipe_category_detail_list li {
+    cursor: pointer;
+}
+
 // ナビメニュー
 .nav-fix-bottom {
     border: 1px solid #545050;
@@ -133,6 +174,7 @@ input:-webkit-autofill {
 .element-recipe-toppage {
     height: 120px;
     margin: 0 10px 0px 0;
+    cursor: pointer;
 }
 
 .element-recipe_image-toppage {
@@ -143,7 +185,11 @@ input:-webkit-autofill {
     border-radius: 5px;
 }
 
-.user_menu-md {
+.element-recipe_image-recipelist {
+    cursor: pointer;
+}
+
+.user_menu-sm {
     display: none;
     align-items: center;
     justify-content: space-between;
@@ -272,6 +318,22 @@ input:-webkit-autofill {
 
 // スマホ横
 @media (min-width: 576px) {
+    .font_size-sm {
+        font-size: 1.1rem;
+    }
+
+    .user_menu-sm {
+        display: block;
+        width: 30%;
+    }
+
+    .container-header_content-toppage-sm {
+        display: flex;
+        justify-content: space-between;
+        text-align: right;
+        align-items: center;
+    }
+
     .wrapper-mypage {
         height: 40%;
     }
@@ -295,7 +357,6 @@ input:-webkit-autofill {
         height: 180px;
     }
 
-    .wrapper-recipe_create,
     .wrapper-mypage {
         max-width: 700px;
         margin: 0 auto;
@@ -335,13 +396,13 @@ input:-webkit-autofill {
     }
 
     .navbar-dark {
-        max-width: 525px !important;
+        max-width: 545px !important;
         margin: 0 auto;
         padding: 0 14px;
     }
 
     .navbar-top-hamburger .collapse {
-        max-width: 525px !important;
+        max-width: 545px !important;
         margin: 0 auto;
         padding: 0 14px;
         margin-top: 10px;
@@ -350,6 +411,21 @@ input:-webkit-autofill {
 
 // タブレット
 @media (min-width: 768px) {
+    .w-md-65 {
+        width: 65%;
+    }
+    .w-md-30 {
+        width: 30%;
+    }
+
+    .font_size-md {
+        font-size: 1.2rem;
+    }
+
+    .container-recipe_name-recipe_edit {
+        flex-basis: 50%;
+    }
+
     .wrapper-mypage {
         height: 40%;
     }
@@ -365,16 +441,6 @@ input:-webkit-autofill {
     .element-category_image-recipe_category_detail_list {
         width: 150px;
         height: 150px;
-    }
-
-    .container-recipe-recipelist h5,
-    .container-recipe-recipelist h6 {
-        font-size: 1.5rem;
-    }
-
-    .container-recipe_ingredient-recipe_create,
-    .container-recipe_procedure-recipe_create {
-        min-height: 130px;
     }
 
     .container-recipe_name-recipe_create {
@@ -404,7 +470,7 @@ input:-webkit-autofill {
 
     .navbar-top-hamburger {
         display: block;
-        max-width: 690px;
+        max-width: 710px;
     }
 }
 
@@ -443,26 +509,14 @@ input:-webkit-autofill {
         margin-right: 0;
     }
 
-    .user_menu-md {
-        display: block;
-        width: 30%;
-    }
-
-    .container-header_content-toppage-md {
-        display: flex;
-        justify-content: space-between;
-        text-align: right;
-        align-items: center;
-    }
-
     .navbar-dark {
-        max-width: 960px !important;
+        max-width: 970px !important;
         padding: 0 25px;
         // max-width: 1140px;
     }
 
-    .wrapper-recipe_create {
-        max-width: 1300px;
+    .wrapper-recipe_create img {
+        max-width: 400px;
     }
 
     .navbar-top-hamburger {
@@ -486,7 +540,7 @@ input:-webkit-autofill {
 // デスクトップPC
 @media (min-width: 1200px) {
     .navbar-dark {
-        max-width: 1140px !important;
+        max-width: 1160px !important;
         padding: 0 30px;
     }
 }

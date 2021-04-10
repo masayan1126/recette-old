@@ -33,7 +33,7 @@
                                 <h6>{{ recipe.recipe_name }}</h6>
                                 <i
                                     @click="deleteRecipe(recipe.id)"
-                                    class="fas fa-trash-alt"
+                                    class="fas fa-trash-alt font_size-sm cursor-pointer"
                                 ></i>
                             </div>
 

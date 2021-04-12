@@ -31,7 +31,12 @@
 
                             <div class="small mb-0">
                                 <p class="mb-1">
-                                    {{ 1 }}.{{ recipe.recipe_procedure[0] }}...
+                                    {{ 1 }}.{{
+                                        recipe.recipe_procedure[0].substr(
+                                            0,
+                                            30
+                                        )
+                                    }}...
                                 </p>
                             </div>
 
@@ -81,6 +86,7 @@ export default {
     components: { PrimaryButton, ReturnButton },
     mixins: [utilsMixin],
     name: "RecipeList",
+    // props: ["searchQuery"],
     data() {
         return {
             listName: "",
@@ -119,9 +125,16 @@ export default {
                 // break;
                 // seasonalRecipes
                 default:
-                    return this.recipes.filter(
-                        (recipe) => recipe.user_id == this.userData.userId
-                    );
+                    const recipes = this.recipes.filter((recipe) => {
+                        if (
+                            recipe.recipe_name.indexOf(
+                                this.$route.query.query
+                            ) != -1
+                        ) {
+                            return recipe;
+                        }
+                    });
+                    return recipes;
                 // break;
             }
         },
@@ -137,9 +150,13 @@ export default {
         },
     },
     created() {
-        this.listType == "my-recipes"
-            ? (this.listName = "マイレシピ")
-            : (this.listName = "新着レシピ");
+        if (this.listType == "my-recipes") {
+            this.listName = "マイレシピ";
+        } else if (this.listType == "new-arrival-recipes") {
+            this.listName = "新着レシピ";
+        } else {
+            this.listName = this.$route.query.query + "の検索結果";
+        }
     },
     methods: {
         ...mapActions(["setRecipes"]),

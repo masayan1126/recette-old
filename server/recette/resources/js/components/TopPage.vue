@@ -35,7 +35,12 @@
             </div>
             <div class="container-header_content-toppage-sm">
                 <!-- 検索フォーム -->
-                <SearchWindow :class-name="'search-window_toppage'" />
+                <SearchWindow
+                    :class-name="'search-window_toppage'"
+                    :placeholder="'キーワードを入力しEnterを押してください'"
+                    :props-function="searchRecipe"
+                />
+
                 <div class="user_menu-sm">
                     <!-- ユーザーメニュー(タブレット以上) -->
                     <span
@@ -47,7 +52,7 @@
                         type="button"
                     >
                         <img
-                            class="w-30"
+                            class="w-40"
                             :src="userData.profileImagePath"
                             alt="ユーザープロフィール画像"
                         />
@@ -149,13 +154,13 @@
             </div>
             <div class="container-seasonal_recipe-toppage d-flex w-100">
                 <div
-                    class="w-100 cursor-pointer"
+                    class="cursor-pointer element-seasonal_recipe_image-toppage"
                     @click="showRecipeDetail(recipe.id)"
                     v-for="recipe in newArrivalRecipes"
                     :key="recipe.id"
                 >
                     <img
-                        class="w-100 element-seasonal_recipe_image-toppage"
+                        class="w-100"
                         :src="recipe.recipe_image_path"
                         alt="旬のレシピ画像"
                     />
@@ -170,6 +175,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import SearchWindow from "./parts/SearchWindow";
+
 export default {
     components: {
         SearchWindow,
@@ -189,8 +195,9 @@ export default {
             // 非破壊コピーして日付の昇順にソート
             const newArrivalRecipes = this.recipes.slice();
             newArrivalRecipes.sort(
-                (a, b) => new Date(a.updated_at) - new Date(b.updated_at)
+                (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
             );
+            console.log(newArrivalRecipes);
             return newArrivalRecipes;
         },
     },
@@ -203,6 +210,9 @@ export default {
         });
     },
     methods: {
+        simpleSuggestionList() {
+            return ["Vue.js", "React.js", "Angular.js"];
+        },
         ...mapActions([
             "setRecipes",
             "setUserData",
@@ -233,6 +243,19 @@ export default {
             axios.post("/api/logout").then((res) => {
                 this.initUserData();
                 this.$router.push("/login");
+            });
+        },
+        searchRecipe(e) {
+            if (e.target.value == "") {
+                alert("キーワードを入力して下さい");
+                return;
+            }
+            this.$router.push({
+                name: "recipeList",
+                params: {
+                    listType: "search-result-recipe",
+                },
+                query: { query: e.target.value },
             });
         },
         showRecipeDetail(recipeId) {

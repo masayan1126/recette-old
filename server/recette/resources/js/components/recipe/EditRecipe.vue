@@ -498,7 +498,9 @@ export default {
                     },
                 })
                 .then((res) => {
+                    console.log(res.data);
                     this.setRecipes(res.data);
+                    console.log(this.recipes);
                     this.$router.push({
                         name: "recipeDetail",
                         params: { recipeId: this.recipeId },
@@ -535,6 +537,7 @@ export default {
                 recipe_category_image: this.selectedRecipe[0]
                     .recipe_category_image,
             };
+            console.log(selectedRecipeCategory);
 
             this.setRecipeCategory(selectedRecipeCategory);
 

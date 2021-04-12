@@ -30,16 +30,26 @@ class UsersTableSeeder extends Seeder
         // ]);  
         
         DB::table('users')->insert([
-            'name' => 'まさやん',
-            // 'email' => $this->faker->unique()->safeEmail,
-            'email' => 'masa199311266@gmail.com',
+            [
+                'name' => 'まさやん',
+                'email' => 'masa199311266@gmail.com',
+                'email_verified_at' => now(),
+                'password' => password_hash('masa19931126',PASSWORD_DEFAULT),
+                'remember_token' => Str::random(10),
+                'profile_photo_path' => 'https://recipe-img-bucket.s3.ap-northeast-1.amazonaws.com/recipes/tCmMiif40rtHN43PY1D4j5QSzqOMzAHMqR791ktK.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+            'name' => 'おおさかたろう',
+            'email' => 'matsushin@gmail.com',
             'email_verified_at' => now(),
-            // 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'password' => password_hash('masa19931126',PASSWORD_DEFAULT),
+            'password' => password_hash('mastsushin1126',PASSWORD_DEFAULT),
             'remember_token' => Str::random(10),
-            'profile_photo_path' => 'https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/sUvN0S7jVu5vYe5LiXPFEfEZOlNA5ILSWHHYBuN6.jpg',
+            'profile_photo_path' => 'https://recipe-img-bucket.s3.ap-northeast-1.amazonaws.com/recipes/tCmMiif40rtHN43PY1D4j5QSzqOMzAHMqR791ktK.jpg',
             'created_at' => now(),
             'updated_at' => now(),
+            ]
         ]);  
     }
 }

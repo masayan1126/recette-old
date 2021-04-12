@@ -1,6 +1,6 @@
 export default {
-    setIngredients(context, recipes) {
-        context.commit("setIngredients", recipes);
+    setIngredients(context, ingredients) {
+        context.commit("setIngredients", ingredients);
     },
     initIngredients(context) {
         context.commit("initIngredients");

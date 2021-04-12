@@ -5,13 +5,18 @@
                 ><i class="fas fa-search"></i
             ></span>
         </div>
-        <input type="text" class="form-control bg-gray" />
+        <input
+            class="form-control bg-gray"
+            :placeholder="placeholder"
+            type="text"
+            v-on:keyup.enter="propsFunction($event)"
+        />
     </div>
 </template>
 
 <script>
 export default {
     name: "SearchWindow",
-    props: ["className"],
+    props: ["className", "propsFunction", "placeholder"],
 };
 </script>

@@ -52,7 +52,7 @@
                     <span>作り方</span>
 
                     <span
-                        v-if="selectedRecipe[0].recipe_url != ''"
+                        v-if="selectedRecipe[0].recipe_url != null"
                         class="color-link_menu"
                     >
                         <a

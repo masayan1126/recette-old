@@ -238,8 +238,13 @@ input:-webkit-autofill {
 }
 
 .element-seasonal_recipe_image-toppage {
-    box-shadow: 0px 2px 2px rgb(0 0 0 / 25%);
+    width: calc(50% - 10px);
+    margin: 0 10px 10px 0;
+}
+
+.element-seasonal_recipe_image-toppage img {
     border-radius: 5px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
 }
 
 .element-recipe_image-recipelist {
@@ -305,6 +310,10 @@ input:-webkit-autofill {
     width: 100%;
 }
 
+.container-header_content-toppage img {
+    border-radius: 5px;
+}
+
 .container-favorite_recipe_list {
 }
 
@@ -358,7 +367,7 @@ input:-webkit-autofill {
         background-color: #c4c4c4;
         box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
         border-radius: 5px;
-        height: 120px;
+        width: 120px;
     }
     .breadcrumb-component {
         display: none;
@@ -421,7 +430,7 @@ input:-webkit-autofill {
     }
 
     .element-recipe_image-recipelist {
-        height: 180px;
+        width: 180px;
     }
 
     .wrapper-mypage {
@@ -557,7 +566,7 @@ input:-webkit-autofill {
     }
 
     .element-recipe_image-recipelist {
-        height: 240px;
+        width: 240px;
     }
 
     .container-recipe_name-recipe_create {

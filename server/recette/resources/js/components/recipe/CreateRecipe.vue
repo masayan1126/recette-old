@@ -373,7 +373,7 @@ export default {
                 })
                 .then((res) => {
                     this.setIngredients(res.data);
-                    this.toastIsShow = false;
+                    this.contents.toastContents.toastIsShow = false;
                 })
                 .catch((error) => {});
         },

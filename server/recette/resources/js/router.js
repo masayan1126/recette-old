@@ -128,7 +128,8 @@ const router = createRouter({
                     .then(() => {
                         if (
                             to.params.listType != "my-recipes" &&
-                            to.params.listType != "new-arrival-recipes"
+                            to.params.listType != "new-arrival-recipes" &&
+                            to.params.listType != "search-result-recipe"
                         ) {
                             next({ path: "/404" });
                             return;

@@ -144,10 +144,7 @@ class RecipeController extends Controller
         $update_target_recipe->recipe_category_image = $edited_recipe->recipeCategory->recipe_category_image;
         $update_target_recipe->recipe_url = $edited_recipe->recipeUrl;
 
-        clock($request->file('recipe-image-file'));
-        if ($request->file('recipe-image-file') == null) {
-           return;
-        } else {
+        if ($request->file('recipe-image-file') != null) {
             $imagefile = $request->file('recipe-image-file');
             // $imagefile =$request->imagefile;
             // $pathの中身は"products/ファイル名.jpeg"　等
@@ -186,6 +183,7 @@ class RecipeController extends Controller
         }
         
         $recipes = Recipe::with(['recipe_ingredients'])->get();
+        clock($recipes);
         return $recipes;
     }
 

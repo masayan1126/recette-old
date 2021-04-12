@@ -4,7 +4,6 @@
         @click.prevent="propsFunction(recipeId, isFavorite)"
         :style="buttonStyle"
     >
-        <i :class="icon" style="color: red"></i>
         {{ buttonName }}
     </button>
 </template>
@@ -14,18 +13,10 @@ export default {
     name: "PrimayButton",
     props: [
         "buttonName",
+        "buttonStyle",
+        "isFavorite",
         "propsFunction",
         "recipeId",
-        "buttonStyle",
-        "icon",
-        "isFavorite",
     ],
-    data() {
-        return {
-            revisedRecipeObj: null,
-            revisedRecipeName: "",
-            revisedRecipeImage: "",
-        };
-    },
 };
 </script>

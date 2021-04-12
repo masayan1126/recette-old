@@ -2,14 +2,6 @@
     <section class="section-recipelist">
         <div class="wrapper-recipelist">
             <ReturnButton :props-function="routerBack" />
-            <!-- 
-            <BreadCrumb
-                class="breadcrumb-component"
-                :bread-crumb-list="breadCrumbList"
-                :paramsType="'listType'"
-                :params="listType"
-            /> -->
-
             <h5>{{ listName }}</h5>
             <div class="container-recipe-recipelist">
                 <!-- ↓レシピリスト -->
@@ -39,7 +31,7 @@
 
                             <div class="small mb-0">
                                 <p class="mb-1">
-                                    {{ 1 }}.{{ recipe.recipe_procedure[0] }}
+                                    {{ 1 }}.{{ recipe.recipe_procedure[0] }}...
                                 </p>
                             </div>
 
@@ -47,29 +39,29 @@
                                 class="d-flex w-100 justify-content-between mt-auto"
                             >
                                 <PrimaryButton
-                                    :buttonName="'詳細'"
-                                    :buttonStyle="showRecipeDetailButtonStyle"
-                                    :propsFunction="showRecipeDetail"
+                                    :button-name="'詳細'"
+                                    :button-style="
+                                        style.showRecipeDetailButtonStyle
+                                    "
+                                    :props-function="showRecipeDetail"
                                     :recipe-id="recipe.id"
                                 />
 
                                 <PrimaryButton
                                     v-if="recipe.is_favorite == 1"
-                                    :icon="icon"
-                                    :buttonName="'お気に入り解除'"
-                                    :buttonStyle="addFavoriteButtonStyle"
+                                    :button-name="'お気に入り解除'"
+                                    :button-style="style.addFavoriteButtonStyle"
+                                    :is-favorite="recipe.is_favorite"
                                     :props-function="toggleFavorite"
                                     :recipe-id="recipe.id"
-                                    :isFavorite="recipe.is_favorite"
                                 />
                                 <PrimaryButton
                                     v-if="recipe.is_favorite == 0"
-                                    :icon="icon"
-                                    :buttonName="'お気に入り追加'"
-                                    :buttonStyle="addFavoriteButtonStyle"
+                                    :button-name="'お気に入り追加'"
+                                    :button-style="style.addFavoriteButtonStyle"
+                                    :is-favorite="recipe.is_favorite"
                                     :props-function="toggleFavorite"
                                     :recipe-id="recipe.id"
-                                    :isFavorite="recipe.is_favorite"
                                 />
                             </div>
                         </div>
@@ -81,31 +73,31 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import PrimaryButton from "../parts/PrimaryButton";
 import ReturnButton from "../parts/ReturnButton";
-import BreadCrumb from "../common/BreadcrumbTrail";
 import utilsMixin from "../../mixin/utility";
 export default {
-    name: "RecipeList",
-    components: { PrimaryButton, BreadCrumb, ReturnButton },
+    components: { PrimaryButton, ReturnButton },
     mixins: [utilsMixin],
-    props: [],
+    name: "RecipeList",
     data() {
         return {
             listName: "",
-            // icon: "fas fa-heart",
-            showRecipeDetailButtonStyle: {
-                color: "#fff",
-                backgroundColor: "#B1C6BD",
-                fontSize: "10px",
-                flexBasis: "32%",
-            },
-            addFavoriteButtonStyle: {
-                color: "#fff",
-                backgroundColor: "#E0D29E",
-                fontSize: "10px",
-                flexBasis: "65%",
+            style: {
+                addFavoriteButtonStyle: {
+                    color: "#fff",
+                    backgroundColor: "#E0D29E",
+                    fontSize: "10px",
+                    flexBasis: "65%",
+                },
+
+                showRecipeDetailButtonStyle: {
+                    color: "#fff",
+                    backgroundColor: "#B1C6BD",
+                    fontSize: "10px",
+                    flexBasis: "32%",
+                },
             },
         };
     },
@@ -143,40 +135,19 @@ export default {
             )[1];
             return listType;
         },
-        breadCrumbList() {
-            return [
-                {
-                    id: 1,
-                    name: "ホーム",
-                    linkName: "recipes",
-                },
-                {
-                    id: 2,
-                    name: this.listName,
-                    linkName: "recipeList",
-                },
-            ];
-        },
     },
-    created() {},
-    mounted() {
+    created() {
         this.listType == "my-recipes"
             ? (this.listName = "マイレシピ")
             : (this.listName = "新着レシピ");
     },
     methods: {
-        ...mapMutations(["setRecipes", "initRecipes"]),
-        showRecipeDetail(recipeId) {
-            this.$router.push({
-                name: "recipeDetail",
-                params: { recipeId: recipeId },
-            });
-        },
+        ...mapActions(["setRecipes"]),
         deleteRecipe(recipeId) {
-            const deleteCheckResult = confirm(
+            const boolConfirmDeleteRecipe = confirm(
                 "このレシピを削除してよろしいですか？"
             );
-            if (deleteCheckResult == true) {
+            if (boolConfirmDeleteRecipe == true) {
                 const url =
                     "/api/users/" +
                     this.userData.userId +
@@ -186,13 +157,17 @@ export default {
                 axios
                     .delete(url)
                     .then((res) => {
-                        this.$router.push({ name: "myRecipes" });
                         this.setRecipes(res.data);
+                        this.$router.push({ name: "myRecipes" });
                     })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                    .catch((error) => {});
             }
+        },
+        showRecipeDetail(recipeId) {
+            this.$router.push({
+                name: "recipeDetail",
+                params: { recipeId: recipeId },
+            });
         },
         toggleFavorite(recipeId, isFavorite) {
             let url =
@@ -209,12 +184,9 @@ export default {
             axios
                 .post(url)
                 .then((res) => {
-                    console.log(res);
                     this.setRecipes(res.data);
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                .catch(function (error) {});
         },
     },
 };

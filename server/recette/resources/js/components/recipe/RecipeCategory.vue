@@ -1,59 +1,39 @@
 <template>
-    <div
-        @click.prevent="
-            propsFunction(
-                targetCategoryRecipeList[0].recipe_category,
-                targetCategoryRecipeList[0].recipe_category_sub
-            )
-        "
+    <li
+        @click.prevent="propsFunction(selectedCategoryRecipeList)"
+        class="d-flex justify-content-between align-items-center py-3"
+        style="border-bottom: 1px solid #c4c4c4"
     >
-        <li
-            class="d-flex justify-content-between align-items-center py-2"
-            style="border-bottom: 1px solid #c4c4c4"
-        >
-            <div>
-                <img
-                    class="element-category_image-recipe_category_list"
-                    :src="recipeCategory.recipe_category_image"
-                    alt="レシピカテゴリーの画像"
-                />
-                {{ recipeCategory.recipe_category }}
-                {{ recipeCategory.recipe_category_name }}
-            </div>
-            <span>{{ targetCategoryRecipeList.length }}</span>
-        </li>
-    </div>
+        <div>
+            <img
+                class="element-category_image-recipe_category_list"
+                :src="recipeCategory.recipe_category_image"
+                alt="レシピカテゴリーの画像"
+            />
+            {{ recipeCategory.recipe_category }}
+            {{ recipeCategory.recipe_category_name }}
+        </div>
+        <span>{{ selectedCategoryRecipeList.length }}</span>
+    </li>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
-    name: "RecipeCategory",
-    props: ["propsFunction", "recipeCategory"],
-    components: {},
-    data() {
-        return {};
-    },
     computed: {
         ...mapGetters({
             recipes: "getRecipes",
         }),
-        targetCategoryRecipeList() {
+        selectedCategoryRecipeList() {
             return this.recipes.filter(
                 (recipe) =>
-                    recipe.recipe_category_sub == this.recipeCategory.url
+                    recipe.recipe_category_sub ==
+                    this.recipeCategory.recipe_category_name_sub
             );
         },
     },
-    mounted() {
-        console.log(this.targetCategoryRecipeList);
-    },
-    methods: {
-        ...mapMutations([]),
-        goToPreviousPage() {
-            this.$router.back();
-        },
-    },
+    name: "RecipeCategory",
+    props: ["propsFunction", "recipeCategory"],
 };
 </script>

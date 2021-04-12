@@ -1,83 +1,85 @@
 <template>
     <section
-        class="register h-100 d-flex align-items-center justify-content-center"
+        class="section-register h-100 d-flex align-items-center justify-content-center"
     >
         <div class="wrapper-register d-md-flex">
             <div class="w-50 d-none d-md-block">
                 <img
                     class="w-100 element-register_image-register"
                     src="/images/undraw_cooking_lyxy.svg"
-                    alt=""
+                    alt="会員登録画面の画像"
                 />
             </div>
-            <div class="w-100 w-md-50 container-login d-flex flex-column">
-                <h4 class="mb-5">アカウント登録</h4>
+            <div class="w-100 w-md-50 container-register d-flex flex-column">
+                <h4 class="mb-5 text-center text-md-left">アカウント登録</h4>
 
                 <div class="w-100">
                     <InputLabel
-                        class="mb-0 w-100"
-                        :id="'input-user-name'"
+                        :class-name="'mb-0 w-100'"
+                        :id="'input-username'"
                         :name="'ユーザー名'"
                     />
                     <TextInput
-                        :id="'input-user-name'"
+                        :class-name="'text-input-black w-100'"
+                        :id="'input-username'"
                         :type="'text'"
-                        :value="form.name"
-                        :className="'text-input-black w-100'"
-                        @inputFormContent="form.name = $event"
+                        :value="registerForm.name"
+                        @inputFormContent="registerForm.name = $event"
                     />
                 </div>
                 <div class="w-100 mt-4">
                     <InputLabel
-                        class="mb-0 w-100"
+                        :class-name="'mb-0 w-100'"
                         :id="'input-email'"
                         :name="'メールアドレス'"
                     />
                     <TextInput
+                        :class-name="'text-input-black w-100'"
                         :id="'input-email'"
                         :type="'email'"
-                        :value="form.email"
-                        :className="'text-input-black w-100'"
-                        @inputFormContent="form.email = $event"
+                        :value="registerForm.email"
+                        @inputFormContent="registerForm.email = $event"
                     />
                 </div>
                 <div class="w-100 mt-4">
                     <InputLabel
-                        class="mb-0 w-100"
+                        :class-name="'mb-0 w-100'"
                         :id="'input-password'"
                         :name="'パスワード：'"
                     />
                     <TextInput
+                        :class-name="'text-input-black w-100'"
                         :id="'input-password'"
                         :type="'password'"
-                        :value="form.password"
-                        :className="'text-input-black w-100'"
-                        @inputFormContent="form.password = $event"
+                        :value="registerForm.password"
+                        @inputFormContent="registerForm.password = $event"
                     />
                 </div>
                 <div class="w-100 mt-4">
                     <InputLabel
-                        class="mb-0 w-100"
-                        :id="'input-password_confirmation'"
+                        :class-name="'mb-0 w-100'"
+                        :id="'input-password-confirmation'"
                         :name="'確認用パスワード：'"
                     />
                     <TextInput
-                        :id="'input-password_confirmation'"
+                        :class-name="'text-input-black w-100'"
+                        :id="'input-password-confirmation'"
                         :type="'password'"
-                        :value="form.password_confirmation"
-                        :className="'text-input-black w-100'"
-                        @inputFormContent="form.password_confirmation = $event"
+                        :value="registerForm.password_confirmation"
+                        @inputFormContent="
+                            registerForm.password_confirmation = $event
+                        "
                     />
                 </div>
 
                 <div class="w-100 mt-4 text-center">
                     <PrimaryButton
-                        :buttonName="'ログイン'"
-                        :buttonStyle="loginButtonStyle"
-                        :propsFunction="loginUser"
+                        :button-name="'登録する'"
+                        :button-style="authFormButtonStyle"
+                        :props-function="register"
                     />
                 </div>
-                <div class="w-100 mt-4 text-center">
+                <div class="w-100 mt-2 mt-md-auto text-center text-md-left">
                     <router-link
                         class="small"
                         :to="{
@@ -91,46 +93,40 @@
         </div>
     </section>
 </template>
+
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import InputLabel from "../parts/InputLabel";
+import { mapActions } from "vuex";
 import PrimaryButton from "../parts/PrimaryButton";
 import TextInput from "../parts/TextInput";
-import InputLabel from "../parts/InputLabel";
+import utilsMixin from "../../mixin/utility";
 export default {
     components: {
+        InputLabel,
         PrimaryButton,
         TextInput,
-        InputLabel,
     },
+    mixins: [utilsMixin],
     data() {
         return {
-            form: {
+            registerForm: {
                 name: "",
                 email: "",
                 password: "",
                 password_confirmation: "",
             },
-            errors: [],
-            loginButtonStyle: {
-                color: "#fff",
-                backgroundColor: "#E4C8AD",
-                fontSize: "12px",
-                width: "100%",
-                height: "35px",
-            },
         };
     },
     methods: {
-        saveForm() {
+        ...mapActions(["setUserData"]),
+        register() {
             axios
-                .post("/api/register", this.form)
+                .post("/api/register", this.registerForm)
                 .then((res) => {
-                    console.log(res.data);
+                    this.setUserData(res.data);
                     this.$router.push("/recipes");
                 })
-                .catch((error) => {
-                    this.errors = error.response.data.errors;
-                });
+                .catch((error) => {});
         },
     },
 };

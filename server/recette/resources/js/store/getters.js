@@ -17,15 +17,11 @@ export default {
     getRecipeIngredientList: recipeIngredientGetters.getRecipeIngredientList,
     getIsEditingRecipeIngredient:
         recipeIngredientGetters.getIsEditingRecipeIngredient,
-    getEditingRecipeIngredientIndex:
-        recipeIngredientGetters.getEditingRecipeIngredientIndex,
+    // getEditingRecipeIngredientIndex:
+    //     recipeIngredientGetters.getEditingRecipeIngredientIndex,
     // recipeProcedure
     getRecipeProcedure: recipeProcedureGetters.getRecipeProcedure,
     getRecipeProcedureList: recipeProcedureGetters.getRecipeProcedureList,
-    getIsEditingRecipeProcedure:
-        recipeProcedureGetters.getIsEditingRecipeProcedure,
-    getEditingRecipeProcedureIndex:
-        recipeProcedureGetters.getEditingRecipeProcedureIndex,
     getrecipeCategory: recipeCategoryGetters.getRecipeCategory,
     getRecipeIngredientQuantity:
         recipeIngredientGetters.getRecipeIngredientQuantity,

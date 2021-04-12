@@ -45,22 +45,9 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 import utilsMixin from "../../mixin/utility";
 export default {
-    name: "NavbarTop",
     mixins: [utilsMixin],
-    props: [],
-    data() {
-        return {};
-    },
-    created() {},
-    mounted() {},
-    computed: {
-        ...mapGetters({}),
-    },
-    methods: {
-        ...mapMutations([]),
-    },
+    name: "NavbarTop",
 };
 </script>

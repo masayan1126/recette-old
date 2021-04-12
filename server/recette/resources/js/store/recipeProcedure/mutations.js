@@ -3,7 +3,7 @@ export default {
         state.recipeProcedure = recipeProcedure;
     },
     initRecipeProcedure(state) {
-        state.recipeProcedure = "";
+        state.recipeProcedure = null;
     },
     setRecipeProcedureList(state, recipeProcedure) {
         // 編集

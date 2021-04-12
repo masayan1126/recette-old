@@ -3,16 +3,20 @@
         <div class="wrapper-toppage">
             <div class="container-header_content-toppage mb-2">
                 <h4>Reccete</h4>
-                <!-- ユーザーメニュー -->
+                <!-- ユーザーメニュー(スマートフォン) -->
                 <span
-                    class="dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-toggle="dropdown"
                     aria-haspopup="true"
                     aria-expanded="false"
+                    class="dropdown-toggle text-right"
+                    data-toggle="dropdown"
+                    id="dropdownMenuButton"
+                    type="button"
                 >
-                    <i class="fas fa-user-circle fa-2x"></i>
+                    <img
+                        alt="ユーザープロフィール画像"
+                        class="w-20"
+                        :src="userData.profileImagePath"
+                    />
                 </span>
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -24,25 +28,29 @@
                     >
                         マイページ
                     </router-link>
-                    <a @click="logout" class="dropdown-item" href="#"
+                    <a @click="logout" class="dropdown-item" href=""
                         >ログアウト</a
                     >
                 </div>
             </div>
             <div class="container-header_content-toppage-sm">
                 <!-- 検索フォーム -->
-                <SearchWindow :className="'search-window_toppage'" />
+                <SearchWindow :class-name="'search-window_toppage'" />
                 <div class="user_menu-sm">
-                    <!-- ユーザーメニュー -->
+                    <!-- ユーザーメニュー(タブレット以上) -->
                     <span
-                        class="dropdown-toggle"
-                        type="button"
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
+                        class="dropdown-toggle"
+                        data-toggle="dropdown"
+                        id="dropdownMenuButton"
+                        type="button"
                     >
-                        <i class="fas fa-user-circle fa-3x"></i>
+                        <img
+                            class="w-30"
+                            :src="userData.profileImagePath"
+                            alt="ユーザープロフィール画像"
+                        />
                     </span>
 
                     <div
@@ -57,17 +65,12 @@
                         >
                             マイページ
                         </router-link>
-                        <a @click="logout" class="dropdown-item" href="#"
+                        <a @click="logout" class="dropdown-item" href=""
                             >ログアウト</a
                         >
                     </div>
                 </div>
             </div>
-            <!-- <VueSimpleSuggest
-                v-model="chosen"
-                :list="simpleSuggestionList"
-                :filter-by-query="true"
-            /> -->
 
             <div class="d-flex justify-content-between mt-4">
                 <h5>マイレシピ</h5>
@@ -152,11 +155,7 @@
                     :key="recipe.id"
                 >
                     <img
-                        style="
-                            box-shadow: 0px 2px 2px rgb(0 0 0 / 25%);
-                            border-radius: 5px;
-                        "
-                        class="w-100"
+                        class="w-100 element-seasonal_recipe_image-toppage"
                         :src="recipe.recipe_image_path"
                         alt="旬のレシピ画像"
                     />
@@ -169,40 +168,19 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import SearchWindow from "./parts/SearchWindow";
-// import VueSimpleSuggest from "vue-simple-suggest";
-// import "vue-simple-suggest/dist/styles.css"; // Optional CSS
 export default {
-    name: "TopPage",
     components: {
         SearchWindow,
-        // VueSimpleSuggest,
     },
-    data() {
-        return {
-            // chosen: "",
-            // csrf: document
-            //     .querySelector('meta[name="csrf-token"]')
-            //     .getAttribute("content"),
-        };
-    },
-    created() {
-        this.fetchAllRecipes();
-        this.fetchUserIngredients();
-        // spiから取得した認証情報をstoreにセット
-        axios.get("api/user").then((res) => {
-            this.setUserData(res.data);
-        });
-    },
+    name: "TopPage",
     computed: {
         ...mapGetters({
             userData: "getUserData",
             recipes: "getRecipes",
-            ingredients: "getIngredients",
         }),
         myRecipes() {
-            // 非破壊コピーして日付の昇順にソート
             return this.recipes.filter(
                 (recipe) => recipe.user_id == this.userData.userId
             );
@@ -216,32 +194,31 @@ export default {
             return newArrivalRecipes;
         },
     },
+    created() {
+        this.fetchAllRecipes();
+        this.fetchUserIngredients();
+        // apiから取得した認証情報をstoreにセット
+        axios.get("api/user").then((res) => {
+            this.setUserData(res.data);
+        });
+    },
     methods: {
-        ...mapMutations([
+        ...mapActions([
             "setRecipes",
-            "initRecipes",
             "setUserData",
-            "initUserData",
             "setIngredients",
-            "initIngredients",
+            "initUserData",
         ]),
-        // simpleSuggestionList() {
-        //     [
-        //         { id: 1, firstName: "タロウ", lastName: "サトウ" },
-        //         { id: 2, firstName: "ジロウ", lastName: "イノウエ" },
-        //         { id: 3, firstName: "サブロウ", lastName: "タナカ" },
-        //     ];
-        // },
+
         // ログインしているユーザーにかかわらず、全てのレシピを取得
         fetchAllRecipes: async function () {
             await axios
                 .get("/api/recipes")
                 .then((response) => {
                     this.setRecipes(response.data);
+                    console.log(this.recipes);
                 })
-                .catch((error) => {
-                    console.log(error);
-                });
+                .catch((error) => {});
         },
         // ログインしているユーザーの食材データのみ取得
         fetchUserIngredients: async function () {
@@ -250,14 +227,11 @@ export default {
                 .then((response) => {
                     this.setIngredients(response.data);
                 })
-                .catch((error) => {
-                    console.log(error);
-                });
+                .catch((error) => {});
         },
         logout() {
             axios.post("/api/logout").then((res) => {
                 this.initUserData();
-                console.log(this.userData);
                 this.$router.push("/login");
             });
         },

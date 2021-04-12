@@ -13,10 +13,10 @@
                         :key="favoriteRecipe.id"
                     >
                         <img
-                            @click="showRecipeDetail(favoriteRecipe.id)"
-                            class="w-100"
-                            :src="favoriteRecipe.recipe_image_path"
                             alt="お気に入りレシピの画像"
+                            class="w-100"
+                            @click="showRecipeDetail(favoriteRecipe.id)"
+                            :src="favoriteRecipe.recipe_image_path"
                         />
                         <p>{{ favoriteRecipe.recipe_name }}</p>
                         <hr />
@@ -28,29 +28,23 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
 import ReturnButton from "../parts/ReturnButton";
 import utilsMixin from "../../mixin/utility";
 export default {
-    name: "FavoriteRecipeList",
     mixins: [utilsMixin],
+    name: "FavoriteRecipeList",
     components: {
         ReturnButton,
     },
-    props: [],
-    data() {
-        return {};
-    },
     computed: {
-        favoriteRecipes() {
-            return this.recipes.filter((recipe) => recipe.is_favorite == 1);
-        },
         ...mapGetters({
             recipes: "getRecipes",
         }),
+        favoriteRecipes() {
+            return this.recipes.filter((recipe) => recipe.is_favorite == 1);
+        },
     },
-    created() {},
-    mounted() {},
     methods: {
         showRecipeDetail(recipeId) {
             this.$router.push({

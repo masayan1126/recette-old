@@ -16315,19 +16315,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     NavbarTop: _common_NavbarTop__WEBPACK_IMPORTED_MODULE_1__.default,
     NavbarTopHamburger: _common_NavbarTopHamburger__WEBPACK_IMPORTED_MODULE_2__.default
   },
-  name: "App",
-  props: [],
-  data: function data() {
-    return {};
-  },
-  created: function created() {},
-  mounted: function mounted() {
-    console.log(this.userData.loggedIn);
-  },
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
     userData: "getUserData"
   })),
-  methods: {}
+  name: "App"
 });
 
 /***/ }),
@@ -16360,43 +16351,21 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
- // import VueSimpleSuggest from "vue-simple-suggest";
-// import "vue-simple-suggest/dist/styles.css"; // Optional CSS
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "TopPage",
   components: {
-    SearchWindow: _parts_SearchWindow__WEBPACK_IMPORTED_MODULE_1__.default // VueSimpleSuggest,
-
+    SearchWindow: _parts_SearchWindow__WEBPACK_IMPORTED_MODULE_1__.default
   },
-  data: function data() {
-    return {// chosen: "",
-      // csrf: document
-      //     .querySelector('meta[name="csrf-token"]')
-      //     .getAttribute("content"),
-    };
-  },
-  created: function created() {
-    var _this = this;
-
-    this.fetchAllRecipes();
-    this.fetchUserIngredients(); // spiから取得した認証情報をstoreにセット
-
-    axios.get("api/user").then(function (res) {
-      _this.setUserData(res.data);
-    });
-  },
+  name: "TopPage",
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)({
     userData: "getUserData",
-    recipes: "getRecipes",
-    ingredients: "getIngredients"
+    recipes: "getRecipes"
   })), {}, {
     myRecipes: function myRecipes() {
-      var _this2 = this;
+      var _this = this;
 
-      // 非破壊コピーして日付の昇順にソート
       return this.recipes.filter(function (recipe) {
-        return recipe.user_id == _this2.userData.userId;
+        return recipe.user_id == _this.userData.userId;
       });
     },
     newArrivalRecipes: function newArrivalRecipes() {
@@ -16408,14 +16377,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return newArrivalRecipes;
     }
   }),
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapMutations)(["setRecipes", "initRecipes", "setUserData", "initUserData", "setIngredients", "initIngredients"])), {}, {
-    // simpleSuggestionList() {
-    //     [
-    //         { id: 1, firstName: "タロウ", lastName: "サトウ" },
-    //         { id: 2, firstName: "ジロウ", lastName: "イノウエ" },
-    //         { id: 3, firstName: "サブロウ", lastName: "タナカ" },
-    //     ];
-    // },
+  created: function created() {
+    var _this2 = this;
+
+    this.fetchAllRecipes();
+    this.fetchUserIngredients(); // apiから取得した認証情報をstoreにセット
+
+    axios.get("api/user").then(function (res) {
+      _this2.setUserData(res.data);
+    });
+  },
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapActions)(["setRecipes", "setUserData", "setIngredients", "initUserData"])), {}, {
     // ログインしているユーザーにかかわらず、全てのレシピを取得
     fetchAllRecipes: function () {
       var _fetchAllRecipes = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
@@ -16428,9 +16400,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 _context.next = 2;
                 return axios.get("/api/recipes").then(function (response) {
                   _this3.setRecipes(response.data);
-                })["catch"](function (error) {
-                  console.log(error);
-                });
+
+                  console.log(_this3.recipes);
+                })["catch"](function (error) {});
 
               case 2:
               case "end":
@@ -16458,9 +16430,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 _context2.next = 2;
                 return axios.get("/api/users/" + this.userData.userId + "/ingredients").then(function (response) {
                   _this4.setIngredients(response.data);
-                })["catch"](function (error) {
-                  console.log(error);
-                });
+                })["catch"](function (error) {});
 
               case 2:
               case "end":
@@ -16481,8 +16451,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       axios.post("/api/logout").then(function (res) {
         _this5.initUserData();
-
-        console.log(_this5.userData);
 
         _this5.$router.push("/login");
       });
@@ -16511,10 +16479,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
-/* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
-/* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
-/* harmony import */ var _parts_InputLabel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/InputLabel */ "./resources/js/components/parts/InputLabel.vue");
+/* harmony import */ var _parts_InputLabel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/InputLabel */ "./resources/js/components/parts/InputLabel.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
+/* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
+/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -16525,42 +16494,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_0__.default,
-    TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_1__.default,
-    InputLabel: _parts_InputLabel__WEBPACK_IMPORTED_MODULE_2__.default
+    PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_1__.default,
+    TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_2__.default,
+    InputLabel: _parts_InputLabel__WEBPACK_IMPORTED_MODULE_0__.default
   },
+  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_3__.default],
   data: function data() {
     return {
-      form: {
+      forgotForm: {
         email: ""
-      },
-      errors: [],
-      loginButtonStyle: {
-        color: "#fff",
-        backgroundColor: "#E4C8AD",
-        fontSize: "12px",
-        width: "100%",
-        height: "35px"
       }
     };
   },
-  mounted: function mounted() {},
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)(["setUserData"])), {}, {
-    loginUser: function loginUser() {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapActions)(["setUserData"])), {}, {
+    sendPasswordResetMail: function sendPasswordResetMail() {
       var _this = this;
 
-      console.log(this.form.email);
       axios.post("/api/forgot", {
-        email: this.form.email
+        email: this.forgotForm.email
       }).then(function (res) {
-        console.log(res.data);
-
         _this.$router.push("/login");
-      })["catch"](function (error) {
-        _this.errors = error.response.data.errors;
-      });
+      })["catch"](function (error) {});
     }
   })
 });
@@ -16578,10 +16535,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
-/* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
-/* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
-/* harmony import */ var _parts_InputLabel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/InputLabel */ "./resources/js/components/parts/InputLabel.vue");
+/* harmony import */ var _parts_InputLabel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/InputLabel */ "./resources/js/components/parts/InputLabel.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
+/* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
+/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -16592,48 +16550,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_0__.default,
-    TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_1__.default,
-    InputLabel: _parts_InputLabel__WEBPACK_IMPORTED_MODULE_2__.default
+    InputLabel: _parts_InputLabel__WEBPACK_IMPORTED_MODULE_0__.default,
+    PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_1__.default,
+    TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_2__.default
   },
+  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_3__.default],
   data: function data() {
     return {
-      form: {
+      loginForm: {
         email: "",
         password: ""
-      },
-      errors: [],
-      loginButtonStyle: {
-        color: "#fff",
-        backgroundColor: "#E4C8AD",
-        fontSize: "12px",
-        width: "100%",
-        height: "35px"
       }
     };
   },
   created: function created() {
     this.initUserData();
-    console.log(this.userData);
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
-    userData: "getUserData"
-  })),
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)(["setUserData", "initUserData"])), {}, {
-    loginUser: function loginUser() {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapActions)(["setUserData", "initUserData"])), {}, {
+    login: function login() {
       var _this = this;
 
-      axios.post("/api/login", this.form).then(function (res) {
+      axios.post("/api/login", this.loginForm).then(function (res) {
         _this.setUserData(res.data);
 
-        console.log(_this.userData);
-
         _this.$router.push("/recipes");
-      })["catch"](function (error) {
-        _this.errors = error.response.data.errors;
-      });
+      })["catch"](function (error) {});
     }
   })
 });
@@ -16652,9 +16596,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
-/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
+/* harmony import */ var _parts_Modal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/Modal */ "./resources/js/components/parts/Modal.vue");
 /* harmony import */ var _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/ReturnButton */ "./resources/js/components/parts/ReturnButton.vue");
-/* harmony import */ var _parts_Modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/Modal */ "./resources/js/components/parts/Modal.vue");
+/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -16667,34 +16611,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_1__.default,
-    Modal: _parts_Modal__WEBPACK_IMPORTED_MODULE_2__.default
+    Modal: _parts_Modal__WEBPACK_IMPORTED_MODULE_0__.default,
+    ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_1__.default
   },
-  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_0__.default],
+  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_2__.default],
   data: function data() {
     return {
-      // modalContents: {
-      //     newUserData: {
-      //         userId: null,
-      //         userName: "",
-      //         userEmailAdress: null,
-      //         profileImagePath: null,
-      //     },
-      //     modalStyle: {
-      //         backgroundColor: "#454545",
-      //     },
-      //     inputContents: {
-      //         profileImage: "ユーザー画像",
-      //         userName: "ユーザーネーム",
-      //         email: "メールアドレス",
-      //     },
-      //     inputContentsStyle: {
-      //         width: "100%",
-      //     },
-      // },
       contents: {
         modalContents: {
-          modalTitle: "ユーザー情報の編集"
+          modalTitle: "ユーザー情報の編集",
+          modalSetFunction: null,
+          modalSubmitFunction: this.updateProfileData
         },
         inputContents: {
           label: {
@@ -16703,7 +16630,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               name: "ユーザーネーム"
             },
             two: {
-              id: "input-mail",
+              id: "input-email",
               name: "メールアドレス"
             }
           },
@@ -16714,52 +16641,64 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               type: "text"
             },
             two: {
-              id: "input-mail",
+              id: "input-email",
               value: "",
               type: "email"
             }
           }
+        },
+        imagePreviewContentsForProfileImage: {
+          defaultImage: null,
+          fileId: "profile-image-file",
+          fileName: "profile-image-file",
+          uploadLinkTitle: "プロフィール画像選択"
         }
       },
       style: {
         modalStyle: {
           backgroundColor: "#454545"
         },
-        unnecessaryElementStyle: {// display: "none !important",
-        },
+        unnecessaryElementStyle: null,
         inputContentsStyle: {
           width: "100%"
         }
-      },
-      propsFunction: {
-        initInputValue: this.initInputValue
       }
     };
   },
-  mounted: function mounted() {
-    console.log(this.userData);
-  },
   computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
-    userData: "getUserData",
-    recipes: "getRecipes"
+    recipes: "getRecipes",
+    userData: "getUserData"
   })),
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)(["setUserData"])), {}, {
-    initInputValue: function initInputValue() {
-      this.contents.inputContents.input.one.value = "";
-      this.contents.inputContents.input.two.value = "";
+  created: function created() {
+    this.setProfileData();
+  },
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapActions)(["setUserData"])), {}, {
+    setProfileData: function setProfileData() {
+      this.contents.inputContents.input.one.value = this.userData.userName;
+      this.contents.inputContents.input.two.value = this.userData.userEmailAdress;
+      this.contents.imagePreviewContentsForProfileImage.defaultImage = this.userData.profileImagePath;
     },
-    updateUserData: function updateUserData() {
+    updateProfileData: function updateProfileData() {
       var _this = this;
 
-      axios.put("/api/account/" + this.userData.userId + "/edit", {
-        newUserData: this.newUserData,
-        userName: this.newUserData.userName
-      }).then(function (response) {
-        console.log(response);
-
-        _this.setUserData(response.data);
-      })["catch"](function (err) {
-        console.log(err);
+      var formData = new FormData();
+      var file = document.getElementById("profile-image-file");
+      var url = "/api/account/" + this.userData.userId + "/edit";
+      formData.append("profile-image-file", file.files[0]);
+      var newUserData = {
+        userName: this.contents.inputContents.input.one.value,
+        email: this.contents.inputContents.input.two.value
+      };
+      formData.append("newUserData", JSON.stringify(newUserData));
+      axios.post(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "X-HTTP-Method-Override": "PUT"
+        }
+      }).then(function (res) {
+        _this.setUserData(res.data);
+      })["catch"](function (error) {
+        console.log(error);
       });
     }
   })
@@ -16778,50 +16717,50 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
-/* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
-/* harmony import */ var _parts_InputLabel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/InputLabel */ "./resources/js/components/parts/InputLabel.vue");
+/* harmony import */ var _parts_InputLabel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/InputLabel */ "./resources/js/components/parts/InputLabel.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
+/* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
+/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_0__.default,
-    TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_1__.default,
-    InputLabel: _parts_InputLabel__WEBPACK_IMPORTED_MODULE_2__.default
+    InputLabel: _parts_InputLabel__WEBPACK_IMPORTED_MODULE_0__.default,
+    PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_1__.default,
+    TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_2__.default
   },
+  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_3__.default],
   data: function data() {
     return {
-      form: {
+      registerForm: {
         name: "",
         email: "",
         password: "",
         password_confirmation: ""
-      },
-      errors: [],
-      loginButtonStyle: {
-        color: "#fff",
-        backgroundColor: "#E4C8AD",
-        fontSize: "12px",
-        width: "100%",
-        height: "35px"
       }
     };
   },
-  methods: {
-    saveForm: function saveForm() {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapActions)(["setUserData"])), {}, {
+    register: function register() {
       var _this = this;
 
-      axios.post("/api/register", this.form).then(function (res) {
-        console.log(res.data);
+      axios.post("/api/register", this.registerForm).then(function (res) {
+        _this.setUserData(res.data);
 
         _this.$router.push("/recipes");
-      })["catch"](function (error) {
-        _this.errors = error.response.data.errors;
-      });
+      })["catch"](function (error) {});
     }
-  }
+  })
 });
 
 /***/ }),
@@ -16837,18 +16776,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! js-cookie */ "./node_modules/js-cookie/src/js.cookie.js");
 /* harmony import */ var js_cookie__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(js_cookie__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
-/* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
-/* harmony import */ var _parts_InputLabel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../parts/InputLabel */ "./resources/js/components/parts/InputLabel.vue");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+/* harmony import */ var _parts_InputLabel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/InputLabel */ "./resources/js/components/parts/InputLabel.vue");
+/* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
+/* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
+/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
 
 
 
@@ -16856,35 +16789,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_1__.default,
-    TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_2__.default,
-    InputLabel: _parts_InputLabel__WEBPACK_IMPORTED_MODULE_3__.default
+    PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_2__.default,
+    TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_3__.default,
+    InputLabel: _parts_InputLabel__WEBPACK_IMPORTED_MODULE_1__.default
   },
+  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_4__.default],
   data: function data() {
     return {
       resetForm: {
         password: "",
         password_confirmation: "",
         token: ""
-      },
-      errors: [],
-      loginButtonStyle: {
-        color: "#fff",
-        backgroundColor: "#E4C8AD",
-        fontSize: "12px",
-        width: "100%",
-        height: "35px"
       }
     };
   },
   created: function created() {
-    // クッキーからリセットトークンを取得
-    // このタイミングではすでにクッキーのトークンが暗号化されている
-    var token = js_cookie__WEBPACK_IMPORTED_MODULE_0___default().get("RESETTOKEN");
-    console.log(token); // リセットトークンがない場合はルートページへ移動させる
+    var token = js_cookie__WEBPACK_IMPORTED_MODULE_0___default().get("RESETTOKEN"); // リセットトークンがない場合はログイン画面へ移動させる
 
     if (token == null) {
-      // move to home
       this.$router.push("/login");
     } // フォームにリセットトークンをセット
 
@@ -16895,20 +16817,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       js_cookie__WEBPACK_IMPORTED_MODULE_0___default().remove("RESETTOKEN");
     }
   },
-  mounted: function mounted() {},
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapMutations)(["setUserData"])), {}, {
-    loginUser: function loginUser() {
+  methods: {
+    resetPassword: function resetPassword() {
       var _this = this;
 
       axios.post("/api/reset", this.resetForm).then(function (res) {
-        console.log(res.data);
-
         _this.$router.push("/login");
-      })["catch"](function (error) {
-        _this.errors = error.response.data.errors;
-      });
+      })["catch"](function (error) {});
     }
-  })
+  }
 });
 
 /***/ }),
@@ -16971,27 +16888,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Navbar",
   mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_0__.default],
-  props: [],
-  data: function data() {
-    return {};
-  },
-  created: function created() {},
-  mounted: function mounted() {},
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapGetters)({})),
-  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapMutations)([]))
+  name: "Navbar"
 });
 
 /***/ }),
@@ -17007,27 +16908,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "NavbarTop",
   mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_0__.default],
-  props: [],
-  data: function data() {
-    return {};
-  },
-  created: function created() {},
-  mounted: function mounted() {},
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapGetters)({})),
-  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapMutations)([]))
+  name: "NavbarTop"
 });
 
 /***/ }),
@@ -17043,27 +16928,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "NavbarTopHumburger",
   mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_0__.default],
-  props: [],
-  data: function data() {
-    return {};
-  },
-  created: function created() {},
-  mounted: function mounted() {},
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapGetters)({})),
-  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapMutations)([]))
+  name: "NavbarTopHumburger"
 });
 
 /***/ }),
@@ -17079,27 +16948,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  components: {},
   name: "NotFound",
-  props: [],
-  data: function data() {
-    return {};
-  },
-  created: function created() {},
-  mounted: function mounted() {
+  created: function created() {
     var _this = this;
 
-    console.log();
     setTimeout(function () {
       _this.$router.push({
         name: "recipes"
       });
     }, 5000);
-  },
-  computed: {},
-  methods: {}
+  }
 });
 
 /***/ }),
@@ -17116,24 +16975,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ["title", "setImagefile", "uploadIconStyle"],
+  props: ["imagePreviewContents"],
   name: "ImagePreview",
   data: function data() {
     return {
-      url: null
+      file: null,
+      url: "/images/no_image.png"
     };
   },
-  mounted: function mounted() {},
-  computed: {},
+  created: function created() {
+    if (this.imagePreviewContents.defaultImage != null) {
+      this.url = this.imagePreviewContents.defaultImage;
+      return;
+    }
+
+    this.uploadDefaultImage();
+  },
   methods: {
-    uploadFile: function uploadFile() {
-      var file = this.$refs.preview.files[0];
-      this.url = URL.createObjectURL(file);
-      console.log(this.url);
-      this.setImagefile(URL.createObjectURL(file));
+    uploadFile: function uploadFile(e) {
+      if (this.url == "/images/no_image.png") {
+        this.file = e;
+        this.url = URL.createObjectURL(this.file);
+        return;
+      }
+
+      this.file = e.target.files[0];
+      this.url = URL.createObjectURL(this.file);
     },
-    returnToPreviousPage: function returnToPreviousPage() {
-      history.back();
+    uploadDefaultImage: function uploadDefaultImage() {
+      var _this = this;
+
+      fetch("/images/no_image.png").then(function (response) {
+        return response.blob();
+      }).then(function (blob) {
+        return new File([blob], "no_image.png");
+      }).then(function (file) {
+        _this.uploadFile(file);
+      });
     }
   }
 });
@@ -17153,13 +17031,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "InputLabel",
-  props: ["id", "name"],
-  data: function data() {
-    return {};
-  },
-  created: function created() {},
-  mounted: function mounted() {},
-  methods: {}
+  props: ["className", "id", "name"]
 });
 
 /***/ }),
@@ -17175,40 +17047,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
-/* harmony import */ var _TextInput__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TextInput */ "./resources/js/components/parts/TextInput.vue");
+/* harmony import */ var _ImagePreview__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ImagePreview */ "./resources/js/components/parts/ImagePreview.vue");
 /* harmony import */ var _InputLabel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InputLabel */ "./resources/js/components/parts/InputLabel.vue");
-/* harmony import */ var _ImagePreview__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ImagePreview */ "./resources/js/components/parts/ImagePreview.vue");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+/* harmony import */ var _TextInput__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TextInput */ "./resources/js/components/parts/TextInput.vue");
 
 
-
-
- // import PrimaryButton from "../parts/PrimaryButton";
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Modal",
-  props: ["contents", "style", "propsFunction"],
   components: {
-    TextInput: _TextInput__WEBPACK_IMPORTED_MODULE_0__.default,
+    TextInput: _TextInput__WEBPACK_IMPORTED_MODULE_2__.default,
     InputLabel: _InputLabel__WEBPACK_IMPORTED_MODULE_1__.default,
-    ImagePreview: _ImagePreview__WEBPACK_IMPORTED_MODULE_2__.default
+    ImagePreview: _ImagePreview__WEBPACK_IMPORTED_MODULE_0__.default
   },
-  data: function data() {
-    return {};
-  },
-  mounted: function mounted() {
-    this.propsFunction();
-  },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
-    userData: "getUserData",
-    recipes: "getRecipes"
-  })),
-  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)(["setRecipes", "initRecipes", "setUserData"]))
+  name: "Modal",
+  props: ["imagePreviewContents", "inputContents", "inputStyle", "modalContents", "modalStyle", "modalSetFunction", "modalSubmitFunction", "unnecessaryElementStyle"],
+  created: function created() {
+    if (this.modalSetFunction != null) {
+      this.modalSetFunction();
+    }
+  }
 });
 
 /***/ }),
@@ -17226,14 +17083,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "PrimayButton",
-  props: ["buttonName", "propsFunction", "recipeId", "buttonStyle", "icon", "isFavorite"],
-  data: function data() {
-    return {
-      revisedRecipeObj: null,
-      revisedRecipeName: "",
-      revisedRecipeImage: ""
-    };
-  }
+  props: ["buttonName", "buttonStyle", "isFavorite", "propsFunction", "recipeId"]
 });
 
 /***/ }),
@@ -17251,13 +17101,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "ReturnButton",
-  props: ["propsFunction"],
-  data: function data() {
-    return {};
-  },
-  created: function created() {},
-  mounted: function mounted() {},
-  methods: {}
+  props: ["propsFunction"]
 });
 
 /***/ }),
@@ -17273,26 +17117,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_suggest_input__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-suggest-input */ "./node_modules/vue-suggest-input/dist/vue-suggest-input.common.js");
-/* harmony import */ var vue_suggest_input__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_suggest_input__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vue_suggest_input_dist_vue_suggest_input_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-suggest-input/dist/vue-suggest-input.css */ "./node_modules/vue-suggest-input/dist/vue-suggest-input.css");
-
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "SearchWindow",
-  props: ["id", "name", "className"],
-  components: {
-    VueSuggestInput: (vue_suggest_input__WEBPACK_IMPORTED_MODULE_0___default())
-  },
-  data: function data() {
-    return {
-      items: ["apple", "cocoa", "coffee", "cola"],
-      selected: ""
-    };
-  },
-  created: function created() {},
-  mounted: function mounted() {},
-  methods: {}
+  props: ["className"]
 });
 
 /***/ }),
@@ -17310,13 +17137,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "TextInput",
-  props: ["id", "type", "value", "className", "placeholder", "styleName"],
-  data: function data() {
-    return {};
-  },
-  created: function created() {},
-  mounted: function mounted() {},
-  methods: {}
+  props: ["className", "id", "placeholder", "styleName", "type", "value"]
 });
 
 /***/ }),
@@ -17334,14 +17155,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Toast",
-  props: ["toastIsShow", "propsFunction"],
-  components: {},
-  data: function data() {
-    return {};
-  },
-  computed: {},
-  mounted: function mounted() {},
-  methods: {}
+  props: ["toastContents"]
 });
 
 /***/ }),
@@ -17357,17 +17171,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var _parts_ImagePreview__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/ImagePreview */ "./resources/js/components/parts/ImagePreview.vue");
-/* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
-/* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
-/* harmony import */ var _parts_InputLabel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../parts/InputLabel */ "./resources/js/components/parts/InputLabel.vue");
-/* harmony import */ var _parts_Toast__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../parts/Toast */ "./resources/js/components/parts/Toast.vue");
-/* harmony import */ var _assets_initialIngredientList_json__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../assets/initialIngredientList.json */ "./resources/js/assets/initialIngredientList.json");
+/* harmony import */ var _parts_InputLabel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/InputLabel */ "./resources/js/components/parts/InputLabel.vue");
+/* harmony import */ var _assets_initialIngredientList_json__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../assets/initialIngredientList.json */ "./resources/js/assets/initialIngredientList.json");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var _parts_Modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../parts/Modal */ "./resources/js/components/parts/Modal.vue");
+/* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
+/* harmony import */ var _assets_recipeCategories__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../assets/recipeCategories */ "./resources/js/assets/recipeCategories.js");
 /* harmony import */ var _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../parts/ReturnButton */ "./resources/js/components/parts/ReturnButton.vue");
-/* harmony import */ var _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../common/BreadcrumbTrail */ "./resources/js/components/common/BreadcrumbTrail.vue");
-/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
-/* harmony import */ var _parts_Modal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../parts/Modal */ "./resources/js/components/parts/Modal.vue");
+/* harmony import */ var _parts_Toast__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../parts/Toast */ "./resources/js/components/parts/Toast.vue");
+/* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
+/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -17386,31 +17200,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "CreateRecipe",
-  props: [],
-  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_8__.default],
   components: {
     ImagePreview: _parts_ImagePreview__WEBPACK_IMPORTED_MODULE_0__.default,
-    PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_1__.default,
-    Toast: _parts_Toast__WEBPACK_IMPORTED_MODULE_4__.default,
-    TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_2__.default,
-    InputLabel: _parts_InputLabel__WEBPACK_IMPORTED_MODULE_3__.default,
+    InputLabel: _parts_InputLabel__WEBPACK_IMPORTED_MODULE_1__.default,
+    Modal: _parts_Modal__WEBPACK_IMPORTED_MODULE_3__.default,
+    PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_4__.default,
     ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_6__.default,
-    BreadCrumb: _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_7__.default,
-    Modal: _parts_Modal__WEBPACK_IMPORTED_MODULE_9__.default
+    Toast: _parts_Toast__WEBPACK_IMPORTED_MODULE_7__.default,
+    TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_8__.default
   },
+  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_9__.default],
+  name: "CreateRecipe",
   data: function data() {
     return {
-      sendNewRecipeButtonStyle: {
-        color: "#fff",
-        backgroundColor: "#E4C8AD",
-        fontSize: "12px",
-        width: "100%",
-        height: "35px"
-      },
+      categories: _assets_recipeCategories__WEBPACK_IMPORTED_MODULE_5__.default.categories,
       contents: {
-        modalContents: {
-          modalTitle: "レシピURLの登録"
+        imagePreviewContentsForRecipeImage: {
+          defaultImage: null,
+          fileId: "recipe-image-file",
+          fileName: "recipe-image-file",
+          uploadLinkTitle: "レシピ画像選択"
+        },
+        imagePreviewContentsForRecipeUrl: {
+          defaultImage: null,
+          fileId: "file",
+          fileName: "file",
+          uploadLinkTitle: ""
         },
         inputContents: {
           label: {
@@ -17423,110 +17238,56 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           input: {
             one: {
               id: "primary-input-recipe-url",
-              value: "",
+              value: null,
               type: "text"
             },
             two: {}
           }
+        },
+        modalContents: {
+          modalTitle: "レシピURLの登録",
+          modalSetFunction: null,
+          modalSubmitFunction: null
+        },
+        toastContents: {
+          toastCloseFunction: this.closeToast,
+          toastIsShow: false,
+          toastSubmitFunction: this.addInitialIngredients,
+          toastTitle: "食材登録"
         }
       },
       style: {
+        inputContentsStyle: {
+          width: "100%"
+        },
         modalStyle: {
           backgroundColor: "#454545"
         },
-        inputContentsStyle: {
-          width: "100%"
+        sendNewRecipeButtonStyle: {
+          color: "#fff",
+          backgroundColor: "#E4C8AD",
+          fontSize: "12px",
+          width: "100%",
+          height: "35px"
         },
         unnecessaryElementStyle: {
           display: "none !important"
         }
-      },
-      propsFunction: this.initInputValue,
-      toastIsShow: false,
-      breadCrumbList: [{
-        id: 1,
-        name: "ホーム",
-        linkName: "recipes"
-      }, {
-        id: 2,
-        name: "レシピ作成",
-        linkName: "createRecipe"
-      }],
-      file: null,
-      url: "/images/no_image.png",
-      categories: [{
-        id: 1,
-        recipe_category_name: "肉料理",
-        recipe_category_name_sub: "meat",
-        recipe_category_image: "/images/肉料理.jpeg",
-        length: 0
-      }, {
-        id: 2,
-        recipe_category_name: "魚料理",
-        recipe_category_name_sub: "fish",
-        recipe_category_image: "",
-        length: 0
-      }, {
-        id: 3,
-        recipe_category_name: "野菜料理",
-        recipe_category_name_sub: "veg",
-        recipe_category_image: "",
-        length: 0
-      }, {
-        id: 4,
-        recipe_category_name: "麺類",
-        recipe_category_name_sub: "noodle",
-        recipe_category_image: "",
-        length: 0
-      }, {
-        id: 5,
-        recipe_category_name: "ご飯もの",
-        recipe_category_name_sub: "rice",
-        recipe_category_image: "",
-        length: 0
-      }, {
-        id: 6,
-        recipe_category_name: "スープ、汁物",
-        recipe_category_name_sub: "soup",
-        recipe_category_image: "",
-        length: 0
-      }, {
-        id: 7,
-        recipe_category_name: "パン類",
-        recipe_category_name_sub: "bread",
-        recipe_category_image: "",
-        length: 0
-      }, {
-        id: 8,
-        recipe_category_name: "お菓子",
-        recipe_category_name_sub: "sweets",
-        recipe_category_image: "",
-        length: 0
-      }, {
-        id: 9,
-        recipe_category_name: "そのほか",
-        recipe_category_name_sub: "other",
-        recipe_category_image: "",
-        length: 0
-      }]
+      }
     };
   },
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_10__.mapGetters)({
-    userData: "getUserData",
+    ingredients: "getIngredients",
     recipeIngredientList: "getRecipeIngredientList",
-    isEditingIngredient: "getIsEditingRecipeIngredient",
-    editingIngredientIndex: "getEditingRecipeIngredientIndex",
     recipeProcedureList: "getRecipeProcedureList",
-    isEditingRecipeProcedure: "getIsEditingRecipeProcedure",
-    editingRecipeProcedureIndex: "getEditingRecipeProcedureIndex",
-    ingredients: "getIngredients"
+    userData: "getUserData"
   })), {}, {
     newRecipe: function newRecipe() {
       var newRecipe = {
-        recipeName: this.recipeName,
-        recipeIngredientList: this.recipeIngredientList,
-        recipeProcedure: this.recipeProcedureList,
         recipeCategory: this.recipeCategory,
+        recipeIngredientList: this.recipeIngredientList,
+        recipeName: this.recipeName,
+        recipeProcedure: this.recipeProcedureList,
         recipeUrl: this.contents.inputContents.input.one.value
       };
       return newRecipe;
@@ -17547,6 +17308,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.setRecipeIngredient(val);
       }
     },
+    recipeIngredientQuantity: {
+      get: function get() {
+        return this.$store.getters.getRecipeIngredientQuantity;
+      },
+      set: function set(val) {
+        this.setRecipeIngredientQuantity(val);
+      }
+    },
     recipeProcedure: {
       get: function get() {
         return this.$store.getters.getRecipeProcedure;
@@ -17562,37 +17331,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       set: function set(val) {
         this.setRecipeCategory(val);
       }
-    },
-    recipeIngredientQuantity: {
-      get: function get() {
-        return this.$store.getters.getRecipeIngredientQuantity;
-      },
-      set: function set(val) {
-        this.setRecipeIngredientQuantity(val);
-      }
     }
   }),
-  mounted: function mounted() {
-    var _this = this;
+  created: function created() {
+    this.initStoreDataSet(); // 初期データの食材リストが未登録なら、トーストでメッセージを表示する
 
-    this.initStoreDataSet();
-    fetch("/images/no_image.png").then(function (response) {
-      return response.blob();
-    }).then(function (blob) {
-      return new File([blob], "image.jpg");
-    }).then(function (file) {
-      console.log(file);
-
-      _this.uploadFile(file); // fileはFileオブジェクト
-
-    }); // const file = new File(["blob"], "/images/no_image.png", {
-    //     type: "image/jpeg",
-    // });
-    // 初期データの食材リストが未登録なら、トーストでメッセージを表示する
-
-    this.ingredients.length == 0 ? this.toastIsShow = true : "";
+    this.ingredients.length == 0 ? this.contents.toastContents.toastIsShow = true : "";
   },
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_10__.mapMutations)(["setRecipeName", "initRecipeName", "setRecipeIngredient", "initRecipeIngredient", "deleteRecipeIngredient", "setRecipeIngredientList", "initRecipeIngredientList", "setIsEditingRecipeIngredient", "initIsEditingRecipeIngredient", "setEditingRecipeIngredientIndex", "initEditingRecipeIngredientIndex", "setRecipeProcedure", "initRecipeProcedure", "setRecipeProcedureList", "initRecipeProcedureList", "setIsEditingRecipeProcedure", "initIsEditingRecipeProcedure", "setEditingRecipeProcedureIndex", "initEditingRecipeProcedureIndex", "deleteRecipeProcedure", "setRecipeCategory", "initRecipeCategory", "setRecipeIngredientQuantity", "initRecipeIngredientQuantity", "setIngredients", "initIngredients"])), {}, {
+  methods: _objectSpread(_objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_10__.mapMutations)(["deleteRecipeIngredient", "deleteRecipeProcedure", "initRecipeName", "initRecipeIngredient", "initRecipeIngredientList", "initIsEditingRecipeIngredient", "initEditingRecipeIngredientIndex", "initRecipeProcedure", "initRecipeProcedureList", "initIsEditingRecipeProcedure", "initEditingRecipeProcedureIndex", "initRecipeCategory", "initRecipeIngredientQuantity", "setRecipeName", "setRecipeIngredient", "setRecipeIngredientQuantity", "setRecipeIngredientList", "setIsEditingRecipeIngredient", "setEditingRecipeIngredientIndex", "setRecipeProcedure", "setRecipeProcedureList", "setIsEditingRecipeProcedure", "setEditingRecipeProcedureIndex", "setRecipeCategory"])), (0,vuex__WEBPACK_IMPORTED_MODULE_10__.mapActions)(["setIngredients"])), {}, {
+    // 食材の初期データを登録する
+    addInitialIngredients: function addInitialIngredients() {
+      var _this = this;
+
+      var url = "/api/users/" + this.userData.userId + "/ingredients/add";
+      axios.post(url, {
+        initialIngredientList: JSON.stringify(_assets_initialIngredientList_json__WEBPACK_IMPORTED_MODULE_2__)
+      }).then(function (res) {
+        _this.setIngredients(res.data);
+
+        _this.toastIsShow = false;
+      })["catch"](function (error) {});
+    },
+    // レシピに必要な食材と数量の入力
     addRecipeIngredient: function addRecipeIngredient() {
       if (this.recipeIngredient == null) {
         alert("食材を選択してください");
@@ -17607,18 +17367,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.initRecipeIngredient();
       this.initRecipeIngredientQuantity();
     },
-    editRecipeIngredient: function editRecipeIngredient(ingredient, index) {
-      this.setRecipeIngredientQuantity(ingredient.recipeIngredientQuantity);
-      this.setRecipeIngredient(ingredient); // 食材編集モードをtrueに
-
-      this.setIsEditingRecipeIngredient();
-      this.setEditingRecipeIngredientIndex(index);
-    },
-    _deleteRecipeIngredient: function _deleteRecipeIngredient(index) {
-      this.deleteRecipeIngredient(index);
-    },
     addRecipeProcedure: function addRecipeProcedure() {
-      if (this.recipeProcedure == "") {
+      if (this.recipeProcedure == null) {
         alert("作り方を入力してください。");
         return;
       } // 追加 or 編集の分岐はmutatiion側で判定
@@ -17628,86 +17378,56 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.initRecipeProcedure();
       document.getElementById("recipe-procedure-input-field").focus();
     },
+    closeToast: function closeToast() {
+      this.contents.toastContents.toastIsShow = false;
+    },
+    editRecipeIngredient: function editRecipeIngredient(ingredient, index) {
+      this.setRecipeIngredientQuantity(ingredient.recipeIngredientQuantity);
+      this.setRecipeIngredient(ingredient); // 食材編集モードをtrueに
+
+      this.setIsEditingRecipeIngredient();
+      this.setEditingRecipeIngredientIndex(index);
+    },
     editRecipeProcedure: function editRecipeProcedure(recipeProcedure, index) {
       this.setRecipeProcedure(recipeProcedure);
       this.setIsEditingRecipeProcedure();
       this.setEditingRecipeProcedureIndex(index);
     },
-    _deleteRecipeProcedure: function _deleteRecipeProcedure(index) {
-      this.deleteRecipeProcedure(index);
+    initStoreDataSet: function initStoreDataSet() {
+      this.initRecipeName();
+      this.initRecipeIngredient();
+      this.initRecipeIngredientQuantity();
+      this.initRecipeIngredientList();
+      this.initIsEditingRecipeIngredient();
+      this.initEditingRecipeIngredientIndex();
+      this.initRecipeProcedure();
+      this.initRecipeProcedureList();
+      this.initIsEditingRecipeProcedure();
+      this.initEditingRecipeProcedureIndex();
+      this.initRecipeCategory();
     },
     sendNewRecipe: function sendNewRecipe() {
       var _this2 = this;
 
-      if (this.recipeName == "") {
+      if (this.recipeName == null) {
         alert("レシピ名は必須です");
         return;
       }
 
       var url = "/api/users/" + this.userData.userId + "/recipes/add";
       var formData = new FormData();
-      var file = document.getElementById("imagefile");
-      formData.append("file", file.files[0]);
+      var file = document.getElementById("recipe-image-file");
+      formData.append("recipe-image-file", file.files[0]);
       formData.append("newRecipe", JSON.stringify(this.newRecipe));
       axios.post(url, formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
       }).then(function (res) {
-        console.log(res);
-
         _this2.$router.push({
           name: "recipes"
         });
-
-        _this2.initRecipeIngredientList();
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    addInitialIngredients: function addInitialIngredients() {
-      var _this3 = this;
-
-      axios.post("/api/users/" + this.userData.userId + "/ingredients/add", {
-        initialIngredientList: JSON.stringify(_assets_initialIngredientList_json__WEBPACK_IMPORTED_MODULE_5__)
-      }).then(function (res) {
-        console.log(res);
-
-        _this3.setIngredients(res.data);
-
-        _this3.toastIsShow = false;
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    uploadFile: function uploadFile(e) {
-      if (this.url == "/images/no_image.png") {
-        console.log(e);
-        this.file = e;
-        this.url = URL.createObjectURL(this.file);
-        return;
-      }
-
-      this.file = e.target.files[0];
-      console.log(e.target.files[0]);
-      this.url = URL.createObjectURL(this.file);
-    },
-    initStoreDataSet: function initStoreDataSet() {
-      this.initRecipeName();
-      this.initRecipeIngredient();
-      this.initRecipeIngredientList();
-      this.initIsEditingRecipeIngredient();
-      this.initEditingRecipeIngredientIndex();
-      this.initRecipeProcedure();
-      this.initRecipeCategory();
-      this.initRecipeProcedureList();
-      this.initIsEditingRecipeProcedure();
-      this.initEditingRecipeProcedureIndex();
-      this.initRecipeIngredientQuantity();
-    },
-    initInputValue: function initInputValue() {
-      this.contents.inputContents.input.one.value = "";
-      this.contents.inputContents.input.two.value = "";
+      })["catch"](function (error) {});
     }
   })
 });
@@ -17725,14 +17445,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _parts_ImagePreview__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/ImagePreview */ "./resources/js/components/parts/ImagePreview.vue");
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
-/* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
-/* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
-/* harmony import */ var _parts_ImagePreview__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/ImagePreview */ "./resources/js/components/parts/ImagePreview.vue");
-/* harmony import */ var _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../parts/ReturnButton */ "./resources/js/components/parts/ReturnButton.vue");
-/* harmony import */ var _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/BreadcrumbTrail */ "./resources/js/components/common/BreadcrumbTrail.vue");
-/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
-/* harmony import */ var _parts_Modal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../parts/Modal */ "./resources/js/components/parts/Modal.vue");
+/* harmony import */ var _parts_Modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/Modal */ "./resources/js/components/parts/Modal.vue");
+/* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
+/* harmony import */ var _assets_recipeCategories__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../assets/recipeCategories */ "./resources/js/assets/recipeCategories.js");
+/* harmony import */ var _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../parts/ReturnButton */ "./resources/js/components/parts/ReturnButton.vue");
+/* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
+/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -17749,21 +17469,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_0__.default,
-    TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_1__.default,
-    ImagePreview: _parts_ImagePreview__WEBPACK_IMPORTED_MODULE_2__.default,
-    ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_3__.default,
-    BreadCrumb: _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_4__.default,
-    Modal: _parts_Modal__WEBPACK_IMPORTED_MODULE_6__.default
+    ImagePreview: _parts_ImagePreview__WEBPACK_IMPORTED_MODULE_0__.default,
+    Modal: _parts_Modal__WEBPACK_IMPORTED_MODULE_1__.default,
+    PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_2__.default,
+    ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_4__.default,
+    TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_5__.default
   },
+  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_6__.default],
   name: "EditRecipe",
-  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_5__.default],
   props: ["recipeId"],
   data: function data() {
     return {
+      categories: _assets_recipeCategories__WEBPACK_IMPORTED_MODULE_3__.default.categories,
       contents: {
-        modalContents: {
-          modalTitle: "レシピURLの登録"
+        imagePreviewContentsForRecipeImage: {
+          defaultImage: null,
+          fileId: "recipe-image-file",
+          fileName: "recipe-image-file",
+          uploadLinkTitle: "レシピ画像選択"
+        },
+        imagePreviewContentsForRecipeUrl: {
+          defaultImage: null,
+          fileId: "file",
+          fileName: "file",
+          uploadLinkTitle: ""
         },
         inputContents: {
           label: {
@@ -17781,80 +17510,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             },
             two: {}
           }
+        },
+        modalContents: {
+          modalTitle: "レシピURLの登録",
+          modalSetFunction: null,
+          modalSubmitFunction: null
         }
       },
       style: {
-        modalStyle: {
-          backgroundColor: "#454545"
+        addRecipeButtonStyle: {
+          color: "#fff",
+          backgroundColor: "#E4C8AD",
+          fontSize: "10px",
+          height: "35px",
+          width: "100%"
         },
         inputContentsStyle: {
           width: "100%"
         },
+        modalStyle: {
+          backgroundColor: "#454545"
+        },
         unnecessaryElementStyle: {
           display: "none !important"
         }
-      },
-      propsFunction: this.setInputValue,
-      breadCrumbList: [{
-        id: 1,
-        name: "ホーム",
-        linkName: "recipes"
-      }, {
-        id: 2,
-        name: "レシピ作成",
-        linkName: "createRecipe"
-      }, {
-        id: 3,
-        name: "レシピ編集",
-        linkName: "editRecipe"
-      }],
-      editedRecipeObj: null,
-      file: null,
-      url: null,
-      addRecipeButtonStyle: {
-        color: "#fff",
-        backgroundColor: "#E4C8AD",
-        fontSize: "10px",
-        height: "35px",
-        width: "100%"
-      },
-      categories: [{
-        recipe_category_name: "肉料理",
-        recipe_category_name_sub: "meat",
-        recipe_category_image: "/images/肉料理.jpeg"
-      }, {
-        recipe_category_name: "魚料理",
-        recipe_category_name_sub: "fish",
-        recipe_category_image: ""
-      }, {
-        recipe_category_name: "野菜料理",
-        recipe_category_name_sub: "veg",
-        recipe_category_image: ""
-      }, {
-        recipe_category_name: "麺類",
-        recipe_category_name_sub: "noodle",
-        recipe_category_image: ""
-      }, {
-        recipe_category_name: "ご飯もの",
-        recipe_category_name_sub: "rice",
-        recipe_category_image: ""
-      }, {
-        recipe_category_name: "スープ、汁物",
-        recipe_category_name_sub: "soup",
-        recipe_category_image: ""
-      }, {
-        recipe_category_name: "パン類",
-        recipe_category_name_sub: "bread",
-        recipe_category_image: ""
-      }, {
-        recipe_category_name: "お菓子",
-        recipe_category_name_sub: "sweets",
-        recipe_category_image: ""
-      }, {
-        recipe_category_name: "そのほか",
-        recipe_category_name_sub: "other",
-        recipe_category_image: ""
-      }]
+      }
     };
   },
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_7__.mapGetters)({
@@ -17862,19 +17542,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     recipes: "getRecipes",
     ingredients: "getIngredients",
     recipeIngredientList: "getRecipeIngredientList",
-    isEditingIngredient: "getIsEditingRecipeIngredient",
-    editingIngredientIndex: "getEditingRecipeIngredientIndex",
-    recipeProcedureList: "getRecipeProcedureList",
-    isEditingRecipeProcedure: "getIsEditingRecipeProcedure",
-    editingRecipeProcedureIndex: "getEditingRecipeProcedureIndex"
+    recipeProcedureList: "getRecipeProcedureList"
   })), {}, {
-    selectedRecipe: function selectedRecipe() {
-      var _this = this;
-
-      return this.recipes.filter(function (recipe) {
-        return recipe.id == _this.recipeId;
-      });
-    },
     editedRecipe: function editedRecipe() {
       var editedRecipe = {
         id: this.selectedRecipe[0].id,
@@ -17894,12 +17563,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.setRecipeName(val);
       }
     },
-    ingredient: {
+    recipeIngredient: {
       get: function get() {
-        return this.$store.getters.getIngredient;
+        return this.$store.getters.getRecipeIngredient;
       },
       set: function set(val) {
-        this.setIngredient(val);
+        this.setRecipeIngredient(val);
+      }
+    },
+    recipeIngredientQuantity: {
+      get: function get() {
+        return this.$store.getters.getRecipeIngredientQuantity;
+      },
+      set: function set(val) {
+        this.setRecipeIngredientQuantity(val);
       }
     },
     recipeProcedure: {
@@ -17918,77 +17595,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.setRecipeCategory(val);
       }
     },
-    recipeIngredientQuantity: {
-      get: function get() {
-        return this.$store.getters.getRecipeIngredientQuantity;
-      },
-      set: function set(val) {
-        this.setRecipeIngredientQuantity(val);
-      }
+    selectedRecipe: function selectedRecipe() {
+      var _this = this;
+
+      return this.recipes.filter(function (recipe) {
+        return recipe.id == _this.recipeId;
+      });
     }
   }),
-  created: function created() {},
-  mounted: function mounted() {
-    var _this2 = this;
-
-    this.initRecipeIngredientQuantity();
-    this.initRecipeProcedureList();
-    this.selectedRecipe[0].recipe_procedure.forEach(function (recipe_procedure) {
-      _this2.setRecipeProcedureList(recipe_procedure);
-    });
-    console.log(this.selectedRecipe);
-    var categoryObj = {
-      recipe_category_name: this.selectedRecipe[0].recipe_category,
-      recipe_category_name_sub: this.selectedRecipe[0].recipe_category_sub,
-      recipe_category_image: this.selectedRecipe[0].recipe_category_image
-    };
-    this.setRecipeCategory(categoryObj);
-    this.recipeName = this.selectedRecipe[0].recipe_name;
-    this.ingredientList = this.ingredients;
-    this.initRecipeIngredientList();
-    console.log(this.selectedRecipe[0].recipe_ingredients);
-    this.selectedRecipe[0].recipe_ingredients.forEach(function (recipe_ingredient) {
-      _this2.setRecipeIngredientList({
-        recipeIngredient: recipe_ingredient,
-        recipeIngredientQuantity: recipe_ingredient.recipe_ingredient_quantity
-      });
-    }); // console.log(this.);
-
-    this.url = this.selectedRecipe[0].recipe_image_path;
+  created: function created() {
+    this.initStoreDataSet();
+    this.setSelectedRecipeData();
   },
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_7__.mapMutations)(["setRecipeName", "initRecipeName", "setRecipeIngredient", "initRecipeIngredient", "deleteRecipeIngredient", "setRecipeIngredientList", "initRecipeIngredientList", "setIsEditingRecipeIngredient", "initIsEditingRecipeIngredient", "setEditingRecipeIngredientIndex", "initEditingRecipeIngredientIndex", "setRecipeProcedure", "initRecipeProcedure", "setRecipeProcedureList", "initRecipeProcedureList", "setIsEditingRecipeProcedure", "initIsEditingRecipeProcedure", "setEditingRecipeProcedureIndex", "initEditingRecipeProcedureIndex", "deleteRecipeProcedure", "setRecipeCategory", "initRecipeCategory", "setRecipeIngredientQuantity", "initRecipeIngredientQuantity"])), {}, {
-    sendEditedRecipe: function sendEditedRecipe() {
-      var _this3 = this;
-
-      if (this.recipeName == "") {
-        alert("レシピ名は必須です");
-        return;
-      }
-
-      var url = "/api/users/" + this.userData.userId + "/recipes/" + this.recipeId + "/edit";
-      var formData = new FormData();
-      var file = document.getElementById("imagefile");
-      formData.append("file", file.files[0]);
-      formData.append("editedRecipe", JSON.stringify(this.editedRecipe));
-      console.log(this.editedRecipe);
-      axios.post(url, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "X-HTTP-Method-Override": "PUT"
-        }
-      } // newRecipe: JSON.stringify(this.newRecipe),
-      ).then(function (res) {
-        console.log(res);
-
-        _this3.$router.push({
-          name: "recipes"
-        });
-
-        _this3.initRecipeIngredientList();
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
+  methods: _objectSpread(_objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_7__.mapMutations)(["deleteRecipeIngredient", "deleteRecipeProcedure", "initRecipeName", "initRecipeIngredient", "initRecipeIngredientList", "initIsEditingRecipeIngredient", "initEditingRecipeIngredientIndex", "initRecipeProcedure", "initRecipeProcedureList", "initIsEditingRecipeProcedure", "initEditingRecipeProcedureIndex", "initRecipeCategory", "initRecipeIngredientQuantity", "setRecipeName", "setIngredients", "setRecipeIngredient", "setRecipeIngredientQuantity", "setRecipeIngredientList", "setIsEditingRecipeIngredient", "setEditingRecipeIngredientIndex", "setRecipeProcedure", "setRecipeProcedureList", "setIsEditingRecipeProcedure", "setEditingRecipeProcedureIndex", "setRecipeCategory"])), (0,vuex__WEBPACK_IMPORTED_MODULE_7__.mapActions)(["setRecipes"])), {}, {
     addRecipeIngredient: function addRecipeIngredient() {
       if (this.recipeIngredient == null) {
         alert("食材を選択してください");
@@ -18002,16 +17621,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.initRecipeIngredient();
       this.initRecipeIngredientQuantity();
     },
-    editIngredient: function editIngredient(ingredient, index) {
-      this.setIngredient(ingredient);
-      this.setIsEditingIngredient();
-      this.setEditingIngredientIndex(index);
-    },
-    deleteIngredient: function deleteIngredient(index) {
-      this.deleteIngredient(index);
-    },
     addRecipeProcedure: function addRecipeProcedure() {
-      if (this.recipeProcedure == "") {
+      if (this.recipeProcedure == null) {
         alert("作り方を入力してください。");
         return;
       } // 追加 or 編集の分岐はmutatiion側で判定
@@ -18021,23 +17632,73 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.initRecipeProcedure();
       document.getElementById("recipe-procedure-input-field").focus();
     },
+    editRecipeIngredient: function editRecipeIngredient(ingredient, index) {
+      this.setRecipeIngredientQuantity(ingredient.recipeIngredientQuantity);
+      this.setRecipeIngredient(ingredient); // 食材編集モードをtrueに
+
+      this.setIsEditingRecipeIngredient();
+      this.setEditingRecipeIngredientIndex(index);
+    },
     editRecipeProcedure: function editRecipeProcedure(recipeProcedure, index) {
       this.setRecipeProcedure(recipeProcedure);
       this.setIsEditingRecipeProcedure();
       this.setEditingRecipeProcedureIndex(index);
     },
-    _deleteRecipeProcedure: function _deleteRecipeProcedure(index) {
-      this.deleteRecipeProcedure(index);
+    initStoreDataSet: function initStoreDataSet() {
+      this.initRecipeIngredientList();
+      this.initRecipeProcedureList();
     },
-    returnToPreviousPage: function returnToPreviousPage() {
-      history.back();
+    sendEditedRecipe: function sendEditedRecipe() {
+      var _this2 = this;
+
+      if (this.recipeName == null) {
+        alert("レシピ名は必須です");
+        return;
+      }
+
+      var url = "/api/users/" + this.userData.userId + "/recipes/" + this.recipeId + "/edit";
+      var formData = new FormData();
+      var file = document.getElementById("recipe-image-file");
+      formData.append("recipe-image-file", file.files[0]);
+      formData.append("editedRecipe", JSON.stringify(this.editedRecipe));
+      axios.post(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "X-HTTP-Method-Override": "PUT"
+        }
+      }).then(function (res) {
+        _this2.setRecipes(res.data);
+
+        _this2.$router.push({
+          name: "recipeDetail",
+          params: {
+            recipeId: _this2.recipeId
+          }
+        });
+      })["catch"](function (error) {
+        console.log(error);
+      });
     },
-    uploadFile: function uploadFile(e) {
-      this.file = e.target.files[0];
-      this.url = URL.createObjectURL(this.file);
-      console.log(this.url);
-    },
-    setInputValue: function setInputValue() {
+    setSelectedRecipeData: function setSelectedRecipeData() {
+      var _this3 = this;
+
+      this.setRecipeName(this.selectedRecipe[0].recipe_name);
+      this.selectedRecipe[0].recipe_ingredients.forEach(function (recipe_ingredient) {
+        _this3.setRecipeIngredientList({
+          recipeIngredient: recipe_ingredient,
+          recipeIngredientQuantity: recipe_ingredient.recipe_ingredient_quantity
+        });
+      });
+      this.selectedRecipe[0].recipe_procedure.forEach(function (recipe_procedure) {
+        _this3.setRecipeProcedureList(recipe_procedure);
+      });
+      this.contents.imagePreviewContentsForRecipeImage.defaultImage = this.selectedRecipe[0].recipe_image_path;
+      var selectedRecipeCategory = {
+        recipe_category_name: this.selectedRecipe[0].recipe_category,
+        recipe_category_name_sub: this.selectedRecipe[0].recipe_category_sub,
+        recipe_category_image: this.selectedRecipe[0].recipe_category_image
+      };
+      this.setRecipeCategory(selectedRecipeCategory);
       this.contents.inputContents.input.one.value = this.selectedRecipe[0].recipe_url;
     }
   })
@@ -18069,26 +17730,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "FavoriteRecipeList",
   mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_1__.default],
+  name: "FavoriteRecipeList",
   components: {
     ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_0__.default
   },
-  props: [],
-  data: function data() {
-    return {};
-  },
-  computed: _objectSpread({
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)({
+    recipes: "getRecipes"
+  })), {}, {
     favoriteRecipes: function favoriteRecipes() {
       return this.recipes.filter(function (recipe) {
         return recipe.is_favorite == 1;
       });
     }
-  }, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)({
-    recipes: "getRecipes"
-  })),
-  created: function created() {},
-  mounted: function mounted() {},
+  }),
   methods: {
     showRecipeDetail: function showRecipeDetail(recipeId) {
       this.$router.push({
@@ -18123,31 +17778,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "RecipeCategory",
-  props: ["propsFunction", "recipeCategory"],
-  components: {},
-  data: function data() {
-    return {};
-  },
   computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)({
     recipes: "getRecipes"
   })), {}, {
-    targetCategoryRecipeList: function targetCategoryRecipeList() {
+    selectedCategoryRecipeList: function selectedCategoryRecipeList() {
       var _this = this;
 
       return this.recipes.filter(function (recipe) {
-        return recipe.recipe_category_sub == _this.recipeCategory.url;
+        return recipe.recipe_category_sub == _this.recipeCategory.recipe_category_name_sub;
       });
     }
   }),
-  mounted: function mounted() {
-    console.log(this.targetCategoryRecipeList);
-  },
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapMutations)([])), {}, {
-    goToPreviousPage: function goToPreviousPage() {
-      this.$router.back();
-    }
-  })
+  name: "RecipeCategory",
+  props: ["propsFunction", "recipeCategory"]
 });
 
 /***/ }),
@@ -18178,38 +17821,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "RecipeCategoryDetailList",
-  props: ["categoryName"],
-  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_2__.default],
   components: {
     BreadCrumb: _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_0__.default,
     ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_1__.default
   },
-  data: function data() {
-    return {// 初期データの食材リスト登録状況に応じてトーストの表示を切り替えるためのフラグ
-    };
-  },
-  computed: _objectSpread({
+  name: "RecipeCategoryDetailList",
+  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_2__.default],
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
+    recipes: "getRecipes"
+  })), {}, {
+    selectedCategoryName: function selectedCategoryName() {
+      var categoryName = window.location.pathname.split("/recipes/category/")[1];
+      return categoryName;
+    },
     selectedRecipeCategoryList: function selectedRecipeCategoryList() {
-      var id = window.location.pathname.split("/recipes/category/")[1];
+      var _this = this;
+
       return this.recipes.filter(function (recipe) {
-        return recipe.recipe_category_sub == id;
+        return recipe.recipe_category_sub == _this.selectedCategoryName;
       });
     }
-  }, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
-    recipes: "getRecipes",
-    userData: "getData",
-    recipeIngredientList: "getRecipeIngredientList",
-    isEditingIngredient: "getIsEditingRecipeIngredient",
-    editingIngredientIndex: "getEditingRecipeIngredientIndex"
-  })),
-  mounted: function mounted() {
-    var id = window.location.pathname.split("/recipes/category/")[1];
-    this.selectedCategoryName = this.categoryName;
-    console.log(this.selectedRecipeCategoryList);
-  },
-  methods: _objectSpread(_objectSpread({
-    showRecipeCategoryDetail: function showRecipeCategoryDetail(recipeId) {
+  }),
+  methods: {
+    showRecipeDetail: function showRecipeDetail(recipeId) {
       this.$router.push({
         name: "recipeDetail",
         params: {
@@ -18217,11 +17851,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
     }
-  }, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapMutations)([])), {}, {
-    goToPreviousPage: function goToPreviousPage() {
-      this.$router.back();
-    }
-  })
+  }
 });
 
 /***/ }),
@@ -18237,122 +17867,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _parts_ImagePreview__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/ImagePreview */ "./resources/js/components/parts/ImagePreview.vue");
-/* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
-/* harmony import */ var _parts_TextInput__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/TextInput */ "./resources/js/components/parts/TextInput.vue");
-/* harmony import */ var _parts_InputLabel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../parts/InputLabel */ "./resources/js/components/parts/InputLabel.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
-/* harmony import */ var _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../common/BreadcrumbTrail */ "./resources/js/components/common/BreadcrumbTrail.vue");
-/* harmony import */ var _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../parts/ReturnButton */ "./resources/js/components/parts/ReturnButton.vue");
-/* harmony import */ var _assets_recipeCategories__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../assets/recipeCategories */ "./resources/js/assets/recipeCategories.js");
-/* harmony import */ var _RecipeCategory__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./RecipeCategory */ "./resources/js/components/recipe/RecipeCategory.vue");
-/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
+/* harmony import */ var _RecipeCategory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RecipeCategory */ "./resources/js/components/recipe/RecipeCategory.vue");
+/* harmony import */ var _assets_recipeCategories__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../assets/recipeCategories */ "./resources/js/assets/recipeCategories.js");
+/* harmony import */ var _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../parts/ReturnButton */ "./resources/js/components/parts/ReturnButton.vue");
+/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
 
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "RecipeCategoryList",
-  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_8__.default],
   components: {
-    ImagePreview: _parts_ImagePreview__WEBPACK_IMPORTED_MODULE_0__.default,
-    PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_1__.default,
-    TextInput: _parts_TextInput__WEBPACK_IMPORTED_MODULE_2__.default,
-    InputLabel: _parts_InputLabel__WEBPACK_IMPORTED_MODULE_3__.default,
-    ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_5__.default,
-    BreadCrumb: _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_4__.default,
-    RecipeCategory: _RecipeCategory__WEBPACK_IMPORTED_MODULE_7__.default
+    ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_2__.default,
+    RecipeCategory: _RecipeCategory__WEBPACK_IMPORTED_MODULE_0__.default
   },
+  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_3__.default],
+  name: "RecipeCategoryList",
   data: function data() {
     return {
-      categories: _assets_recipeCategories__WEBPACK_IMPORTED_MODULE_6__.default.categories
+      categories: _assets_recipeCategories__WEBPACK_IMPORTED_MODULE_1__.default.categories
     };
   },
-  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_9__.mapGetters)({
-    userData: "getUserData",
-    recipes: "getRecipes",
-    recipeIngredientList: "getRecipeIngredientList",
-    isEditingIngredient: "getIsEditingRecipeIngredient",
-    editingIngredientIndex: "getEditingRecipeIngredientIndex"
-  })), {}, {
-    meatDish: function meatDish() {
-      return this.recipes.filter(function (recipe) {
-        return recipe.recipe_category == "肉料理";
-      }); // return this.recipes;
-    },
-    fishDish: function fishDish() {
-      return this.recipes.filter(function (recipe) {
-        return recipe.recipe_category == "魚料理";
-      });
-    },
-    vegetableDishes: function vegetableDishes() {
-      return this.recipes.filter(function (recipe) {
-        return recipe.recipe_category == "野菜料理";
-      });
-    },
-    noodleDish: function noodleDish() {
-      return this.recipes.filter(function (recipe) {
-        return recipe.recipe_category == "麺類";
-      });
-    },
-    riceDish: function riceDish() {
-      return this.recipes.filter(function (recipe) {
-        return recipe.recipe_category == "ご飯もの";
-      });
-    },
-    soupDish: function soupDish() {
-      return this.recipes.filter(function (recipe) {
-        return recipe.recipe_category == "スープ、汁物";
-      });
-    },
-    breadDish: function breadDish() {
-      return this.recipes.filter(function (recipe) {
-        return recipe.recipe_category == "パン類";
-      });
-    },
-    sweets: function sweets() {
-      return this.recipes.filter(function (recipe) {
-        return recipe.recipe_category == "お菓子";
-      });
-    },
-    recipeIngredient: {
-      get: function get() {
-        return this.$store.getters.getRecipeIngredient;
-      },
-      set: function set(val) {
-        this.setRecipeIngredient(val);
+  methods: {
+    showRecipeCategoryDetail: function showRecipeCategoryDetail(selectedCategoryRecipeList) {
+      if (selectedCategoryRecipeList.length == 0) {
+        alert("該当のレシピは0件です。");
+        return;
       }
-    }
-  }),
-  mounted: function mounted() {// console.log(this.categories);
-  },
-  methods: _objectSpread(_objectSpread({
-    showRecipeCategoryDetail: function showRecipeCategoryDetail(recipe_category_name, recipe_category_sub) {
+
       this.$router.push({
         name: "recipeCategoryDetailList",
         params: {
-          categoryName: recipe_category_name,
-          categoryPath: recipe_category_sub
+          categoryPath: selectedCategoryRecipeList[0].recipe_category_sub
         }
       });
     }
-  }, (0,vuex__WEBPACK_IMPORTED_MODULE_9__.mapMutations)(["setRecipeIngredient", "setRecipeIngredientList", "initRecipeIngredientList", "setIsEditingRecipeIngredient", "initIsEditingRecipeIngredient", "setEditingRecipeIngredientIndex", "initEditingRecipeIngredientIndex"])), {}, {
-    goToPreviousPage: function goToPreviousPage() {
-      this.$router.back();
-    }
-  })
+  }
 });
 
 /***/ }),
@@ -18368,10 +17917,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
-/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
-/* harmony import */ var _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/ReturnButton */ "./resources/js/components/parts/ReturnButton.vue");
-/* harmony import */ var _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../common/BreadcrumbTrail */ "./resources/js/components/common/BreadcrumbTrail.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/ReturnButton */ "./resources/js/components/parts/ReturnButton.vue");
+/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -18381,37 +17929,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "RecipeDetail",
-  props: [],
-  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_0__.default],
   components: {
-    ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_1__.default,
-    BreadCrumb: _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_2__.default
+    ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_0__.default
   },
-  data: function data() {
-    return {
-      breadCrumbList: [{
-        id: 1,
-        name: "ホーム",
-        linkName: "recipes"
-      }, {
-        id: 2,
-        name: "レシピ詳細",
-        linkName: "recipeDetail"
-      }]
-    };
-  },
-  computed: _objectSpread(_objectSpread({
+  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_1__.default],
+  name: "RecipeDetail",
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapGetters)({
+    recipes: "getRecipes"
+  })), {}, {
     selectedRecipeId: function selectedRecipeId() {
       var recipeId = window.location.pathname.split("/recipes/")[1];
       return recipeId;
-    }
-  }, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
-    userData: "getUserData",
-    recipes: "getRecipes"
-  })), {}, {
+    },
     selectedRecipe: function selectedRecipe() {
       var _this = this;
 
@@ -18419,14 +17949,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return recipe.id == _this.selectedRecipeId;
       });
     }
-  }),
-  mounted: function mounted() {
-    console.log(this.selectedRecipe);
-  },
-  methods: {// routerBack() {
-    //     this.$router.back();
-    // },
-  }
+  })
 });
 
 /***/ }),
@@ -18442,11 +17965,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../parts/PrimaryButton */ "./resources/js/components/parts/PrimaryButton.vue");
 /* harmony import */ var _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../parts/ReturnButton */ "./resources/js/components/parts/ReturnButton.vue");
-/* harmony import */ var _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../common/BreadcrumbTrail */ "./resources/js/components/common/BreadcrumbTrail.vue");
-/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
+/* harmony import */ var _mixin_utility__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixin/utility */ "./resources/js/mixin/utility.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -18457,31 +17979,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "RecipeList",
   components: {
     PrimaryButton: _parts_PrimaryButton__WEBPACK_IMPORTED_MODULE_0__.default,
-    BreadCrumb: _common_BreadcrumbTrail__WEBPACK_IMPORTED_MODULE_2__.default,
     ReturnButton: _parts_ReturnButton__WEBPACK_IMPORTED_MODULE_1__.default
   },
-  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_3__.default],
-  props: [],
+  mixins: [_mixin_utility__WEBPACK_IMPORTED_MODULE_2__.default],
+  name: "RecipeList",
   data: function data() {
     return {
       listName: "",
-      // icon: "fas fa-heart",
-      showRecipeDetailButtonStyle: {
-        color: "#fff",
-        backgroundColor: "#B1C6BD",
-        fontSize: "10px",
-        flexBasis: "32%"
-      },
-      addFavoriteButtonStyle: {
-        color: "#fff",
-        backgroundColor: "#E0D29E",
-        fontSize: "10px",
-        flexBasis: "65%"
+      style: {
+        addFavoriteButtonStyle: {
+          color: "#fff",
+          backgroundColor: "#E0D29E",
+          fontSize: "10px",
+          flexBasis: "65%"
+        },
+        showRecipeDetailButtonStyle: {
+          color: "#fff",
+          backgroundColor: "#B1C6BD",
+          fontSize: "10px",
+          flexBasis: "32%"
+        }
       }
     };
   },
@@ -18512,31 +18032,35 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         // break;
       }
     }
-  }, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapGetters)({
+  }, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapGetters)({
     userData: "getUserData",
     recipes: "getRecipes"
   })), {}, {
     listType: function listType() {
       var listType = window.location.pathname.split("/recipes/list/")[1];
       return listType;
-    },
-    breadCrumbList: function breadCrumbList() {
-      return [{
-        id: 1,
-        name: "ホーム",
-        linkName: "recipes"
-      }, {
-        id: 2,
-        name: this.listName,
-        linkName: "recipeList"
-      }];
     }
   }),
-  created: function created() {},
-  mounted: function mounted() {
+  created: function created() {
     this.listType == "my-recipes" ? this.listName = "マイレシピ" : this.listName = "新着レシピ";
   },
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_4__.mapMutations)(["setRecipes", "initRecipes"])), {}, {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_3__.mapActions)(["setRecipes"])), {}, {
+    deleteRecipe: function deleteRecipe(recipeId) {
+      var _this2 = this;
+
+      var boolConfirmDeleteRecipe = confirm("このレシピを削除してよろしいですか？");
+
+      if (boolConfirmDeleteRecipe == true) {
+        var url = "/api/users/" + this.userData.userId + "/recipes/" + recipeId + "/delete";
+        axios["delete"](url).then(function (res) {
+          _this2.setRecipes(res.data);
+
+          _this2.$router.push({
+            name: "myRecipes"
+          });
+        })["catch"](function (error) {});
+      }
+    },
     showRecipeDetail: function showRecipeDetail(recipeId) {
       this.$router.push({
         name: "recipeDetail",
@@ -18544,24 +18068,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           recipeId: recipeId
         }
       });
-    },
-    deleteRecipe: function deleteRecipe(recipeId) {
-      var _this2 = this;
-
-      var deleteCheckResult = confirm("このレシピを削除してよろしいですか？");
-
-      if (deleteCheckResult == true) {
-        var url = "/api/users/" + this.userData.userId + "/recipes/" + recipeId + "/delete";
-        axios["delete"](url).then(function (res) {
-          _this2.$router.push({
-            name: "myRecipes"
-          });
-
-          _this2.setRecipes(res.data);
-        })["catch"](function (error) {
-          console.log(error);
-        });
-      }
     },
     toggleFavorite: function toggleFavorite(recipeId, isFavorite) {
       var _this3 = this;
@@ -18575,12 +18081,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       axios.post(url).then(function (res) {
-        console.log(res);
-
         _this3.setRecipes(res.data);
-      })["catch"](function (error) {
-        console.log(error);
-      });
+      })["catch"](function (error) {});
     }
   })
 });
@@ -18607,11 +18109,15 @@ var _hoisted_2 = {
   key: 0
 };
 var _hoisted_3 = {
-  "class": "container h-100 pt-4 px-1",
-  style: {
-    "padding-bottom": "5rem"
-  }
+  "class": "container h-100 pt-3 px-1"
 };
+
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "module_spacer-lg"
+}, null, -1
+/* HOISTED */
+);
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Navbar = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Navbar");
 
@@ -18621,7 +18127,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_RouterView = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("RouterView");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("section", _hoisted_1, [_ctx.userData.loggedIn == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Navbar), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NavbarTop), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NavbarTopHamburger)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_RouterView)])]);
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("section", _hoisted_1, [_ctx.userData.loggedIn == true ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Navbar), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NavbarTop), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_NavbarTopHamburger)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_RouterView), _hoisted_4])]);
 }
 
 /***/ }),
@@ -18653,19 +18159,14 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-  "class": "dropdown-toggle",
-  type: "button",
-  id: "dropdownMenuButton",
-  "data-toggle": "dropdown",
+var _hoisted_5 = {
   "aria-haspopup": "true",
-  "aria-expanded": "false"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
-  "class": "fas fa-user-circle fa-2x"
-})], -1
-/* HOISTED */
-);
-
+  "aria-expanded": "false",
+  "class": "dropdown-toggle text-right",
+  "data-toggle": "dropdown",
+  id: "dropdownMenuButton",
+  type: "button"
+};
 var _hoisted_6 = {
   "class": "dropdown-menu",
   "aria-labelledby": "dropdownMenuButton"
@@ -18679,20 +18180,14 @@ var _hoisted_8 = {
 var _hoisted_9 = {
   "class": "user_menu-sm"
 };
-
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-  "class": "dropdown-toggle",
-  type: "button",
-  id: "dropdownMenuButton",
-  "data-toggle": "dropdown",
+var _hoisted_10 = {
   "aria-haspopup": "true",
-  "aria-expanded": "false"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
-  "class": "fas fa-user-circle fa-3x"
-})], -1
-/* HOISTED */
-);
-
+  "aria-expanded": "false",
+  "class": "dropdown-toggle",
+  "data-toggle": "dropdown",
+  id: "dropdownMenuButton",
+  type: "button"
+};
 var _hoisted_11 = {
   "class": "dropdown-menu",
   "aria-labelledby": "dropdownMenuButton"
@@ -18759,7 +18254,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_SearchWindow = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SearchWindow");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("section", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ユーザーメニュー "), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("section", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ユーザーメニュー(スマートフォン) "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+    alt: "ユーザープロフィール画像",
+    "class": "w-20",
+    src: _ctx.userData.profileImagePath
+  }, null, 8
+  /* PROPS */
+  , ["src"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'myPage'
     },
@@ -18776,10 +18277,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.logout && $options.logout.apply($options, arguments);
     }),
     "class": "dropdown-item",
-    href: "#"
+    href: ""
   }, "ログアウト")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 検索フォーム "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_SearchWindow, {
-    className: 'search-window_toppage'
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ユーザーメニュー "), _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    "class-name": 'search-window_toppage'
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ユーザーメニュー(タブレット以上) "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+    "class": "w-30",
+    src: _ctx.userData.profileImagePath,
+    alt: "ユーザープロフィール画像"
+  }, null, 8
+  /* PROPS */
+  , ["src"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'myPage'
     },
@@ -18796,8 +18303,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.logout && $options.logout.apply($options, arguments);
     }),
     "class": "dropdown-item",
-    href: "#"
-  }, "ログアウト")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <VueSimpleSuggest\n                v-model=\"chosen\"\n                :list=\"simpleSuggestionList\"\n                :filter-by-query=\"true\"\n            /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    href: ""
+  }, "ログアウト")])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     "class": "small",
     to: {
       name: 'recipeList',
@@ -18875,11 +18382,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       },
       key: recipe.id
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
-      style: {
-        "box-shadow": "0px 2px 2px rgb(0 0 0 / 25%)",
-        "border-radius": "5px"
-      },
-      "class": "w-100",
+      "class": "w-100 element-seasonal_recipe_image-toppage",
       src: recipe.recipe_image_path,
       alt: "旬のレシピ画像"
     }, null, 8
@@ -18910,13 +18413,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "login h-75 d-flex align-items-center justify-content-center"
+  "class": "section-forgot h-100 d-flex align-items-center justify-content-center"
 };
 var _hoisted_2 = {
-  "class": "wrapper-login"
+  "class": "wrapper-forgot"
 };
 var _hoisted_3 = {
-  "class": "container-login d-flex flex-column"
+  "class": "container-forgot d-flex flex-column"
 };
 
 var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h4", {
@@ -18937,12 +18440,6 @@ var _hoisted_7 = {
 
 var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 会員登録がまだの方はこちら ");
 
-var _hoisted_9 = {
-  "class": "w-100 mt-2 text-center"
-};
-
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" パスワードをお忘れの方はこちら ");
-
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_InputLabel = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("InputLabel");
 
@@ -18953,26 +18450,26 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("section", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    "class": "mb-0 w-100",
+    "class-name": 'mb-0 w-100',
     id: 'input-email',
     name: 'メールアドレス：'
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-    id: 'input-recipe-name',
+    "class-name": 'text-input-black w-100',
+    id: 'input-email',
     type: 'email',
-    value: $data.form.email,
-    className: 'text-input-black w-100',
+    value: $data.forgotForm.email,
     onInputFormContent: _cache[1] || (_cache[1] = function ($event) {
-      return $data.form.email = $event;
+      return $data.forgotForm.email = $event;
     })
   }, null, 8
   /* PROPS */
   , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_PrimaryButton, {
-    buttonName: '送信する',
-    buttonStyle: $data.loginButtonStyle,
-    propsFunction: $options.loginUser
+    "button-name": '送信する',
+    "button-style": _ctx.authFormButtonStyle,
+    "props-function": $options.sendPasswordResetMail
   }, null, 8
   /* PROPS */
-  , ["buttonStyle", "propsFunction"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  , ["button-style", "props-function"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     "class": "small",
     to: {
       name: 'register'
@@ -18980,18 +18477,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_8];
-    }),
-    _: 1
-    /* STABLE */
-
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
-    "class": "small",
-    to: {
-      name: 'register'
-    }
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_10];
     }),
     _: 1
     /* STABLE */
@@ -19015,41 +18500,55 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "login h-75 d-flex align-items-center justify-content-center"
+  "class": "section-login h-100 d-flex align-items-center justify-content-center"
 };
 var _hoisted_2 = {
-  "class": "wrapper-login"
-};
-var _hoisted_3 = {
-  "class": "container-login d-flex flex-column"
+  "class": "wrapper-login d-md-flex"
 };
 
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h4", {
-  "class": "text-center mb-5"
-}, "サインイン", -1
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  "class": "w-50 d-none d-md-block"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+  "class": "w-100 element-login_image-login",
+  src: "/images/undraw_cooking_lyxy.svg",
+  alt: "ログイン画面の画像"
+})], -1
 /* HOISTED */
 );
 
-var _hoisted_5 = {
+var _hoisted_4 = {
+  "class": "container-login w-md-50 d-flex flex-column"
+};
+
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h4", {
+  "class": "text-center text-md-left mb-5"
+}, "ログイン", -1
+/* HOISTED */
+);
+
+var _hoisted_6 = {
   "class": "w-100"
 };
-var _hoisted_6 = {
-  "class": "w-100 mt-4"
-};
 var _hoisted_7 = {
-  "class": "w-100 mt-4 text-center"
+  "class": "w-100 mt-4"
 };
 var _hoisted_8 = {
   "class": "w-100 mt-4 text-center"
 };
-
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 会員登録がまだの方はこちら ");
-
+var _hoisted_9 = {
+  "class": "mt-3 mt-md-auto"
+};
 var _hoisted_10 = {
-  "class": "w-100 mt-2 text-center"
+  "class": "w-100 text-center text-md-left"
 };
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" パスワードをお忘れの方はこちら ");
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 会員登録がまだの方はこちら ");
+
+var _hoisted_12 = {
+  "class": "w-100 text-center text-md-left"
+};
+
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" パスワードをお忘れの方はこちら ");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_InputLabel = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("InputLabel");
@@ -19060,56 +18559,44 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("section", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    "class": "mb-0 w-100",
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("section", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
+    "class-name": 'mb-0 w-100',
     id: 'input-email',
     name: 'メールアドレス：'
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-    id: 'input-recipe-name',
+    "class-name": 'text-input-black w-100',
+    id: 'input-email',
     type: 'email',
-    value: $data.form.email,
-    className: 'text-input-black w-100',
+    value: $data.loginForm.email,
     onInputFormContent: _cache[1] || (_cache[1] = function ($event) {
-      return $data.form.email = $event;
+      return $data.loginForm.email = $event;
     })
   }, null, 8
   /* PROPS */
-  , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    "class": "mb-0 w-100",
+  , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
+    "class-name": 'mb-0 w-100',
     id: 'input-password',
     name: 'パスワード：'
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-    id: 'input-recipe-name',
+    "class-name": 'text-input-black w-100',
+    id: 'input-password',
     type: 'password',
-    value: $data.form.password,
-    className: 'text-input-black w-100',
+    value: $data.loginForm.password,
     onInputFormContent: _cache[2] || (_cache[2] = function ($event) {
-      return $data.form.password = $event;
+      return $data.loginForm.password = $event;
     })
   }, null, 8
   /* PROPS */
-  , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_PrimaryButton, {
-    buttonName: 'ログイン',
-    buttonStyle: $data.loginButtonStyle,
-    propsFunction: $options.loginUser
+  , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_PrimaryButton, {
+    "button-name": 'ログインする',
+    "button-style": _ctx.authFormButtonStyle,
+    "props-function": $options.login
   }, null, 8
   /* PROPS */
-  , ["buttonStyle", "propsFunction"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  , ["button-style", "props-function"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     "class": "small",
     to: {
       name: 'register'
-    }
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_9];
-    }),
-    _: 1
-    /* STABLE */
-
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
-    "class": "small",
-    to: {
-      name: 'forgot'
     }
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -19118,7 +18605,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })])])])]);
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    "class": "small",
+    to: {
+      name: 'forgot'
+    }
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_13];
+    }),
+    _: 1
+    /* STABLE */
+
+  })])])])])]);
 }
 
 /***/ }),
@@ -19156,16 +18655,10 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 /* HOISTED */
 );
 
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
-  "class": "fas fa-user-circle fa-6x"
-}, null, -1
-/* HOISTED */
-);
-
-var _hoisted_6 = {
+var _hoisted_5 = {
   "class": "mb-0"
 };
-var _hoisted_7 = {
+var _hoisted_6 = {
   "class": "mb-0"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -19178,14 +18671,25 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, null, 8
   /* PROPS */
   , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Modal, {
-    contents: $data.contents,
-    style: $data.style,
-    "props-function": $data.propsFunction
+    "input-contents": $data.contents.inputContents,
+    "input-style": $data.style.inputContentsStyle,
+    "image-preview-contents": $data.contents.imagePreviewContentsForProfileImage,
+    "modal-contents": $data.contents.modalContents,
+    "modal-style": $data.style.modalStyle,
+    "modal-set-function": $data.contents.modalContents.modalSetFunction,
+    "modal-submit-function": $data.contents.modalContents.modalSubmitFunction,
+    "unnecessary-element-style": $data.style.unnecessaryElementStyle
   }, null, 8
   /* PROPS */
-  , ["contents", "style", "props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_6, "ユーザー名：" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.userData.userName), 1
+  , ["input-contents", "input-style", "image-preview-contents", "modal-contents", "modal-style", "modal-set-function", "modal-submit-function", "unnecessary-element-style"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+    alt: "プロフィール画像",
+    "class": "w-50",
+    src: _ctx.userData.profileImagePath
+  }, null, 8
+  /* PROPS */
+  , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_5, "ユーザー名：" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.userData.userName), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_7, " メールアドレス：" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.userData.userEmailAdress), 1
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_6, " メールアドレス：" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.userData.userEmailAdress), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "登録済みレシピ：" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.recipes.length), 1
   /* TEXT */
@@ -19208,7 +18712,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "register h-100 d-flex align-items-center justify-content-center"
+  "class": "section-register h-100 d-flex align-items-center justify-content-center"
 };
 var _hoisted_2 = {
   "class": "wrapper-register d-md-flex"
@@ -19219,17 +18723,17 @@ var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
   "class": "w-100 element-register_image-register",
   src: "/images/undraw_cooking_lyxy.svg",
-  alt: ""
+  alt: "会員登録画面の画像"
 })], -1
 /* HOISTED */
 );
 
 var _hoisted_4 = {
-  "class": "w-100 w-md-50 container-login d-flex flex-column"
+  "class": "w-100 w-md-50 container-register d-flex flex-column"
 };
 
 var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h4", {
-  "class": "mb-5"
+  "class": "mb-5 text-center text-md-left"
 }, "アカウント登録", -1
 /* HOISTED */
 );
@@ -19250,7 +18754,7 @@ var _hoisted_10 = {
   "class": "w-100 mt-4 text-center"
 };
 var _hoisted_11 = {
-  "class": "w-100 mt-4 text-center"
+  "class": "w-100 mt-2 mt-md-auto text-center text-md-left"
 };
 
 var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" すでにアカウントをお持ちの方はこちら ");
@@ -19265,68 +18769,68 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("section", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    "class": "mb-0 w-100",
-    id: 'input-user-name',
+    "class-name": 'mb-0 w-100',
+    id: 'input-username',
     name: 'ユーザー名'
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-    id: 'input-user-name',
+    "class-name": 'text-input-black w-100',
+    id: 'input-username',
     type: 'text',
-    value: $data.form.name,
-    className: 'text-input-black w-100',
+    value: $data.registerForm.name,
     onInputFormContent: _cache[1] || (_cache[1] = function ($event) {
-      return $data.form.name = $event;
+      return $data.registerForm.name = $event;
     })
   }, null, 8
   /* PROPS */
   , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    "class": "mb-0 w-100",
+    "class-name": 'mb-0 w-100',
     id: 'input-email',
     name: 'メールアドレス'
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
+    "class-name": 'text-input-black w-100',
     id: 'input-email',
     type: 'email',
-    value: $data.form.email,
-    className: 'text-input-black w-100',
+    value: $data.registerForm.email,
     onInputFormContent: _cache[2] || (_cache[2] = function ($event) {
-      return $data.form.email = $event;
+      return $data.registerForm.email = $event;
     })
   }, null, 8
   /* PROPS */
   , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    "class": "mb-0 w-100",
+    "class-name": 'mb-0 w-100',
     id: 'input-password',
     name: 'パスワード：'
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
+    "class-name": 'text-input-black w-100',
     id: 'input-password',
     type: 'password',
-    value: $data.form.password,
-    className: 'text-input-black w-100',
+    value: $data.registerForm.password,
     onInputFormContent: _cache[3] || (_cache[3] = function ($event) {
-      return $data.form.password = $event;
+      return $data.registerForm.password = $event;
     })
   }, null, 8
   /* PROPS */
   , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    "class": "mb-0 w-100",
-    id: 'input-password_confirmation',
+    "class-name": 'mb-0 w-100',
+    id: 'input-password-confirmation',
     name: '確認用パスワード：'
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-    id: 'input-password_confirmation',
+    "class-name": 'text-input-black w-100',
+    id: 'input-password-confirmation',
     type: 'password',
-    value: $data.form.password_confirmation,
-    className: 'text-input-black w-100',
+    value: $data.registerForm.password_confirmation,
     onInputFormContent: _cache[4] || (_cache[4] = function ($event) {
-      return $data.form.password_confirmation = $event;
+      return $data.registerForm.password_confirmation = $event;
     })
   }, null, 8
   /* PROPS */
   , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_PrimaryButton, {
-    buttonName: 'ログイン',
-    buttonStyle: $data.loginButtonStyle,
-    propsFunction: _ctx.loginUser
+    "button-name": '登録する',
+    "button-style": _ctx.authFormButtonStyle,
+    "props-function": $options.register
   }, null, 8
   /* PROPS */
-  , ["buttonStyle", "propsFunction"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  , ["button-style", "props-function"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     "class": "small",
     to: {
       name: 'login'
@@ -19360,10 +18864,10 @@ var _hoisted_1 = {
   "class": "login h-75 d-flex align-items-center justify-content-center"
 };
 var _hoisted_2 = {
-  "class": "wrapper-login"
+  "class": "wrapper-reset"
 };
 var _hoisted_3 = {
-  "class": "container-login d-flex flex-column"
+  "class": "container-reset d-flex flex-column"
 };
 
 var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h4", {
@@ -19385,13 +18889,7 @@ var _hoisted_8 = {
   "class": "w-100 mt-4 text-center"
 };
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" 会員登録がまだの方はこちら ");
-
-var _hoisted_10 = {
-  "class": "w-100 mt-2 text-center"
-};
-
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" パスワードをお忘れの方はこちら ");
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ログイン画面へ ");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_InputLabel = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("InputLabel");
@@ -19403,59 +18901,47 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("section", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    "class": "mb-0 w-100",
-    id: 'input-email',
+    "class-name": 'mb-0 w-100',
+    id: 'input-password',
     name: '新しいパスワード'
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-    id: 'input-recipe-name',
+    "class-name": 'text-input-black w-100',
+    id: 'input-password',
     type: 'password',
     value: $data.resetForm.password,
-    className: 'text-input-black w-100',
     onInputFormContent: _cache[1] || (_cache[1] = function ($event) {
       return $data.resetForm.password = $event;
     })
   }, null, 8
   /* PROPS */
   , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    "class": "mb-0 w-100",
-    id: 'input-email',
+    "class-name": 'mb-0 w-100',
+    id: 'input-password-confirmation',
     name: '確認用のパスワード'
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-    id: 'input-recipe-name',
+    "class-name": 'text-input-black w-100',
+    id: 'input-password-confirmation',
     type: 'password',
     value: $data.resetForm.password_confirmation,
-    className: 'text-input-black w-100',
     onInputFormContent: _cache[2] || (_cache[2] = function ($event) {
       return $data.resetForm.password_confirmation = $event;
     })
   }, null, 8
   /* PROPS */
   , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_PrimaryButton, {
-    buttonName: '送信する',
-    buttonStyle: $data.loginButtonStyle,
-    propsFunction: $options.loginUser
+    "button-name": '送信する',
+    "button-style": _ctx.authFormButtonStyle,
+    "props-function": $options.resetPassword
   }, null, 8
   /* PROPS */
-  , ["buttonStyle", "propsFunction"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  , ["button-style", "props-function"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     "class": "small",
     to: {
-      name: 'register'
+      name: 'login'
     }
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_9];
-    }),
-    _: 1
-    /* STABLE */
-
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
-    "class": "small",
-    to: {
-      name: 'register'
-    }
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_11];
     }),
     _: 1
     /* STABLE */
@@ -19786,24 +19272,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "register h-100 d-flex align-items-center justify-content-center"
+  "class": "section-notfound h-100 d-flex align-items-center justify-content-center"
 };
 var _hoisted_2 = {
-  "class": "wrapper-register h-50 text-center text-md-left d-md-flex"
+  "class": "wrapper-notfound h-50 text-center text-md-left d-md-flex"
 };
 
 var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "w-50 mx-auto d-md-block"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
-  "class": "w-100 element-register_image-register",
+  "class": "w-100 element-notfound_image-notfound",
   src: "/images/undraw_page_not_found_su7k.svg",
-  alt: ""
+  alt: "404ページの画像"
 })], -1
 /* HOISTED */
 );
 
 var _hoisted_4 = {
-  "class": "w-100 w-md-50 container-login d-flex flex-column"
+  "class": "w-100 w-md-50 container-notfound d-flex flex-column"
 };
 
 var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h5", {
@@ -19855,43 +19341,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "d-flex justify-content-end w-25"
+  "class": "d-flex justify-content-between mb-1"
+};
+var _hoisted_2 = {
+  "class": "d-flex justify-content-end w-30"
 };
 
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
   "class": "fas fa-file-upload mr-1"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_3 = {
+var _hoisted_4 = {
   "class": "small"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
-    style: $props.uploadIconStyle,
-    "class": "d-flex justify-content-between"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
     src: $data.url,
-    "class": "w-75"
+    "class": "w-50"
   }, null, 8
   /* PROPS */
-  , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", null, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.title), 1
+  , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", null, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.imagePreviewContents.uploadLinkTitle), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
     "class": "d-none",
-    name: "imagefile",
-    id: "imagefile",
-    type: "file",
+    id: $props.imagePreviewContents.fileId,
+    name: $props.imagePreviewContents.fileName,
     ref: "preview",
-    onChange: _cache[1] || (_cache[1] = function () {
-      return $options.uploadFile && $options.uploadFile.apply($options, arguments);
+    type: "file",
+    onChange: _cache[1] || (_cache[1] = function ($event) {
+      return $options.uploadFile($event);
     })
-  }, null, 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
-  )])])], 4
-  /* STYLE */
-  );
+  }, null, 40
+  /* PROPS, HYDRATE_EVENTS */
+  , ["id", "name"])])])]);
 }
 
 /***/ }),
@@ -19911,9 +19395,10 @@ __webpack_require__.r(__webpack_exports__);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("label", {
+    "class": $props.className,
     "for": $props.id
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.name), 9
-  /* TEXT, PROPS */
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.name), 11
+  /* TEXT, CLASS, PROPS */
   , ["for"]);
 }
 
@@ -19933,12 +19418,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
+  "aria-hidden": "true",
+  "aria-labelledby": "exampleModalLabel",
   "class": "modal fade",
   id: "exampleModal",
-  tabindex: "-1",
   role: "dialog",
-  "aria-labelledby": "exampleModalLabel",
-  "aria-hidden": "true"
+  tabindex: "-1"
 };
 var _hoisted_2 = {
   "class": "modal-dialog",
@@ -19953,10 +19438,10 @@ var _hoisted_4 = {
 };
 
 var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-  type: "button",
+  "aria-label": "Close",
   "class": "close",
   "data-dismiss": "modal",
-  "aria-label": "Close"
+  type: "button"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
   "aria-hidden": "true"
 }, "×")], -1
@@ -19974,9 +19459,9 @@ var _hoisted_8 = {
 };
 
 var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-  type: "button",
   "class": "btn btn-secondary",
-  "data-dismiss": "modal"
+  "data-dismiss": "modal",
+  type: "button"
 }, " キャンセル ", -1
 /* HOISTED */
 );
@@ -19990,59 +19475,61 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     "class": "modal-content",
-    style: $props.style.modalStyle
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h5", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.contents.modalContents.modalTitle), 1
+    style: $props.modalStyle
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h5", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.modalContents.modalTitle), 1
   /* TEXT */
-  ), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ImagePreview, {
-    "upload-icon-style": $props.style.unnecessaryElementStyle,
-    title: '画像UL',
-    "recipe-image-path": ''
+  ), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+    style: $props.unnecessaryElementStyle
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ImagePreview, {
+    "image-preview-contents": $props.imagePreviewContents
   }, null, 8
   /* PROPS */
-  , ["upload-icon-style"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    id: $props.contents.inputContents.label.one.id,
-    name: $props.contents.inputContents.label.one.name
+  , ["image-preview-contents"])], 4
+  /* STYLE */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
+    id: $props.inputContents.label.one.id,
+    name: $props.inputContents.label.one.name
   }, null, 8
   /* PROPS */
   , ["id", "name"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-    id: $props.contents.inputContents.input.one.id,
-    type: $props.contents.inputContents.input.one.type,
-    value: $props.contents.inputContents.input.one.value,
-    className: 'text-input-black',
-    "style-name": $props.style.inputContentsStyle,
+    "class-name": 'text-input-black',
+    id: $props.inputContents.input.one.id,
     onInputFormContent: _cache[1] || (_cache[1] = function ($event) {
-      return $props.contents.inputContents.input.one.value = $event;
-    })
+      return $props.inputContents.input.one.value = $event;
+    }),
+    "style-name": $props.inputStyle,
+    type: $props.inputContents.input.one.type,
+    value: $props.inputContents.input.one.value
   }, null, 8
   /* PROPS */
-  , ["id", "type", "value", "style-name"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  , ["id", "style-name", "type", "value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     "class": "w-100",
-    style: $props.style.unnecessaryElementStyle
+    style: $props.unnecessaryElementStyle
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    id: $props.contents.inputContents.label.two.id,
-    name: $props.contents.inputContents.label.two.name
+    id: $props.inputContents.label.two.id,
+    name: $props.inputContents.label.two.name
   }, null, 8
   /* PROPS */
   , ["id", "name"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-    id: $props.contents.inputContents.input.two.id,
-    type: $props.contents.inputContents.input.two.type,
-    value: $props.contents.inputContents.input.two.value,
-    className: 'text-input-black',
-    "style-name": $props.style.inputContentsStyle,
+    "class-name": 'text-input-black',
+    id: $props.inputContents.input.two.id,
     onInputFormContent: _cache[2] || (_cache[2] = function ($event) {
-      return $props.contents.inputContents.input.two.value = $event;
-    })
+      return $props.inputContents.input.two.value = $event;
+    }),
+    "style-name": $props.inputStyle,
+    type: $props.inputContents.input.two.type,
+    value: $props.inputContents.input.two.value
   }, null, 8
   /* PROPS */
-  , ["id", "type", "value", "style-name"])], 4
+  , ["id", "style-name", "type", "value"])], 4
   /* STYLE */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-    onClick: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-      return _ctx.updateUserData();
-    }, ["prevent"])),
-    type: "button",
     "class": "btn btn-primary",
-    "data-dismiss": "modal"
+    onClick: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+      return $props.modalSubmitFunction();
+    }, ["prevent"])),
+    "data-dismiss": "modal",
+    type: "button"
   }, " 完了 ")])], 4
   /* STYLE */
   )])]);
@@ -20070,17 +19557,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $props.propsFunction($props.recipeId, $props.isFavorite);
     }, ["prevent"])),
     style: $props.buttonStyle
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
-    "class": $props.icon,
-    style: {
-      "color": "red"
-    }
-  }, null, 2
-  /* CLASS */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.buttonName), 1
-  /* TEXT */
-  )], 4
-  /* STYLE */
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.buttonName), 5
+  /* TEXT, STYLE */
   );
 }
 
@@ -20112,10 +19590,10 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
+    "class": "d-sm-none",
     onClick: _cache[1] || (_cache[1] = function () {
       return $props.propsFunction && $props.propsFunction.apply($props, arguments);
-    }),
-    "class": "d-sm-none"
+    })
   }, [_hoisted_1, _hoisted_2]);
 }
 
@@ -20154,12 +19632,10 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
 );
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
     "class": ["input-group", $props.className]
   }, [_hoisted_1, _hoisted_2], 2
   /* CLASS */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div style=\"width: 400px\">\n        <vue-suggest-input v-model=\"selected\" :items=\"items\" />\n    </div> ")], 2112
-  /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
   );
 }
 
@@ -20180,18 +19656,18 @@ __webpack_require__.r(__webpack_exports__);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("input", {
-    id: $props.id,
     "class": $props.className,
+    id: $props.id,
+    placeholder: $props.placeholder,
     style: $props.styleName,
     type: $props.type,
     value: $props.value,
-    placeholder: $props.placeholder,
     onInput: _cache[1] || (_cache[1] = function ($event) {
       return _ctx.$emit('inputFormContent', $event.target.value);
     })
   }, null, 46
   /* CLASS, STYLE, PROPS, HYDRATE_EVENTS */
-  , ["id", "type", "value", "placeholder"]);
+  , ["id", "placeholder", "type", "value"]);
 }
 
 /***/ }),
@@ -20209,50 +19685,54 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_1 = {
   "class": "toast-header"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("svg", {
-  "class": "bd-placeholder-img rounded mr-2",
-  width: "20",
-  height: "20",
-  xmlns: "http://www.w3.org/2000/svg",
-  preserveAspectRatio: "xMidYMid slice",
-  focusable: "false",
-  role: "img"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("rect", {
-  fill: "#007aff",
-  width: "100%",
-  height: "100%"
-})]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("strong", {
+};
+var _hoisted_2 = {
   "class": "mr-auto"
-}, "食材登録"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("small", {
-  "class": "text-muted"
-}, "11 mins ago"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-  type: "button",
-  "class": "ml-2 mb-1 close",
-  "data-dismiss": "toast",
-  "aria-label": "Close"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-  "aria-hidden": "true"
-}, "×")])], -1
+};
+
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "×", -1
 /* HOISTED */
 );
 
-var _hoisted_2 = {
+var _hoisted_4 = {
   "class": "toast-body"
+};
+
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, "初期設定の食材データを登録しますか？")], -1
+/* HOISTED */
+);
+
+var _hoisted_6 = {
+  "class": "text-right"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
-    "class": ["toast", $props.toastIsShow ? 'show' : 'd-none'],
+    "class": ["fadein-bottom toast", $props.toastContents.toastIsShow ? 'show' : 'd-none'],
     role: "alert",
     "aria-live": "assertive",
     "aria-atomic": "true"
-  }, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("strong", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.toastContents.toastTitle), 1
+  /* TEXT */
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
     onClick: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $props.propsFunction && $props.propsFunction.apply($props, arguments);
-    }, ["prevent"]))
-  }, "登録する")])], 2
+      var _$props$toastContents;
+
+      return $props.toastContents.toastCloseFunction && (_$props$toastContents = $props.toastContents).toastCloseFunction.apply(_$props$toastContents, arguments);
+    }, ["prevent"])),
+    type: "button",
+    "class": "ml-2 mb-1 close",
+    "data-dismiss": "toast",
+    "aria-label": "Close"
+  }, [_hoisted_3])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
+    "class": "btn btn-primary",
+    onClick: _cache[2] || (_cache[2] = function () {
+      var _$props$toastContents2;
+
+      return $props.toastContents.toastSubmitFunction && (_$props$toastContents2 = $props.toastContents).toastSubmitFunction.apply(_$props$toastContents2, arguments);
+    })
+  }, " 登録する ")])])], 2
   /* CLASS */
   );
 }
@@ -20279,88 +19759,69 @@ var _hoisted_2 = {
   "class": "wrapper-recipe_create"
 };
 var _hoisted_3 = {
-  "class": "d-flex justify-content-between"
-};
-var _hoisted_4 = {
-  "class": "d-flex justify-content-end w-50"
-};
-
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
-  "class": "fas fa-file-upload mr-1"
-}, null, -1
-/* HOISTED */
-);
-
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-  "class": "small font_size-md"
-}, /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("レシピ画像選択"), -1
-/* HOISTED */
-);
-
-var _hoisted_7 = {
   "class": "container-recipe_name-recipe_create mb-4 d-flex mt-2 align-items-end"
 };
-var _hoisted_8 = {
+var _hoisted_4 = {
   "class": "mb-4"
 };
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
   "class": "mb-0"
 }, "材料", -1
 /* HOISTED */
 );
 
-var _hoisted_10 = {
+var _hoisted_6 = {
   "class": "container-recipe_ingredient-recipe_create"
 };
-var _hoisted_11 = {
+var _hoisted_7 = {
   "class": "d-flex align-items-center justify-content-between"
 };
-var _hoisted_12 = {
+var _hoisted_8 = {
   "class": "mb-4"
 };
 
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "d-flex justify-content-between align-items-end"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "作り方"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-  "data-toggle": "modal",
+  "class": "cursor-pointer",
   "data-target": "#exampleModal",
-  "class": "cursor-pointer"
+  "data-toggle": "modal"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
   "class": "mr-1 fas fa-book-open"
 }), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("レシピURL ")])], -1
 /* HOISTED */
 );
 
-var _hoisted_14 = {
+var _hoisted_10 = {
   "class": "container-recipe_procedure-recipe_create p-2"
 };
-var _hoisted_15 = {
+var _hoisted_11 = {
   "class": "form-group"
 };
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
   "class": "mr-1 fas fa-plus"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("追加 ");
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("追加 ");
 
-var _hoisted_18 = {
+var _hoisted_14 = {
   "class": "mb-4"
 };
 
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
   "class": "mb-0"
 }, "カテゴリー", -1
 /* HOISTED */
 );
 
-var _hoisted_20 = {
+var _hoisted_16 = {
   "class": "container-recipe_category-recipe_create d-flex"
 };
-var _hoisted_21 = {
+var _hoisted_17 = {
   "class": "input-group mb-3"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -20369,6 +19830,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Toast = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Toast");
 
   var _component_Modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Modal");
+
+  var _component_ImagePreview = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ImagePreview");
 
   var _component_InputLabel = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("InputLabel");
 
@@ -20380,49 +19843,40 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "props-function": _ctx.routerBack
   }, null, 8
   /* PROPS */
-  , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ぱんくずリスト "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <BreadCrumb\n                class=\"breadcrumb-component\"\n                :bread-crumb-list=\"breadCrumbList\"\n            /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Toast, {
-    "toast-is-show": $data.toastIsShow,
-    "props-function": $options.addInitialIngredients
+  , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Toast, {
+    "toast-contents": $data.contents.toastContents
   }, null, 8
   /* PROPS */
-  , ["toast-is-show", "props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Modal, {
-    contents: $data.contents,
-    style: $data.style,
-    "props-function": $data.propsFunction
+  , ["toast-contents"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Modal, {
+    "input-contents": $data.contents.inputContents,
+    "input-style": $data.style.inputContentsStyle,
+    "image-preview-contents": $data.contents.imagePreviewContentsForRecipeUrl,
+    "modal-contents": $data.contents.modalContents,
+    "modal-style": $data.style.modalStyle,
+    "modal-set-function": $data.contents.modalContents.modalSetFunction,
+    "modal-submit-function": $data.contents.modalContents.modalSubmitFunction,
+    "unnecessary-element-style": $data.style.unnecessaryElementStyle
   }, null, 8
   /* PROPS */
-  , ["contents", "style", "props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 画像アップロード "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
-    src: $data.url,
-    "class": "w-50"
+  , ["input-contents", "input-style", "image-preview-contents", "modal-contents", "modal-style", "modal-set-function", "modal-submit-function", "unnecessary-element-style"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" 画像アップロード "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ImagePreview, {
+    "image-preview-contents": $data.contents.imagePreviewContentsForRecipeImage
   }, null, 8
   /* PROPS */
-  , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", null, [_hoisted_5, _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-    "class": "d-none",
-    name: "imagefile",
-    id: "imagefile",
-    type: "file",
-    ref: "preview",
-    onChange: _cache[1] || (_cache[1] = function ($event) {
-      return $options.uploadFile($event);
-    })
-  }, null, 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
-  )])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
-    "class": "mb-0",
+  , ["image-preview-contents"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_InputLabel, {
+    "class-name": 'mb-0',
     id: 'input-recipe-name',
     name: 'レシピ名：'
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-    "class": "w-60",
+    "class-name": 'text-input-black w-60',
     id: 'input-recipe-name',
-    type: 'text',
-    value: $options.recipeName,
-    className: 'text-input-black',
-    onInputFormContent: _cache[2] || (_cache[2] = function ($event) {
+    onInputFormContent: _cache[1] || (_cache[1] = function ($event) {
       return $options.recipeName = $event;
-    })
+    }),
+    type: 'text',
+    value: $options.recipeName
   }, null, 8
   /* PROPS */
-  , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_10, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeIngredientList, function (recipeIngredient, index) {
+  , ["value"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeIngredientList, function (recipeIngredient, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
       "class": "pl-1",
       key: recipeIngredient.id
@@ -20437,7 +19891,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* PROPS */
     , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
       onClick: function onClick($event) {
-        return $options._deleteRecipeIngredient(index);
+        return _ctx.deleteRecipeIngredient(index);
       },
       "class": "ml-2 fas fa-trash-alt"
     }, null, 8
@@ -20445,11 +19899,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["onClick"])])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
-    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
+    "class": "custom-select w-60",
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $options.recipeIngredient = $event;
-    }),
-    "class": "custom-select w-60"
+    })
   }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.ingredients, function (ingredient) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("option", {
       value: ingredient,
@@ -20462,67 +19916,66 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ))], 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $options.recipeIngredient]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-    "class": "w-30",
+    "class-name": 'w-30 text-input-white',
     id: 'input-recipe-ingredient-quantity',
-    type: 'text',
-    value: $options.recipeIngredientQuantity,
-    className: 'text-input-white',
-    placeholder: '数量(単位含む)',
-    onInputFormContent: _cache[4] || (_cache[4] = function ($event) {
+    onInputFormContent: _cache[3] || (_cache[3] = function ($event) {
       return $options.recipeIngredientQuantity = $event;
-    })
+    }),
+    placeholder: '例)1枚、1本',
+    type: 'text',
+    value: $options.recipeIngredientQuantity
   }, null, 8
   /* PROPS */
-  , ["value", "placeholder"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
-    onClick: _cache[5] || (_cache[5] = function () {
+  , ["value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+    "class": "fas fa-check-circle",
+    onClick: _cache[4] || (_cache[4] = function () {
       return $options.addRecipeIngredient && $options.addRecipeIngredient.apply($options, arguments);
     }),
-    "class": "fas fa-check-circle",
     style: {
       "font-size": "1.5rem"
     }
-  })])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeProcedureList, function (recipeProcedure, index) {
+  })])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_10, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeProcedureList, function (recipeProcedure, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
       "class": "pl-1",
       key: recipeProcedure
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1) + "." + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(recipeProcedure), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+      "class": "ml-2 fas fa-pencil-alt",
       onClick: function onClick($event) {
         return $options.editRecipeProcedure(recipeProcedure, index);
-      },
-      "class": "ml-2 fas fa-pencil-alt"
+      }
     }, null, 8
     /* PROPS */
     , ["onClick"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+      "class": "ml-2 fas fa-trash-alt",
       onClick: function onClick($event) {
-        return $options._deleteRecipeProcedure(index);
-      },
-      "class": "ml-2 fas fa-trash-alt"
+        return _ctx.deleteRecipeProcedure(index);
+      }
     }, null, 8
     /* PROPS */
     , ["onClick"])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
-    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
-      return $options.recipeProcedure = $event;
-    }),
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
     "class": "form-control",
     id: "recipe-procedure-input-field",
-    rows: "2"
+    rows: "2",
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
+      return $options.recipeProcedure = $event;
+    })
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $options.recipeProcedure]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-    onClick: _cache[7] || (_cache[7] = function () {
+    onClick: _cache[6] || (_cache[6] = function () {
       return $options.addRecipeProcedure && $options.addRecipeProcedure.apply($options, arguments);
     }),
     "class": "text-right"
-  }, [_hoisted_16, _hoisted_17])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_18, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
-    "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
+  }, [_hoisted_12, _hoisted_13])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [_hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
+    "class": "custom-select mr-1",
+    "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
       return $options.recipeCategory = $event;
-    }),
-    "class": "custom-select mr-1"
+    })
   }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.categories, function (category) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("option", {
       value: category,
@@ -20535,12 +19988,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ))], 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $options.recipeCategory]])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_PrimaryButton, {
-    buttonName: '登録する',
-    "props-function": $options.sendNewRecipe,
-    buttonStyle: $data.sendNewRecipeButtonStyle
+    "button-name": '登録する',
+    "button-style": $data.style.sendNewRecipeButtonStyle,
+    "props-function": $options.sendNewRecipe
   }, null, 8
   /* PROPS */
-  , ["props-function", "buttonStyle"])])]);
+  , ["button-style", "props-function"])])]);
 }
 
 /***/ }),
@@ -20565,41 +20018,42 @@ var _hoisted_2 = {
   "class": "wrapper-recipe_edit"
 };
 var _hoisted_3 = {
-  "class": "d-none d-md-block text-right"
-};
-var _hoisted_4 = {
-  "class": ""
-};
-
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
-  "class": "fas fa-file-upload mr-1"
-}, null, -1
-/* HOISTED */
-);
-
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("レシピ画像選択"), -1
-/* HOISTED */
-);
-
-var _hoisted_7 = {
   "class": "d-flex justify-content-between"
 };
-var _hoisted_8 = {
-  "class": "d-md-none"
+var _hoisted_4 = {
+  "class": "w-45 mb-4 d-none d-md-block"
 };
 
-var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
-  "class": "fas fa-file-upload mr-1"
-}, null, -1
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+  "class": "mb-0"
+}, "材料", -1
 /* HOISTED */
 );
 
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("レシピ画像選択"), -1
+var _hoisted_6 = {
+  "class": "container-recipe_ingredient-recipe_edit"
+};
+var _hoisted_7 = {
+  "class": "d-flex align-items-center"
+};
+var _hoisted_8 = {
+  "class": "d-md-flex"
+};
+var _hoisted_9 = {
+  "class": "container-recipe_name-recipe_edit mb-4 d-flex mt-2 align-items-end"
+};
+
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
+  "class": "mb-0"
+}, "レシピ名：", -1
 /* HOISTED */
 );
 
 var _hoisted_11 = {
-  "class": "w-45 mb-4 d-none d-md-block"
+  "class": "mb-4 d-md-none",
+  style: {
+    "flex-basis": "50%"
+  }
 };
 
 var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
@@ -20615,91 +20069,77 @@ var _hoisted_14 = {
   "class": "d-flex align-items-center"
 };
 var _hoisted_15 = {
-  "class": "d-md-flex"
-};
-var _hoisted_16 = {
-  "class": "container-recipe_name-recipe_edit mb-4 d-flex mt-2 align-items-end"
-};
-
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", {
-  "class": "mb-0"
-}, "レシピ名：", -1
-/* HOISTED */
-);
-
-var _hoisted_18 = {
-  "class": "mb-4 d-md-none",
-  style: {
-    "flex-basis": "50%"
-  }
-};
-
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
-  "class": "mb-0"
-}, "材料", -1
-/* HOISTED */
-);
-
-var _hoisted_20 = {
-  "class": "container-recipe_ingredient-recipe_edit"
-};
-var _hoisted_21 = {
-  "class": "d-flex align-items-center"
-};
-var _hoisted_22 = {
   "class": "d-md-flex justify-content-between"
 };
-var _hoisted_23 = {
+var _hoisted_16 = {
   "class": "mb-4 w-md-65"
 };
-
-var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_17 = {
   "class": "d-flex justify-content-between align-items-end"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "作り方"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
-  "data-toggle": "modal",
-  "data-target": "#exampleModal",
-  "class": "cursor-pointer"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
-  "class": "mr-1 fas fa-book-open"
-}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("レシピURL ")])], -1
+};
+
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "作り方", -1
 /* HOISTED */
 );
 
-var _hoisted_25 = {
+var _hoisted_19 = {
+  key: 0,
+  "class": "cursor-pointer color-link_menu",
+  "data-toggle": "modal",
+  "data-target": "#exampleModal"
+};
+
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+  "class": "mr-1 fas fa-book-open"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("レシピURL ");
+
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+  "class": "mr-1 fas fa-book-open"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("レシピURL ")], -1
+/* HOISTED */
+);
+
+var _hoisted_23 = {
   "class": "container-recipe_procedure-recipe_edit p-2"
 };
-var _hoisted_26 = {
+var _hoisted_24 = {
   "class": "form-group"
 };
 
-var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
   "class": "mr-1 fas fa-plus"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("追加 ");
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("追加 ");
 
-var _hoisted_29 = {
+var _hoisted_27 = {
   "class": "mb-4 w-md-30"
 };
 
-var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
   "class": "mb-0"
 }, "カテゴリー", -1
 /* HOISTED */
 );
 
-var _hoisted_31 = {
+var _hoisted_29 = {
   "class": "container-recipe_category-recipe_edit"
 };
-var _hoisted_32 = {
+var _hoisted_30 = {
   "class": "input-group mb-3"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_ReturnButton = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ReturnButton");
 
   var _component_Modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Modal");
+
+  var _component_ImagePreview = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ImagePreview");
 
   var _component_TextInput = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("TextInput");
 
@@ -20709,40 +20149,22 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "props-function": _ctx.routerBack
   }, null, 8
   /* PROPS */
-  , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ぱんくずリスト "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <BreadCrumb\n                class=\"breadcrumb-component\"\n                :bread-crumb-list=\"breadCrumbList\"\n            /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Modal, {
-    contents: $data.contents,
-    style: $data.style,
-    "props-function": $data.propsFunction
+  , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Modal, {
+    "input-contents": $data.contents.inputContents,
+    "input-style": $data.style.inputContentsStyle,
+    "image-preview-contents": $data.contents.imagePreviewContentsForRecipeUrl,
+    "modal-contents": $data.contents.modalContents,
+    "modal-style": $data.style.modalStyle,
+    "modal-set-function": $data.contents.modalContents.modalSetFunction,
+    "modal-submit-function": $data.contents.modalContents.modalSubmitFunction,
+    "unnecessary-element-style": $data.style.unnecessaryElementStyle
   }, null, 8
   /* PROPS */
-  , ["contents", "style", "props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <ImagePreview :title=\"'レシピ画像UL'\" /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_4, [_hoisted_5, _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-    "class": "d-none",
-    name: "imagefile",
-    id: "imagefile",
-    type: "file",
-    ref: "preview",
-    onChange: _cache[1] || (_cache[1] = function ($event) {
-      return $options.uploadFile($event);
-    })
-  }, null, 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
-  )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" レシピ画像 "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
-    src: $data.url,
-    "class": "w-50"
+  , ["input-contents", "input-style", "image-preview-contents", "modal-contents", "modal-style", "modal-set-function", "modal-submit-function", "unnecessary-element-style"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" レシピ画像 "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ImagePreview, {
+    "image-preview-contents": $data.contents.imagePreviewContentsForRecipeImage
   }, null, 8
   /* PROPS */
-  , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", _hoisted_8, [_hoisted_9, _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-    "class": "d-none",
-    name: "imagefile",
-    id: "imagefile",
-    type: "file",
-    ref: "preview",
-    onChange: _cache[2] || (_cache[2] = function ($event) {
-      return $options.uploadFile($event);
-    })
-  }, null, 544
-  /* HYDRATE_EVENTS, NEED_PATCH */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeIngredientList, function (recipeIngredient, index) {
+  , ["image-preview-contents"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeIngredientList, function (recipeIngredient, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
       "class": "pl-1",
       key: recipeIngredient.id
@@ -20750,14 +20172,81 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
       onClick: function onClick($event) {
-        return _ctx.editRecipeIngredient($options.ingredient, index);
+        return $options.editRecipeIngredient(_ctx.ingredient, index);
       },
       "class": "ml-2 fas fa-pencil-alt"
     }, null, 8
     /* PROPS */
     , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
       onClick: function onClick($event) {
-        return _ctx._deleteRecipeIngredient(index);
+        return _ctx.deleteRecipeIngredient(index);
+      },
+      "class": "ml-2 fas fa-trash-alt"
+    }, null, 8
+    /* PROPS */
+    , ["onClick"])])])]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      return $options.recipeIngredient = $event;
+    }),
+    "class": "custom-select mr-1"
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.ingredients, function (ingredient) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("option", {
+      value: ingredient,
+      key: ingredient.id
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ingredient.recipe_ingredient_name), 9
+    /* TEXT, PROPS */
+    , ["value"]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))], 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $options.recipeIngredient]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
+    "class-name": 'text-input-white',
+    id: 'input-recipe-ingredient-quantity',
+    placeholder: '数量(単位含む)',
+    onInputFormContent: _cache[2] || (_cache[2] = function ($event) {
+      return $options.recipeIngredientQuantity = $event;
+    }),
+    type: 'text',
+    value: $options.recipeIngredientQuantity
+  }, null, 8
+  /* PROPS */
+  , ["placeholder", "value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+    onClick: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+      return $options.addRecipeIngredient && $options.addRecipeIngredient.apply($options, arguments);
+    }, ["prevent"])),
+    "class": "fas fa-check-circle",
+    style: {
+      "font-size": "1.5rem"
+    }
+  })])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    "class": "text-input-black w-75",
+    type: "text",
+    id: "recipe-name",
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+      return $options.recipeName = $event;
+    })
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $options.recipeName]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeIngredientList, function (recipeIngredient, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
+      "class": "pl-1",
+      key: recipeIngredient.id
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(recipeIngredient.recipe_ingredient_name) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(recipeIngredient.recipe_ingredient_quantity) + " ", 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+      onClick: function onClick($event) {
+        return $options.editRecipeIngredient(_ctx.ingredient, index);
+      },
+      "class": "ml-2 fas fa-pencil-alt"
+    }, null, 8
+    /* PROPS */
+    , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+      onClick: function onClick($event) {
+        return _ctx.deleteRecipeIngredient(index);
       },
       "class": "ml-2 fas fa-trash-alt"
     }, null, 8
@@ -20766,8 +20255,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }), 128
   /* KEYED_FRAGMENT */
   )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
-    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
-      return _ctx.recipeIngredient = $event;
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
+      return $options.recipeIngredient = $event;
     }),
     "class": "custom-select mr-1"
   }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.ingredients, function (ingredient) {
@@ -20781,93 +20270,30 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* KEYED_FRAGMENT */
   ))], 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, _ctx.recipeIngredient]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $options.recipeIngredient]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
+    "class-name": 'text-input-white',
     id: 'input-recipe-ingredient-quantity',
-    type: 'text',
-    value: $options.recipeIngredientQuantity,
-    className: 'text-input-white',
-    placeholder: '数量(単位含む)',
-    onInputFormContent: _cache[4] || (_cache[4] = function ($event) {
+    onInputFormContent: _cache[6] || (_cache[6] = function ($event) {
       return $options.recipeIngredientQuantity = $event;
-    })
-  }, null, 8
-  /* PROPS */
-  , ["value", "placeholder"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
-    onClick: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-      return $options.addRecipeIngredient && $options.addRecipeIngredient.apply($options, arguments);
-    }, ["prevent"])),
-    "class": "fas fa-check-circle",
-    style: {
-      "font-size": "1.5rem"
-    }
-  })])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-    "class": "text-input-black w-75",
-    type: "text",
-    id: "recipe-name",
-    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
-      return $options.recipeName = $event;
-    })
-  }, null, 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $options.recipeName]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_18, [_hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_20, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeIngredientList, function (recipeIngredient, index) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
-      "class": "pl-1",
-      key: recipeIngredient.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(recipeIngredient.recipe_ingredient_name) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(recipeIngredient.recipe_ingredient_quantity) + " ", 1
-    /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
-      onClick: function onClick($event) {
-        return _ctx.editRecipeIngredient($options.ingredient, index);
-      },
-      "class": "ml-2 fas fa-pencil-alt"
-    }, null, 8
-    /* PROPS */
-    , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
-      onClick: function onClick($event) {
-        return _ctx._deleteRecipeIngredient(index);
-      },
-      "class": "ml-2 fas fa-trash-alt"
-    }, null, 8
-    /* PROPS */
-    , ["onClick"])])])]);
-  }), 128
-  /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
-    "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
-      return _ctx.recipeIngredient = $event;
     }),
-    "class": "custom-select mr-1"
-  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.ingredients, function (ingredient) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("option", {
-      value: ingredient,
-      key: ingredient.id
-    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ingredient.recipe_ingredient_name), 9
-    /* TEXT, PROPS */
-    , ["value"]);
-  }), 128
-  /* KEYED_FRAGMENT */
-  ))], 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, _ctx.recipeIngredient]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_TextInput, {
-    id: 'input-recipe-ingredient-quantity',
+    placeholder: '例)1枚、1本',
     type: 'text',
-    value: $options.recipeIngredientQuantity,
-    className: 'text-input-white',
-    placeholder: '数量(単位含む)',
-    onInputFormContent: _cache[8] || (_cache[8] = function ($event) {
-      return $options.recipeIngredientQuantity = $event;
-    })
+    value: $options.recipeIngredientQuantity
   }, null, 8
   /* PROPS */
-  , ["value", "placeholder"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
-    onClick: _cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+  , ["value"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("i", {
+    onClick: _cache[7] || (_cache[7] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.addRecipeIngredient && $options.addRecipeIngredient.apply($options, arguments);
     }, ["prevent"])),
     "class": "fas fa-check-circle",
     style: {
       "font-size": "1.5rem"
     }
-  })])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_25, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeProcedureList, function (recipeProcedure, index) {
+  })])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_17, [_hoisted_18, $options.selectedRecipe[0].recipe_url != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_19, [_hoisted_20, _hoisted_21])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 1
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" URlの登録がない場合は↓を表示 "), _hoisted_22], 64
+  /* STABLE_FRAGMENT */
+  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_23, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.recipeProcedureList, function (recipeProcedure, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
       "class": "pl-1",
       key: recipeProcedure
@@ -20890,8 +20316,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["onClick"])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
-    "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("textarea", {
+    "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
       return $options.recipeProcedure = $event;
     }),
     "class": "form-control",
@@ -20900,12 +20326,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $options.recipeProcedure]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
-    onClick: _cache[11] || (_cache[11] = function () {
+    onClick: _cache[9] || (_cache[9] = function () {
       return $options.addRecipeProcedure && $options.addRecipeProcedure.apply($options, arguments);
     }),
     "class": "text-right"
-  }, [_hoisted_27, _hoisted_28])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_29, [_hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
-    "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
+  }, [_hoisted_25, _hoisted_26])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_27, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("select", {
+    "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
       return $options.recipeCategory = $event;
     }),
     "class": "custom-select mr-1"
@@ -20921,12 +20347,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ))], 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $options.recipeCategory]])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_PrimaryButton, {
-    buttonName: '登録する',
-    "props-function": $options.sendEditedRecipe,
-    buttonStyle: $data.addRecipeButtonStyle
+    "button-name": '登録する',
+    "button-style": $data.style.addRecipeButtonStyle,
+    "props-function": $options.sendEditedRecipe
   }, null, 8
   /* PROPS */
-  , ["props-function", "buttonStyle"])])]);
+  , ["button-style", "props-function"])])]);
 }
 
 /***/ }),
@@ -20978,12 +20404,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "w-100 element-recipe-favorite_recipe_list",
       key: favoriteRecipe.id
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+      alt: "お気に入りレシピの画像",
+      "class": "w-100",
       onClick: function onClick($event) {
         return $options.showRecipeDetail(favoriteRecipe.id);
       },
-      "class": "w-100",
-      src: favoriteRecipe.recipe_image_path,
-      alt: "お気に入りレシピの画像"
+      src: favoriteRecipe.recipe_image_path
     }, null, 8
     /* PROPS */
     , ["onClick", "src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(favoriteRecipe.recipe_name), 1
@@ -21009,18 +20435,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
-var _hoisted_1 = {
-  "class": "d-flex justify-content-between align-items-center py-2",
-  style: {
-    "border-bottom": "1px solid #c4c4c4"
-  }
-};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
     onClick: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-      return $props.propsFunction($options.targetCategoryRecipeList[0].recipe_category, $options.targetCategoryRecipeList[0].recipe_category_sub);
-    }, ["prevent"]))
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+      return $props.propsFunction($options.selectedCategoryRecipeList);
+    }, ["prevent"])),
+    "class": "d-flex justify-content-between align-items-center py-3",
+    style: {
+      "border-bottom": "1px solid #c4c4c4"
+    }
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
     "class": "element-category_image-recipe_category_list",
     src: $props.recipeCategory.recipe_category_image,
     alt: "レシピカテゴリーの画像"
@@ -21028,9 +20452,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.recipeCategory.recipe_category) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.recipeCategory.recipe_category_name), 1
   /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.targetCategoryRecipeList.length), 1
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.selectedCategoryRecipeList.length), 1
   /* TEXT */
-  )])]);
+  )]);
 }
 
 /***/ }),
@@ -21067,7 +20491,7 @@ var _hoisted_6 = {
   "class": "container-recipe_category_detail_list mt-4"
 };
 var _hoisted_7 = {
-  "class": "d-flex justify-content-between align-items-center py-2"
+  "class": "w-100"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_ReturnButton = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ReturnButton");
@@ -21076,32 +20500,32 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "props-function": _ctx.routerBack
   }, null, 8
   /* PROPS */
-  , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ぱんくずリスト "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <BreadCrumb class=\"breadcrumb-component\" /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h5", null, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.selectedRecipeCategoryList[0].recipe_category), 1
+  , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h5", null, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.selectedRecipeCategoryList[0].recipe_category), 1
   /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.selectedRecipeCategoryList, function (selectedRecipe) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
-      "class": "d-flex justify-content-between align-items-center w-100",
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_7, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.selectedRecipeCategoryList, function (selectedRecipe) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("li", {
+      "class": "d-flex justify-content-between align-items-center py-3",
+      onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+        return $options.showRecipeDetail(selectedRecipe.id);
+      }, ["prevent"]),
+      key: selectedRecipe.id,
       style: {
         "border-bottom": "1px solid #c4c4c4"
-      },
-      key: selectedRecipe.id,
-      onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-        return $options.showRecipeCategoryDetail(selectedRecipe.id);
-      }, ["prevent"])
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
-      src: selectedRecipe.recipe_image_path,
+      }
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
       alt: "選択されたカテゴリーのレシピ画像",
-      "class": "element-category_image-recipe_category_detail_list"
+      "class": "element-category_image-recipe_category_detail_list",
+      src: selectedRecipe.recipe_image_path
     }, null, 8
     /* PROPS */
     , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(selectedRecipe.recipe_name), 1
     /* TEXT */
-    )])])], 8
+    )])], 8
     /* PROPS */
     , ["onClick"]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])])]);
+  ))])])])])]);
 }
 
 /***/ }),
@@ -21148,52 +20572,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "props-function": _ctx.routerBack
   }, null, 8
   /* PROPS */
-  , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ぱんくずリスト "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <BreadCrumb class=\"breadcrumb-component\" /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_RecipeCategory, {
-    "props-function": $options.showRecipeCategoryDetail,
-    "recipe-category": $data.categories[0]
-  }, null, 8
-  /* PROPS */
-  , ["props-function", "recipe-category"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_RecipeCategory, {
-    "props-function": $options.showRecipeCategoryDetail,
-    "recipe-category": $data.categories[1]
-  }, null, 8
-  /* PROPS */
-  , ["props-function", "recipe-category"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_RecipeCategory, {
-    "props-function": $options.showRecipeCategoryDetail,
-    "recipe-category": $data.categories[2]
-  }, null, 8
-  /* PROPS */
-  , ["props-function", "recipe-category"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_RecipeCategory, {
-    "props-function": $options.showRecipeCategoryDetail,
-    "recipe-category": $data.categories[3]
-  }, null, 8
-  /* PROPS */
-  , ["props-function", "recipe-category"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_RecipeCategory, {
-    "props-function": $options.showRecipeCategoryDetail,
-    "recipe-category": $data.categories[4]
-  }, null, 8
-  /* PROPS */
-  , ["props-function", "recipe-category"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_RecipeCategory, {
-    "props-function": $options.showRecipeCategoryDetail,
-    "recipe-category": $data.categories[5]
-  }, null, 8
-  /* PROPS */
-  , ["props-function", "recipe-category"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_RecipeCategory, {
-    "props-function": $options.showRecipeCategoryDetail,
-    "recipe-category": $data.categories[6]
-  }, null, 8
-  /* PROPS */
-  , ["props-function", "recipe-category"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_RecipeCategory, {
-    "props-function": $options.showRecipeCategoryDetail,
-    "recipe-category": $data.categories[7]
-  }, null, 8
-  /* PROPS */
-  , ["props-function", "recipe-category"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_RecipeCategory, {
-    "props-function": $options.showRecipeCategoryDetail,
-    "recipe-category": $data.categories[8]
-  }, null, 8
-  /* PROPS */
-  , ["props-function", "recipe-category"])])])])])]);
+  , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("ul", _hoisted_6, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.categories, function (category, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_RecipeCategory, {
+      key: category.id,
+      "props-function": $options.showRecipeCategoryDetail,
+      "recipe-category": $data.categories[index]
+    }, null, 8
+    /* PROPS */
+    , ["props-function", "recipe-category"]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])])])])]);
 }
 
 /***/ }),
@@ -21296,16 +20685,19 @@ var _hoisted_22 = {
   "class": "container-recipe_procedure-recipe_detail p-2"
 };
 var _hoisted_23 = {
+  key: 0
+};
+var _hoisted_24 = {
   "class": "mb-4"
 };
 
-var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
   "class": "d-flex justify-content-between align-items-end"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", null, "カテゴリー")], -1
 /* HOISTED */
 );
 
-var _hoisted_25 = {
+var _hoisted_26 = {
   "class": "container-recipe_category-recipe_detail p-2"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -21317,7 +20709,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "props-function": _ctx.routerBack
   }, null, 8
   /* PROPS */
-  , ["props-function"]), _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <BreadCrumb\n                class=\"breadcrumb-component\"\n                :bread-crumb-list=\"breadCrumbList\"\n                :paramsType=\"'recipeId'\"\n                :params=\"selectedRecipeId\"\n            /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+  , ["props-function"]), _hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
     to: {
       name: 'editRecipe',
       params: {
@@ -21336,7 +20728,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   , ["to"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
     "class": "w-100",
     src: $options.selectedRecipe[0].recipe_image_path,
-    alt: ""
+    alt: "選択したレシピの画像"
   }, null, 8
   /* PROPS */
   , ["src"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.selectedRecipe[0].recipe_name), 1
@@ -21349,7 +20741,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     )]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [_hoisted_15, $options.selectedRecipe[0].recipe_url != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
+  ))])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_14, [_hoisted_15, $options.selectedRecipe[0].recipe_url != '' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("a", {
     href: $options.selectedRecipe[0].recipe_url,
     target: "_blank",
     rel: "noopener"
@@ -21359,12 +20751,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("ul", {
       "class": "pl-1",
       key: recipeProcedure.toString(index)
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1) + "." + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(recipeProcedure), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("li", null, [$options.selectedRecipe[0].recipe_procedure.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1
     /* TEXT */
-    )]);
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("." + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(recipeProcedure), 1
+    /* TEXT */
+    )])]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_23, [_hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.selectedRecipe[0].recipe_category), 1
+  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_24, [_hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_26, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.selectedRecipe[0].recipe_category), 1
   /* TEXT */
   )])])]);
 }
@@ -21420,7 +20814,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "props-function": _ctx.routerBack
   }, null, 8
   /* PROPS */
-  , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" \n            <BreadCrumb\n                class=\"breadcrumb-component\"\n                :bread-crumb-list=\"breadCrumbList\"\n                :paramsType=\"'listType'\"\n                :params=\"listType\"\n            /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h5", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.listName), 1
+  , ["props-function"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("h5", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.listName), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ↓レシピリスト "), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.recipeList, function (recipe) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
@@ -21444,36 +20838,34 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "fas fa-trash-alt font_size-sm cursor-pointer"
     }, null, 8
     /* PROPS */
-    , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(1) + "." + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(recipe.recipe_procedure[0]), 1
+    , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(1) + "." + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(recipe.recipe_procedure[0]) + "... ", 1
     /* TEXT */
     )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_PrimaryButton, {
-      buttonName: '詳細',
-      buttonStyle: $data.showRecipeDetailButtonStyle,
-      propsFunction: $options.showRecipeDetail,
+      "button-name": '詳細',
+      "button-style": $data.style.showRecipeDetailButtonStyle,
+      "props-function": $options.showRecipeDetail,
       "recipe-id": recipe.id
     }, null, 8
     /* PROPS */
-    , ["buttonStyle", "propsFunction", "recipe-id"]), recipe.is_favorite == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_PrimaryButton, {
+    , ["button-style", "props-function", "recipe-id"]), recipe.is_favorite == 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_PrimaryButton, {
       key: 0,
-      icon: _ctx.icon,
-      buttonName: 'お気に入り解除',
-      buttonStyle: $data.addFavoriteButtonStyle,
+      "button-name": 'お気に入り解除',
+      "button-style": $data.style.addFavoriteButtonStyle,
+      "is-favorite": recipe.is_favorite,
       "props-function": $options.toggleFavorite,
-      "recipe-id": recipe.id,
-      isFavorite: recipe.is_favorite
+      "recipe-id": recipe.id
     }, null, 8
     /* PROPS */
-    , ["icon", "buttonStyle", "props-function", "recipe-id", "isFavorite"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), recipe.is_favorite == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_PrimaryButton, {
+    , ["button-style", "is-favorite", "props-function", "recipe-id"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), recipe.is_favorite == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_PrimaryButton, {
       key: 1,
-      icon: _ctx.icon,
-      buttonName: 'お気に入り追加',
-      buttonStyle: $data.addFavoriteButtonStyle,
+      "button-name": 'お気に入り追加',
+      "button-style": $data.style.addFavoriteButtonStyle,
+      "is-favorite": recipe.is_favorite,
       "props-function": $options.toggleFavorite,
-      "recipe-id": recipe.id,
-      isFavorite: recipe.is_favorite
+      "recipe-id": recipe.id
     }, null, 8
     /* PROPS */
-    , ["icon", "buttonStyle", "props-function", "recipe-id", "isFavorite"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])]);
+    , ["button-style", "is-favorite", "props-function", "recipe-id"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])])]);
@@ -21555,59 +20947,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   categories: [{
-    id: 1,
     recipe_category_name: "肉料理",
-    url: "meat",
-    recipe_category_image: "/images/肉料理.jpeg",
-    length: 0
+    recipe_category_name_sub: "meat",
+    recipe_category_image: "/images/category_meat.jpeg"
   }, {
-    id: 2,
     recipe_category_name: "魚料理",
-    url: "fish",
-    recipe_category_image: "/images/肉料理.jpeg",
-    length: 0
+    recipe_category_name_sub: "fish",
+    recipe_category_image: "/images/category_fish.jpeg"
   }, {
-    id: 3,
     recipe_category_name: "野菜料理",
-    url: "veg",
-    recipe_category_image: "/images/肉料理.jpeg",
-    length: 0
+    recipe_category_name_sub: "veg",
+    recipe_category_image: "/images/category_veg.jpeg"
   }, {
-    id: 4,
     recipe_category_name: "麺類",
-    url: "noodle",
-    recipe_category_image: "/images/肉料理.jpeg",
-    length: 0
+    recipe_category_name_sub: "noodle",
+    recipe_category_image: "/images/category_noodle.jpeg"
   }, {
-    id: 5,
     recipe_category_name: "ご飯もの",
-    url: "rice",
-    recipe_category_image: "/images/肉料理.jpeg",
-    length: 0
+    recipe_category_name_sub: "rice",
+    recipe_category_image: "/images/category_rice.jpeg"
   }, {
-    id: 6,
     recipe_category_name: "スープ、汁物",
-    url: "soup",
-    recipe_category_image: "/images/肉料理.jpeg",
-    length: 0
+    recipe_category_name_sub: "soup",
+    recipe_category_image: "/images/category_soup.jpeg"
   }, {
-    id: 7,
     recipe_category_name: "パン類",
-    url: "bread",
-    recipe_category_image: "/images/肉料理.jpeg",
-    length: 0
+    recipe_category_name_sub: "bread",
+    recipe_category_image: "/images/category_bread.jpeg"
   }, {
-    id: 8,
     recipe_category_name: "お菓子",
-    url: "sweets",
-    recipe_category_image: "/images/肉料理.jpeg",
-    length: 0
+    recipe_category_name_sub: "sweets",
+    recipe_category_image: "/images/category_sweets.jpeg"
   }, {
-    id: 9,
     recipe_category_name: "そのほか",
-    url: "other",
-    recipe_category_image: "/images/肉料理.jpeg",
-    length: 0
+    recipe_category_name_sub: "other",
+    recipe_category_image: "/images/no_image.png"
   }]
 });
 
@@ -21669,6 +21043,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      // ログイン、パスワード再設定、会員登録画面のボタンのスタイル
+      authFormButtonStyle: {
+        color: "#fff",
+        backgroundColor: "#c4c4c4",
+        fontSize: "12px",
+        width: "100%",
+        height: "35px"
+      }
+    };
+  },
   methods: {
     routerBack: function routerBack() {
       this.$router.back();
@@ -21956,6 +21342,34 @@ var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_14__.createRouter)({
 
 /***/ }),
 
+/***/ "./resources/js/store/actions.js":
+/*!***************************************!*\
+  !*** ./resources/js/store/actions.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _recipe_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./recipe/actions */ "./resources/js/store/recipe/actions.js");
+/* harmony import */ var _ingredient_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ingredient/actions */ "./resources/js/store/ingredient/actions.js");
+/* harmony import */ var _user_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./user/actions */ "./resources/js/store/user/actions.js");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  initRecipes: _recipe_actions__WEBPACK_IMPORTED_MODULE_0__.default.initRecipes,
+  setRecipes: _recipe_actions__WEBPACK_IMPORTED_MODULE_0__.default.setRecipes,
+  setUserData: _user_actions__WEBPACK_IMPORTED_MODULE_2__.default.setUserData,
+  initUserData: _user_actions__WEBPACK_IMPORTED_MODULE_2__.default.initUserData,
+  setIngredients: _ingredient_actions__WEBPACK_IMPORTED_MODULE_1__.default.setIngredients,
+  initIngredients: _ingredient_actions__WEBPACK_IMPORTED_MODULE_1__.default.initIngredients
+});
+
+/***/ }),
+
 /***/ "./resources/js/store/getters.js":
 /*!***************************************!*\
   !*** ./resources/js/store/getters.js ***!
@@ -21990,12 +21404,11 @@ __webpack_require__.r(__webpack_exports__);
   getRecipeIngredient: _recipeIngredient_getters__WEBPACK_IMPORTED_MODULE_3__.default.getRecipeIngredient,
   getRecipeIngredientList: _recipeIngredient_getters__WEBPACK_IMPORTED_MODULE_3__.default.getRecipeIngredientList,
   getIsEditingRecipeIngredient: _recipeIngredient_getters__WEBPACK_IMPORTED_MODULE_3__.default.getIsEditingRecipeIngredient,
-  getEditingRecipeIngredientIndex: _recipeIngredient_getters__WEBPACK_IMPORTED_MODULE_3__.default.getEditingRecipeIngredientIndex,
+  // getEditingRecipeIngredientIndex:
+  //     recipeIngredientGetters.getEditingRecipeIngredientIndex,
   // recipeProcedure
   getRecipeProcedure: _recipeProcedure_getters__WEBPACK_IMPORTED_MODULE_4__.default.getRecipeProcedure,
   getRecipeProcedureList: _recipeProcedure_getters__WEBPACK_IMPORTED_MODULE_4__.default.getRecipeProcedureList,
-  getIsEditingRecipeProcedure: _recipeProcedure_getters__WEBPACK_IMPORTED_MODULE_4__.default.getIsEditingRecipeProcedure,
-  getEditingRecipeProcedureIndex: _recipeProcedure_getters__WEBPACK_IMPORTED_MODULE_4__.default.getEditingRecipeProcedureIndex,
   getrecipeCategory: _recipeCategory_getters__WEBPACK_IMPORTED_MODULE_5__.default.getRecipeCategory,
   getRecipeIngredientQuantity: _recipeIngredient_getters__WEBPACK_IMPORTED_MODULE_3__.default.getRecipeIngredientQuantity
 });
@@ -22013,16 +21426,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "store": () => (/* binding */ store)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm-bundler.js");
 /* harmony import */ var vuex_persistedstate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex-persistedstate */ "./node_modules/vuex-persistedstate/dist/vuex-persistedstate.es.js");
 /* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./getters */ "./resources/js/store/getters.js");
 /* harmony import */ var _mutations__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mutations */ "./resources/js/store/mutations.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./actions */ "./resources/js/store/actions.js");
+
 
 
 
  // Create a new store instance.
 
-var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
+var store = (0,vuex__WEBPACK_IMPORTED_MODULE_4__.createStore)({
   state: function state() {
     return {
       userData: {
@@ -22031,25 +21446,51 @@ var store = (0,vuex__WEBPACK_IMPORTED_MODULE_3__.createStore)({
         profileImagePath: null,
         loggedIn: false
       },
-      recipeName: "",
       recipes: [],
       ingredients: [],
-      // obj
+      //
+      recipeName: null,
+      //
       recipeIngredient: null,
       recipeIngredientList: [],
       isEditingRecipeIngredient: false,
       editingRecipeIngredientIndex: 0,
-      recipeProcedure: "",
+      //
+      recipeProcedure: null,
       recipeProcedureList: [],
       isEditingRecipeProcedure: false,
       editingRecipeProcedureIndex: 0,
+      //
       recipeCategory: null,
-      recipeIngredientQuantity: ""
+      recipeIngredientQuantity: null
     };
   },
   getters: _getters__WEBPACK_IMPORTED_MODULE_1__.default,
   mutations: _mutations__WEBPACK_IMPORTED_MODULE_2__.default,
+  actions: _actions__WEBPACK_IMPORTED_MODULE_3__.default,
   plugins: [(0,vuex_persistedstate__WEBPACK_IMPORTED_MODULE_0__.default)()]
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/ingredient/actions.js":
+/*!**************************************************!*\
+  !*** ./resources/js/store/ingredient/actions.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  setIngredients: function setIngredients(context, recipes) {
+    context.commit("setIngredients", recipes);
+  },
+  initIngredients: function initIngredients(context) {
+    context.commit("initIngredients");
+  }
 });
 
 /***/ }),
@@ -22160,6 +21601,28 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/store/recipe/actions.js":
+/*!**********************************************!*\
+  !*** ./resources/js/store/recipe/actions.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  setRecipes: function setRecipes(context, recipes) {
+    context.commit("setRecipes", recipes);
+  },
+  initRecipes: function initRecipes(context) {
+    context.commit("initRecipes");
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/store/recipe/getters.js":
 /*!**********************************************!*\
   !*** ./resources/js/store/recipe/getters.js ***!
@@ -22198,7 +21661,7 @@ __webpack_require__.r(__webpack_exports__);
     state.recipeName = recipeName;
   },
   initRecipeName: function initRecipeName(state) {
-    state.recipeName = "";
+    state.recipeName = null;
   },
   setRecipes: function setRecipes(state, recipes) {
     state.recipes = recipes;
@@ -22272,9 +21735,8 @@ __webpack_require__.r(__webpack_exports__);
   getIsEditingRecipeIngredient: function getIsEditingRecipeIngredient(state) {
     return state.isEditingRecipeIngredient;
   },
-  getEditingRecipeIngredientIndex: function getEditingRecipeIngredientIndex(state) {
-    return state.editingRecipeIngredientIndex;
-  },
+  // getEditingRecipeIngredientIndex: (state) =>
+  //     state.editingRecipeIngredientIndex,
   getRecipeIngredientQuantity: function getRecipeIngredientQuantity(state) {
     return state.recipeIngredientQuantity;
   }
@@ -22363,12 +21825,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   getRecipeProcedureList: function getRecipeProcedureList(state) {
     return state.recipeProcedureList;
-  },
-  getIsEditingRecipeProcedure: function getIsEditingRecipeProcedure(state) {
-    return state.isEditingRecipeProcedure;
-  },
-  getEditingRecipeProcedureIndex: function getEditingRecipeProcedureIndex(state) {
-    return state.editingRecipeProcedureIndex;
   }
 });
 
@@ -22390,7 +21846,7 @@ __webpack_require__.r(__webpack_exports__);
     state.recipeProcedure = recipeProcedure;
   },
   initRecipeProcedure: function initRecipeProcedure(state) {
-    state.recipeProcedure = "";
+    state.recipeProcedure = null;
   },
   setRecipeProcedureList: function setRecipeProcedureList(state, recipeProcedure) {
     // 編集
@@ -22420,6 +21876,28 @@ __webpack_require__.r(__webpack_exports__);
   },
   deleteRecipeProcedure: function deleteRecipeProcedure(state, index) {
     state.recipeProcedureList.splice(index, 1);
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/user/actions.js":
+/*!********************************************!*\
+  !*** ./resources/js/store/user/actions.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  setUserData: function setUserData(context, recipes) {
+    context.commit("setUserData", recipes);
+  },
+  initUserData: function initUserData(context) {
+    context.commit("initUserData");
   }
 });
 
@@ -26912,106 +26390,6 @@ __webpack_require__.r(__webpack_exports__);
 })));
 //# sourceMappingURL=bootstrap.js.map
 
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-suggest-input/dist/vue-suggest-input.css":
-/*!***************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-suggest-input/dist/vue-suggest-input.css ***!
-  \***************************************************************************************************************************************************************************************************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
-/* harmony import */ var _css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
-// Imports
-
-var ___CSS_LOADER_EXPORT___ = _css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, ".rnd-container[data-v-6bd65ecf]{position:relative}.rnd-input-container[data-v-6bd65ecf]{background:#fff;display:-webkit-box;display:-ms-flexbox;display:flex;border-radius:8px;border:1px solid #dfe1e5;-webkit-box-shadow:none;box-shadow:none;height:2.5em;border-radius:24px;z-index:3;margin:0 auto}.rnd-container:focus-within .rnd-input-container[data-v-6bd65ecf]{-webkit-box-shadow:0 1px 6px rgba(33,33,33,.28);box-shadow:0 1px 6px rgba(33,33,33,.28)}.rnd-state-open .rnd-input-container[data-v-6bd65ecf]{border-radius:24px 24px 0 0}.rnd-flex[data-v-6bd65ecf]{padding:0 6px 0 20px}.rnd-flex .rnd-text[data-v-6bd65ecf],.rnd-flex[data-v-6bd65ecf]{-webkit-box-flex:1;-ms-flex:1;flex:1;display:-webkit-box;display:-ms-flexbox;display:flex}.rnd-flex .rnd-text input[data-v-6bd65ecf]{border:0;-webkit-box-shadow:none;box-shadow:none;-webkit-box-flex:100%;-ms-flex:100%;flex:100%;outline:none}.rnd-button[data-v-6bd65ecf],.rnd-item-button[data-v-6bd65ecf]{background:transparent;border:none;cursor:pointer;-webkit-box-flex:0;-ms-flex:0 0 auto;flex:0 0 auto;text-align:center;outline:none;margin:0;padding:0;width:2.5em}.rnd-button[data-v-6bd65ecf]{opacity:1;-ms-flex-item-align:stretch;align-self:stretch}.rnd-button[data-v-6bd65ecf]:focus-within{opacity:1}.rnd-table-container[data-v-6bd65ecf]{position:absolute;max-height:400px;margin-top:-1px;width:100%;z-index:900}.rnd-container:focus-within .rnd-table[data-v-6bd65ecf]{-webkit-box-shadow:0 4px 6px rgba(33,33,33,.22);box-shadow:0 4px 6px rgba(33,33,33,.22)}.rnd-table[data-v-6bd65ecf]{background:#fff;border-radius:0 0 24px 24px;border:1px solid #dfe1e5;border-top:none;padding:0 0 10px 0}.rnd-table-t-border[data-v-6bd65ecf]{height:1px;border-top:1px solid rgba(0,0,0,.08);margin:0 20px}.rnd-table ul[data-v-6bd65ecf]{list-style:none;margin:0;padding:0;border:0}.rnd-table ul li[data-v-6bd65ecf]{padding:0 16px;line-height:1.8em;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;min-width:0;max-height:none;padding:0;cursor:default}.rnd-table ul li.current[data-v-6bd65ecf]{background:#eee}.rnd-item-container[data-v-6bd65ecf]{-webkit-box-flex:1;-ms-flex:auto;flex:auto;display:-webkit-box;display:-ms-flexbox;display:flex;margin:0 6px 0 20px}.rnd-item-container .rnd-item-body[data-v-6bd65ecf]{-webkit-box-flex:100%;-ms-flex:100%;flex:100%;text-align:left}.rnd-table-container .rnd-item-loading[data-v-6bd65ecf]{padding:0 16px;line-height:1.8em;font-size:90%;color:#666}", ""]);
-// Exports
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/dist/runtime/api.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/css-loader/dist/runtime/api.js ***!
-  \*****************************************************/
-/***/ ((module) => {
-
-"use strict";
-
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-// eslint-disable-next-line func-names
-module.exports = function (cssWithMappingToString) {
-  var list = []; // return the list of modules as css string
-
-  list.toString = function toString() {
-    return this.map(function (item) {
-      var content = cssWithMappingToString(item);
-
-      if (item[2]) {
-        return "@media ".concat(item[2], " {").concat(content, "}");
-      }
-
-      return content;
-    }).join("");
-  }; // import a list of modules into the list
-  // eslint-disable-next-line func-names
-
-
-  list.i = function (modules, mediaQuery, dedupe) {
-    if (typeof modules === "string") {
-      // eslint-disable-next-line no-param-reassign
-      modules = [[null, modules, ""]];
-    }
-
-    var alreadyImportedModules = {};
-
-    if (dedupe) {
-      for (var i = 0; i < this.length; i++) {
-        // eslint-disable-next-line prefer-destructuring
-        var id = this[i][0];
-
-        if (id != null) {
-          alreadyImportedModules[id] = true;
-        }
-      }
-    }
-
-    for (var _i = 0; _i < modules.length; _i++) {
-      var item = [].concat(modules[_i]);
-
-      if (dedupe && alreadyImportedModules[item[0]]) {
-        // eslint-disable-next-line no-continue
-        continue;
-      }
-
-      if (mediaQuery) {
-        if (!item[2]) {
-          item[2] = mediaQuery;
-        } else {
-          item[2] = "".concat(mediaQuery, " and ").concat(item[2]);
-        }
-      }
-
-      list.push(item);
-    }
-  };
-
-  return list;
-};
 
 /***/ }),
 
@@ -58641,315 +58019,6 @@ try {
 
 /***/ }),
 
-/***/ "./node_modules/vue-suggest-input/dist/vue-suggest-input.css":
-/*!*******************************************************************!*\
-  !*** ./node_modules/vue-suggest-input/dist/vue-suggest-input.css ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
-/* harmony import */ var _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _css_loader_dist_cjs_js_clonedRuleSet_9_use_1_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_vue_suggest_input_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./vue-suggest-input.css */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-suggest-input/dist/vue-suggest-input.css");
-
-            
-
-var options = {};
-
-options.insert = "head";
-options.singleton = false;
-
-var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_vue_suggest_input_css__WEBPACK_IMPORTED_MODULE_1__.default, options);
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_vue_suggest_input_css__WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
-
-/***/ }),
-
-/***/ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
-  \****************************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-var isOldIE = function isOldIE() {
-  var memo;
-  return function memorize() {
-    if (typeof memo === 'undefined') {
-      // Test for IE <= 9 as proposed by Browserhacks
-      // @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-      // Tests for existence of standard globals is to allow style-loader
-      // to operate correctly into non-standard environments
-      // @see https://github.com/webpack-contrib/style-loader/issues/177
-      memo = Boolean(window && document && document.all && !window.atob);
-    }
-
-    return memo;
-  };
-}();
-
-var getTarget = function getTarget() {
-  var memo = {};
-  return function memorize(target) {
-    if (typeof memo[target] === 'undefined') {
-      var styleTarget = document.querySelector(target); // Special case to return head of iframe instead of iframe itself
-
-      if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
-        try {
-          // This will throw an exception if access to iframe is blocked
-          // due to cross-origin restrictions
-          styleTarget = styleTarget.contentDocument.head;
-        } catch (e) {
-          // istanbul ignore next
-          styleTarget = null;
-        }
-      }
-
-      memo[target] = styleTarget;
-    }
-
-    return memo[target];
-  };
-}();
-
-var stylesInDom = [];
-
-function getIndexByIdentifier(identifier) {
-  var result = -1;
-
-  for (var i = 0; i < stylesInDom.length; i++) {
-    if (stylesInDom[i].identifier === identifier) {
-      result = i;
-      break;
-    }
-  }
-
-  return result;
-}
-
-function modulesToDom(list, options) {
-  var idCountMap = {};
-  var identifiers = [];
-
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i];
-    var id = options.base ? item[0] + options.base : item[0];
-    var count = idCountMap[id] || 0;
-    var identifier = "".concat(id, " ").concat(count);
-    idCountMap[id] = count + 1;
-    var index = getIndexByIdentifier(identifier);
-    var obj = {
-      css: item[1],
-      media: item[2],
-      sourceMap: item[3]
-    };
-
-    if (index !== -1) {
-      stylesInDom[index].references++;
-      stylesInDom[index].updater(obj);
-    } else {
-      stylesInDom.push({
-        identifier: identifier,
-        updater: addStyle(obj, options),
-        references: 1
-      });
-    }
-
-    identifiers.push(identifier);
-  }
-
-  return identifiers;
-}
-
-function insertStyleElement(options) {
-  var style = document.createElement('style');
-  var attributes = options.attributes || {};
-
-  if (typeof attributes.nonce === 'undefined') {
-    var nonce =  true ? __webpack_require__.nc : 0;
-
-    if (nonce) {
-      attributes.nonce = nonce;
-    }
-  }
-
-  Object.keys(attributes).forEach(function (key) {
-    style.setAttribute(key, attributes[key]);
-  });
-
-  if (typeof options.insert === 'function') {
-    options.insert(style);
-  } else {
-    var target = getTarget(options.insert || 'head');
-
-    if (!target) {
-      throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
-    }
-
-    target.appendChild(style);
-  }
-
-  return style;
-}
-
-function removeStyleElement(style) {
-  // istanbul ignore if
-  if (style.parentNode === null) {
-    return false;
-  }
-
-  style.parentNode.removeChild(style);
-}
-/* istanbul ignore next  */
-
-
-var replaceText = function replaceText() {
-  var textStore = [];
-  return function replace(index, replacement) {
-    textStore[index] = replacement;
-    return textStore.filter(Boolean).join('\n');
-  };
-}();
-
-function applyToSingletonTag(style, index, remove, obj) {
-  var css = remove ? '' : obj.media ? "@media ".concat(obj.media, " {").concat(obj.css, "}") : obj.css; // For old IE
-
-  /* istanbul ignore if  */
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = replaceText(index, css);
-  } else {
-    var cssNode = document.createTextNode(css);
-    var childNodes = style.childNodes;
-
-    if (childNodes[index]) {
-      style.removeChild(childNodes[index]);
-    }
-
-    if (childNodes.length) {
-      style.insertBefore(cssNode, childNodes[index]);
-    } else {
-      style.appendChild(cssNode);
-    }
-  }
-}
-
-function applyToTag(style, options, obj) {
-  var css = obj.css;
-  var media = obj.media;
-  var sourceMap = obj.sourceMap;
-
-  if (media) {
-    style.setAttribute('media', media);
-  } else {
-    style.removeAttribute('media');
-  }
-
-  if (sourceMap && typeof btoa !== 'undefined') {
-    css += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), " */");
-  } // For old IE
-
-  /* istanbul ignore if  */
-
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
-  } else {
-    while (style.firstChild) {
-      style.removeChild(style.firstChild);
-    }
-
-    style.appendChild(document.createTextNode(css));
-  }
-}
-
-var singleton = null;
-var singletonCounter = 0;
-
-function addStyle(obj, options) {
-  var style;
-  var update;
-  var remove;
-
-  if (options.singleton) {
-    var styleIndex = singletonCounter++;
-    style = singleton || (singleton = insertStyleElement(options));
-    update = applyToSingletonTag.bind(null, style, styleIndex, false);
-    remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-  } else {
-    style = insertStyleElement(options);
-    update = applyToTag.bind(null, style, options);
-
-    remove = function remove() {
-      removeStyleElement(style);
-    };
-  }
-
-  update(obj);
-  return function updateStyle(newObj) {
-    if (newObj) {
-      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap) {
-        return;
-      }
-
-      update(obj = newObj);
-    } else {
-      remove();
-    }
-  };
-}
-
-module.exports = function (list, options) {
-  options = options || {}; // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-  // tags it will allow on a page
-
-  if (!options.singleton && typeof options.singleton !== 'boolean') {
-    options.singleton = isOldIE();
-  }
-
-  list = list || [];
-  var lastIdentifiers = modulesToDom(list, options);
-  return function update(newList) {
-    newList = newList || [];
-
-    if (Object.prototype.toString.call(newList) !== '[object Array]') {
-      return;
-    }
-
-    for (var i = 0; i < lastIdentifiers.length; i++) {
-      var identifier = lastIdentifiers[i];
-      var index = getIndexByIdentifier(identifier);
-      stylesInDom[index].references--;
-    }
-
-    var newLastIdentifiers = modulesToDom(newList, options);
-
-    for (var _i = 0; _i < lastIdentifiers.length; _i++) {
-      var _identifier = lastIdentifiers[_i];
-
-      var _index = getIndexByIdentifier(_identifier);
-
-      if (stylesInDom[_index].references === 0) {
-        stylesInDom[_index].updater();
-
-        stylesInDom.splice(_index, 1);
-      }
-    }
-
-    lastIdentifiers = newLastIdentifiers;
-  };
-};
-
-/***/ }),
-
 /***/ "./resources/js/components/App.vue":
 /*!*****************************************!*\
   !*** ./resources/js/components/App.vue ***!
@@ -63966,5235 +63035,6 @@ function useRoute() {
 
 
 
-
-/***/ }),
-
-/***/ "./node_modules/vue-suggest-input/dist/vue-suggest-input.common.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/vue-suggest-input/dist/vue-suggest-input.common.js ***!
-  \*************************************************************************/
-/***/ ((module) => {
-
-module.exports =
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __nested_webpack_require_187__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __nested_webpack_require_187__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__nested_webpack_require_187__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__nested_webpack_require_187__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__nested_webpack_require_187__.d = function(exports, name, getter) {
-/******/ 		if(!__nested_webpack_require_187__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__nested_webpack_require_187__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__nested_webpack_require_187__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __nested_webpack_require_187__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__nested_webpack_require_187__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __nested_webpack_require_187__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__nested_webpack_require_187__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__nested_webpack_require_187__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__nested_webpack_require_187__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__nested_webpack_require_187__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __nested_webpack_require_187__(__nested_webpack_require_187__.s = "fb15");
-/******/ })
-/************************************************************************/
-/******/ ({
-
-/***/ "01f9":
-/***/ (function(module, exports, __nested_webpack_require_3663__) {
-
-"use strict";
-
-var LIBRARY = __nested_webpack_require_3663__("2d00");
-var $export = __nested_webpack_require_3663__("5ca1");
-var redefine = __nested_webpack_require_3663__("2aba");
-var hide = __nested_webpack_require_3663__("32e9");
-var Iterators = __nested_webpack_require_3663__("84f2");
-var $iterCreate = __nested_webpack_require_3663__("41a0");
-var setToStringTag = __nested_webpack_require_3663__("7f20");
-var getPrototypeOf = __nested_webpack_require_3663__("38fd");
-var ITERATOR = __nested_webpack_require_3663__("2b4c")('iterator');
-var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
-var FF_ITERATOR = '@@iterator';
-var KEYS = 'keys';
-var VALUES = 'values';
-
-var returnThis = function () { return this; };
-
-module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
-  $iterCreate(Constructor, NAME, next);
-  var getMethod = function (kind) {
-    if (!BUGGY && kind in proto) return proto[kind];
-    switch (kind) {
-      case KEYS: return function keys() { return new Constructor(this, kind); };
-      case VALUES: return function values() { return new Constructor(this, kind); };
-    } return function entries() { return new Constructor(this, kind); };
-  };
-  var TAG = NAME + ' Iterator';
-  var DEF_VALUES = DEFAULT == VALUES;
-  var VALUES_BUG = false;
-  var proto = Base.prototype;
-  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-  var $default = $native || getMethod(DEFAULT);
-  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
-  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
-  var methods, key, IteratorPrototype;
-  // Fix native
-  if ($anyNative) {
-    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
-    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
-      // Set @@toStringTag to native iterators
-      setToStringTag(IteratorPrototype, TAG, true);
-      // fix for some old engines
-      if (!LIBRARY && typeof IteratorPrototype[ITERATOR] != 'function') hide(IteratorPrototype, ITERATOR, returnThis);
-    }
-  }
-  // fix Array#{values, @@iterator}.name in V8 / FF
-  if (DEF_VALUES && $native && $native.name !== VALUES) {
-    VALUES_BUG = true;
-    $default = function values() { return $native.call(this); };
-  }
-  // Define iterator
-  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
-    hide(proto, ITERATOR, $default);
-  }
-  // Plug for library
-  Iterators[NAME] = $default;
-  Iterators[TAG] = returnThis;
-  if (DEFAULT) {
-    methods = {
-      values: DEF_VALUES ? $default : getMethod(VALUES),
-      keys: IS_SET ? $default : getMethod(KEYS),
-      entries: $entries
-    };
-    if (FORCED) for (key in methods) {
-      if (!(key in proto)) redefine(proto, key, methods[key]);
-    } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
-  }
-  return methods;
-};
-
-
-/***/ }),
-
-/***/ "07e3":
-/***/ (function(module, exports) {
-
-var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
-
-
-/***/ }),
-
-/***/ "0d58":
-/***/ (function(module, exports, __nested_webpack_require_6752__) {
-
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = __nested_webpack_require_6752__("ce10");
-var enumBugKeys = __nested_webpack_require_6752__("e11e");
-
-module.exports = Object.keys || function keys(O) {
-  return $keys(O, enumBugKeys);
-};
-
-
-/***/ }),
-
-/***/ "0fc9":
-/***/ (function(module, exports, __nested_webpack_require_7051__) {
-
-var toInteger = __nested_webpack_require_7051__("3a38");
-var max = Math.max;
-var min = Math.min;
-module.exports = function (index, length) {
-  index = toInteger(index);
-  return index < 0 ? max(index + length, 0) : min(index, length);
-};
-
-
-/***/ }),
-
-/***/ "1173":
-/***/ (function(module, exports) {
-
-module.exports = function (it, Constructor, name, forbiddenField) {
-  if (!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)) {
-    throw TypeError(name + ': incorrect invocation!');
-  } return it;
-};
-
-
-/***/ }),
-
-/***/ "11e9":
-/***/ (function(module, exports, __nested_webpack_require_7661__) {
-
-var pIE = __nested_webpack_require_7661__("52a7");
-var createDesc = __nested_webpack_require_7661__("4630");
-var toIObject = __nested_webpack_require_7661__("6821");
-var toPrimitive = __nested_webpack_require_7661__("6a99");
-var has = __nested_webpack_require_7661__("69a8");
-var IE8_DOM_DEFINE = __nested_webpack_require_7661__("c69a");
-var gOPD = Object.getOwnPropertyDescriptor;
-
-exports.f = __nested_webpack_require_7661__("9e1e") ? gOPD : function getOwnPropertyDescriptor(O, P) {
-  O = toIObject(O);
-  P = toPrimitive(P, true);
-  if (IE8_DOM_DEFINE) try {
-    return gOPD(O, P);
-  } catch (e) { /* empty */ }
-  if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
-};
-
-
-/***/ }),
-
-/***/ "1495":
-/***/ (function(module, exports, __nested_webpack_require_8340__) {
-
-var dP = __nested_webpack_require_8340__("86cc");
-var anObject = __nested_webpack_require_8340__("cb7c");
-var getKeys = __nested_webpack_require_8340__("0d58");
-
-module.exports = __nested_webpack_require_8340__("9e1e") ? Object.defineProperties : function defineProperties(O, Properties) {
-  anObject(O);
-  var keys = getKeys(Properties);
-  var length = keys.length;
-  var i = 0;
-  var P;
-  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
-  return O;
-};
-
-
-/***/ }),
-
-/***/ "1654":
-/***/ (function(module, exports, __nested_webpack_require_8840__) {
-
-"use strict";
-
-var $at = __nested_webpack_require_8840__("71c1")(true);
-
-// 21.1.3.27 String.prototype[@@iterator]()
-__nested_webpack_require_8840__("30f1")(String, 'String', function (iterated) {
-  this._t = String(iterated); // target
-  this._i = 0;                // next index
-// 21.1.5.2.1 %StringIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var index = this._i;
-  var point;
-  if (index >= O.length) return { value: undefined, done: true };
-  point = $at(O, index);
-  this._i += point.length;
-  return { value: point, done: false };
-});
-
-
-/***/ }),
-
-/***/ "1691":
-/***/ (function(module, exports) {
-
-// IE 8- don't enum bug keys
-module.exports = (
-  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
-).split(',');
-
-
-/***/ }),
-
-/***/ "1991":
-/***/ (function(module, exports, __nested_webpack_require_9685__) {
-
-var ctx = __nested_webpack_require_9685__("9b43");
-var invoke = __nested_webpack_require_9685__("31f4");
-var html = __nested_webpack_require_9685__("fab2");
-var cel = __nested_webpack_require_9685__("230e");
-var global = __nested_webpack_require_9685__("7726");
-var process = global.process;
-var setTask = global.setImmediate;
-var clearTask = global.clearImmediate;
-var MessageChannel = global.MessageChannel;
-var Dispatch = global.Dispatch;
-var counter = 0;
-var queue = {};
-var ONREADYSTATECHANGE = 'onreadystatechange';
-var defer, channel, port;
-var run = function () {
-  var id = +this;
-  // eslint-disable-next-line no-prototype-builtins
-  if (queue.hasOwnProperty(id)) {
-    var fn = queue[id];
-    delete queue[id];
-    fn();
-  }
-};
-var listener = function (event) {
-  run.call(event.data);
-};
-// Node.js 0.9+ & IE10+ has setImmediate, otherwise:
-if (!setTask || !clearTask) {
-  setTask = function setImmediate(fn) {
-    var args = [];
-    var i = 1;
-    while (arguments.length > i) args.push(arguments[i++]);
-    queue[++counter] = function () {
-      // eslint-disable-next-line no-new-func
-      invoke(typeof fn == 'function' ? fn : Function(fn), args);
-    };
-    defer(counter);
-    return counter;
-  };
-  clearTask = function clearImmediate(id) {
-    delete queue[id];
-  };
-  // Node.js 0.8-
-  if (__nested_webpack_require_9685__("2d95")(process) == 'process') {
-    defer = function (id) {
-      process.nextTick(ctx(run, id, 1));
-    };
-  // Sphere (JS game engine) Dispatch API
-  } else if (Dispatch && Dispatch.now) {
-    defer = function (id) {
-      Dispatch.now(ctx(run, id, 1));
-    };
-  // Browsers with MessageChannel, includes WebWorkers
-  } else if (MessageChannel) {
-    channel = new MessageChannel();
-    port = channel.port2;
-    channel.port1.onmessage = listener;
-    defer = ctx(port.postMessage, port, 1);
-  // Browsers with postMessage, skip WebWorkers
-  // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
-  } else if (global.addEventListener && typeof postMessage == 'function' && !global.importScripts) {
-    defer = function (id) {
-      global.postMessage(id + '', '*');
-    };
-    global.addEventListener('message', listener, false);
-  // IE8-
-  } else if (ONREADYSTATECHANGE in cel('script')) {
-    defer = function (id) {
-      html.appendChild(cel('script'))[ONREADYSTATECHANGE] = function () {
-        html.removeChild(this);
-        run.call(id);
-      };
-    };
-  // Rest old browsers
-  } else {
-    defer = function (id) {
-      setTimeout(ctx(run, id, 1), 0);
-    };
-  }
-}
-module.exports = {
-  set: setTask,
-  clear: clearTask
-};
-
-
-/***/ }),
-
-/***/ "1bc3":
-/***/ (function(module, exports, __nested_webpack_require_12299__) {
-
-// 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __nested_webpack_require_12299__("f772");
-// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-// and the second argument - flag - preferred type is a string
-module.exports = function (it, S) {
-  if (!isObject(it)) return it;
-  var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  throw TypeError("Can't convert object to primitive value");
-};
-
-
-/***/ }),
-
-/***/ "1ec9":
-/***/ (function(module, exports, __nested_webpack_require_13042__) {
-
-var isObject = __nested_webpack_require_13042__("f772");
-var document = __nested_webpack_require_13042__("e53d").document;
-// typeof document.createElement is 'object' in old IE
-var is = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
-  return is ? document.createElement(it) : {};
-};
-
-
-/***/ }),
-
-/***/ "1fa8":
-/***/ (function(module, exports, __nested_webpack_require_13426__) {
-
-// call something on iterator step with safe closing on error
-var anObject = __nested_webpack_require_13426__("cb7c");
-module.exports = function (iterator, fn, value, entries) {
-  try {
-    return entries ? fn(anObject(value)[0], value[1]) : fn(value);
-  // 7.4.6 IteratorClose(iterator, completion)
-  } catch (e) {
-    var ret = iterator['return'];
-    if (ret !== undefined) anObject(ret.call(iterator));
-    throw e;
-  }
-};
-
-
-/***/ }),
-
-/***/ "230e":
-/***/ (function(module, exports, __nested_webpack_require_13924__) {
-
-var isObject = __nested_webpack_require_13924__("d3f4");
-var document = __nested_webpack_require_13924__("7726").document;
-// typeof document.createElement is 'object' in old IE
-var is = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
-  return is ? document.createElement(it) : {};
-};
-
-
-/***/ }),
-
-/***/ "23c6":
-/***/ (function(module, exports, __nested_webpack_require_14308__) {
-
-// getting tag from 19.1.3.6 Object.prototype.toString()
-var cof = __nested_webpack_require_14308__("2d95");
-var TAG = __nested_webpack_require_14308__("2b4c")('toStringTag');
-// ES3 wrong here
-var ARG = cof(function () { return arguments; }()) == 'Arguments';
-
-// fallback for IE11 Script Access Denied error
-var tryGet = function (it, key) {
-  try {
-    return it[key];
-  } catch (e) { /* empty */ }
-};
-
-module.exports = function (it) {
-  var O, T, B;
-  return it === undefined ? 'Undefined' : it === null ? 'Null'
-    // @@toStringTag case
-    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
-    // builtinTag case
-    : ARG ? cof(O)
-    // ES3 arguments fallback
-    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
-};
-
-
-/***/ }),
-
-/***/ "241e":
-/***/ (function(module, exports, __nested_webpack_require_15130__) {
-
-// 7.1.13 ToObject(argument)
-var defined = __nested_webpack_require_15130__("25eb");
-module.exports = function (it) {
-  return Object(defined(it));
-};
-
-
-/***/ }),
-
-/***/ "24c5":
-/***/ (function(module, exports, __nested_webpack_require_15352__) {
-
-"use strict";
-
-var LIBRARY = __nested_webpack_require_15352__("b8e3");
-var global = __nested_webpack_require_15352__("e53d");
-var ctx = __nested_webpack_require_15352__("d864");
-var classof = __nested_webpack_require_15352__("40c3");
-var $export = __nested_webpack_require_15352__("63b6");
-var isObject = __nested_webpack_require_15352__("f772");
-var aFunction = __nested_webpack_require_15352__("79aa");
-var anInstance = __nested_webpack_require_15352__("1173");
-var forOf = __nested_webpack_require_15352__("a22a");
-var speciesConstructor = __nested_webpack_require_15352__("f201");
-var task = __nested_webpack_require_15352__("4178").set;
-var microtask = __nested_webpack_require_15352__("aba2")();
-var newPromiseCapabilityModule = __nested_webpack_require_15352__("656e");
-var perform = __nested_webpack_require_15352__("4439");
-var userAgent = __nested_webpack_require_15352__("bc13");
-var promiseResolve = __nested_webpack_require_15352__("cd78");
-var PROMISE = 'Promise';
-var TypeError = global.TypeError;
-var process = global.process;
-var versions = process && process.versions;
-var v8 = versions && versions.v8 || '';
-var $Promise = global[PROMISE];
-var isNode = classof(process) == 'process';
-var empty = function () { /* empty */ };
-var Internal, newGenericPromiseCapability, OwnPromiseCapability, Wrapper;
-var newPromiseCapability = newGenericPromiseCapability = newPromiseCapabilityModule.f;
-
-var USE_NATIVE = !!function () {
-  try {
-    // correct subclassing with @@species support
-    var promise = $Promise.resolve(1);
-    var FakePromise = (promise.constructor = {})[__nested_webpack_require_15352__("5168")('species')] = function (exec) {
-      exec(empty, empty);
-    };
-    // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
-    return (isNode || typeof PromiseRejectionEvent == 'function')
-      && promise.then(empty) instanceof FakePromise
-      // v8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
-      // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
-      // we can't detect it synchronously, so just check versions
-      && v8.indexOf('6.6') !== 0
-      && userAgent.indexOf('Chrome/66') === -1;
-  } catch (e) { /* empty */ }
-}();
-
-// helpers
-var isThenable = function (it) {
-  var then;
-  return isObject(it) && typeof (then = it.then) == 'function' ? then : false;
-};
-var notify = function (promise, isReject) {
-  if (promise._n) return;
-  promise._n = true;
-  var chain = promise._c;
-  microtask(function () {
-    var value = promise._v;
-    var ok = promise._s == 1;
-    var i = 0;
-    var run = function (reaction) {
-      var handler = ok ? reaction.ok : reaction.fail;
-      var resolve = reaction.resolve;
-      var reject = reaction.reject;
-      var domain = reaction.domain;
-      var result, then, exited;
-      try {
-        if (handler) {
-          if (!ok) {
-            if (promise._h == 2) onHandleUnhandled(promise);
-            promise._h = 1;
-          }
-          if (handler === true) result = value;
-          else {
-            if (domain) domain.enter();
-            result = handler(value); // may throw
-            if (domain) {
-              domain.exit();
-              exited = true;
-            }
-          }
-          if (result === reaction.promise) {
-            reject(TypeError('Promise-chain cycle'));
-          } else if (then = isThenable(result)) {
-            then.call(result, resolve, reject);
-          } else resolve(result);
-        } else reject(value);
-      } catch (e) {
-        if (domain && !exited) domain.exit();
-        reject(e);
-      }
-    };
-    while (chain.length > i) run(chain[i++]); // variable length - can't use forEach
-    promise._c = [];
-    promise._n = false;
-    if (isReject && !promise._h) onUnhandled(promise);
-  });
-};
-var onUnhandled = function (promise) {
-  task.call(global, function () {
-    var value = promise._v;
-    var unhandled = isUnhandled(promise);
-    var result, handler, console;
-    if (unhandled) {
-      result = perform(function () {
-        if (isNode) {
-          process.emit('unhandledRejection', value, promise);
-        } else if (handler = global.onunhandledrejection) {
-          handler({ promise: promise, reason: value });
-        } else if ((console = global.console) && console.error) {
-          console.error('Unhandled promise rejection', value);
-        }
-      });
-      // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
-      promise._h = isNode || isUnhandled(promise) ? 2 : 1;
-    } promise._a = undefined;
-    if (unhandled && result.e) throw result.v;
-  });
-};
-var isUnhandled = function (promise) {
-  return promise._h !== 1 && (promise._a || promise._c).length === 0;
-};
-var onHandleUnhandled = function (promise) {
-  task.call(global, function () {
-    var handler;
-    if (isNode) {
-      process.emit('rejectionHandled', promise);
-    } else if (handler = global.onrejectionhandled) {
-      handler({ promise: promise, reason: promise._v });
-    }
-  });
-};
-var $reject = function (value) {
-  var promise = this;
-  if (promise._d) return;
-  promise._d = true;
-  promise = promise._w || promise; // unwrap
-  promise._v = value;
-  promise._s = 2;
-  if (!promise._a) promise._a = promise._c.slice();
-  notify(promise, true);
-};
-var $resolve = function (value) {
-  var promise = this;
-  var then;
-  if (promise._d) return;
-  promise._d = true;
-  promise = promise._w || promise; // unwrap
-  try {
-    if (promise === value) throw TypeError("Promise can't be resolved itself");
-    if (then = isThenable(value)) {
-      microtask(function () {
-        var wrapper = { _w: promise, _d: false }; // wrap
-        try {
-          then.call(value, ctx($resolve, wrapper, 1), ctx($reject, wrapper, 1));
-        } catch (e) {
-          $reject.call(wrapper, e);
-        }
-      });
-    } else {
-      promise._v = value;
-      promise._s = 1;
-      notify(promise, false);
-    }
-  } catch (e) {
-    $reject.call({ _w: promise, _d: false }, e); // wrap
-  }
-};
-
-// constructor polyfill
-if (!USE_NATIVE) {
-  // 25.4.3.1 Promise(executor)
-  $Promise = function Promise(executor) {
-    anInstance(this, $Promise, PROMISE, '_h');
-    aFunction(executor);
-    Internal.call(this);
-    try {
-      executor(ctx($resolve, this, 1), ctx($reject, this, 1));
-    } catch (err) {
-      $reject.call(this, err);
-    }
-  };
-  // eslint-disable-next-line no-unused-vars
-  Internal = function Promise(executor) {
-    this._c = [];             // <- awaiting reactions
-    this._a = undefined;      // <- checked in isUnhandled reactions
-    this._s = 0;              // <- state
-    this._d = false;          // <- done
-    this._v = undefined;      // <- value
-    this._h = 0;              // <- rejection state, 0 - default, 1 - handled, 2 - unhandled
-    this._n = false;          // <- notify
-  };
-  Internal.prototype = __nested_webpack_require_15352__("5c95")($Promise.prototype, {
-    // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
-    then: function then(onFulfilled, onRejected) {
-      var reaction = newPromiseCapability(speciesConstructor(this, $Promise));
-      reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
-      reaction.fail = typeof onRejected == 'function' && onRejected;
-      reaction.domain = isNode ? process.domain : undefined;
-      this._c.push(reaction);
-      if (this._a) this._a.push(reaction);
-      if (this._s) notify(this, false);
-      return reaction.promise;
-    },
-    // 25.4.5.1 Promise.prototype.catch(onRejected)
-    'catch': function (onRejected) {
-      return this.then(undefined, onRejected);
-    }
-  });
-  OwnPromiseCapability = function () {
-    var promise = new Internal();
-    this.promise = promise;
-    this.resolve = ctx($resolve, promise, 1);
-    this.reject = ctx($reject, promise, 1);
-  };
-  newPromiseCapabilityModule.f = newPromiseCapability = function (C) {
-    return C === $Promise || C === Wrapper
-      ? new OwnPromiseCapability(C)
-      : newGenericPromiseCapability(C);
-  };
-}
-
-$export($export.G + $export.W + $export.F * !USE_NATIVE, { Promise: $Promise });
-__nested_webpack_require_15352__("45f2")($Promise, PROMISE);
-__nested_webpack_require_15352__("4c95")(PROMISE);
-Wrapper = __nested_webpack_require_15352__("584a")[PROMISE];
-
-// statics
-$export($export.S + $export.F * !USE_NATIVE, PROMISE, {
-  // 25.4.4.5 Promise.reject(r)
-  reject: function reject(r) {
-    var capability = newPromiseCapability(this);
-    var $$reject = capability.reject;
-    $$reject(r);
-    return capability.promise;
-  }
-});
-$export($export.S + $export.F * (LIBRARY || !USE_NATIVE), PROMISE, {
-  // 25.4.4.6 Promise.resolve(x)
-  resolve: function resolve(x) {
-    return promiseResolve(LIBRARY && this === Wrapper ? $Promise : this, x);
-  }
-});
-$export($export.S + $export.F * !(USE_NATIVE && __nested_webpack_require_15352__("4ee1")(function (iter) {
-  $Promise.all(iter)['catch'](empty);
-})), PROMISE, {
-  // 25.4.4.1 Promise.all(iterable)
-  all: function all(iterable) {
-    var C = this;
-    var capability = newPromiseCapability(C);
-    var resolve = capability.resolve;
-    var reject = capability.reject;
-    var result = perform(function () {
-      var values = [];
-      var index = 0;
-      var remaining = 1;
-      forOf(iterable, false, function (promise) {
-        var $index = index++;
-        var alreadyCalled = false;
-        values.push(undefined);
-        remaining++;
-        C.resolve(promise).then(function (value) {
-          if (alreadyCalled) return;
-          alreadyCalled = true;
-          values[$index] = value;
-          --remaining || resolve(values);
-        }, reject);
-      });
-      --remaining || resolve(values);
-    });
-    if (result.e) reject(result.v);
-    return capability.promise;
-  },
-  // 25.4.4.4 Promise.race(iterable)
-  race: function race(iterable) {
-    var C = this;
-    var capability = newPromiseCapability(C);
-    var reject = capability.reject;
-    var result = perform(function () {
-      forOf(iterable, false, function (promise) {
-        C.resolve(promise).then(capability.resolve, reject);
-      });
-    });
-    if (result.e) reject(result.v);
-    return capability.promise;
-  }
-});
-
-
-/***/ }),
-
-/***/ "25eb":
-/***/ (function(module, exports) {
-
-// 7.2.1 RequireObjectCoercible(argument)
-module.exports = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
-  return it;
-};
-
-
-/***/ }),
-
-/***/ "2781":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ "27ee":
-/***/ (function(module, exports, __nested_webpack_require_25674__) {
-
-var classof = __nested_webpack_require_25674__("23c6");
-var ITERATOR = __nested_webpack_require_25674__("2b4c")('iterator');
-var Iterators = __nested_webpack_require_25674__("84f2");
-module.exports = __nested_webpack_require_25674__("8378").getIteratorMethod = function (it) {
-  if (it != undefined) return it[ITERATOR]
-    || it['@@iterator']
-    || Iterators[classof(it)];
-};
-
-
-/***/ }),
-
-/***/ "294c":
-/***/ (function(module, exports) {
-
-module.exports = function (exec) {
-  try {
-    return !!exec();
-  } catch (e) {
-    return true;
-  }
-};
-
-
-/***/ }),
-
-/***/ "2aba":
-/***/ (function(module, exports, __nested_webpack_require_26251__) {
-
-var global = __nested_webpack_require_26251__("7726");
-var hide = __nested_webpack_require_26251__("32e9");
-var has = __nested_webpack_require_26251__("69a8");
-var SRC = __nested_webpack_require_26251__("ca5a")('src');
-var $toString = __nested_webpack_require_26251__("fa5b");
-var TO_STRING = 'toString';
-var TPL = ('' + $toString).split(TO_STRING);
-
-__nested_webpack_require_26251__("8378").inspectSource = function (it) {
-  return $toString.call(it);
-};
-
-(module.exports = function (O, key, val, safe) {
-  var isFunction = typeof val == 'function';
-  if (isFunction) has(val, 'name') || hide(val, 'name', key);
-  if (O[key] === val) return;
-  if (isFunction) has(val, SRC) || hide(val, SRC, O[key] ? '' + O[key] : TPL.join(String(key)));
-  if (O === global) {
-    O[key] = val;
-  } else if (!safe) {
-    delete O[key];
-    hide(O, key, val);
-  } else if (O[key]) {
-    O[key] = val;
-  } else {
-    hide(O, key, val);
-  }
-// add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
-})(Function.prototype, TO_STRING, function toString() {
-  return typeof this == 'function' && this[SRC] || $toString.call(this);
-});
-
-
-/***/ }),
-
-/***/ "2aeb":
-/***/ (function(module, exports, __nested_webpack_require_27425__) {
-
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject = __nested_webpack_require_27425__("cb7c");
-var dPs = __nested_webpack_require_27425__("1495");
-var enumBugKeys = __nested_webpack_require_27425__("e11e");
-var IE_PROTO = __nested_webpack_require_27425__("613b")('IE_PROTO');
-var Empty = function () { /* empty */ };
-var PROTOTYPE = 'prototype';
-
-// Create object with fake `null` prototype: use iframe Object with cleared prototype
-var createDict = function () {
-  // Thrash, waste and sodomy: IE GC bug
-  var iframe = __nested_webpack_require_27425__("230e")('iframe');
-  var i = enumBugKeys.length;
-  var lt = '<';
-  var gt = '>';
-  var iframeDocument;
-  iframe.style.display = 'none';
-  __nested_webpack_require_27425__("fab2").appendChild(iframe);
-  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
-  // createDict = iframe.contentWindow.Object;
-  // html.removeChild(iframe);
-  iframeDocument = iframe.contentWindow.document;
-  iframeDocument.open();
-  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
-  iframeDocument.close();
-  createDict = iframeDocument.F;
-  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
-  return createDict();
-};
-
-module.exports = Object.create || function create(O, Properties) {
-  var result;
-  if (O !== null) {
-    Empty[PROTOTYPE] = anObject(O);
-    result = new Empty();
-    Empty[PROTOTYPE] = null;
-    // add "__proto__" for Object.getPrototypeOf polyfill
-    result[IE_PROTO] = O;
-  } else result = createDict();
-  return Properties === undefined ? result : dPs(result, Properties);
-};
-
-
-/***/ }),
-
-/***/ "2b4c":
-/***/ (function(module, exports, __nested_webpack_require_29036__) {
-
-var store = __nested_webpack_require_29036__("5537")('wks');
-var uid = __nested_webpack_require_29036__("ca5a");
-var Symbol = __nested_webpack_require_29036__("7726").Symbol;
-var USE_SYMBOL = typeof Symbol == 'function';
-
-var $exports = module.exports = function (name) {
-  return store[name] || (store[name] =
-    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
-};
-
-$exports.store = store;
-
-
-/***/ }),
-
-/***/ "2d00":
-/***/ (function(module, exports) {
-
-module.exports = false;
-
-
-/***/ }),
-
-/***/ "2d95":
-/***/ (function(module, exports) {
-
-var toString = {}.toString;
-
-module.exports = function (it) {
-  return toString.call(it).slice(8, -1);
-};
-
-
-/***/ }),
-
-/***/ "3024":
-/***/ (function(module, exports) {
-
-// fast apply, http://jsperf.lnkit.com/fast-apply/5
-module.exports = function (fn, args, that) {
-  var un = that === undefined;
-  switch (args.length) {
-    case 0: return un ? fn()
-                      : fn.call(that);
-    case 1: return un ? fn(args[0])
-                      : fn.call(that, args[0]);
-    case 2: return un ? fn(args[0], args[1])
-                      : fn.call(that, args[0], args[1]);
-    case 3: return un ? fn(args[0], args[1], args[2])
-                      : fn.call(that, args[0], args[1], args[2]);
-    case 4: return un ? fn(args[0], args[1], args[2], args[3])
-                      : fn.call(that, args[0], args[1], args[2], args[3]);
-  } return fn.apply(that, args);
-};
-
-
-/***/ }),
-
-/***/ "30f1":
-/***/ (function(module, exports, __nested_webpack_require_30522__) {
-
-"use strict";
-
-var LIBRARY = __nested_webpack_require_30522__("b8e3");
-var $export = __nested_webpack_require_30522__("63b6");
-var redefine = __nested_webpack_require_30522__("9138");
-var hide = __nested_webpack_require_30522__("35e8");
-var Iterators = __nested_webpack_require_30522__("481b");
-var $iterCreate = __nested_webpack_require_30522__("8f60");
-var setToStringTag = __nested_webpack_require_30522__("45f2");
-var getPrototypeOf = __nested_webpack_require_30522__("53e2");
-var ITERATOR = __nested_webpack_require_30522__("5168")('iterator');
-var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
-var FF_ITERATOR = '@@iterator';
-var KEYS = 'keys';
-var VALUES = 'values';
-
-var returnThis = function () { return this; };
-
-module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
-  $iterCreate(Constructor, NAME, next);
-  var getMethod = function (kind) {
-    if (!BUGGY && kind in proto) return proto[kind];
-    switch (kind) {
-      case KEYS: return function keys() { return new Constructor(this, kind); };
-      case VALUES: return function values() { return new Constructor(this, kind); };
-    } return function entries() { return new Constructor(this, kind); };
-  };
-  var TAG = NAME + ' Iterator';
-  var DEF_VALUES = DEFAULT == VALUES;
-  var VALUES_BUG = false;
-  var proto = Base.prototype;
-  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-  var $default = $native || getMethod(DEFAULT);
-  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
-  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
-  var methods, key, IteratorPrototype;
-  // Fix native
-  if ($anyNative) {
-    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
-    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
-      // Set @@toStringTag to native iterators
-      setToStringTag(IteratorPrototype, TAG, true);
-      // fix for some old engines
-      if (!LIBRARY && typeof IteratorPrototype[ITERATOR] != 'function') hide(IteratorPrototype, ITERATOR, returnThis);
-    }
-  }
-  // fix Array#{values, @@iterator}.name in V8 / FF
-  if (DEF_VALUES && $native && $native.name !== VALUES) {
-    VALUES_BUG = true;
-    $default = function values() { return $native.call(this); };
-  }
-  // Define iterator
-  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
-    hide(proto, ITERATOR, $default);
-  }
-  // Plug for library
-  Iterators[NAME] = $default;
-  Iterators[TAG] = returnThis;
-  if (DEFAULT) {
-    methods = {
-      values: DEF_VALUES ? $default : getMethod(VALUES),
-      keys: IS_SET ? $default : getMethod(KEYS),
-      entries: $entries
-    };
-    if (FORCED) for (key in methods) {
-      if (!(key in proto)) redefine(proto, key, methods[key]);
-    } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
-  }
-  return methods;
-};
-
-
-/***/ }),
-
-/***/ "31f4":
-/***/ (function(module, exports) {
-
-// fast apply, http://jsperf.lnkit.com/fast-apply/5
-module.exports = function (fn, args, that) {
-  var un = that === undefined;
-  switch (args.length) {
-    case 0: return un ? fn()
-                      : fn.call(that);
-    case 1: return un ? fn(args[0])
-                      : fn.call(that, args[0]);
-    case 2: return un ? fn(args[0], args[1])
-                      : fn.call(that, args[0], args[1]);
-    case 3: return un ? fn(args[0], args[1], args[2])
-                      : fn.call(that, args[0], args[1], args[2]);
-    case 4: return un ? fn(args[0], args[1], args[2], args[3])
-                      : fn.call(that, args[0], args[1], args[2], args[3]);
-  } return fn.apply(that, args);
-};
-
-
-/***/ }),
-
-/***/ "32e9":
-/***/ (function(module, exports, __nested_webpack_require_34192__) {
-
-var dP = __nested_webpack_require_34192__("86cc");
-var createDesc = __nested_webpack_require_34192__("4630");
-module.exports = __nested_webpack_require_34192__("9e1e") ? function (object, key, value) {
-  return dP.f(object, key, createDesc(1, value));
-} : function (object, key, value) {
-  object[key] = value;
-  return object;
-};
-
-
-/***/ }),
-
-/***/ "32fc":
-/***/ (function(module, exports, __nested_webpack_require_34568__) {
-
-var document = __nested_webpack_require_34568__("e53d").document;
-module.exports = document && document.documentElement;
-
-
-/***/ }),
-
-/***/ "335c":
-/***/ (function(module, exports, __nested_webpack_require_34760__) {
-
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-var cof = __nested_webpack_require_34760__("6b4c");
-// eslint-disable-next-line no-prototype-builtins
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
-  return cof(it) == 'String' ? it.split('') : Object(it);
-};
-
-
-/***/ }),
-
-/***/ "33a4":
-/***/ (function(module, exports, __nested_webpack_require_35143__) {
-
-// check on default Array iterator
-var Iterators = __nested_webpack_require_35143__("84f2");
-var ITERATOR = __nested_webpack_require_35143__("2b4c")('iterator');
-var ArrayProto = Array.prototype;
-
-module.exports = function (it) {
-  return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
-};
-
-
-/***/ }),
-
-/***/ "35e8":
-/***/ (function(module, exports, __nested_webpack_require_35520__) {
-
-var dP = __nested_webpack_require_35520__("d9f6");
-var createDesc = __nested_webpack_require_35520__("aebd");
-module.exports = __nested_webpack_require_35520__("8e60") ? function (object, key, value) {
-  return dP.f(object, key, createDesc(1, value));
-} : function (object, key, value) {
-  object[key] = value;
-  return object;
-};
-
-
-/***/ }),
-
-/***/ "36c3":
-/***/ (function(module, exports, __nested_webpack_require_35896__) {
-
-// to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = __nested_webpack_require_35896__("335c");
-var defined = __nested_webpack_require_35896__("25eb");
-module.exports = function (it) {
-  return IObject(defined(it));
-};
-
-
-/***/ }),
-
-/***/ "3702":
-/***/ (function(module, exports, __nested_webpack_require_36209__) {
-
-// check on default Array iterator
-var Iterators = __nested_webpack_require_36209__("481b");
-var ITERATOR = __nested_webpack_require_36209__("5168")('iterator');
-var ArrayProto = Array.prototype;
-
-module.exports = function (it) {
-  return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
-};
-
-
-/***/ }),
-
-/***/ "38fd":
-/***/ (function(module, exports, __nested_webpack_require_36586__) {
-
-// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = __nested_webpack_require_36586__("69a8");
-var toObject = __nested_webpack_require_36586__("4bf8");
-var IE_PROTO = __nested_webpack_require_36586__("613b")('IE_PROTO');
-var ObjectProto = Object.prototype;
-
-module.exports = Object.getPrototypeOf || function (O) {
-  O = toObject(O);
-  if (has(O, IE_PROTO)) return O[IE_PROTO];
-  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
-    return O.constructor.prototype;
-  } return O instanceof Object ? ObjectProto : null;
-};
-
-
-/***/ }),
-
-/***/ "3a38":
-/***/ (function(module, exports) {
-
-// 7.1.4 ToInteger
-var ceil = Math.ceil;
-var floor = Math.floor;
-module.exports = function (it) {
-  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-};
-
-
-/***/ }),
-
-/***/ "3c11":
-/***/ (function(module, exports, __nested_webpack_require_37404__) {
-
-"use strict";
-// https://github.com/tc39/proposal-promise-finally
-
-var $export = __nested_webpack_require_37404__("63b6");
-var core = __nested_webpack_require_37404__("584a");
-var global = __nested_webpack_require_37404__("e53d");
-var speciesConstructor = __nested_webpack_require_37404__("f201");
-var promiseResolve = __nested_webpack_require_37404__("cd78");
-
-$export($export.P + $export.R, 'Promise', { 'finally': function (onFinally) {
-  var C = speciesConstructor(this, core.Promise || global.Promise);
-  var isFunction = typeof onFinally == 'function';
-  return this.then(
-    isFunction ? function (x) {
-      return promiseResolve(C, onFinally()).then(function () { return x; });
-    } : onFinally,
-    isFunction ? function (e) {
-      return promiseResolve(C, onFinally()).then(function () { throw e; });
-    } : onFinally
-  );
-} });
-
-
-/***/ }),
-
-/***/ "40c3":
-/***/ (function(module, exports, __nested_webpack_require_38267__) {
-
-// getting tag from 19.1.3.6 Object.prototype.toString()
-var cof = __nested_webpack_require_38267__("6b4c");
-var TAG = __nested_webpack_require_38267__("5168")('toStringTag');
-// ES3 wrong here
-var ARG = cof(function () { return arguments; }()) == 'Arguments';
-
-// fallback for IE11 Script Access Denied error
-var tryGet = function (it, key) {
-  try {
-    return it[key];
-  } catch (e) { /* empty */ }
-};
-
-module.exports = function (it) {
-  var O, T, B;
-  return it === undefined ? 'Undefined' : it === null ? 'Null'
-    // @@toStringTag case
-    : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T
-    // builtinTag case
-    : ARG ? cof(O)
-    // ES3 arguments fallback
-    : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
-};
-
-
-/***/ }),
-
-/***/ "40cd":
-/***/ (function(module, __webpack_exports__, __nested_webpack_require_39101__) {
-
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueSuggestInput_vue_vue_type_style_index_0_id_6bd65ecf_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __nested_webpack_require_39101__("2781");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueSuggestInput_vue_vue_type_style_index_0_id_6bd65ecf_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nested_webpack_require_39101__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueSuggestInput_vue_vue_type_style_index_0_id_6bd65ecf_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_index_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueSuggestInput_vue_vue_type_style_index_0_id_6bd65ecf_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
-
-/***/ }),
-
-/***/ "4178":
-/***/ (function(module, exports, __nested_webpack_require_41198__) {
-
-var ctx = __nested_webpack_require_41198__("d864");
-var invoke = __nested_webpack_require_41198__("3024");
-var html = __nested_webpack_require_41198__("32fc");
-var cel = __nested_webpack_require_41198__("1ec9");
-var global = __nested_webpack_require_41198__("e53d");
-var process = global.process;
-var setTask = global.setImmediate;
-var clearTask = global.clearImmediate;
-var MessageChannel = global.MessageChannel;
-var Dispatch = global.Dispatch;
-var counter = 0;
-var queue = {};
-var ONREADYSTATECHANGE = 'onreadystatechange';
-var defer, channel, port;
-var run = function () {
-  var id = +this;
-  // eslint-disable-next-line no-prototype-builtins
-  if (queue.hasOwnProperty(id)) {
-    var fn = queue[id];
-    delete queue[id];
-    fn();
-  }
-};
-var listener = function (event) {
-  run.call(event.data);
-};
-// Node.js 0.9+ & IE10+ has setImmediate, otherwise:
-if (!setTask || !clearTask) {
-  setTask = function setImmediate(fn) {
-    var args = [];
-    var i = 1;
-    while (arguments.length > i) args.push(arguments[i++]);
-    queue[++counter] = function () {
-      // eslint-disable-next-line no-new-func
-      invoke(typeof fn == 'function' ? fn : Function(fn), args);
-    };
-    defer(counter);
-    return counter;
-  };
-  clearTask = function clearImmediate(id) {
-    delete queue[id];
-  };
-  // Node.js 0.8-
-  if (__nested_webpack_require_41198__("6b4c")(process) == 'process') {
-    defer = function (id) {
-      process.nextTick(ctx(run, id, 1));
-    };
-  // Sphere (JS game engine) Dispatch API
-  } else if (Dispatch && Dispatch.now) {
-    defer = function (id) {
-      Dispatch.now(ctx(run, id, 1));
-    };
-  // Browsers with MessageChannel, includes WebWorkers
-  } else if (MessageChannel) {
-    channel = new MessageChannel();
-    port = channel.port2;
-    channel.port1.onmessage = listener;
-    defer = ctx(port.postMessage, port, 1);
-  // Browsers with postMessage, skip WebWorkers
-  // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
-  } else if (global.addEventListener && typeof postMessage == 'function' && !global.importScripts) {
-    defer = function (id) {
-      global.postMessage(id + '', '*');
-    };
-    global.addEventListener('message', listener, false);
-  // IE8-
-  } else if (ONREADYSTATECHANGE in cel('script')) {
-    defer = function (id) {
-      html.appendChild(cel('script'))[ONREADYSTATECHANGE] = function () {
-        html.removeChild(this);
-        run.call(id);
-      };
-    };
-  // Rest old browsers
-  } else {
-    defer = function (id) {
-      setTimeout(ctx(run, id, 1), 0);
-    };
-  }
-}
-module.exports = {
-  set: setTask,
-  clear: clearTask
-};
-
-
-/***/ }),
-
-/***/ "41a0":
-/***/ (function(module, exports, __nested_webpack_require_43812__) {
-
-"use strict";
-
-var create = __nested_webpack_require_43812__("2aeb");
-var descriptor = __nested_webpack_require_43812__("4630");
-var setToStringTag = __nested_webpack_require_43812__("7f20");
-var IteratorPrototype = {};
-
-// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-__nested_webpack_require_43812__("32e9")(IteratorPrototype, __nested_webpack_require_43812__("2b4c")('iterator'), function () { return this; });
-
-module.exports = function (Constructor, NAME, next) {
-  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
-  setToStringTag(Constructor, NAME + ' Iterator');
-};
-
-
-/***/ }),
-
-/***/ "43fc":
-/***/ (function(module, exports, __nested_webpack_require_44438__) {
-
-"use strict";
-
-// https://github.com/tc39/proposal-promise-try
-var $export = __nested_webpack_require_44438__("63b6");
-var newPromiseCapability = __nested_webpack_require_44438__("656e");
-var perform = __nested_webpack_require_44438__("4439");
-
-$export($export.S, 'Promise', { 'try': function (callbackfn) {
-  var promiseCapability = newPromiseCapability.f(this);
-  var result = perform(callbackfn);
-  (result.e ? promiseCapability.reject : promiseCapability.resolve)(result.v);
-  return promiseCapability.promise;
-} });
-
-
-/***/ }),
-
-/***/ "4439":
-/***/ (function(module, exports) {
-
-module.exports = function (exec) {
-  try {
-    return { e: false, v: exec() };
-  } catch (e) {
-    return { e: true, v: e };
-  }
-};
-
-
-/***/ }),
-
-/***/ "4588":
-/***/ (function(module, exports) {
-
-// 7.1.4 ToInteger
-var ceil = Math.ceil;
-var floor = Math.floor;
-module.exports = function (it) {
-  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-};
-
-
-/***/ }),
-
-/***/ "45f2":
-/***/ (function(module, exports, __nested_webpack_require_45423__) {
-
-var def = __nested_webpack_require_45423__("d9f6").f;
-var has = __nested_webpack_require_45423__("07e3");
-var TAG = __nested_webpack_require_45423__("5168")('toStringTag');
-
-module.exports = function (it, tag, stat) {
-  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
-};
-
-
-/***/ }),
-
-/***/ "4630":
-/***/ (function(module, exports) {
-
-module.exports = function (bitmap, value) {
-  return {
-    enumerable: !(bitmap & 1),
-    configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
-  };
-};
-
-
-/***/ }),
-
-/***/ "46c2":
-/***/ (function(module, __webpack_exports__, __nested_webpack_require_46041__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __nested_webpack_require_46041__.d(__webpack_exports__, "b", function() { return install; });
-/* harmony import */ var _components_VueSuggestInput_vue__WEBPACK_IMPORTED_MODULE_0__ = __nested_webpack_require_46041__("c03c");
-// コンポーネントのインポート
- // Vue.use() によって実行される install 関数を定義
-
-function install(Vue) {
-  if (install.installed) return;
-  install.installed = true;
-  Vue.component('VueSuggestInput', _components_VueSuggestInput_vue__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
-} // Vue.use() のためのモジュール定義を作成
-// Create module definition for Vue.use()
-
-var plugin = {
-  install: install
-}; // vue が見つかった場合に自動インストールする (ブラウザで <script> タグを用いた場合等)
-
-var GlobalVue = null;
-
-if (typeof window !== 'undefined') {
-  GlobalVue = window.Vue;
-} else if (typeof global !== 'undefined') {
-  GlobalVue = global.Vue;
-}
-
-if (GlobalVue) {
-  GlobalVue.use(plugin);
-} // (npm/webpack 等で) モジュールとして利用させるためコンポーネントを export する
-
-
-/* harmony default export */ __webpack_exports__["a"] = (_components_VueSuggestInput_vue__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]);
-/* WEBPACK VAR INJECTION */}.call(this, __nested_webpack_require_46041__("c8ba")))
-
-/***/ }),
-
-/***/ "481b":
-/***/ (function(module, exports) {
-
-module.exports = {};
-
-
-/***/ }),
-
-/***/ "4a59":
-/***/ (function(module, exports, __nested_webpack_require_47388__) {
-
-var ctx = __nested_webpack_require_47388__("9b43");
-var call = __nested_webpack_require_47388__("1fa8");
-var isArrayIter = __nested_webpack_require_47388__("33a4");
-var anObject = __nested_webpack_require_47388__("cb7c");
-var toLength = __nested_webpack_require_47388__("9def");
-var getIterFn = __nested_webpack_require_47388__("27ee");
-var BREAK = {};
-var RETURN = {};
-var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) {
-  var iterFn = ITERATOR ? function () { return iterable; } : getIterFn(iterable);
-  var f = ctx(fn, that, entries ? 2 : 1);
-  var index = 0;
-  var length, step, iterator, result;
-  if (typeof iterFn != 'function') throw TypeError(iterable + ' is not iterable!');
-  // fast case for arrays with default iterator
-  if (isArrayIter(iterFn)) for (length = toLength(iterable.length); length > index; index++) {
-    result = entries ? f(anObject(step = iterable[index])[0], step[1]) : f(iterable[index]);
-    if (result === BREAK || result === RETURN) return result;
-  } else for (iterator = iterFn.call(iterable); !(step = iterator.next()).done;) {
-    result = call(iterator, f, step.value, entries);
-    if (result === BREAK || result === RETURN) return result;
-  }
-};
-exports.BREAK = BREAK;
-exports.RETURN = RETURN;
-
-
-/***/ }),
-
-/***/ "4bf8":
-/***/ (function(module, exports, __nested_webpack_require_48660__) {
-
-// 7.1.13 ToObject(argument)
-var defined = __nested_webpack_require_48660__("be13");
-module.exports = function (it) {
-  return Object(defined(it));
-};
-
-
-/***/ }),
-
-/***/ "4c95":
-/***/ (function(module, exports, __nested_webpack_require_48882__) {
-
-"use strict";
-
-var global = __nested_webpack_require_48882__("e53d");
-var core = __nested_webpack_require_48882__("584a");
-var dP = __nested_webpack_require_48882__("d9f6");
-var DESCRIPTORS = __nested_webpack_require_48882__("8e60");
-var SPECIES = __nested_webpack_require_48882__("5168")('species');
-
-module.exports = function (KEY) {
-  var C = typeof core[KEY] == 'function' ? core[KEY] : global[KEY];
-  if (DESCRIPTORS && C && !C[SPECIES]) dP.f(C, SPECIES, {
-    configurable: true,
-    get: function () { return this; }
-  });
-};
-
-
-/***/ }),
-
-/***/ "4ee1":
-/***/ (function(module, exports, __nested_webpack_require_49434__) {
-
-var ITERATOR = __nested_webpack_require_49434__("5168")('iterator');
-var SAFE_CLOSING = false;
-
-try {
-  var riter = [7][ITERATOR]();
-  riter['return'] = function () { SAFE_CLOSING = true; };
-  // eslint-disable-next-line no-throw-literal
-  Array.from(riter, function () { throw 2; });
-} catch (e) { /* empty */ }
-
-module.exports = function (exec, skipClosing) {
-  if (!skipClosing && !SAFE_CLOSING) return false;
-  var safe = false;
-  try {
-    var arr = [7];
-    var iter = arr[ITERATOR]();
-    iter.next = function () { return { done: safe = true }; };
-    arr[ITERATOR] = function () { return iter; };
-    exec(arr);
-  } catch (e) { /* empty */ }
-  return safe;
-};
-
-
-/***/ }),
-
-/***/ "50ed":
-/***/ (function(module, exports) {
-
-module.exports = function (done, value) {
-  return { value: value, done: !!done };
-};
-
-
-/***/ }),
-
-/***/ "5168":
-/***/ (function(module, exports, __nested_webpack_require_50322__) {
-
-var store = __nested_webpack_require_50322__("dbdb")('wks');
-var uid = __nested_webpack_require_50322__("62a0");
-var Symbol = __nested_webpack_require_50322__("e53d").Symbol;
-var USE_SYMBOL = typeof Symbol == 'function';
-
-var $exports = module.exports = function (name) {
-  return store[name] || (store[name] =
-    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
-};
-
-$exports.store = store;
-
-
-/***/ }),
-
-/***/ "52a7":
-/***/ (function(module, exports) {
-
-exports.f = {}.propertyIsEnumerable;
-
-
-/***/ }),
-
-/***/ "53e2":
-/***/ (function(module, exports, __nested_webpack_require_50888__) {
-
-// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = __nested_webpack_require_50888__("07e3");
-var toObject = __nested_webpack_require_50888__("241e");
-var IE_PROTO = __nested_webpack_require_50888__("5559")('IE_PROTO');
-var ObjectProto = Object.prototype;
-
-module.exports = Object.getPrototypeOf || function (O) {
-  O = toObject(O);
-  if (has(O, IE_PROTO)) return O[IE_PROTO];
-  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
-    return O.constructor.prototype;
-  } return O instanceof Object ? ObjectProto : null;
-};
-
-
-/***/ }),
-
-/***/ "551c":
-/***/ (function(module, exports, __nested_webpack_require_51482__) {
-
-"use strict";
-
-var LIBRARY = __nested_webpack_require_51482__("2d00");
-var global = __nested_webpack_require_51482__("7726");
-var ctx = __nested_webpack_require_51482__("9b43");
-var classof = __nested_webpack_require_51482__("23c6");
-var $export = __nested_webpack_require_51482__("5ca1");
-var isObject = __nested_webpack_require_51482__("d3f4");
-var aFunction = __nested_webpack_require_51482__("d8e8");
-var anInstance = __nested_webpack_require_51482__("f605");
-var forOf = __nested_webpack_require_51482__("4a59");
-var speciesConstructor = __nested_webpack_require_51482__("ebd6");
-var task = __nested_webpack_require_51482__("1991").set;
-var microtask = __nested_webpack_require_51482__("8079")();
-var newPromiseCapabilityModule = __nested_webpack_require_51482__("a5b8");
-var perform = __nested_webpack_require_51482__("9c80");
-var userAgent = __nested_webpack_require_51482__("a25f");
-var promiseResolve = __nested_webpack_require_51482__("bcaa");
-var PROMISE = 'Promise';
-var TypeError = global.TypeError;
-var process = global.process;
-var versions = process && process.versions;
-var v8 = versions && versions.v8 || '';
-var $Promise = global[PROMISE];
-var isNode = classof(process) == 'process';
-var empty = function () { /* empty */ };
-var Internal, newGenericPromiseCapability, OwnPromiseCapability, Wrapper;
-var newPromiseCapability = newGenericPromiseCapability = newPromiseCapabilityModule.f;
-
-var USE_NATIVE = !!function () {
-  try {
-    // correct subclassing with @@species support
-    var promise = $Promise.resolve(1);
-    var FakePromise = (promise.constructor = {})[__nested_webpack_require_51482__("2b4c")('species')] = function (exec) {
-      exec(empty, empty);
-    };
-    // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
-    return (isNode || typeof PromiseRejectionEvent == 'function')
-      && promise.then(empty) instanceof FakePromise
-      // v8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
-      // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
-      // we can't detect it synchronously, so just check versions
-      && v8.indexOf('6.6') !== 0
-      && userAgent.indexOf('Chrome/66') === -1;
-  } catch (e) { /* empty */ }
-}();
-
-// helpers
-var isThenable = function (it) {
-  var then;
-  return isObject(it) && typeof (then = it.then) == 'function' ? then : false;
-};
-var notify = function (promise, isReject) {
-  if (promise._n) return;
-  promise._n = true;
-  var chain = promise._c;
-  microtask(function () {
-    var value = promise._v;
-    var ok = promise._s == 1;
-    var i = 0;
-    var run = function (reaction) {
-      var handler = ok ? reaction.ok : reaction.fail;
-      var resolve = reaction.resolve;
-      var reject = reaction.reject;
-      var domain = reaction.domain;
-      var result, then, exited;
-      try {
-        if (handler) {
-          if (!ok) {
-            if (promise._h == 2) onHandleUnhandled(promise);
-            promise._h = 1;
-          }
-          if (handler === true) result = value;
-          else {
-            if (domain) domain.enter();
-            result = handler(value); // may throw
-            if (domain) {
-              domain.exit();
-              exited = true;
-            }
-          }
-          if (result === reaction.promise) {
-            reject(TypeError('Promise-chain cycle'));
-          } else if (then = isThenable(result)) {
-            then.call(result, resolve, reject);
-          } else resolve(result);
-        } else reject(value);
-      } catch (e) {
-        if (domain && !exited) domain.exit();
-        reject(e);
-      }
-    };
-    while (chain.length > i) run(chain[i++]); // variable length - can't use forEach
-    promise._c = [];
-    promise._n = false;
-    if (isReject && !promise._h) onUnhandled(promise);
-  });
-};
-var onUnhandled = function (promise) {
-  task.call(global, function () {
-    var value = promise._v;
-    var unhandled = isUnhandled(promise);
-    var result, handler, console;
-    if (unhandled) {
-      result = perform(function () {
-        if (isNode) {
-          process.emit('unhandledRejection', value, promise);
-        } else if (handler = global.onunhandledrejection) {
-          handler({ promise: promise, reason: value });
-        } else if ((console = global.console) && console.error) {
-          console.error('Unhandled promise rejection', value);
-        }
-      });
-      // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
-      promise._h = isNode || isUnhandled(promise) ? 2 : 1;
-    } promise._a = undefined;
-    if (unhandled && result.e) throw result.v;
-  });
-};
-var isUnhandled = function (promise) {
-  return promise._h !== 1 && (promise._a || promise._c).length === 0;
-};
-var onHandleUnhandled = function (promise) {
-  task.call(global, function () {
-    var handler;
-    if (isNode) {
-      process.emit('rejectionHandled', promise);
-    } else if (handler = global.onrejectionhandled) {
-      handler({ promise: promise, reason: promise._v });
-    }
-  });
-};
-var $reject = function (value) {
-  var promise = this;
-  if (promise._d) return;
-  promise._d = true;
-  promise = promise._w || promise; // unwrap
-  promise._v = value;
-  promise._s = 2;
-  if (!promise._a) promise._a = promise._c.slice();
-  notify(promise, true);
-};
-var $resolve = function (value) {
-  var promise = this;
-  var then;
-  if (promise._d) return;
-  promise._d = true;
-  promise = promise._w || promise; // unwrap
-  try {
-    if (promise === value) throw TypeError("Promise can't be resolved itself");
-    if (then = isThenable(value)) {
-      microtask(function () {
-        var wrapper = { _w: promise, _d: false }; // wrap
-        try {
-          then.call(value, ctx($resolve, wrapper, 1), ctx($reject, wrapper, 1));
-        } catch (e) {
-          $reject.call(wrapper, e);
-        }
-      });
-    } else {
-      promise._v = value;
-      promise._s = 1;
-      notify(promise, false);
-    }
-  } catch (e) {
-    $reject.call({ _w: promise, _d: false }, e); // wrap
-  }
-};
-
-// constructor polyfill
-if (!USE_NATIVE) {
-  // 25.4.3.1 Promise(executor)
-  $Promise = function Promise(executor) {
-    anInstance(this, $Promise, PROMISE, '_h');
-    aFunction(executor);
-    Internal.call(this);
-    try {
-      executor(ctx($resolve, this, 1), ctx($reject, this, 1));
-    } catch (err) {
-      $reject.call(this, err);
-    }
-  };
-  // eslint-disable-next-line no-unused-vars
-  Internal = function Promise(executor) {
-    this._c = [];             // <- awaiting reactions
-    this._a = undefined;      // <- checked in isUnhandled reactions
-    this._s = 0;              // <- state
-    this._d = false;          // <- done
-    this._v = undefined;      // <- value
-    this._h = 0;              // <- rejection state, 0 - default, 1 - handled, 2 - unhandled
-    this._n = false;          // <- notify
-  };
-  Internal.prototype = __nested_webpack_require_51482__("dcbc")($Promise.prototype, {
-    // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
-    then: function then(onFulfilled, onRejected) {
-      var reaction = newPromiseCapability(speciesConstructor(this, $Promise));
-      reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
-      reaction.fail = typeof onRejected == 'function' && onRejected;
-      reaction.domain = isNode ? process.domain : undefined;
-      this._c.push(reaction);
-      if (this._a) this._a.push(reaction);
-      if (this._s) notify(this, false);
-      return reaction.promise;
-    },
-    // 25.4.5.1 Promise.prototype.catch(onRejected)
-    'catch': function (onRejected) {
-      return this.then(undefined, onRejected);
-    }
-  });
-  OwnPromiseCapability = function () {
-    var promise = new Internal();
-    this.promise = promise;
-    this.resolve = ctx($resolve, promise, 1);
-    this.reject = ctx($reject, promise, 1);
-  };
-  newPromiseCapabilityModule.f = newPromiseCapability = function (C) {
-    return C === $Promise || C === Wrapper
-      ? new OwnPromiseCapability(C)
-      : newGenericPromiseCapability(C);
-  };
-}
-
-$export($export.G + $export.W + $export.F * !USE_NATIVE, { Promise: $Promise });
-__nested_webpack_require_51482__("7f20")($Promise, PROMISE);
-__nested_webpack_require_51482__("7a56")(PROMISE);
-Wrapper = __nested_webpack_require_51482__("8378")[PROMISE];
-
-// statics
-$export($export.S + $export.F * !USE_NATIVE, PROMISE, {
-  // 25.4.4.5 Promise.reject(r)
-  reject: function reject(r) {
-    var capability = newPromiseCapability(this);
-    var $$reject = capability.reject;
-    $$reject(r);
-    return capability.promise;
-  }
-});
-$export($export.S + $export.F * (LIBRARY || !USE_NATIVE), PROMISE, {
-  // 25.4.4.6 Promise.resolve(x)
-  resolve: function resolve(x) {
-    return promiseResolve(LIBRARY && this === Wrapper ? $Promise : this, x);
-  }
-});
-$export($export.S + $export.F * !(USE_NATIVE && __nested_webpack_require_51482__("5cc5")(function (iter) {
-  $Promise.all(iter)['catch'](empty);
-})), PROMISE, {
-  // 25.4.4.1 Promise.all(iterable)
-  all: function all(iterable) {
-    var C = this;
-    var capability = newPromiseCapability(C);
-    var resolve = capability.resolve;
-    var reject = capability.reject;
-    var result = perform(function () {
-      var values = [];
-      var index = 0;
-      var remaining = 1;
-      forOf(iterable, false, function (promise) {
-        var $index = index++;
-        var alreadyCalled = false;
-        values.push(undefined);
-        remaining++;
-        C.resolve(promise).then(function (value) {
-          if (alreadyCalled) return;
-          alreadyCalled = true;
-          values[$index] = value;
-          --remaining || resolve(values);
-        }, reject);
-      });
-      --remaining || resolve(values);
-    });
-    if (result.e) reject(result.v);
-    return capability.promise;
-  },
-  // 25.4.4.4 Promise.race(iterable)
-  race: function race(iterable) {
-    var C = this;
-    var capability = newPromiseCapability(C);
-    var reject = capability.reject;
-    var result = perform(function () {
-      forOf(iterable, false, function (promise) {
-        C.resolve(promise).then(capability.resolve, reject);
-      });
-    });
-    if (result.e) reject(result.v);
-    return capability.promise;
-  }
-});
-
-
-/***/ }),
-
-/***/ "5537":
-/***/ (function(module, exports, __nested_webpack_require_61456__) {
-
-var core = __nested_webpack_require_61456__("8378");
-var global = __nested_webpack_require_61456__("7726");
-var SHARED = '__core-js_shared__';
-var store = global[SHARED] || (global[SHARED] = {});
-
-(module.exports = function (key, value) {
-  return store[key] || (store[key] = value !== undefined ? value : {});
-})('versions', []).push({
-  version: core.version,
-  mode: __nested_webpack_require_61456__("2d00") ? 'pure' : 'global',
-  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
-});
-
-
-/***/ }),
-
-/***/ "5559":
-/***/ (function(module, exports, __nested_webpack_require_61989__) {
-
-var shared = __nested_webpack_require_61989__("dbdb")('keys');
-var uid = __nested_webpack_require_61989__("62a0");
-module.exports = function (key) {
-  return shared[key] || (shared[key] = uid(key));
-};
-
-
-/***/ }),
-
-/***/ "584a":
-/***/ (function(module, exports) {
-
-var core = module.exports = { version: '2.6.9' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
-
-/***/ }),
-
-/***/ "5b4e":
-/***/ (function(module, exports, __nested_webpack_require_62434__) {
-
-// false -> Array#indexOf
-// true  -> Array#includes
-var toIObject = __nested_webpack_require_62434__("36c3");
-var toLength = __nested_webpack_require_62434__("b447");
-var toAbsoluteIndex = __nested_webpack_require_62434__("0fc9");
-module.exports = function (IS_INCLUDES) {
-  return function ($this, el, fromIndex) {
-    var O = toIObject($this);
-    var length = toLength(O.length);
-    var index = toAbsoluteIndex(fromIndex, length);
-    var value;
-    // Array#includes uses SameValueZero equality algorithm
-    // eslint-disable-next-line no-self-compare
-    if (IS_INCLUDES && el != el) while (length > index) {
-      value = O[index++];
-      // eslint-disable-next-line no-self-compare
-      if (value != value) return true;
-    // Array#indexOf ignores holes, Array#includes - not
-    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
-      if (O[index] === el) return IS_INCLUDES || index || 0;
-    } return !IS_INCLUDES && -1;
-  };
-};
-
-
-/***/ }),
-
-/***/ "5c95":
-/***/ (function(module, exports, __nested_webpack_require_63445__) {
-
-var hide = __nested_webpack_require_63445__("35e8");
-module.exports = function (target, src, safe) {
-  for (var key in src) {
-    if (safe && target[key]) target[key] = src[key];
-    else hide(target, key, src[key]);
-  } return target;
-};
-
-
-/***/ }),
-
-/***/ "5ca1":
-/***/ (function(module, exports, __nested_webpack_require_63755__) {
-
-var global = __nested_webpack_require_63755__("7726");
-var core = __nested_webpack_require_63755__("8378");
-var hide = __nested_webpack_require_63755__("32e9");
-var redefine = __nested_webpack_require_63755__("2aba");
-var ctx = __nested_webpack_require_63755__("9b43");
-var PROTOTYPE = 'prototype';
-
-var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] || (global[name] = {}) : (global[name] || {})[PROTOTYPE];
-  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-  var expProto = exports[PROTOTYPE] || (exports[PROTOTYPE] = {});
-  var key, own, out, exp;
-  if (IS_GLOBAL) source = name;
-  for (key in source) {
-    // contains in native
-    own = !IS_FORCED && target && target[key] !== undefined;
-    // export native or passed
-    out = (own ? target : source)[key];
-    // bind timers to global for call from export context
-    exp = IS_BIND && own ? ctx(out, global) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-    // extend global
-    if (target) redefine(target, key, out, type & $export.U);
-    // export
-    if (exports[key] != out) hide(exports, key, exp);
-    if (IS_PROTO && expProto[key] != out) expProto[key] = out;
-  }
-};
-global.core = core;
-// type bitmap
-$export.F = 1;   // forced
-$export.G = 2;   // global
-$export.S = 4;   // static
-$export.P = 8;   // proto
-$export.B = 16;  // bind
-$export.W = 32;  // wrap
-$export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
-module.exports = $export;
-
-
-/***/ }),
-
-/***/ "5cc5":
-/***/ (function(module, exports, __nested_webpack_require_65480__) {
-
-var ITERATOR = __nested_webpack_require_65480__("2b4c")('iterator');
-var SAFE_CLOSING = false;
-
-try {
-  var riter = [7][ITERATOR]();
-  riter['return'] = function () { SAFE_CLOSING = true; };
-  // eslint-disable-next-line no-throw-literal
-  Array.from(riter, function () { throw 2; });
-} catch (e) { /* empty */ }
-
-module.exports = function (exec, skipClosing) {
-  if (!skipClosing && !SAFE_CLOSING) return false;
-  var safe = false;
-  try {
-    var arr = [7];
-    var iter = arr[ITERATOR]();
-    iter.next = function () { return { done: safe = true }; };
-    arr[ITERATOR] = function () { return iter; };
-    exec(arr);
-  } catch (e) { /* empty */ }
-  return safe;
-};
-
-
-/***/ }),
-
-/***/ "5dbc":
-/***/ (function(module, exports, __nested_webpack_require_66219__) {
-
-var isObject = __nested_webpack_require_66219__("d3f4");
-var setPrototypeOf = __nested_webpack_require_66219__("8b97").set;
-module.exports = function (that, target, C) {
-  var S = target.constructor;
-  var P;
-  if (S !== C && typeof S == 'function' && (P = S.prototype) !== C.prototype && isObject(P) && setPrototypeOf) {
-    setPrototypeOf(that, P);
-  } return that;
-};
-
-
-/***/ }),
-
-/***/ "613b":
-/***/ (function(module, exports, __nested_webpack_require_66648__) {
-
-var shared = __nested_webpack_require_66648__("5537")('keys');
-var uid = __nested_webpack_require_66648__("ca5a");
-module.exports = function (key) {
-  return shared[key] || (shared[key] = uid(key));
-};
-
-
-/***/ }),
-
-/***/ "626a":
-/***/ (function(module, exports, __nested_webpack_require_66908__) {
-
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-var cof = __nested_webpack_require_66908__("2d95");
-// eslint-disable-next-line no-prototype-builtins
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
-  return cof(it) == 'String' ? it.split('') : Object(it);
-};
-
-
-/***/ }),
-
-/***/ "62a0":
-/***/ (function(module, exports) {
-
-var id = 0;
-var px = Math.random();
-module.exports = function (key) {
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-};
-
-
-/***/ }),
-
-/***/ "63b6":
-/***/ (function(module, exports, __nested_webpack_require_67516__) {
-
-var global = __nested_webpack_require_67516__("e53d");
-var core = __nested_webpack_require_67516__("584a");
-var ctx = __nested_webpack_require_67516__("d864");
-var hide = __nested_webpack_require_67516__("35e8");
-var has = __nested_webpack_require_67516__("07e3");
-var PROTOTYPE = 'prototype';
-
-var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var IS_WRAP = type & $export.W;
-  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-  var expProto = exports[PROTOTYPE];
-  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
-  var key, own, out;
-  if (IS_GLOBAL) source = name;
-  for (key in source) {
-    // contains in native
-    own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && has(exports, key)) continue;
-    // export native or passed
-    out = own ? target[key] : source[key];
-    // prevent global pollution for namespaces
-    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
-    // bind timers to global for call from export context
-    : IS_BIND && own ? ctx(out, global)
-    // wrap global constructors for prevent change them in library
-    : IS_WRAP && target[key] == out ? (function (C) {
-      var F = function (a, b, c) {
-        if (this instanceof C) {
-          switch (arguments.length) {
-            case 0: return new C();
-            case 1: return new C(a);
-            case 2: return new C(a, b);
-          } return new C(a, b, c);
-        } return C.apply(this, arguments);
-      };
-      F[PROTOTYPE] = C[PROTOTYPE];
-      return F;
-    // make static versions for prototype methods
-    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-    if (IS_PROTO) {
-      (exports.virtual || (exports.virtual = {}))[key] = out;
-      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
-    }
-  }
-};
-// type bitmap
-$export.F = 1;   // forced
-$export.G = 2;   // global
-$export.S = 4;   // static
-$export.P = 8;   // proto
-$export.B = 16;  // bind
-$export.W = 32;  // wrap
-$export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
-module.exports = $export;
-
-
-/***/ }),
-
-/***/ "656e":
-/***/ (function(module, exports, __nested_webpack_require_69994__) {
-
-"use strict";
-
-// 25.4.1.5 NewPromiseCapability(C)
-var aFunction = __nested_webpack_require_69994__("79aa");
-
-function PromiseCapability(C) {
-  var resolve, reject;
-  this.promise = new C(function ($$resolve, $$reject) {
-    if (resolve !== undefined || reject !== undefined) throw TypeError('Bad Promise constructor');
-    resolve = $$resolve;
-    reject = $$reject;
-  });
-  this.resolve = aFunction(resolve);
-  this.reject = aFunction(reject);
-}
-
-module.exports.f = function (C) {
-  return new PromiseCapability(C);
-};
-
-
-/***/ }),
-
-/***/ "6821":
-/***/ (function(module, exports, __nested_webpack_require_70586__) {
-
-// to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = __nested_webpack_require_70586__("626a");
-var defined = __nested_webpack_require_70586__("be13");
-module.exports = function (it) {
-  return IObject(defined(it));
-};
-
-
-/***/ }),
-
-/***/ "696e":
-/***/ (function(module, exports, __nested_webpack_require_70899__) {
-
-__nested_webpack_require_70899__("c207");
-__nested_webpack_require_70899__("1654");
-__nested_webpack_require_70899__("6c1c");
-__nested_webpack_require_70899__("24c5");
-__nested_webpack_require_70899__("3c11");
-__nested_webpack_require_70899__("43fc");
-module.exports = __nested_webpack_require_70899__("584a").Promise;
-
-
-/***/ }),
-
-/***/ "69a8":
-/***/ (function(module, exports) {
-
-var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
-
-
-/***/ }),
-
-/***/ "6a99":
-/***/ (function(module, exports, __nested_webpack_require_71394__) {
-
-// 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __nested_webpack_require_71394__("d3f4");
-// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-// and the second argument - flag - preferred type is a string
-module.exports = function (it, S) {
-  if (!isObject(it)) return it;
-  var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  throw TypeError("Can't convert object to primitive value");
-};
-
-
-/***/ }),
-
-/***/ "6b4c":
-/***/ (function(module, exports) {
-
-var toString = {}.toString;
-
-module.exports = function (it) {
-  return toString.call(it).slice(8, -1);
-};
-
-
-/***/ }),
-
-/***/ "6c1c":
-/***/ (function(module, exports, __nested_webpack_require_72306__) {
-
-__nested_webpack_require_72306__("c367");
-var global = __nested_webpack_require_72306__("e53d");
-var hide = __nested_webpack_require_72306__("35e8");
-var Iterators = __nested_webpack_require_72306__("481b");
-var TO_STRING_TAG = __nested_webpack_require_72306__("5168")('toStringTag');
-
-var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
-  'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' +
-  'MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,' +
-  'SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,' +
-  'TextTrackList,TouchList').split(',');
-
-for (var i = 0; i < DOMIterables.length; i++) {
-  var NAME = DOMIterables[i];
-  var Collection = global[NAME];
-  var proto = Collection && Collection.prototype;
-  if (proto && !proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
-  Iterators[NAME] = Iterators.Array;
-}
-
-
-/***/ }),
-
-/***/ "71c1":
-/***/ (function(module, exports, __nested_webpack_require_73385__) {
-
-var toInteger = __nested_webpack_require_73385__("3a38");
-var defined = __nested_webpack_require_73385__("25eb");
-// true  -> String#at
-// false -> String#codePointAt
-module.exports = function (TO_STRING) {
-  return function (that, pos) {
-    var s = String(defined(that));
-    var i = toInteger(pos);
-    var l = s.length;
-    var a, b;
-    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
-    a = s.charCodeAt(i);
-    return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
-      ? TO_STRING ? s.charAt(i) : a
-      : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
-  };
-};
-
-
-/***/ }),
-
-/***/ "7726":
-/***/ (function(module, exports) {
-
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
-
-/***/ }),
-
-/***/ "77f1":
-/***/ (function(module, exports, __nested_webpack_require_74530__) {
-
-var toInteger = __nested_webpack_require_74530__("4588");
-var max = Math.max;
-var min = Math.min;
-module.exports = function (index, length) {
-  index = toInteger(index);
-  return index < 0 ? max(index + length, 0) : min(index, length);
-};
-
-
-/***/ }),
-
-/***/ "794b":
-/***/ (function(module, exports, __nested_webpack_require_74840__) {
-
-module.exports = !__nested_webpack_require_74840__("8e60") && !__nested_webpack_require_74840__("294c")(function () {
-  return Object.defineProperty(__nested_webpack_require_74840__("1ec9")('div'), 'a', { get: function () { return 7; } }).a != 7;
-});
-
-
-/***/ }),
-
-/***/ "795b":
-/***/ (function(module, exports, __nested_webpack_require_75136__) {
-
-module.exports = __nested_webpack_require_75136__("696e");
-
-/***/ }),
-
-/***/ "79aa":
-/***/ (function(module, exports) {
-
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
-  return it;
-};
-
-
-/***/ }),
-
-/***/ "79e5":
-/***/ (function(module, exports) {
-
-module.exports = function (exec) {
-  try {
-    return !!exec();
-  } catch (e) {
-    return true;
-  }
-};
-
-
-/***/ }),
-
-/***/ "7a56":
-/***/ (function(module, exports, __nested_webpack_require_75620__) {
-
-"use strict";
-
-var global = __nested_webpack_require_75620__("7726");
-var dP = __nested_webpack_require_75620__("86cc");
-var DESCRIPTORS = __nested_webpack_require_75620__("9e1e");
-var SPECIES = __nested_webpack_require_75620__("2b4c")('species');
-
-module.exports = function (KEY) {
-  var C = global[KEY];
-  if (DESCRIPTORS && C && !C[SPECIES]) dP.f(C, SPECIES, {
-    configurable: true,
-    get: function () { return this; }
-  });
-};
-
-
-/***/ }),
-
-/***/ "7cd6":
-/***/ (function(module, exports, __nested_webpack_require_76087__) {
-
-var classof = __nested_webpack_require_76087__("40c3");
-var ITERATOR = __nested_webpack_require_76087__("5168")('iterator');
-var Iterators = __nested_webpack_require_76087__("481b");
-module.exports = __nested_webpack_require_76087__("584a").getIteratorMethod = function (it) {
-  if (it != undefined) return it[ITERATOR]
-    || it['@@iterator']
-    || Iterators[classof(it)];
-};
-
-
-/***/ }),
-
-/***/ "7e90":
-/***/ (function(module, exports, __nested_webpack_require_76497__) {
-
-var dP = __nested_webpack_require_76497__("d9f6");
-var anObject = __nested_webpack_require_76497__("e4ae");
-var getKeys = __nested_webpack_require_76497__("c3a1");
-
-module.exports = __nested_webpack_require_76497__("8e60") ? Object.defineProperties : function defineProperties(O, Properties) {
-  anObject(O);
-  var keys = getKeys(Properties);
-  var length = keys.length;
-  var i = 0;
-  var P;
-  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
-  return O;
-};
-
-
-/***/ }),
-
-/***/ "7f20":
-/***/ (function(module, exports, __nested_webpack_require_76997__) {
-
-var def = __nested_webpack_require_76997__("86cc").f;
-var has = __nested_webpack_require_76997__("69a8");
-var TAG = __nested_webpack_require_76997__("2b4c")('toStringTag');
-
-module.exports = function (it, tag, stat) {
-  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
-};
-
-
-/***/ }),
-
-/***/ "8079":
-/***/ (function(module, exports, __nested_webpack_require_77367__) {
-
-var global = __nested_webpack_require_77367__("7726");
-var macrotask = __nested_webpack_require_77367__("1991").set;
-var Observer = global.MutationObserver || global.WebKitMutationObserver;
-var process = global.process;
-var Promise = global.Promise;
-var isNode = __nested_webpack_require_77367__("2d95")(process) == 'process';
-
-module.exports = function () {
-  var head, last, notify;
-
-  var flush = function () {
-    var parent, fn;
-    if (isNode && (parent = process.domain)) parent.exit();
-    while (head) {
-      fn = head.fn;
-      head = head.next;
-      try {
-        fn();
-      } catch (e) {
-        if (head) notify();
-        else last = undefined;
-        throw e;
-      }
-    } last = undefined;
-    if (parent) parent.enter();
-  };
-
-  // Node.js
-  if (isNode) {
-    notify = function () {
-      process.nextTick(flush);
-    };
-  // browsers with MutationObserver, except iOS Safari - https://github.com/zloirock/core-js/issues/339
-  } else if (Observer && !(global.navigator && global.navigator.standalone)) {
-    var toggle = true;
-    var node = document.createTextNode('');
-    new Observer(flush).observe(node, { characterData: true }); // eslint-disable-line no-new
-    notify = function () {
-      node.data = toggle = !toggle;
-    };
-  // environments with maybe non-completely correct, but existent Promise
-  } else if (Promise && Promise.resolve) {
-    // Promise.resolve without an argument throws an error in LG WebOS 2
-    var promise = Promise.resolve(undefined);
-    notify = function () {
-      promise.then(flush);
-    };
-  // for other environments - macrotask based on:
-  // - setImmediate
-  // - MessageChannel
-  // - window.postMessag
-  // - onreadystatechange
-  // - setTimeout
-  } else {
-    notify = function () {
-      // strange IE + webpack dev server bug - use .call(global)
-      macrotask.call(global, flush);
-    };
-  }
-
-  return function (fn) {
-    var task = { fn: fn, next: undefined };
-    if (last) last.next = task;
-    if (!head) {
-      head = task;
-      notify();
-    } last = task;
-  };
-};
-
-
-/***/ }),
-
-/***/ "8378":
-/***/ (function(module, exports) {
-
-var core = module.exports = { version: '2.6.9' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
-
-/***/ }),
-
-/***/ "8436":
-/***/ (function(module, exports) {
-
-module.exports = function () { /* empty */ };
-
-
-/***/ }),
-
-/***/ "84f2":
-/***/ (function(module, exports) {
-
-module.exports = {};
-
-
-/***/ }),
-
-/***/ "86cc":
-/***/ (function(module, exports, __nested_webpack_require_79837__) {
-
-var anObject = __nested_webpack_require_79837__("cb7c");
-var IE8_DOM_DEFINE = __nested_webpack_require_79837__("c69a");
-var toPrimitive = __nested_webpack_require_79837__("6a99");
-var dP = Object.defineProperty;
-
-exports.f = __nested_webpack_require_79837__("9e1e") ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  anObject(O);
-  P = toPrimitive(P, true);
-  anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
-    return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
-  return O;
-};
-
-
-/***/ }),
-
-/***/ "8b97":
-/***/ (function(module, exports, __nested_webpack_require_80527__) {
-
-// Works with __proto__ only. Old v8 can't work with null proto objects.
-/* eslint-disable no-proto */
-var isObject = __nested_webpack_require_80527__("d3f4");
-var anObject = __nested_webpack_require_80527__("cb7c");
-var check = function (O, proto) {
-  anObject(O);
-  if (!isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
-};
-module.exports = {
-  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
-    function (test, buggy, set) {
-      try {
-        set = __nested_webpack_require_80527__("9b43")(Function.call, __nested_webpack_require_80527__("11e9").f(Object.prototype, '__proto__').set, 2);
-        set(test, []);
-        buggy = !(test instanceof Array);
-      } catch (e) { buggy = true; }
-      return function setPrototypeOf(O, proto) {
-        check(O, proto);
-        if (buggy) O.__proto__ = proto;
-        else set(O, proto);
-        return O;
-      };
-    }({}, false) : undefined),
-  check: check
-};
-
-
-/***/ }),
-
-/***/ "8e60":
-/***/ (function(module, exports, __nested_webpack_require_81537__) {
-
-// Thank's IE8 for his funny defineProperty
-module.exports = !__nested_webpack_require_81537__("294c")(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
-});
-
-
-/***/ }),
-
-/***/ "8f60":
-/***/ (function(module, exports, __nested_webpack_require_81813__) {
-
-"use strict";
-
-var create = __nested_webpack_require_81813__("a159");
-var descriptor = __nested_webpack_require_81813__("aebd");
-var setToStringTag = __nested_webpack_require_81813__("45f2");
-var IteratorPrototype = {};
-
-// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-__nested_webpack_require_81813__("35e8")(IteratorPrototype, __nested_webpack_require_81813__("5168")('iterator'), function () { return this; });
-
-module.exports = function (Constructor, NAME, next) {
-  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
-  setToStringTag(Constructor, NAME + ' Iterator');
-};
-
-
-/***/ }),
-
-/***/ "9093":
-/***/ (function(module, exports, __nested_webpack_require_82439__) {
-
-// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-var $keys = __nested_webpack_require_82439__("ce10");
-var hiddenKeys = __nested_webpack_require_82439__("e11e").concat('length', 'prototype');
-
-exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
-  return $keys(O, hiddenKeys);
-};
-
-
-/***/ }),
-
-/***/ "9138":
-/***/ (function(module, exports, __nested_webpack_require_82804__) {
-
-module.exports = __nested_webpack_require_82804__("35e8");
-
-
-/***/ }),
-
-/***/ "96cf":
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-var runtime = (function (exports) {
-  "use strict";
-
-  var Op = Object.prototype;
-  var hasOwn = Op.hasOwnProperty;
-  var undefined; // More compressible than void 0.
-  var $Symbol = typeof Symbol === "function" ? Symbol : {};
-  var iteratorSymbol = $Symbol.iterator || "@@iterator";
-  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-    var generator = Object.create(protoGenerator.prototype);
-    var context = new Context(tryLocsList || []);
-
-    // The ._invoke method unifies the implementations of the .next,
-    // .throw, and .return methods.
-    generator._invoke = makeInvokeMethod(innerFn, self, context);
-
-    return generator;
-  }
-  exports.wrap = wrap;
-
-  // Try/catch helper to minimize deoptimizations. Returns a completion
-  // record like context.tryEntries[i].completion. This interface could
-  // have been (and was previously) designed to take a closure to be
-  // invoked without arguments, but in all the cases we care about we
-  // already have an existing method we want to call, so there's no need
-  // to create a new function object. We can even get away with assuming
-  // the method takes exactly one argument, since that happens to be true
-  // in every case, so we don't have to touch the arguments object. The
-  // only additional allocation required is the completion record, which
-  // has a stable shape and so hopefully should be cheap to allocate.
-  function tryCatch(fn, obj, arg) {
-    try {
-      return { type: "normal", arg: fn.call(obj, arg) };
-    } catch (err) {
-      return { type: "throw", arg: err };
-    }
-  }
-
-  var GenStateSuspendedStart = "suspendedStart";
-  var GenStateSuspendedYield = "suspendedYield";
-  var GenStateExecuting = "executing";
-  var GenStateCompleted = "completed";
-
-  // Returning this object from the innerFn has the same effect as
-  // breaking out of the dispatch switch statement.
-  var ContinueSentinel = {};
-
-  // Dummy constructor functions that we use as the .constructor and
-  // .constructor.prototype properties for functions that return Generator
-  // objects. For full spec compliance, you may wish to configure your
-  // minifier not to mangle the names of these two functions.
-  function Generator() {}
-  function GeneratorFunction() {}
-  function GeneratorFunctionPrototype() {}
-
-  // This is a polyfill for %IteratorPrototype% for environments that
-  // don't natively support it.
-  var IteratorPrototype = {};
-  IteratorPrototype[iteratorSymbol] = function () {
-    return this;
-  };
-
-  var getProto = Object.getPrototypeOf;
-  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-  if (NativeIteratorPrototype &&
-      NativeIteratorPrototype !== Op &&
-      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-    // This environment has a native %IteratorPrototype%; use it instead
-    // of the polyfill.
-    IteratorPrototype = NativeIteratorPrototype;
-  }
-
-  var Gp = GeneratorFunctionPrototype.prototype =
-    Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
-  GeneratorFunctionPrototype.constructor = GeneratorFunction;
-  GeneratorFunctionPrototype[toStringTagSymbol] =
-    GeneratorFunction.displayName = "GeneratorFunction";
-
-  // Helper for defining the .next, .throw, and .return methods of the
-  // Iterator interface in terms of a single ._invoke method.
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function(method) {
-      prototype[method] = function(arg) {
-        return this._invoke(method, arg);
-      };
-    });
-  }
-
-  exports.isGeneratorFunction = function(genFun) {
-    var ctor = typeof genFun === "function" && genFun.constructor;
-    return ctor
-      ? ctor === GeneratorFunction ||
-        // For the native GeneratorFunction constructor, the best we can
-        // do is to check its .name property.
-        (ctor.displayName || ctor.name) === "GeneratorFunction"
-      : false;
-  };
-
-  exports.mark = function(genFun) {
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-    } else {
-      genFun.__proto__ = GeneratorFunctionPrototype;
-      if (!(toStringTagSymbol in genFun)) {
-        genFun[toStringTagSymbol] = "GeneratorFunction";
-      }
-    }
-    genFun.prototype = Object.create(Gp);
-    return genFun;
-  };
-
-  // Within the body of any async function, `await x` is transformed to
-  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-  // `hasOwn.call(value, "__await")` to determine if the yielded value is
-  // meant to be awaited.
-  exports.awrap = function(arg) {
-    return { __await: arg };
-  };
-
-  function AsyncIterator(generator) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-      if (record.type === "throw") {
-        reject(record.arg);
-      } else {
-        var result = record.arg;
-        var value = result.value;
-        if (value &&
-            typeof value === "object" &&
-            hasOwn.call(value, "__await")) {
-          return Promise.resolve(value.__await).then(function(value) {
-            invoke("next", value, resolve, reject);
-          }, function(err) {
-            invoke("throw", err, resolve, reject);
-          });
-        }
-
-        return Promise.resolve(value).then(function(unwrapped) {
-          // When a yielded Promise is resolved, its final value becomes
-          // the .value of the Promise<{value,done}> result for the
-          // current iteration.
-          result.value = unwrapped;
-          resolve(result);
-        }, function(error) {
-          // If a rejected Promise was yielded, throw the rejection back
-          // into the async generator function so it can be handled there.
-          return invoke("throw", error, resolve, reject);
-        });
-      }
-    }
-
-    var previousPromise;
-
-    function enqueue(method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new Promise(function(resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise =
-        // If enqueue has been called before, then we want to wait until
-        // all previous Promises have been resolved before calling invoke,
-        // so that results are always delivered in the correct order. If
-        // enqueue has not been called before, then it is important to
-        // call invoke immediately, without waiting on a callback to fire,
-        // so that the async generator function has the opportunity to do
-        // any necessary setup in a predictable way. This predictability
-        // is why the Promise constructor synchronously invokes its
-        // executor callback, and why async functions synchronously
-        // execute code before the first await. Since we implement simple
-        // async functions in terms of async generators, it is especially
-        // important to get this right, even though it requires care.
-        previousPromise ? previousPromise.then(
-          callInvokeWithMethodAndArg,
-          // Avoid propagating failures to Promises returned by later
-          // invocations of the iterator.
-          callInvokeWithMethodAndArg
-        ) : callInvokeWithMethodAndArg();
-    }
-
-    // Define the unified helper method that is used to implement .next,
-    // .throw, and .return (see defineIteratorMethods).
-    this._invoke = enqueue;
-  }
-
-  defineIteratorMethods(AsyncIterator.prototype);
-  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
-    return this;
-  };
-  exports.AsyncIterator = AsyncIterator;
-
-  // Note that simple async functions are implemented on top of
-  // AsyncIterator objects; they just return a Promise for the value of
-  // the final result produced by the iterator.
-  exports.async = function(innerFn, outerFn, self, tryLocsList) {
-    var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList)
-    );
-
-    return exports.isGeneratorFunction(outerFn)
-      ? iter // If outerFn is a generator, return the full iterator.
-      : iter.next().then(function(result) {
-          return result.done ? result.value : iter.next();
-        });
-  };
-
-  function makeInvokeMethod(innerFn, self, context) {
-    var state = GenStateSuspendedStart;
-
-    return function invoke(method, arg) {
-      if (state === GenStateExecuting) {
-        throw new Error("Generator is already running");
-      }
-
-      if (state === GenStateCompleted) {
-        if (method === "throw") {
-          throw arg;
-        }
-
-        // Be forgiving, per 25.3.3.3.3 of the spec:
-        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-        return doneResult();
-      }
-
-      context.method = method;
-      context.arg = arg;
-
-      while (true) {
-        var delegate = context.delegate;
-        if (delegate) {
-          var delegateResult = maybeInvokeDelegate(delegate, context);
-          if (delegateResult) {
-            if (delegateResult === ContinueSentinel) continue;
-            return delegateResult;
-          }
-        }
-
-        if (context.method === "next") {
-          // Setting context._sent for legacy support of Babel's
-          // function.sent implementation.
-          context.sent = context._sent = context.arg;
-
-        } else if (context.method === "throw") {
-          if (state === GenStateSuspendedStart) {
-            state = GenStateCompleted;
-            throw context.arg;
-          }
-
-          context.dispatchException(context.arg);
-
-        } else if (context.method === "return") {
-          context.abrupt("return", context.arg);
-        }
-
-        state = GenStateExecuting;
-
-        var record = tryCatch(innerFn, self, context);
-        if (record.type === "normal") {
-          // If an exception is thrown from innerFn, we leave state ===
-          // GenStateExecuting and loop back for another invocation.
-          state = context.done
-            ? GenStateCompleted
-            : GenStateSuspendedYield;
-
-          if (record.arg === ContinueSentinel) {
-            continue;
-          }
-
-          return {
-            value: record.arg,
-            done: context.done
-          };
-
-        } else if (record.type === "throw") {
-          state = GenStateCompleted;
-          // Dispatch the exception by looping back around to the
-          // context.dispatchException(context.arg) call above.
-          context.method = "throw";
-          context.arg = record.arg;
-        }
-      }
-    };
-  }
-
-  // Call delegate.iterator[context.method](context.arg) and handle the
-  // result, either by returning a { value, done } result from the
-  // delegate iterator, or by modifying context.method and context.arg,
-  // setting context.delegate to null, and returning the ContinueSentinel.
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-    if (method === undefined) {
-      // A .throw or .return when the delegate iterator has no .throw
-      // method always terminates the yield* loop.
-      context.delegate = null;
-
-      if (context.method === "throw") {
-        // Note: ["return"] must be used for ES3 parsing compatibility.
-        if (delegate.iterator["return"]) {
-          // If the delegate iterator has a return method, give it a
-          // chance to clean up.
-          context.method = "return";
-          context.arg = undefined;
-          maybeInvokeDelegate(delegate, context);
-
-          if (context.method === "throw") {
-            // If maybeInvokeDelegate(context) changed context.method from
-            // "return" to "throw", let that override the TypeError below.
-            return ContinueSentinel;
-          }
-        }
-
-        context.method = "throw";
-        context.arg = new TypeError(
-          "The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-
-    if (record.type === "throw") {
-      context.method = "throw";
-      context.arg = record.arg;
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    var info = record.arg;
-
-    if (! info) {
-      context.method = "throw";
-      context.arg = new TypeError("iterator result is not an object");
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    if (info.done) {
-      // Assign the result of the finished delegate to the temporary
-      // variable specified by delegate.resultName (see delegateYield).
-      context[delegate.resultName] = info.value;
-
-      // Resume execution at the desired location (see delegateYield).
-      context.next = delegate.nextLoc;
-
-      // If context.method was "throw" but the delegate handled the
-      // exception, let the outer generator proceed normally. If
-      // context.method was "next", forget context.arg since it has been
-      // "consumed" by the delegate iterator. If context.method was
-      // "return", allow the original .return call to continue in the
-      // outer generator.
-      if (context.method !== "return") {
-        context.method = "next";
-        context.arg = undefined;
-      }
-
-    } else {
-      // Re-yield the result returned by the delegate method.
-      return info;
-    }
-
-    // The delegate iterator is finished, so forget it and continue with
-    // the outer generator.
-    context.delegate = null;
-    return ContinueSentinel;
-  }
-
-  // Define Generator.prototype.{next,throw,return} in terms of the
-  // unified ._invoke helper method.
-  defineIteratorMethods(Gp);
-
-  Gp[toStringTagSymbol] = "Generator";
-
-  // A Generator should always return itself as the iterator object when the
-  // @@iterator function is called on it. Some browsers' implementations of the
-  // iterator prototype chain incorrectly implement this, causing the Generator
-  // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
-  Gp[iteratorSymbol] = function() {
-    return this;
-  };
-
-  Gp.toString = function() {
-    return "[object Generator]";
-  };
-
-  function pushTryEntry(locs) {
-    var entry = { tryLoc: locs[0] };
-
-    if (1 in locs) {
-      entry.catchLoc = locs[1];
-    }
-
-    if (2 in locs) {
-      entry.finallyLoc = locs[2];
-      entry.afterLoc = locs[3];
-    }
-
-    this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal";
-    delete record.arg;
-    entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    // The root entry object (effectively a try statement without a catch
-    // or a finally block) gives us a place to store values thrown from
-    // locations where there is no enclosing try statement.
-    this.tryEntries = [{ tryLoc: "root" }];
-    tryLocsList.forEach(pushTryEntry, this);
-    this.reset(true);
-  }
-
-  exports.keys = function(object) {
-    var keys = [];
-    for (var key in object) {
-      keys.push(key);
-    }
-    keys.reverse();
-
-    // Rather than returning an object with a next method, we keep
-    // things simple and return the next function itself.
-    return function next() {
-      while (keys.length) {
-        var key = keys.pop();
-        if (key in object) {
-          next.value = key;
-          next.done = false;
-          return next;
-        }
-      }
-
-      // To avoid creating an additional object, we just hang the .value
-      // and .done properties off the next function object itself. This
-      // also ensures that the minifier will not anonymize the function.
-      next.done = true;
-      return next;
-    };
-  };
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-      if (iteratorMethod) {
-        return iteratorMethod.call(iterable);
-      }
-
-      if (typeof iterable.next === "function") {
-        return iterable;
-      }
-
-      if (!isNaN(iterable.length)) {
-        var i = -1, next = function next() {
-          while (++i < iterable.length) {
-            if (hasOwn.call(iterable, i)) {
-              next.value = iterable[i];
-              next.done = false;
-              return next;
-            }
-          }
-
-          next.value = undefined;
-          next.done = true;
-
-          return next;
-        };
-
-        return next.next = next;
-      }
-    }
-
-    // Return an iterator with no values.
-    return { next: doneResult };
-  }
-  exports.values = values;
-
-  function doneResult() {
-    return { value: undefined, done: true };
-  }
-
-  Context.prototype = {
-    constructor: Context,
-
-    reset: function(skipTempReset) {
-      this.prev = 0;
-      this.next = 0;
-      // Resetting context._sent for legacy support of Babel's
-      // function.sent implementation.
-      this.sent = this._sent = undefined;
-      this.done = false;
-      this.delegate = null;
-
-      this.method = "next";
-      this.arg = undefined;
-
-      this.tryEntries.forEach(resetTryEntry);
-
-      if (!skipTempReset) {
-        for (var name in this) {
-          // Not sure about the optimal order of these conditions:
-          if (name.charAt(0) === "t" &&
-              hasOwn.call(this, name) &&
-              !isNaN(+name.slice(1))) {
-            this[name] = undefined;
-          }
-        }
-      }
-    },
-
-    stop: function() {
-      this.done = true;
-
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
-      return this.rval;
-    },
-
-    dispatchException: function(exception) {
-      if (this.done) {
-        throw exception;
-      }
-
-      var context = this;
-      function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined;
-        }
-
-        return !! caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else {
-            throw new Error("try statement without catch or finally");
-          }
-        }
-      }
-    },
-
-    abrupt: function(type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc <= this.prev &&
-            hasOwn.call(entry, "finallyLoc") &&
-            this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      if (finallyEntry &&
-          (type === "break" ||
-           type === "continue") &&
-          finallyEntry.tryLoc <= arg &&
-          arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
-      var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
-    },
-
-    complete: function(record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" ||
-          record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
-    },
-
-    finish: function(finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
-      }
-    },
-
-    "catch": function(tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-          if (record.type === "throw") {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-          return thrown;
-        }
-      }
-
-      // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
-      throw new Error("illegal catch attempt");
-    },
-
-    delegateYield: function(iterable, resultName, nextLoc) {
-      this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined;
-      }
-
-      return ContinueSentinel;
-    }
-  };
-
-  // Regardless of whether this script is executing as a CommonJS module
-  // or not, return the runtime object so that we can declare the variable
-  // regeneratorRuntime in the outer scope, which allows this module to be
-  // injected easily by `bin/regenerator --include-runtime script.js`.
-  return exports;
-
-}(
-  // If this script is executing as a CommonJS module, use module.exports
-  // as the regeneratorRuntime namespace. Otherwise create a new empty
-  // object. Either way, the resulting object will be used to initialize
-  // the regeneratorRuntime variable at the top of this file.
-    true ? module.exports : 0
-));
-
-try {
-  regeneratorRuntime = runtime;
-} catch (accidentalStrictMode) {
-  // This module should not be running in strict mode, so the above
-  // assignment should always work unless something is misconfigured. Just
-  // in case runtime.js accidentally runs in strict mode, we can escape
-  // strict mode using a global Function call. This could conceivably fail
-  // if a Content Security Policy forbids using Function, but in that case
-  // the proper solution is to fix the accidental strict mode problem. If
-  // you've misconfigured your bundler to force strict mode and applied a
-  // CSP to forbid Function, and you're not willing to fix either of those
-  // problems, please detail your unique predicament in a GitHub issue.
-  Function("r", "regeneratorRuntime = r")(runtime);
-}
-
-
-/***/ }),
-
-/***/ "9b43":
-/***/ (function(module, exports, __nested_webpack_require_107080__) {
-
-// optional / simple context binding
-var aFunction = __nested_webpack_require_107080__("d8e8");
-module.exports = function (fn, that, length) {
-  aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
-      return fn.call(that, a);
-    };
-    case 2: return function (a, b) {
-      return fn.call(that, a, b);
-    };
-    case 3: return function (a, b, c) {
-      return fn.call(that, a, b, c);
-    };
-  }
-  return function (/* ...args */) {
-    return fn.apply(that, arguments);
-  };
-};
-
-
-/***/ }),
-
-/***/ "9c6c":
-/***/ (function(module, exports, __nested_webpack_require_107687__) {
-
-// 22.1.3.31 Array.prototype[@@unscopables]
-var UNSCOPABLES = __nested_webpack_require_107687__("2b4c")('unscopables');
-var ArrayProto = Array.prototype;
-if (ArrayProto[UNSCOPABLES] == undefined) __nested_webpack_require_107687__("32e9")(ArrayProto, UNSCOPABLES, {});
-module.exports = function (key) {
-  ArrayProto[UNSCOPABLES][key] = true;
-};
-
-
-/***/ }),
-
-/***/ "9c80":
-/***/ (function(module, exports) {
-
-module.exports = function (exec) {
-  try {
-    return { e: false, v: exec() };
-  } catch (e) {
-    return { e: true, v: e };
-  }
-};
-
-
-/***/ }),
-
-/***/ "9def":
-/***/ (function(module, exports, __nested_webpack_require_108282__) {
-
-// 7.1.15 ToLength
-var toInteger = __nested_webpack_require_108282__("4588");
-var min = Math.min;
-module.exports = function (it) {
-  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-};
-
-
-/***/ }),
-
-/***/ "9e1e":
-/***/ (function(module, exports, __nested_webpack_require_108584__) {
-
-// Thank's IE8 for his funny defineProperty
-module.exports = !__nested_webpack_require_108584__("79e5")(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
-});
-
-
-/***/ }),
-
-/***/ "a159":
-/***/ (function(module, exports, __nested_webpack_require_108860__) {
-
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject = __nested_webpack_require_108860__("e4ae");
-var dPs = __nested_webpack_require_108860__("7e90");
-var enumBugKeys = __nested_webpack_require_108860__("1691");
-var IE_PROTO = __nested_webpack_require_108860__("5559")('IE_PROTO');
-var Empty = function () { /* empty */ };
-var PROTOTYPE = 'prototype';
-
-// Create object with fake `null` prototype: use iframe Object with cleared prototype
-var createDict = function () {
-  // Thrash, waste and sodomy: IE GC bug
-  var iframe = __nested_webpack_require_108860__("1ec9")('iframe');
-  var i = enumBugKeys.length;
-  var lt = '<';
-  var gt = '>';
-  var iframeDocument;
-  iframe.style.display = 'none';
-  __nested_webpack_require_108860__("32fc").appendChild(iframe);
-  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
-  // createDict = iframe.contentWindow.Object;
-  // html.removeChild(iframe);
-  iframeDocument = iframe.contentWindow.document;
-  iframeDocument.open();
-  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
-  iframeDocument.close();
-  createDict = iframeDocument.F;
-  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
-  return createDict();
-};
-
-module.exports = Object.create || function create(O, Properties) {
-  var result;
-  if (O !== null) {
-    Empty[PROTOTYPE] = anObject(O);
-    result = new Empty();
-    Empty[PROTOTYPE] = null;
-    // add "__proto__" for Object.getPrototypeOf polyfill
-    result[IE_PROTO] = O;
-  } else result = createDict();
-  return Properties === undefined ? result : dPs(result, Properties);
-};
-
-
-/***/ }),
-
-/***/ "a22a":
-/***/ (function(module, exports, __nested_webpack_require_110471__) {
-
-var ctx = __nested_webpack_require_110471__("d864");
-var call = __nested_webpack_require_110471__("b0dc");
-var isArrayIter = __nested_webpack_require_110471__("3702");
-var anObject = __nested_webpack_require_110471__("e4ae");
-var toLength = __nested_webpack_require_110471__("b447");
-var getIterFn = __nested_webpack_require_110471__("7cd6");
-var BREAK = {};
-var RETURN = {};
-var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) {
-  var iterFn = ITERATOR ? function () { return iterable; } : getIterFn(iterable);
-  var f = ctx(fn, that, entries ? 2 : 1);
-  var index = 0;
-  var length, step, iterator, result;
-  if (typeof iterFn != 'function') throw TypeError(iterable + ' is not iterable!');
-  // fast case for arrays with default iterator
-  if (isArrayIter(iterFn)) for (length = toLength(iterable.length); length > index; index++) {
-    result = entries ? f(anObject(step = iterable[index])[0], step[1]) : f(iterable[index]);
-    if (result === BREAK || result === RETURN) return result;
-  } else for (iterator = iterFn.call(iterable); !(step = iterator.next()).done;) {
-    result = call(iterator, f, step.value, entries);
-    if (result === BREAK || result === RETURN) return result;
-  }
-};
-exports.BREAK = BREAK;
-exports.RETURN = RETURN;
-
-
-/***/ }),
-
-/***/ "a25f":
-/***/ (function(module, exports, __nested_webpack_require_111743__) {
-
-var global = __nested_webpack_require_111743__("7726");
-var navigator = global.navigator;
-
-module.exports = navigator && navigator.userAgent || '';
-
-
-/***/ }),
-
-/***/ "a5b8":
-/***/ (function(module, exports, __nested_webpack_require_111961__) {
-
-"use strict";
-
-// 25.4.1.5 NewPromiseCapability(C)
-var aFunction = __nested_webpack_require_111961__("d8e8");
-
-function PromiseCapability(C) {
-  var resolve, reject;
-  this.promise = new C(function ($$resolve, $$reject) {
-    if (resolve !== undefined || reject !== undefined) throw TypeError('Bad Promise constructor');
-    resolve = $$resolve;
-    reject = $$reject;
-  });
-  this.resolve = aFunction(resolve);
-  this.reject = aFunction(reject);
-}
-
-module.exports.f = function (C) {
-  return new PromiseCapability(C);
-};
-
-
-/***/ }),
-
-/***/ "aa77":
-/***/ (function(module, exports, __nested_webpack_require_112553__) {
-
-var $export = __nested_webpack_require_112553__("5ca1");
-var defined = __nested_webpack_require_112553__("be13");
-var fails = __nested_webpack_require_112553__("79e5");
-var spaces = __nested_webpack_require_112553__("fdef");
-var space = '[' + spaces + ']';
-var non = '\u200b\u0085';
-var ltrim = RegExp('^' + space + space + '*');
-var rtrim = RegExp(space + space + '*$');
-
-var exporter = function (KEY, exec, ALIAS) {
-  var exp = {};
-  var FORCE = fails(function () {
-    return !!spaces[KEY]() || non[KEY]() != non;
-  });
-  var fn = exp[KEY] = FORCE ? exec(trim) : spaces[KEY];
-  if (ALIAS) exp[ALIAS] = fn;
-  $export($export.P + $export.F * FORCE, 'String', exp);
-};
-
-// 1 -> String#trimLeft
-// 2 -> String#trimRight
-// 3 -> String#trim
-var trim = exporter.trim = function (string, TYPE) {
-  string = String(defined(string));
-  if (TYPE & 1) string = string.replace(ltrim, '');
-  if (TYPE & 2) string = string.replace(rtrim, '');
-  return string;
-};
-
-module.exports = exporter;
-
-
-/***/ }),
-
-/***/ "aba2":
-/***/ (function(module, exports, __nested_webpack_require_113561__) {
-
-var global = __nested_webpack_require_113561__("e53d");
-var macrotask = __nested_webpack_require_113561__("4178").set;
-var Observer = global.MutationObserver || global.WebKitMutationObserver;
-var process = global.process;
-var Promise = global.Promise;
-var isNode = __nested_webpack_require_113561__("6b4c")(process) == 'process';
-
-module.exports = function () {
-  var head, last, notify;
-
-  var flush = function () {
-    var parent, fn;
-    if (isNode && (parent = process.domain)) parent.exit();
-    while (head) {
-      fn = head.fn;
-      head = head.next;
-      try {
-        fn();
-      } catch (e) {
-        if (head) notify();
-        else last = undefined;
-        throw e;
-      }
-    } last = undefined;
-    if (parent) parent.enter();
-  };
-
-  // Node.js
-  if (isNode) {
-    notify = function () {
-      process.nextTick(flush);
-    };
-  // browsers with MutationObserver, except iOS Safari - https://github.com/zloirock/core-js/issues/339
-  } else if (Observer && !(global.navigator && global.navigator.standalone)) {
-    var toggle = true;
-    var node = document.createTextNode('');
-    new Observer(flush).observe(node, { characterData: true }); // eslint-disable-line no-new
-    notify = function () {
-      node.data = toggle = !toggle;
-    };
-  // environments with maybe non-completely correct, but existent Promise
-  } else if (Promise && Promise.resolve) {
-    // Promise.resolve without an argument throws an error in LG WebOS 2
-    var promise = Promise.resolve(undefined);
-    notify = function () {
-      promise.then(flush);
-    };
-  // for other environments - macrotask based on:
-  // - setImmediate
-  // - MessageChannel
-  // - window.postMessag
-  // - onreadystatechange
-  // - setTimeout
-  } else {
-    notify = function () {
-      // strange IE + webpack dev server bug - use .call(global)
-      macrotask.call(global, flush);
-    };
-  }
-
-  return function (fn) {
-    var task = { fn: fn, next: undefined };
-    if (last) last.next = task;
-    if (!head) {
-      head = task;
-      notify();
-    } last = task;
-  };
-};
-
-
-/***/ }),
-
-/***/ "ac6a":
-/***/ (function(module, exports, __nested_webpack_require_115653__) {
-
-var $iterators = __nested_webpack_require_115653__("cadf");
-var getKeys = __nested_webpack_require_115653__("0d58");
-var redefine = __nested_webpack_require_115653__("2aba");
-var global = __nested_webpack_require_115653__("7726");
-var hide = __nested_webpack_require_115653__("32e9");
-var Iterators = __nested_webpack_require_115653__("84f2");
-var wks = __nested_webpack_require_115653__("2b4c");
-var ITERATOR = wks('iterator');
-var TO_STRING_TAG = wks('toStringTag');
-var ArrayValues = Iterators.Array;
-
-var DOMIterables = {
-  CSSRuleList: true, // TODO: Not spec compliant, should be false.
-  CSSStyleDeclaration: false,
-  CSSValueList: false,
-  ClientRectList: false,
-  DOMRectList: false,
-  DOMStringList: false,
-  DOMTokenList: true,
-  DataTransferItemList: false,
-  FileList: false,
-  HTMLAllCollection: false,
-  HTMLCollection: false,
-  HTMLFormElement: false,
-  HTMLSelectElement: false,
-  MediaList: true, // TODO: Not spec compliant, should be false.
-  MimeTypeArray: false,
-  NamedNodeMap: false,
-  NodeList: true,
-  PaintRequestList: false,
-  Plugin: false,
-  PluginArray: false,
-  SVGLengthList: false,
-  SVGNumberList: false,
-  SVGPathSegList: false,
-  SVGPointList: false,
-  SVGStringList: false,
-  SVGTransformList: false,
-  SourceBufferList: false,
-  StyleSheetList: true, // TODO: Not spec compliant, should be false.
-  TextTrackCueList: false,
-  TextTrackList: false,
-  TouchList: false
-};
-
-for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++) {
-  var NAME = collections[i];
-  var explicit = DOMIterables[NAME];
-  var Collection = global[NAME];
-  var proto = Collection && Collection.prototype;
-  var key;
-  if (proto) {
-    if (!proto[ITERATOR]) hide(proto, ITERATOR, ArrayValues);
-    if (!proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
-    Iterators[NAME] = ArrayValues;
-    if (explicit) for (key in $iterators) if (!proto[key]) redefine(proto, key, $iterators[key], true);
-  }
-}
-
-
-/***/ }),
-
-/***/ "aebd":
-/***/ (function(module, exports) {
-
-module.exports = function (bitmap, value) {
-  return {
-    enumerable: !(bitmap & 1),
-    configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
-  };
-};
-
-
-/***/ }),
-
-/***/ "b0dc":
-/***/ (function(module, exports, __nested_webpack_require_117816__) {
-
-// call something on iterator step with safe closing on error
-var anObject = __nested_webpack_require_117816__("e4ae");
-module.exports = function (iterator, fn, value, entries) {
-  try {
-    return entries ? fn(anObject(value)[0], value[1]) : fn(value);
-  // 7.4.6 IteratorClose(iterator, completion)
-  } catch (e) {
-    var ret = iterator['return'];
-    if (ret !== undefined) anObject(ret.call(iterator));
-    throw e;
-  }
-};
-
-
-/***/ }),
-
-/***/ "b447":
-/***/ (function(module, exports, __nested_webpack_require_118314__) {
-
-// 7.1.15 ToLength
-var toInteger = __nested_webpack_require_118314__("3a38");
-var min = Math.min;
-module.exports = function (it) {
-  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-};
-
-
-/***/ }),
-
-/***/ "b8e3":
-/***/ (function(module, exports) {
-
-module.exports = true;
-
-
-/***/ }),
-
-/***/ "bc13":
-/***/ (function(module, exports, __nested_webpack_require_118702__) {
-
-var global = __nested_webpack_require_118702__("e53d");
-var navigator = global.navigator;
-
-module.exports = navigator && navigator.userAgent || '';
-
-
-/***/ }),
-
-/***/ "bcaa":
-/***/ (function(module, exports, __nested_webpack_require_118920__) {
-
-var anObject = __nested_webpack_require_118920__("cb7c");
-var isObject = __nested_webpack_require_118920__("d3f4");
-var newPromiseCapability = __nested_webpack_require_118920__("a5b8");
-
-module.exports = function (C, x) {
-  anObject(C);
-  if (isObject(x) && x.constructor === C) return x;
-  var promiseCapability = newPromiseCapability.f(C);
-  var resolve = promiseCapability.resolve;
-  resolve(x);
-  return promiseCapability.promise;
-};
-
-
-/***/ }),
-
-/***/ "be13":
-/***/ (function(module, exports) {
-
-// 7.2.1 RequireObjectCoercible(argument)
-module.exports = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
-  return it;
-};
-
-
-/***/ }),
-
-/***/ "c03c":
-/***/ (function(module, __webpack_exports__, __nested_webpack_require_119637__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"45bab8f6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueSuggestInput.vue?vue&type=template&id=6bd65ecf&scoped=true&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"rootElement",staticClass:"rnd-container",class:{ 'rnd-state-open': _vm.isShowSuggest || _vm.isShowLoading }},[_c('div',{staticClass:"rnd-input-container"},[_c('div',{staticClass:"rnd-flex"},[_c('div',{staticClass:"rnd-text"},[_c('input',{ref:"inputElement",attrs:{"type":"text"},on:{"input":function($event){return _vm.input()},"focus":function($event){return _vm.focus()},"click":function($event){return _vm.click()},"blur":function($event){return _vm.blur()},"keyup":[function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"up",38,$event.key,["Up","ArrowUp"])){ return null; }return _vm.key('up')},function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"down",40,$event.key,["Down","ArrowDown"])){ return null; }return _vm.key('down')},function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.key('enter')},function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"esc",27,$event.key,["Esc","Escape"])){ return null; }return _vm.key('esc')}],"keypress":function($event){_vm.canEnter = true}}})]),_c('button',{staticClass:"rnd-button",attrs:{"tabindex":"-1"},on:{"blur":function($event){return _vm.blur()}}},[_vm._t("add-on-icon",[_c('svg',{staticClass:"svg-icon",attrs:{"viewBox":"0 0 20 20"}},[_c('path',{attrs:{"fill":"#346DF0","d":"M12.323,2.398c-0.741-0.312-1.523-0.472-2.319-0.472c-2.394,0-4.544,1.423-5.476,3.625C3.907,7.013,3.896,8.629,4.49,10.102c0.528,1.304,1.494,2.333,2.72,2.99L5.467,17.33c-0.113,0.273,0.018,0.59,0.292,0.703c0.068,0.027,0.137,0.041,0.206,0.041c0.211,0,0.412-0.127,0.498-0.334l1.74-4.23c0.583,0.186,1.18,0.309,1.795,0.309c2.394,0,4.544-1.424,5.478-3.629C16.755,7.173,15.342,3.68,12.323,2.398z M14.488,9.77c-0.769,1.807-2.529,2.975-4.49,2.975c-0.651,0-1.291-0.131-1.897-0.387c-0.002-0.004-0.002-0.004-0.002-0.004c-0.003,0-0.003,0-0.003,0s0,0,0,0c-1.195-0.508-2.121-1.452-2.607-2.656c-0.489-1.205-0.477-2.53,0.03-3.727c0.764-1.805,2.525-2.969,4.487-2.969c0.651,0,1.292,0.129,1.898,0.386C14.374,4.438,15.533,7.3,14.488,9.77z"}})])])],2)])]),(_vm.isShowSuggest || _vm.isShowLoading)?_c('div',{staticClass:"rnd-table-container"},[_c('div',{staticClass:"rnd-table"},[_c('div',{staticClass:"rnd-table-t-border"}),(!_vm.isShowLoading)?_c('ul',_vm._l((_vm.suggestItems),function(item,index){return _c('li',{key:index,class:{current: item.current},on:{"mouseover":function($event){return _vm.mouseover(item)},"mouseout":function($event){return _vm.mouseout(item)}}},[_c('div',{staticClass:"rnd-item-container",on:{"click":function($event){return _vm.itemSelect(item)}}},[_vm._t("default",[_c('div',{staticClass:"rnd-item-body"},[_vm._v(_vm._s(item.text))])],{"text":item.text,"current":item.current})],2)])}),0):_vm._e(),(_vm.isShowLoading)?_c('div',{staticClass:"rnd-item-loading"},[_vm._t("loading",[_vm._v("読み込み中...")])],2):_vm._e()])]):_vm._e()])}
-var staticRenderFns = []
-
-
-// CONCATENATED MODULE: ./src/components/VueSuggestInput.vue?vue&type=template&id=6bd65ecf&scoped=true&
-
-// EXTERNAL MODULE: ./node_modules/regenerator-runtime/runtime.js
-var runtime = __nested_webpack_require_119637__("96cf");
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs2/core-js/promise.js
-var promise = __nested_webpack_require_119637__("795b");
-var promise_default = /*#__PURE__*/__nested_webpack_require_119637__.n(promise);
-
-// CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs2/helpers/esm/asyncToGenerator.js
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
-
-  if (info.done) {
-    resolve(value);
-  } else {
-    promise_default.a.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new promise_default.a(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-// EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
-var web_dom_iterable = __nested_webpack_require_119637__("ac6a");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.number.constructor.js
-var es6_number_constructor = __nested_webpack_require_119637__("c5f6");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.promise.js
-var es6_promise = __nested_webpack_require_119637__("551c");
-
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueSuggestInput.vue?vue&type=script&lang=js&
-
-
-
-
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ var VueSuggestInputvue_type_script_lang_js_ = ({
-  props: {
-    value: {
-      default: null
-    },
-    items: {
-      type: [Array, Promise, Function],
-      default: null
-    },
-    maxSuggest: {
-      type: Number,
-      default: 10
-    },
-    filterFunc: {
-      type: [Function],
-      default: null
-    },
-    queryInterval: {
-      type: Number,
-      default: 100
-    },
-    loadingShowDelay: {
-      type: Number,
-      default: 500
-    }
-  },
-  watch: {
-    value: function value(newVal) {
-      if (this.isMounted && this.$refs.inputElement.value != newVal) {
-        this.$refs.inputElement.value = newVal;
-      }
-    }
-  },
-  data: function data() {
-    return {
-      lastSearchTime: 0,
-      searchQueueCount: 0,
-      isShowSuggest: false,
-      suggestItems: [],
-      focusSuppress: false,
-      isShowLoading: false,
-      isMounted: false,
-      canEnter: false
-    };
-  },
-  computed: {
-    currentIndex: function currentIndex() {
-      var currentIndex = -1;
-      this.suggestItems.forEach(function (item, index) {
-        if (item.current) currentIndex = index;
-      });
-      return currentIndex;
-    }
-  },
-  mounted: function mounted() {
-    this.isMounted = true;
-  },
-  methods: {
-    input: function input() {
-      this.openSuggest();
-      this.onInput();
-    },
-    focus: function focus() {
-      //console.log("fff")
-      !this.focusSuppress && this.openSuggest();
-      this.focusSuppress = false;
-    },
-    click: function click() {
-      if (this.searchQueueCount == 0 && !this.isShowSuggest) {
-        this.openSuggest();
-      }
-    },
-    blur: function blur() {
-      var _this = this;
-
-      // console.log("blue")
-      // let elList = document.querySelectorAll(".rnd-container:hover");
-      // for (let i = 0; i < elList.length; i++) {
-      //   if (elList[i] == this.$refs.rootElement) {
-      //     return
-      //   }
-      // }
-      // this.closeSuggest()
-      setTimeout(function () {
-        return _this.closeSuggest();
-      }, 100);
-    },
-    key: function key(keyName) {
-      if (keyName == "enter") {
-        if (this.canEnter && this.isShowSuggest && this.currentIndex >= 0) {
-          this.setCurrentText(true);
-          this.closeSuggest();
-        }
-      } else if (keyName == "up") {
-        this.moveCurrentSuggest(-1);
-      } else if (keyName == "down") {
-        this.moveCurrentSuggest(1);
-      } else if (keyName == "esc") {
-        this.closeSuggest();
-      }
-
-      this.canEnter = false;
-    },
-    mouseover: function mouseover(item) {
-      this.suggestItems.forEach(function (n) {
-        return n.current = false;
-      });
-      item.current = true;
-    },
-    mouseout: function mouseout(item) {
-      item.current = false;
-    },
-    openSuggest: function () {
-      var _openSuggest = _asyncToGenerator(
-      /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee() {
-        var listItems;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.prev = 0;
-                _context.next = 3;
-                return this.queryItems();
-
-              case 3:
-                listItems = _context.sent;
-
-                if (!(listItems == null)) {
-                  _context.next = 6;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 6:
-                this.executeFilter(listItems, this.$refs.inputElement.value);
-                this.suggestItems.forEach(function (n) {
-                  return n.current = false;
-                });
-
-                if (document.activeElement != this.$refs.inputElement) {
-                  this.isShowSuggest = false;
-                } else if (this.suggestItems.length >= 2) {
-                  this.isShowSuggest = true;
-                } else if (this.suggestItems.length == 1 && this.suggestItems[0].text != this.$refs.inputElement.value) {
-                  this.isShowSuggest = true;
-                } else {
-                  this.isShowSuggest = false;
-                }
-
-              case 9:
-                _context.prev = 9;
-                return _context.finish(9);
-
-              case 11:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this, [[0,, 9, 11]]);
-      }));
-
-      function openSuggest() {
-        return _openSuggest.apply(this, arguments);
-      }
-
-      return openSuggest;
-    }(),
-    closeSuggest: function closeSuggest() {
-      this.isShowSuggest = false;
-    },
-    queryItems: function () {
-      var _queryItems = _asyncToGenerator(
-      /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee2() {
-        var _this2 = this;
-
-        var flg, result, w;
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _context2.prev = 0;
-
-                if (!(this.searchQueueCount >= 2)) {
-                  _context2.next = 3;
-                  break;
-                }
-
-                return _context2.abrupt("return", null);
-
-              case 3:
-                this.searchQueueCount++;
-                flg = this.searchQueueCount == 1;
-
-                if (flg) {
-                  _context2.next = 8;
-                  break;
-                }
-
-                _context2.next = 8;
-                return this.wait(this.queryInterval);
-
-              case 8:
-                if (!(typeof this.items === "function")) {
-                  _context2.next = 14;
-                  break;
-                }
-
-                _context2.next = 11;
-                return this.executeFuncQuery();
-
-              case 11:
-                result = _context2.sent;
-                _context2.next = 15;
-                break;
-
-              case 14:
-                result = this.items;
-
-              case 15:
-                if (flg) {
-                  w = this.wait(this.queryInterval);
-                  w.then(function () {
-                    return _this2.searchQueueCount--;
-                  });
-                } else {
-                  this.searchQueueCount--;
-                }
-
-                return _context2.abrupt("return", result);
-
-              case 17:
-                _context2.prev = 17;
-                return _context2.finish(17);
-
-              case 19:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this, [[0,, 17, 19]]);
-      }));
-
-      function queryItems() {
-        return _queryItems.apply(this, arguments);
-      }
-
-      return queryItems;
-    }(),
-    executeFuncQuery: function () {
-      var _executeFuncQuery = _asyncToGenerator(
-      /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee3() {
-        var _this3 = this;
-
-        var result, executingPromiss, data;
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                result = this.items(this.$refs.inputElement.value);
-
-                if (!this.isPromise(result)) {
-                  _context3.next = 11;
-                  break;
-                }
-
-                executingPromiss = true;
-                setTimeout(function () {
-                  _this3.isShowLoading = executingPromiss;
-                }, this.loadingShowDelay);
-                _context3.next = 6;
-                return result;
-
-              case 6:
-                data = _context3.sent;
-                this.isShowLoading = executingPromiss = false;
-                return _context3.abrupt("return", data);
-
-              case 11:
-                return _context3.abrupt("return", result instanceof Array ? result : []);
-
-              case 12:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3, this);
-      }));
-
-      function executeFuncQuery() {
-        return _executeFuncQuery.apply(this, arguments);
-      }
-
-      return executeFuncQuery;
-    }(),
-    executeFilter: function executeFilter(listItems, inputValue) {
-      this.suggestItems.length = 0;
-
-      for (var i = 0; i < listItems.length; i++) {
-        if (this.filterItem(listItems[i], inputValue) === true) {
-          this.suggestItems.push({
-            text: listItems[i],
-            current: false
-          });
-        }
-
-        if (this.suggestItems.length >= this.maxSuggest) break;
-      }
-    },
-    filterItem: function filterItem(item, inputValue) {
-      if (typeof this.filterFunc === "function") {
-        return this.filterFunc(item, inputValue);
-      } else if (typeof this.items === "function") {
-        return true;
-      } else {
-        if (inputValue && inputValue.trim().length === 0) return true;
-        return item.toUpperCase().indexOf(inputValue.toUpperCase()) >= 0;
-      }
-    },
-    isPromise: function isPromise(obj) {
-      return obj instanceof Promise || obj && typeof obj.then === 'function';
-    },
-    itemSelect: function itemSelect(item) {
-      var _this4 = this;
-
-      this.$refs.inputElement.value = item.text;
-      this.closeSuggest();
-      this.focusSuppress = true;
-      setTimeout(function () {
-        _this4.$refs.inputElement.focus();
-
-        _this4.onInput();
-
-        _this4.onSearch();
-      }, 0);
-    },
-    moveCurrentSuggest: function moveCurrentSuggest(move) {
-      if (this.suggestItems.length <= 0) return;
-      var currentIndex = this.currentIndex;
-      currentIndex += move;
-      if (currentIndex < 0) currentIndex = this.suggestItems.length - 1;
-      if (currentIndex >= this.suggestItems.length) currentIndex = 0;
-      this.suggestItems.forEach(function (item, index) {
-        item.current = index == currentIndex;
-      });
-      this.setCurrentText();
-    },
-    setCurrentText: function setCurrentText(raiseEvent) {
-      var _this5 = this;
-
-      if (this.currentIndex >= 0) {
-        this.$refs.inputElement.value = this.suggestItems[this.currentIndex].text;
-        var pos = this.$refs.inputElement.value.length;
-        setTimeout(function () {
-          _this5.$refs.inputElement.setSelectionRange(pos, pos);
-
-          _this5.onInput();
-
-          if (raiseEvent === true) {
-            _this5.onSearch();
-          }
-        }, 1);
-      }
-    },
-    onSearch: function onSearch() {
-      this.$emit('search');
-    },
-    onInput: function onInput() {
-      this.$emit('input', this.$refs.inputElement.value);
-    },
-    wait: function wait(interval) {
-      return new Promise(function (resolve) {
-        setTimeout(function () {
-          resolve();
-        }, interval);
-      });
-    }
-  }
-});
-// CONCATENATED MODULE: ./src/components/VueSuggestInput.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_VueSuggestInputvue_type_script_lang_js_ = (VueSuggestInputvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/components/VueSuggestInput.vue?vue&type=style&index=0&id=6bd65ecf&scoped=true&lang=css&
-var VueSuggestInputvue_type_style_index_0_id_6bd65ecf_scoped_true_lang_css_ = __nested_webpack_require_119637__("40cd");
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode /* vue-cli only */
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-// CONCATENATED MODULE: ./src/components/VueSuggestInput.vue
-
-
-
-
-
-
-/* normalize component */
-
-var component = normalizeComponent(
-  components_VueSuggestInputvue_type_script_lang_js_,
-  render,
-  staticRenderFns,
-  false,
-  null,
-  "6bd65ecf",
-  null
-  
-)
-
-/* harmony default export */ var VueSuggestInput = __webpack_exports__["a"] = (component.exports);
-
-/***/ }),
-
-/***/ "c207":
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-
-/***/ "c366":
-/***/ (function(module, exports, __nested_webpack_require_139723__) {
-
-// false -> Array#indexOf
-// true  -> Array#includes
-var toIObject = __nested_webpack_require_139723__("6821");
-var toLength = __nested_webpack_require_139723__("9def");
-var toAbsoluteIndex = __nested_webpack_require_139723__("77f1");
-module.exports = function (IS_INCLUDES) {
-  return function ($this, el, fromIndex) {
-    var O = toIObject($this);
-    var length = toLength(O.length);
-    var index = toAbsoluteIndex(fromIndex, length);
-    var value;
-    // Array#includes uses SameValueZero equality algorithm
-    // eslint-disable-next-line no-self-compare
-    if (IS_INCLUDES && el != el) while (length > index) {
-      value = O[index++];
-      // eslint-disable-next-line no-self-compare
-      if (value != value) return true;
-    // Array#indexOf ignores holes, Array#includes - not
-    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
-      if (O[index] === el) return IS_INCLUDES || index || 0;
-    } return !IS_INCLUDES && -1;
-  };
-};
-
-
-/***/ }),
-
-/***/ "c367":
-/***/ (function(module, exports, __nested_webpack_require_140734__) {
-
-"use strict";
-
-var addToUnscopables = __nested_webpack_require_140734__("8436");
-var step = __nested_webpack_require_140734__("50ed");
-var Iterators = __nested_webpack_require_140734__("481b");
-var toIObject = __nested_webpack_require_140734__("36c3");
-
-// 22.1.3.4 Array.prototype.entries()
-// 22.1.3.13 Array.prototype.keys()
-// 22.1.3.29 Array.prototype.values()
-// 22.1.3.30 Array.prototype[@@iterator]()
-module.exports = __nested_webpack_require_140734__("30f1")(Array, 'Array', function (iterated, kind) {
-  this._t = toIObject(iterated); // target
-  this._i = 0;                   // next index
-  this._k = kind;                // kind
-// 22.1.5.2.1 %ArrayIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var kind = this._k;
-  var index = this._i++;
-  if (!O || index >= O.length) {
-    this._t = undefined;
-    return step(1);
-  }
-  if (kind == 'keys') return step(0, index);
-  if (kind == 'values') return step(0, O[index]);
-  return step(0, [index, O[index]]);
-}, 'values');
-
-// argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
-Iterators.Arguments = Iterators.Array;
-
-addToUnscopables('keys');
-addToUnscopables('values');
-addToUnscopables('entries');
-
-
-/***/ }),
-
-/***/ "c3a1":
-/***/ (function(module, exports, __nested_webpack_require_141943__) {
-
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = __nested_webpack_require_141943__("e6f3");
-var enumBugKeys = __nested_webpack_require_141943__("1691");
-
-module.exports = Object.keys || function keys(O) {
-  return $keys(O, enumBugKeys);
-};
-
-
-/***/ }),
-
-/***/ "c5f6":
-/***/ (function(module, exports, __nested_webpack_require_142242__) {
-
-"use strict";
-
-var global = __nested_webpack_require_142242__("7726");
-var has = __nested_webpack_require_142242__("69a8");
-var cof = __nested_webpack_require_142242__("2d95");
-var inheritIfRequired = __nested_webpack_require_142242__("5dbc");
-var toPrimitive = __nested_webpack_require_142242__("6a99");
-var fails = __nested_webpack_require_142242__("79e5");
-var gOPN = __nested_webpack_require_142242__("9093").f;
-var gOPD = __nested_webpack_require_142242__("11e9").f;
-var dP = __nested_webpack_require_142242__("86cc").f;
-var $trim = __nested_webpack_require_142242__("aa77").trim;
-var NUMBER = 'Number';
-var $Number = global[NUMBER];
-var Base = $Number;
-var proto = $Number.prototype;
-// Opera ~12 has broken Object#toString
-var BROKEN_COF = cof(__nested_webpack_require_142242__("2aeb")(proto)) == NUMBER;
-var TRIM = 'trim' in String.prototype;
-
-// 7.1.3 ToNumber(argument)
-var toNumber = function (argument) {
-  var it = toPrimitive(argument, false);
-  if (typeof it == 'string' && it.length > 2) {
-    it = TRIM ? it.trim() : $trim(it, 3);
-    var first = it.charCodeAt(0);
-    var third, radix, maxCode;
-    if (first === 43 || first === 45) {
-      third = it.charCodeAt(2);
-      if (third === 88 || third === 120) return NaN; // Number('+0x1') should be NaN, old V8 fix
-    } else if (first === 48) {
-      switch (it.charCodeAt(1)) {
-        case 66: case 98: radix = 2; maxCode = 49; break; // fast equal /^0b[01]+$/i
-        case 79: case 111: radix = 8; maxCode = 55; break; // fast equal /^0o[0-7]+$/i
-        default: return +it;
-      }
-      for (var digits = it.slice(2), i = 0, l = digits.length, code; i < l; i++) {
-        code = digits.charCodeAt(i);
-        // parseInt parses a string to a first unavailable symbol
-        // but ToNumber should return NaN if a string contains unavailable symbols
-        if (code < 48 || code > maxCode) return NaN;
-      } return parseInt(digits, radix);
-    }
-  } return +it;
-};
-
-if (!$Number(' 0o1') || !$Number('0b1') || $Number('+0x1')) {
-  $Number = function Number(value) {
-    var it = arguments.length < 1 ? 0 : value;
-    var that = this;
-    return that instanceof $Number
-      // check on 1..constructor(foo) case
-      && (BROKEN_COF ? fails(function () { proto.valueOf.call(that); }) : cof(that) != NUMBER)
-        ? inheritIfRequired(new Base(toNumber(it)), that, $Number) : toNumber(it);
-  };
-  for (var keys = __nested_webpack_require_142242__("9e1e") ? gOPN(Base) : (
-    // ES3:
-    'MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,' +
-    // ES6 (in case, if modules with ES6 Number statics required before):
-    'EPSILON,isFinite,isInteger,isNaN,isSafeInteger,MAX_SAFE_INTEGER,' +
-    'MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger'
-  ).split(','), j = 0, key; keys.length > j; j++) {
-    if (has(Base, key = keys[j]) && !has($Number, key)) {
-      dP($Number, key, gOPD(Base, key));
-    }
-  }
-  $Number.prototype = proto;
-  proto.constructor = $Number;
-  __nested_webpack_require_142242__("2aba")(global, NUMBER, $Number);
-}
-
-
-/***/ }),
-
-/***/ "c69a":
-/***/ (function(module, exports, __nested_webpack_require_145167__) {
-
-module.exports = !__nested_webpack_require_145167__("9e1e") && !__nested_webpack_require_145167__("79e5")(function () {
-  return Object.defineProperty(__nested_webpack_require_145167__("230e")('div'), 'a', { get: function () { return 7; } }).a != 7;
-});
-
-
-/***/ }),
-
-/***/ "c8ba":
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-
-/***/ "ca5a":
-/***/ (function(module, exports) {
-
-var id = 0;
-var px = Math.random();
-module.exports = function (key) {
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-};
-
-
-/***/ }),
-
-/***/ "cadf":
-/***/ (function(module, exports, __nested_webpack_require_146223__) {
-
-"use strict";
-
-var addToUnscopables = __nested_webpack_require_146223__("9c6c");
-var step = __nested_webpack_require_146223__("d53b");
-var Iterators = __nested_webpack_require_146223__("84f2");
-var toIObject = __nested_webpack_require_146223__("6821");
-
-// 22.1.3.4 Array.prototype.entries()
-// 22.1.3.13 Array.prototype.keys()
-// 22.1.3.29 Array.prototype.values()
-// 22.1.3.30 Array.prototype[@@iterator]()
-module.exports = __nested_webpack_require_146223__("01f9")(Array, 'Array', function (iterated, kind) {
-  this._t = toIObject(iterated); // target
-  this._i = 0;                   // next index
-  this._k = kind;                // kind
-// 22.1.5.2.1 %ArrayIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var kind = this._k;
-  var index = this._i++;
-  if (!O || index >= O.length) {
-    this._t = undefined;
-    return step(1);
-  }
-  if (kind == 'keys') return step(0, index);
-  if (kind == 'values') return step(0, O[index]);
-  return step(0, [index, O[index]]);
-}, 'values');
-
-// argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
-Iterators.Arguments = Iterators.Array;
-
-addToUnscopables('keys');
-addToUnscopables('values');
-addToUnscopables('entries');
-
-
-/***/ }),
-
-/***/ "cb7c":
-/***/ (function(module, exports, __nested_webpack_require_147432__) {
-
-var isObject = __nested_webpack_require_147432__("d3f4");
-module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
-  return it;
-};
-
-
-/***/ }),
-
-/***/ "cd78":
-/***/ (function(module, exports, __nested_webpack_require_147674__) {
-
-var anObject = __nested_webpack_require_147674__("e4ae");
-var isObject = __nested_webpack_require_147674__("f772");
-var newPromiseCapability = __nested_webpack_require_147674__("656e");
-
-module.exports = function (C, x) {
-  anObject(C);
-  if (isObject(x) && x.constructor === C) return x;
-  var promiseCapability = newPromiseCapability.f(C);
-  var resolve = promiseCapability.resolve;
-  resolve(x);
-  return promiseCapability.promise;
-};
-
-
-/***/ }),
-
-/***/ "ce10":
-/***/ (function(module, exports, __nested_webpack_require_148154__) {
-
-var has = __nested_webpack_require_148154__("69a8");
-var toIObject = __nested_webpack_require_148154__("6821");
-var arrayIndexOf = __nested_webpack_require_148154__("c366")(false);
-var IE_PROTO = __nested_webpack_require_148154__("613b")('IE_PROTO');
-
-module.exports = function (object, names) {
-  var O = toIObject(object);
-  var i = 0;
-  var result = [];
-  var key;
-  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
-  // Don't enum bug & hidden keys
-  while (names.length > i) if (has(O, key = names[i++])) {
-    ~arrayIndexOf(result, key) || result.push(key);
-  }
-  return result;
-};
-
-
-/***/ }),
-
-/***/ "d3f4":
-/***/ (function(module, exports) {
-
-module.exports = function (it) {
-  return typeof it === 'object' ? it !== null : typeof it === 'function';
-};
-
-
-/***/ }),
-
-/***/ "d53b":
-/***/ (function(module, exports) {
-
-module.exports = function (done, value) {
-  return { value: value, done: !!done };
-};
-
-
-/***/ }),
-
-/***/ "d864":
-/***/ (function(module, exports, __nested_webpack_require_149112__) {
-
-// optional / simple context binding
-var aFunction = __nested_webpack_require_149112__("79aa");
-module.exports = function (fn, that, length) {
-  aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
-      return fn.call(that, a);
-    };
-    case 2: return function (a, b) {
-      return fn.call(that, a, b);
-    };
-    case 3: return function (a, b, c) {
-      return fn.call(that, a, b, c);
-    };
-  }
-  return function (/* ...args */) {
-    return fn.apply(that, arguments);
-  };
-};
-
-
-/***/ }),
-
-/***/ "d8e8":
-/***/ (function(module, exports) {
-
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
-  return it;
-};
-
-
-/***/ }),
-
-/***/ "d9f6":
-/***/ (function(module, exports, __nested_webpack_require_149907__) {
-
-var anObject = __nested_webpack_require_149907__("e4ae");
-var IE8_DOM_DEFINE = __nested_webpack_require_149907__("794b");
-var toPrimitive = __nested_webpack_require_149907__("1bc3");
-var dP = Object.defineProperty;
-
-exports.f = __nested_webpack_require_149907__("8e60") ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  anObject(O);
-  P = toPrimitive(P, true);
-  anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
-    return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
-  return O;
-};
-
-
-/***/ }),
-
-/***/ "dbdb":
-/***/ (function(module, exports, __nested_webpack_require_150597__) {
-
-var core = __nested_webpack_require_150597__("584a");
-var global = __nested_webpack_require_150597__("e53d");
-var SHARED = '__core-js_shared__';
-var store = global[SHARED] || (global[SHARED] = {});
-
-(module.exports = function (key, value) {
-  return store[key] || (store[key] = value !== undefined ? value : {});
-})('versions', []).push({
-  version: core.version,
-  mode: __nested_webpack_require_150597__("b8e3") ? 'pure' : 'global',
-  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
-});
-
-
-/***/ }),
-
-/***/ "dcbc":
-/***/ (function(module, exports, __nested_webpack_require_151130__) {
-
-var redefine = __nested_webpack_require_151130__("2aba");
-module.exports = function (target, src, safe) {
-  for (var key in src) redefine(target, key, src[key], safe);
-  return target;
-};
-
-
-/***/ }),
-
-/***/ "e11e":
-/***/ (function(module, exports) {
-
-// IE 8- don't enum bug keys
-module.exports = (
-  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
-).split(',');
-
-
-/***/ }),
-
-/***/ "e4ae":
-/***/ (function(module, exports, __nested_webpack_require_151611__) {
-
-var isObject = __nested_webpack_require_151611__("f772");
-module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
-  return it;
-};
-
-
-/***/ }),
-
-/***/ "e53d":
-/***/ (function(module, exports) {
-
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
-
-/***/ }),
-
-/***/ "e6f3":
-/***/ (function(module, exports, __nested_webpack_require_152285__) {
-
-var has = __nested_webpack_require_152285__("07e3");
-var toIObject = __nested_webpack_require_152285__("36c3");
-var arrayIndexOf = __nested_webpack_require_152285__("5b4e")(false);
-var IE_PROTO = __nested_webpack_require_152285__("5559")('IE_PROTO');
-
-module.exports = function (object, names) {
-  var O = toIObject(object);
-  var i = 0;
-  var result = [];
-  var key;
-  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
-  // Don't enum bug & hidden keys
-  while (names.length > i) if (has(O, key = names[i++])) {
-    ~arrayIndexOf(result, key) || result.push(key);
-  }
-  return result;
-};
-
-
-/***/ }),
-
-/***/ "ebd6":
-/***/ (function(module, exports, __nested_webpack_require_152921__) {
-
-// 7.3.20 SpeciesConstructor(O, defaultConstructor)
-var anObject = __nested_webpack_require_152921__("cb7c");
-var aFunction = __nested_webpack_require_152921__("d8e8");
-var SPECIES = __nested_webpack_require_152921__("2b4c")('species');
-module.exports = function (O, D) {
-  var C = anObject(O).constructor;
-  var S;
-  return C === undefined || (S = anObject(C)[SPECIES]) == undefined ? D : aFunction(S);
-};
-
-
-/***/ }),
-
-/***/ "f201":
-/***/ (function(module, exports, __nested_webpack_require_153370__) {
-
-// 7.3.20 SpeciesConstructor(O, defaultConstructor)
-var anObject = __nested_webpack_require_153370__("e4ae");
-var aFunction = __nested_webpack_require_153370__("79aa");
-var SPECIES = __nested_webpack_require_153370__("5168")('species');
-module.exports = function (O, D) {
-  var C = anObject(O).constructor;
-  var S;
-  return C === undefined || (S = anObject(C)[SPECIES]) == undefined ? D : aFunction(S);
-};
-
-
-/***/ }),
-
-/***/ "f605":
-/***/ (function(module, exports) {
-
-module.exports = function (it, Constructor, name, forbiddenField) {
-  if (!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)) {
-    throw TypeError(name + ': incorrect invocation!');
-  } return it;
-};
-
-
-/***/ }),
-
-/***/ "f6fd":
-/***/ (function(module, exports) {
-
-// document.currentScript polyfill by Adam Miller
-
-// MIT license
-
-(function(document){
-  var currentScript = "currentScript",
-      scripts = document.getElementsByTagName('script'); // Live NodeList collection
-
-  // If browser needs currentScript polyfill, add get currentScript() to the document object
-  if (!(currentScript in document)) {
-    Object.defineProperty(document, currentScript, {
-      get: function(){
-
-        // IE 6-10 supports script readyState
-        // IE 10+ support stack trace
-        try { throw new Error(); }
-        catch (err) {
-
-          // Find the second match for the "at" string to get file src url from stack.
-          // Specifically works with the format of stack traces in IE.
-          var i, res = ((/.*at [^\(]*\((.*):.+:.+\)$/ig).exec(err.stack) || [false])[1];
-
-          // For all scripts on the page, if src matches or if ready state is interactive, return the script tag
-          for(i in scripts){
-            if(scripts[i].src == res || scripts[i].readyState == "interactive"){
-              return scripts[i];
-            }
-          }
-
-          // If no match, return null
-          return null;
-        }
-      }
-    });
-  }
-})(document);
-
-
-/***/ }),
-
-/***/ "f772":
-/***/ (function(module, exports) {
-
-module.exports = function (it) {
-  return typeof it === 'object' ? it !== null : typeof it === 'function';
-};
-
-
-/***/ }),
-
-/***/ "fa5b":
-/***/ (function(module, exports, __nested_webpack_require_155554__) {
-
-module.exports = __nested_webpack_require_155554__("5537")('native-function-to-string', Function.toString);
-
-
-/***/ }),
-
-/***/ "fab2":
-/***/ (function(module, exports, __nested_webpack_require_155732__) {
-
-var document = __nested_webpack_require_155732__("7726").document;
-module.exports = document && document.documentElement;
-
-
-/***/ }),
-
-/***/ "fb15":
-/***/ (function(module, __webpack_exports__, __nested_webpack_require_155936__) {
-
-"use strict";
-__nested_webpack_require_155936__.r(__webpack_exports__);
-
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
-// This file is imported into lib/wc client bundles.
-
-if (typeof window !== 'undefined') {
-  if (true) {
-    __nested_webpack_require_155936__("f6fd")
-  }
-
-  var i
-  if ((i = window.document.currentScript) && (i = i.src.match(/(.+\/)[^/]+\.js(\?.*)?$/))) {
-    __nested_webpack_require_155936__.p = i[1] // eslint-disable-line
-  }
-}
-
-// Indicate to webpack that this file can be concatenated
-/* harmony default export */ var setPublicPath = (null);
-
-// EXTERNAL MODULE: ./src/library-main.js
-var library_main = __nested_webpack_require_155936__("46c2");
-
-// CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/entry-lib.js
-/* concated harmony reexport install */__nested_webpack_require_155936__.d(__webpack_exports__, "install", function() { return library_main["b" /* install */]; });
-
-
-/* harmony default export */ var entry_lib = __webpack_exports__["default"] = (library_main["a" /* default */]);
-
-
-
-/***/ }),
-
-/***/ "fdef":
-/***/ (function(module, exports) {
-
-module.exports = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003' +
-  '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
-
-
-/***/ })
-
-/******/ });
-//# sourceMappingURL=vue-suggest-input.common.js.map
 
 /***/ }),
 

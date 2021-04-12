@@ -5,14 +5,15 @@
             <NavbarTop />
             <NavbarTopHamburger />
         </div>
-        <div class="container h-100 pt-4 px-1" style="padding-bottom: 5rem">
+        <div class="container h-100 pt-3 px-1">
             <RouterView />
+            <div class="module_spacer-lg"></div>
         </div>
     </section>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
 import Navbar from "./common/Navbar";
 import NavbarTop from "./common/NavbarTop";
 import NavbarTopHamburger from "./common/NavbarTopHamburger";
@@ -22,20 +23,11 @@ export default {
         NavbarTop,
         NavbarTopHamburger,
     },
-    name: "App",
-    props: [],
-    data() {
-        return {};
-    },
-    created() {},
-    mounted() {
-        console.log(this.userData.loggedIn);
-    },
     computed: {
         ...mapGetters({
             userData: "getUserData",
         }),
     },
-    methods: {},
+    name: "App",
 };
 </script>

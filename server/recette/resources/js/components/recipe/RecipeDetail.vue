@@ -3,13 +3,6 @@
         <div class="wrapper-recipe_detail">
             <ReturnButton :props-function="routerBack" />
             <h5>レシピ詳細</h5>
-            <!-- <BreadCrumb
-                class="breadcrumb-component"
-                :bread-crumb-list="breadCrumbList"
-                :paramsType="'recipeId'"
-                :params="selectedRecipeId"
-            /> -->
-
             <div class="text-right">
                 <router-link
                     :to="{
@@ -26,7 +19,7 @@
                     <img
                         class="w-100"
                         :src="selectedRecipe[0].recipe_image_path"
-                        alt=""
+                        alt="選択したレシピの画像"
                     />
 
                     <p class="">
@@ -59,7 +52,7 @@
                     <span>作り方</span>
 
                     <span
-                        v-if="selectedRecipe[0].recipe_url != null"
+                        v-if="selectedRecipe[0].recipe_url != ''"
                         class="color-link_menu"
                     >
                         <a
@@ -80,7 +73,15 @@
                             .recipe_procedure"
                         :key="recipeProcedure.toString(index)"
                     >
-                        <li>{{ index + 1 }}.{{ recipeProcedure }}</li>
+                        <li>
+                            <span
+                                v-if="
+                                    selectedRecipe[0].recipe_procedure.length >
+                                    0
+                                "
+                                >{{ index + 1 }}</span
+                            >.{{ recipeProcedure }}
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -97,57 +98,28 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
-import utilsMixin from "../../mixin/utility";
+import { mapGetters } from "vuex";
 import ReturnButton from "../parts/ReturnButton";
-import BreadCrumb from "../common/BreadcrumbTrail";
+import utilsMixin from "../../mixin/utility";
 export default {
-    name: "RecipeDetail",
-    props: [],
-    mixins: [utilsMixin],
     components: {
         ReturnButton,
-        BreadCrumb,
     },
-    data() {
-        return {
-            breadCrumbList: [
-                {
-                    id: 1,
-                    name: "ホーム",
-                    linkName: "recipes",
-                },
-                {
-                    id: 2,
-                    name: "レシピ詳細",
-                    linkName: "recipeDetail",
-                },
-            ],
-        };
-    },
+    mixins: [utilsMixin],
+    name: "RecipeDetail",
     computed: {
+        ...mapGetters({
+            recipes: "getRecipes",
+        }),
         selectedRecipeId() {
             const recipeId = window.location.pathname.split("/recipes/")[1];
             return recipeId;
         },
-
-        ...mapGetters({
-            userData: "getUserData",
-            recipes: "getRecipes",
-        }),
         selectedRecipe() {
             return this.recipes.filter(
                 (recipe) => recipe.id == this.selectedRecipeId
             );
         },
-    },
-    mounted() {
-        console.log(this.selectedRecipe);
-    },
-    methods: {
-        // routerBack() {
-        //     this.$router.back();
-        // },
     },
 };
 </script>

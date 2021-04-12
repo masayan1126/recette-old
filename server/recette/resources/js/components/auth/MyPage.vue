@@ -2,9 +2,16 @@
     <section class="section-mypage h-100">
         <ReturnButton :props-function="routerBack" />
         <Modal
-            :contents="contents"
-            :style="style"
-            :props-function="propsFunction"
+            :input-contents="contents.inputContents"
+            :input-style="style.inputContentsStyle"
+            :image-preview-contents="
+                contents.imagePreviewContentsForProfileImage
+            "
+            :modal-contents="contents.modalContents"
+            :modal-style="style.modalStyle"
+            :modal-set-function="contents.modalContents.modalSetFunction"
+            :modal-submit-function="contents.modalContents.modalSubmitFunction"
+            :unnecessary-element-style="style.unnecessaryElementStyle"
         />
         <div
             class="wrapper-mypage mt-5 mt-sm-0 align-items-center d-flex justify-content-center"
@@ -17,7 +24,11 @@
                 >
                     <i class="far fa-edit mr-1"></i>編集する
                 </p>
-                <i class="fas fa-user-circle fa-6x"></i>
+                <img
+                    alt="プロフィール画像"
+                    class="w-50"
+                    :src="userData.profileImagePath"
+                />
                 <p class="mb-0">ユーザー名：{{ userData.userName }}</p>
                 <p class="mb-0">
                     メールアドレス：{{ userData.userEmailAdress }}
@@ -28,45 +39,28 @@
     </section>
 </template>
 <script>
-import { mapGetters, mapMutations } from "vuex";
-import utilsMixin from "../../mixin/utility";
-import ReturnButton from "../parts/ReturnButton";
+import { mapGetters, mapActions } from "vuex";
 import Modal from "../parts/Modal";
+import ReturnButton from "../parts/ReturnButton";
+import utilsMixin from "../../mixin/utility";
 export default {
     components: {
-        ReturnButton,
         Modal,
+        ReturnButton,
     },
     mixins: [utilsMixin],
     data() {
         return {
-            // modalContents: {
-            //     newUserData: {
-            //         userId: null,
-            //         userName: "",
-            //         userEmailAdress: null,
-            //         profileImagePath: null,
-            //     },
-            //     modalStyle: {
-            //         backgroundColor: "#454545",
-            //     },
-            //     inputContents: {
-            //         profileImage: "ユーザー画像",
-            //         userName: "ユーザーネーム",
-            //         email: "メールアドレス",
-            //     },
-            //     inputContentsStyle: {
-            //         width: "100%",
-            //     },
-            // },
             contents: {
                 modalContents: {
                     modalTitle: "ユーザー情報の編集",
+                    modalSetFunction: null,
+                    modalSubmitFunction: this.updateProfileData,
                 },
                 inputContents: {
                     label: {
                         one: { id: "input-username", name: "ユーザーネーム" },
-                        two: { id: "input-mail", name: "メールアドレス" },
+                        two: { id: "input-email", name: "メールアドレス" },
                     },
                     input: {
                         one: {
@@ -75,56 +69,69 @@ export default {
                             type: "text",
                         },
                         two: {
-                            id: "input-mail",
+                            id: "input-email",
                             value: "",
                             type: "email",
                         },
                     },
+                },
+                imagePreviewContentsForProfileImage: {
+                    defaultImage: null,
+                    fileId: "profile-image-file",
+                    fileName: "profile-image-file",
+                    uploadLinkTitle: "プロフィール画像選択",
                 },
             },
             style: {
                 modalStyle: {
                     backgroundColor: "#454545",
                 },
-                unnecessaryElementStyle: {
-                    // display: "none !important",
-                },
+                unnecessaryElementStyle: null,
                 inputContentsStyle: {
                     width: "100%",
                 },
             },
-            propsFunction: {
-                initInputValue: this.initInputValue,
-            },
         };
-    },
-    mounted() {
-        console.log(this.userData);
     },
     computed: {
         ...mapGetters({
-            userData: "getUserData",
             recipes: "getRecipes",
+            userData: "getUserData",
         }),
     },
+    created() {
+        this.setProfileData();
+    },
     methods: {
-        ...mapMutations(["setUserData"]),
-        initInputValue() {
-            this.contents.inputContents.input.one.value = "";
-            this.contents.inputContents.input.two.value = "";
+        ...mapActions(["setUserData"]),
+        setProfileData() {
+            this.contents.inputContents.input.one.value = this.userData.userName;
+            this.contents.inputContents.input.two.value = this.userData.userEmailAdress;
+            this.contents.imagePreviewContentsForProfileImage.defaultImage = this.userData.profileImagePath;
         },
-        updateUserData() {
+        updateProfileData() {
+            let formData = new FormData();
+            const file = document.getElementById("profile-image-file");
+            const url = "/api/account/" + this.userData.userId + "/edit";
+            formData.append("profile-image-file", file.files[0]);
+            const newUserData = {
+                userName: this.contents.inputContents.input.one.value,
+                email: this.contents.inputContents.input.two.value,
+            };
+            formData.append("newUserData", JSON.stringify(newUserData));
+
             axios
-                .put("/api/account/" + this.userData.userId + "/edit", {
-                    newUserData: this.newUserData,
-                    userName: this.newUserData.userName,
+                .post(url, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "X-HTTP-Method-Override": "PUT",
+                    },
                 })
-                .then((response) => {
-                    console.log(response);
-                    this.setUserData(response.data);
+                .then((res) => {
+                    this.setUserData(res.data);
                 })
-                .catch((err) => {
-                    console.log(err);
+                .catch((error) => {
+                    console.log(error);
                 });
         },
     },

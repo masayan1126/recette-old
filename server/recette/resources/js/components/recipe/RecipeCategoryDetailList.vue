@@ -2,9 +2,6 @@
     <section class="section-recipe_category_detail_list">
         <div class="wrapper-recipe_category_detail_list">
             <ReturnButton :props-function="routerBack" />
-            <!-- ぱんくずリスト -->
-            <!-- <BreadCrumb class="breadcrumb-component" /> -->
-
             <div class="mb-4 mt-4">
                 <h5>
                     カテゴリーから探す/
@@ -13,23 +10,19 @@
                     }}</span>
                 </h5>
                 <div class="container-recipe_category_detail_list mt-4">
-                    <ul
-                        class="d-flex justify-content-between align-items-center w-100"
-                        style="border-bottom: 1px solid #c4c4c4"
-                        v-for="selectedRecipe in selectedRecipeCategoryList"
-                        :key="selectedRecipe.id"
-                        @click.prevent="
-                            showRecipeCategoryDetail(selectedRecipe.id)
-                        "
-                    >
+                    <ul class="w-100">
                         <li
-                            class="d-flex justify-content-between align-items-center py-2"
+                            class="d-flex justify-content-between align-items-center py-3"
+                            @click.prevent="showRecipeDetail(selectedRecipe.id)"
+                            v-for="selectedRecipe in selectedRecipeCategoryList"
+                            :key="selectedRecipe.id"
+                            style="border-bottom: 1px solid #c4c4c4"
                         >
                             <div>
                                 <img
-                                    :src="selectedRecipe.recipe_image_path"
                                     alt="選択されたカテゴリーのレシピ画像"
                                     class="element-category_image-recipe_category_detail_list"
+                                    :src="selectedRecipe.recipe_image_path"
                                 />
                                 {{ selectedRecipe.recipe_name }}
                             </div>
@@ -42,53 +35,40 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
 import BreadCrumb from "../common/BreadcrumbTrail";
 import ReturnButton from "../parts/ReturnButton";
 import utilsMixin from "../../mixin/utility";
 
 export default {
-    name: "RecipeCategoryDetailList",
-    props: ["categoryName"],
-    mixins: [utilsMixin],
     components: { BreadCrumb, ReturnButton },
-    data() {
-        return {
-            // 初期データの食材リスト登録状況に応じてトーストの表示を切り替えるためのフラグ
-        };
-    },
+    name: "RecipeCategoryDetailList",
+    mixins: [utilsMixin],
     computed: {
-        selectedRecipeCategoryList() {
-            const id = window.location.pathname.split("/recipes/category/")[1];
-            return this.recipes.filter(
-                (recipe) => recipe.recipe_category_sub == id
-            );
-        },
         ...mapGetters({
             recipes: "getRecipes",
-            userData: "getData",
-            recipeIngredientList: "getRecipeIngredientList",
-            isEditingIngredient: "getIsEditingRecipeIngredient",
-            editingIngredientIndex: "getEditingRecipeIngredientIndex",
         }),
-    },
-    mounted() {
-        const id = window.location.pathname.split("/recipes/category/")[1];
-        this.selectedCategoryName = this.categoryName;
-        console.log(this.selectedRecipeCategoryList);
+        selectedCategoryName() {
+            const categoryName = window.location.pathname.split(
+                "/recipes/category/"
+            )[1];
+            return categoryName;
+        },
+        selectedRecipeCategoryList() {
+            return this.recipes.filter(
+                (recipe) =>
+                    recipe.recipe_category_sub == this.selectedCategoryName
+            );
+        },
     },
     methods: {
-        showRecipeCategoryDetail(recipeId) {
+        showRecipeDetail(recipeId) {
             this.$router.push({
                 name: "recipeDetail",
                 params: {
                     recipeId: recipeId,
                 },
             });
-        },
-        ...mapMutations([]),
-        goToPreviousPage() {
-            this.$router.back();
         },
     },
 };

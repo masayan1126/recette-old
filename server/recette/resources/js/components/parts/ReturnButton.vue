@@ -1,5 +1,5 @@
 <template>
-    <div @click="propsFunction" class="d-sm-none">
+    <div class="d-sm-none" @click="propsFunction">
         <i class="fas fa-angle-left fa-2x"></i>
         <hr />
     </div>
@@ -9,11 +9,5 @@
 export default {
     name: "ReturnButton",
     props: ["propsFunction"],
-    data() {
-        return {};
-    },
-    created() {},
-    mounted() {},
-    methods: {},
 };
 </script>

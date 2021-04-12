@@ -1,17 +1,19 @@
 <template>
-    <div :style="uploadIconStyle" class="d-flex justify-content-between">
-        <img :src="url" class="w-75" />
-        <div class="d-flex justify-content-end w-25">
+    <div class="d-flex justify-content-between mb-1">
+        <img :src="url" class="w-50" />
+        <div class="d-flex justify-content-end w-30">
             <label>
                 <i class="fas fa-file-upload mr-1"></i>
-                <span class="small">{{ title }}</span>
+                <span class="small">{{
+                    imagePreviewContents.uploadLinkTitle
+                }}</span>
                 <input
                     class="d-none"
-                    name="imagefile"
-                    id="imagefile"
-                    type="file"
+                    :id="imagePreviewContents.fileId"
+                    :name="imagePreviewContents.fileName"
                     ref="preview"
-                    @change="uploadFile"
+                    type="file"
+                    @change="uploadFile($event)"
                 />
             </label>
         </div>
@@ -20,24 +22,39 @@
 
 <script>
 export default {
-    props: ["title", "setImagefile", "uploadIconStyle"],
+    props: ["imagePreviewContents"],
     name: "ImagePreview",
     data() {
         return {
-            url: null,
+            file: null,
+            url: "/images/no_image.png",
         };
     },
-    mounted() {},
-    computed: {},
+    created() {
+        if (this.imagePreviewContents.defaultImage != null) {
+            this.url = this.imagePreviewContents.defaultImage;
+            return;
+        }
+
+        this.uploadDefaultImage();
+    },
     methods: {
-        uploadFile() {
-            const file = this.$refs.preview.files[0];
-            this.url = URL.createObjectURL(file);
-            console.log(this.url);
-            this.setImagefile(URL.createObjectURL(file));
+        uploadFile(e) {
+            if (this.url == "/images/no_image.png") {
+                this.file = e;
+                this.url = URL.createObjectURL(this.file);
+                return;
+            }
+            this.file = e.target.files[0];
+            this.url = URL.createObjectURL(this.file);
         },
-        returnToPreviousPage: function () {
-            history.back();
+        uploadDefaultImage() {
+            fetch("/images/no_image.png")
+                .then((response) => response.blob())
+                .then((blob) => new File([blob], "no_image.png"))
+                .then((file) => {
+                    this.uploadFile(file);
+                });
         },
     },
 };

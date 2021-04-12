@@ -3,7 +3,7 @@ export default {
         state.recipeName = recipeName;
     },
     initRecipeName(state) {
-        state.recipeName = "";
+        state.recipeName = null;
     },
     setRecipes(state, recipes) {
         state.recipes = recipes;

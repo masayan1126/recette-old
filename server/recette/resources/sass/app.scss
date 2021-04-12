@@ -22,6 +22,10 @@ a {
     color: #7ea5d8;
 }
 
+.pb-6 {
+    padding-bottom: 4.5rem;
+}
+
 ul,
 ol {
     padding: 0;
@@ -38,6 +42,12 @@ li {
 .breadcrumb {
     background-color: #454545;
     padding: 0;
+}
+
+.toast {
+    max-width: none;
+    flex-basis: 100%;
+    color: #454545;
 }
 
 .form-control {
@@ -96,8 +106,50 @@ input:-webkit-autofill {
     width: 90% !important;
 }
 
-.container-login {
+.fadein-bottom {
+    opacity: 0;
+    animation-name: fadein-bottom;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+@keyframes fadein-bottom {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+.module_spacer-xs {
+    height: 20px;
+}
+.module_spacer-sm {
+    height: 40px;
+}
+.module_spacer-md {
+    height: 60px;
+}
+.module_spacer-lg {
+    height: 80px;
+}
+.module_spacer-xl {
+    height: 100px;
+}
+
+.container-login,
+.container-forgot,
+.container-reset,
+.container-notfound {
     max-width: 400px;
+    margin: 0 auto;
+}
+
+.container-register {
+    max-width: 300px;
     margin: 0 auto;
 }
 
@@ -185,6 +237,11 @@ input:-webkit-autofill {
     border-radius: 5px;
 }
 
+.element-seasonal_recipe_image-toppage {
+    box-shadow: 0px 2px 2px rgb(0 0 0 / 25%);
+    border-radius: 5px;
+}
+
 .element-recipe_image-recipelist {
     cursor: pointer;
 }
@@ -194,6 +251,11 @@ input:-webkit-autofill {
     align-items: center;
     justify-content: space-between;
     width: 100%;
+}
+
+.user_menu-sm img {
+    border-radius: 5px;
+    max-width: 130px;
 }
 
 .container-myrecipe-toppage,
@@ -264,9 +326,14 @@ input:-webkit-autofill {
     border-radius: 5px;
 }
 
-.element-register_image-register {
+.element-login_image-login,
+.element-notfound_image-notfound {
     max-width: 400px;
     max-height: 400px;
+}
+
+.element-register_image-register {
+    max-width: 600px;
 }
 
 // ↓レスポンシブ

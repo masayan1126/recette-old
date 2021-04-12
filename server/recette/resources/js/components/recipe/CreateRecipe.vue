@@ -2,57 +2,43 @@
     <section class="section-recipe_create">
         <div class="wrapper-recipe_create">
             <ReturnButton :props-function="routerBack" />
-            <!-- ぱんくずリスト -->
-            <!-- <BreadCrumb
-                class="breadcrumb-component"
-                :bread-crumb-list="breadCrumbList"
-            /> -->
-            <Toast
-                :toast-is-show="toastIsShow"
-                :props-function="addInitialIngredients"
-            />
+            <Toast :toast-contents="contents.toastContents" />
             <Modal
-                :contents="contents"
-                :style="style"
-                :props-function="propsFunction"
+                :input-contents="contents.inputContents"
+                :input-style="style.inputContentsStyle"
+                :image-preview-contents="
+                    contents.imagePreviewContentsForRecipeUrl
+                "
+                :modal-contents="contents.modalContents"
+                :modal-style="style.modalStyle"
+                :modal-set-function="contents.modalContents.modalSetFunction"
+                :modal-submit-function="
+                    contents.modalContents.modalSubmitFunction
+                "
+                :unnecessary-element-style="style.unnecessaryElementStyle"
             />
 
             <!-- 画像アップロード -->
-            <div class="d-flex justify-content-between">
-                <img :src="url" class="w-50" />
-                <div class="d-flex justify-content-end w-50">
-                    <label>
-                        <i class="fas fa-file-upload mr-1"></i>
-                        <span class="small font_size-md">{{
-                            "レシピ画像選択"
-                        }}</span>
-                        <input
-                            class="d-none"
-                            name="imagefile"
-                            id="imagefile"
-                            type="file"
-                            ref="preview"
-                            @change="uploadFile($event)"
-                        />
-                    </label>
-                </div>
-            </div>
+            <ImagePreview
+                :image-preview-contents="
+                    contents.imagePreviewContentsForRecipeImage
+                "
+            />
 
             <div
                 class="container-recipe_name-recipe_create mb-4 d-flex mt-2 align-items-end"
             >
                 <InputLabel
-                    class="mb-0"
+                    :class-name="'mb-0'"
                     :id="'input-recipe-name'"
                     :name="'レシピ名：'"
                 />
                 <TextInput
-                    class="w-60"
+                    :class-name="'text-input-black w-60'"
                     :id="'input-recipe-name'"
+                    @inputFormContent="recipeName = $event"
                     :type="'text'"
                     :value="recipeName"
-                    :className="'text-input-black'"
-                    @inputFormContent="recipeName = $event"
                 />
             </div>
             <div class="mb-4">
@@ -81,7 +67,7 @@
                             ></span>
                             <span
                                 ><i
-                                    @click="_deleteRecipeIngredient(index)"
+                                    @click="deleteRecipeIngredient(index)"
                                     class="ml-2 fas fa-trash-alt"
                                 ></i
                             ></span>
@@ -91,8 +77,8 @@
                         class="d-flex align-items-center justify-content-between"
                     >
                         <select
-                            v-model="recipeIngredient"
                             class="custom-select w-60"
+                            v-model="recipeIngredient"
                         >
                             <option
                                 v-for="ingredient in ingredients"
@@ -103,19 +89,18 @@
                             </option>
                         </select>
                         <TextInput
-                            class="w-30"
+                            :class-name="'w-30 text-input-white'"
                             :id="'input-recipe-ingredient-quantity'"
-                            :type="'text'"
-                            :value="recipeIngredientQuantity"
-                            :className="'text-input-white'"
-                            :placeholder="'数量(単位含む)'"
                             @inputFormContent="
                                 recipeIngredientQuantity = $event
                             "
+                            :placeholder="'例)1枚、1本'"
+                            :type="'text'"
+                            :value="recipeIngredientQuantity"
                         />
                         <i
-                            @click="addRecipeIngredient"
                             class="fas fa-check-circle"
+                            @click="addRecipeIngredient"
                             style="font-size: 1.5rem"
                         ></i>
                     </div>
@@ -126,9 +111,9 @@
                 <div class="d-flex justify-content-between align-items-end">
                     <span>作り方</span>
                     <span
-                        data-toggle="modal"
-                        data-target="#exampleModal"
                         class="cursor-pointer"
+                        data-target="#exampleModal"
+                        data-toggle="modal"
                     >
                         <i class="mr-1 fas fa-book-open"></i>レシピURL
                     </span>
@@ -142,23 +127,23 @@
                         <li>
                             {{ index + 1 }}.{{ recipeProcedure
                             }}<i
+                                class="ml-2 fas fa-pencil-alt"
                                 @click="
                                     editRecipeProcedure(recipeProcedure, index)
                                 "
-                                class="ml-2 fas fa-pencil-alt"
                             ></i>
                             <i
-                                @click="_deleteRecipeProcedure(index)"
                                 class="ml-2 fas fa-trash-alt"
+                                @click="deleteRecipeProcedure(index)"
                             ></i>
                         </li>
                     </ul>
                     <div class="form-group">
                         <textarea
-                            v-model="recipeProcedure"
                             class="form-control"
                             id="recipe-procedure-input-field"
                             rows="2"
+                            v-model="recipeProcedure"
                         ></textarea>
                     </div>
 
@@ -173,8 +158,8 @@
                 <div class="container-recipe_category-recipe_create d-flex">
                     <div class="input-group mb-3">
                         <select
-                            v-model="recipeCategory"
                             class="custom-select mr-1"
+                            v-model="recipeCategory"
                         >
                             <option
                                 v-for="category in categories"
@@ -188,53 +173,54 @@
                 </div>
             </div>
             <PrimaryButton
-                :buttonName="'登録する'"
+                :button-name="'登録する'"
+                :button-style="style.sendNewRecipeButtonStyle"
                 :props-function="sendNewRecipe"
-                :buttonStyle="sendNewRecipeButtonStyle"
             />
         </div>
     </section>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 import ImagePreview from "../parts/ImagePreview";
-import PrimaryButton from "../parts/PrimaryButton";
-import TextInput from "../parts/TextInput";
 import InputLabel from "../parts/InputLabel";
-import Toast from "../parts/Toast";
 import initialIngredientList from "../../assets/initialIngredientList.json";
-import ReturnButton from "../parts/ReturnButton";
-import BreadCrumb from "../common/BreadcrumbTrail";
-import utilsMixin from "../../mixin/utility";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 import Modal from "../parts/Modal";
+import PrimaryButton from "../parts/PrimaryButton";
+import RecipeCategories from "../../assets/recipeCategories";
+import ReturnButton from "../parts/ReturnButton";
+import Toast from "../parts/Toast";
+import TextInput from "../parts/TextInput";
+import utilsMixin from "../../mixin/utility";
 
 export default {
-    name: "CreateRecipe",
-    props: [],
-    mixins: [utilsMixin],
     components: {
         ImagePreview,
+        InputLabel,
+        Modal,
         PrimaryButton,
+        ReturnButton,
         Toast,
         TextInput,
-        InputLabel,
-        ReturnButton,
-        BreadCrumb,
-        Modal,
     },
+    mixins: [utilsMixin],
+    name: "CreateRecipe",
     data() {
         return {
-            sendNewRecipeButtonStyle: {
-                color: "#fff",
-                backgroundColor: "#E4C8AD",
-                fontSize: "12px",
-                width: "100%",
-                height: "35px",
-            },
+            categories: RecipeCategories.categories,
             contents: {
-                modalContents: {
-                    modalTitle: "レシピURLの登録",
+                imagePreviewContentsForRecipeImage: {
+                    defaultImage: null,
+                    fileId: "recipe-image-file",
+                    fileName: "recipe-image-file",
+                    uploadLinkTitle: "レシピ画像選択",
+                },
+                imagePreviewContentsForRecipeUrl: {
+                    defaultImage: null,
+                    fileId: "file",
+                    fileName: "file",
+                    uploadLinkTitle: "",
                 },
                 inputContents: {
                     label: {
@@ -244,117 +230,57 @@ export default {
                     input: {
                         one: {
                             id: "primary-input-recipe-url",
-                            value: "",
+                            value: null,
                             type: "text",
                         },
                         two: {},
                     },
                 },
+                modalContents: {
+                    modalTitle: "レシピURLの登録",
+                    modalSetFunction: null,
+                    modalSubmitFunction: null,
+                },
+                toastContents: {
+                    toastCloseFunction: this.closeToast,
+                    toastIsShow: false,
+                    toastSubmitFunction: this.addInitialIngredients,
+                    toastTitle: "食材登録",
+                },
             },
             style: {
+                inputContentsStyle: {
+                    width: "100%",
+                },
                 modalStyle: {
                     backgroundColor: "#454545",
                 },
-                inputContentsStyle: {
+                sendNewRecipeButtonStyle: {
+                    color: "#fff",
+                    backgroundColor: "#E4C8AD",
+                    fontSize: "12px",
                     width: "100%",
+                    height: "35px",
                 },
                 unnecessaryElementStyle: {
                     display: "none !important",
                 },
             },
-            propsFunction: this.initInputValue,
-            toastIsShow: false,
-
-            breadCrumbList: [
-                { id: 1, name: "ホーム", linkName: "recipes" },
-                { id: 2, name: "レシピ作成", linkName: "createRecipe" },
-            ],
-            file: null,
-            url: "/images/no_image.png",
-            categories: [
-                {
-                    id: 1,
-                    recipe_category_name: "肉料理",
-                    recipe_category_name_sub: "meat",
-                    recipe_category_image: "/images/肉料理.jpeg",
-                    length: 0,
-                },
-                {
-                    id: 2,
-                    recipe_category_name: "魚料理",
-                    recipe_category_name_sub: "fish",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-                {
-                    id: 3,
-                    recipe_category_name: "野菜料理",
-                    recipe_category_name_sub: "veg",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-                {
-                    id: 4,
-                    recipe_category_name: "麺類",
-                    recipe_category_name_sub: "noodle",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-                {
-                    id: 5,
-                    recipe_category_name: "ご飯もの",
-                    recipe_category_name_sub: "rice",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-                {
-                    id: 6,
-                    recipe_category_name: "スープ、汁物",
-                    recipe_category_name_sub: "soup",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-                {
-                    id: 7,
-                    recipe_category_name: "パン類",
-                    recipe_category_name_sub: "bread",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-                {
-                    id: 8,
-                    recipe_category_name: "お菓子",
-                    recipe_category_name_sub: "sweets",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-                {
-                    id: 9,
-                    recipe_category_name: "そのほか",
-                    recipe_category_name_sub: "other",
-                    recipe_category_image: "",
-                    length: 0,
-                },
-            ],
         };
     },
     computed: {
         ...mapGetters({
-            userData: "getUserData",
-            recipeIngredientList: "getRecipeIngredientList",
-            isEditingIngredient: "getIsEditingRecipeIngredient",
-            editingIngredientIndex: "getEditingRecipeIngredientIndex",
-            recipeProcedureList: "getRecipeProcedureList",
-            isEditingRecipeProcedure: "getIsEditingRecipeProcedure",
-            editingRecipeProcedureIndex: "getEditingRecipeProcedureIndex",
             ingredients: "getIngredients",
+            recipeIngredientList: "getRecipeIngredientList",
+            recipeProcedureList: "getRecipeProcedureList",
+            userData: "getUserData",
         }),
         newRecipe() {
             const newRecipe = {
-                recipeName: this.recipeName,
-                recipeIngredientList: this.recipeIngredientList,
-                recipeProcedure: this.recipeProcedureList,
                 recipeCategory: this.recipeCategory,
+                recipeIngredientList: this.recipeIngredientList,
+                recipeName: this.recipeName,
+                recipeProcedure: this.recipeProcedureList,
                 recipeUrl: this.contents.inputContents.input.one.value,
             };
             return newRecipe;
@@ -375,6 +301,14 @@ export default {
                 this.setRecipeIngredient(val);
             },
         },
+        recipeIngredientQuantity: {
+            get() {
+                return this.$store.getters.getRecipeIngredientQuantity;
+            },
+            set(val) {
+                this.setRecipeIngredientQuantity(val);
+            },
+        },
         recipeProcedure: {
             get() {
                 return this.$store.getters.getRecipeProcedure;
@@ -391,61 +325,59 @@ export default {
                 this.setRecipeCategory(val);
             },
         },
-        recipeIngredientQuantity: {
-            get() {
-                return this.$store.getters.getRecipeIngredientQuantity;
-            },
-            set(val) {
-                this.setRecipeIngredientQuantity(val);
-            },
-        },
     },
-    mounted() {
+    created() {
         this.initStoreDataSet();
-        fetch("/images/no_image.png")
-            .then((response) => response.blob())
-            .then((blob) => new File([blob], "image.jpg"))
-            .then((file) => {
-                console.log(file);
-                this.uploadFile(file);
-                // fileはFileオブジェクト
-            });
-        // const file = new File(["blob"], "/images/no_image.png", {
-        //     type: "image/jpeg",
-        // });
         // 初期データの食材リストが未登録なら、トーストでメッセージを表示する
-        this.ingredients.length == 0 ? (this.toastIsShow = true) : "";
+        this.ingredients.length == 0
+            ? (this.contents.toastContents.toastIsShow = true)
+            : "";
     },
     methods: {
         ...mapMutations([
-            "setRecipeName",
-            "initRecipeName",
-            "setRecipeIngredient",
-            "initRecipeIngredient",
             "deleteRecipeIngredient",
-            "setRecipeIngredientList",
-            "initRecipeIngredientList",
-            "setIsEditingRecipeIngredient",
-            "initIsEditingRecipeIngredient",
-            "setEditingRecipeIngredientIndex",
-            "initEditingRecipeIngredientIndex",
-            "setRecipeProcedure",
-            "initRecipeProcedure",
-            "setRecipeProcedureList",
-            "initRecipeProcedureList",
-            "setIsEditingRecipeProcedure",
-            "initIsEditingRecipeProcedure",
-            "setEditingRecipeProcedureIndex",
-            "initEditingRecipeProcedureIndex",
             "deleteRecipeProcedure",
-            "setRecipeCategory",
+            "initRecipeName",
+            "initRecipeIngredient",
+            "initRecipeIngredientList",
+            "initIsEditingRecipeIngredient",
+            "initEditingRecipeIngredientIndex",
+            "initRecipeProcedure",
+            "initRecipeProcedureList",
+            "initIsEditingRecipeProcedure",
+            "initEditingRecipeProcedureIndex",
             "initRecipeCategory",
-            "setRecipeIngredientQuantity",
             "initRecipeIngredientQuantity",
-            "setIngredients",
-            "initIngredients",
+            "setRecipeName",
+            "setRecipeIngredient",
+            "setRecipeIngredientQuantity",
+            "setRecipeIngredientList",
+            "setIsEditingRecipeIngredient",
+            "setEditingRecipeIngredientIndex",
+            "setRecipeProcedure",
+            "setRecipeProcedureList",
+            "setIsEditingRecipeProcedure",
+            "setEditingRecipeProcedureIndex",
+            "setRecipeCategory",
         ]),
-
+        ...mapActions(["setIngredients"]),
+        // 食材の初期データを登録する
+        addInitialIngredients() {
+            const url =
+                "/api/users/" + this.userData.userId + "/ingredients/add";
+            axios
+                .post(url, {
+                    initialIngredientList: JSON.stringify(
+                        initialIngredientList
+                    ),
+                })
+                .then((res) => {
+                    this.setIngredients(res.data);
+                    this.toastIsShow = false;
+                })
+                .catch((error) => {});
+        },
+        // レシピに必要な食材と数量の入力
         addRecipeIngredient() {
             if (this.recipeIngredient == null) {
                 alert("食材を選択してください");
@@ -459,21 +391,8 @@ export default {
             this.initRecipeIngredient();
             this.initRecipeIngredientQuantity();
         },
-
-        editRecipeIngredient(ingredient, index) {
-            this.setRecipeIngredientQuantity(
-                ingredient.recipeIngredientQuantity
-            );
-            this.setRecipeIngredient(ingredient);
-            // 食材編集モードをtrueに
-            this.setIsEditingRecipeIngredient();
-            this.setEditingRecipeIngredientIndex(index);
-        },
-        _deleteRecipeIngredient(index) {
-            this.deleteRecipeIngredient(index);
-        },
         addRecipeProcedure() {
-            if (this.recipeProcedure == "") {
+            if (this.recipeProcedure == null) {
                 alert("作り方を入力してください。");
                 return;
             }
@@ -483,24 +402,46 @@ export default {
             this.initRecipeProcedure();
             document.getElementById("recipe-procedure-input-field").focus();
         },
+        closeToast() {
+            this.contents.toastContents.toastIsShow = false;
+        },
+        editRecipeIngredient(ingredient, index) {
+            this.setRecipeIngredientQuantity(
+                ingredient.recipeIngredientQuantity
+            );
+            this.setRecipeIngredient(ingredient);
+            // 食材編集モードをtrueに
+            this.setIsEditingRecipeIngredient();
+            this.setEditingRecipeIngredientIndex(index);
+        },
         editRecipeProcedure(recipeProcedure, index) {
             this.setRecipeProcedure(recipeProcedure);
             this.setIsEditingRecipeProcedure();
             this.setEditingRecipeProcedureIndex(index);
         },
-        _deleteRecipeProcedure(index) {
-            this.deleteRecipeProcedure(index);
+        initStoreDataSet() {
+            this.initRecipeName();
+            this.initRecipeIngredient();
+            this.initRecipeIngredientQuantity();
+            this.initRecipeIngredientList();
+            this.initIsEditingRecipeIngredient();
+            this.initEditingRecipeIngredientIndex();
+            this.initRecipeProcedure();
+            this.initRecipeProcedureList();
+            this.initIsEditingRecipeProcedure();
+            this.initEditingRecipeProcedureIndex();
+            this.initRecipeCategory();
         },
         sendNewRecipe() {
-            if (this.recipeName == "") {
+            if (this.recipeName == null) {
                 alert("レシピ名は必須です");
                 return;
             }
 
             const url = "/api/users/" + this.userData.userId + "/recipes/add";
             let formData = new FormData();
-            const file = document.getElementById("imagefile");
-            formData.append("file", file.files[0]);
+            const file = document.getElementById("recipe-image-file");
+            formData.append("recipe-image-file", file.files[0]);
             formData.append("newRecipe", JSON.stringify(this.newRecipe));
 
             axios
@@ -510,60 +451,9 @@ export default {
                     },
                 })
                 .then((res) => {
-                    console.log(res);
                     this.$router.push({ name: "recipes" });
-                    this.initRecipeIngredientList();
                 })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
-        addInitialIngredients() {
-            axios
-                .post(
-                    "/api/users/" + this.userData.userId + "/ingredients/add",
-                    {
-                        initialIngredientList: JSON.stringify(
-                            initialIngredientList
-                        ),
-                    }
-                )
-                .then((res) => {
-                    console.log(res);
-                    this.setIngredients(res.data);
-                    this.toastIsShow = false;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
-        uploadFile(e) {
-            if (this.url == "/images/no_image.png") {
-                console.log(e);
-                this.file = e;
-                this.url = URL.createObjectURL(this.file);
-                return;
-            }
-            this.file = e.target.files[0];
-            console.log(e.target.files[0]);
-            this.url = URL.createObjectURL(this.file);
-        },
-        initStoreDataSet() {
-            this.initRecipeName();
-            this.initRecipeIngredient();
-            this.initRecipeIngredientList();
-            this.initIsEditingRecipeIngredient();
-            this.initEditingRecipeIngredientIndex();
-            this.initRecipeProcedure();
-            this.initRecipeCategory();
-            this.initRecipeProcedureList();
-            this.initIsEditingRecipeProcedure();
-            this.initEditingRecipeProcedureIndex();
-            this.initRecipeIngredientQuantity();
-        },
-        initInputValue() {
-            this.contents.inputContents.input.one.value = "";
-            this.contents.inputContents.input.two.value = "";
+                .catch((error) => {});
         },
     },
 };

@@ -1,16 +1,16 @@
 <template>
     <section
-        class="register h-100 d-flex align-items-center justify-content-center"
+        class="section-notfound h-100 d-flex align-items-center justify-content-center"
     >
-        <div class="wrapper-register h-50 text-center text-md-left d-md-flex">
+        <div class="wrapper-notfound h-50 text-center text-md-left d-md-flex">
             <div class="w-50 mx-auto d-md-block">
                 <img
-                    class="w-100 element-register_image-register"
+                    class="w-100 element-notfound_image-notfound"
                     src="/images/undraw_page_not_found_su7k.svg"
-                    alt=""
+                    alt="404ページの画像"
                 />
             </div>
-            <div class="w-100 w-md-50 container-login d-flex flex-column">
+            <div class="w-100 w-md-50 container-notfound d-flex flex-column">
                 <h5 class="mt-3 mt-md-0">
                     お探しのページは見つかりませんでした。
                 </h5>
@@ -30,23 +30,12 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
-
 export default {
-    components: {},
     name: "NotFound",
-    props: [],
-    data() {
-        return {};
-    },
-    created() {},
-    mounted() {
-        console.log();
+    created() {
         setTimeout(() => {
             this.$router.push({ name: "recipes" });
         }, 5000);
     },
-    computed: {},
-    methods: {},
 };
 </script>

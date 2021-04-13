@@ -218,7 +218,8 @@ const router = createRouter({
                     .then(() => {
                         next();
                     })
-                    .catch(() => {
+                    .catch((error) => {
+                        console.log(error);
                         return next({ name: "login" });
                     });
             },

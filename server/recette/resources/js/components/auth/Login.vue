@@ -110,7 +110,9 @@ export default {
                     this.setUserData(res.data);
                     this.$router.push("/recipes");
                 })
-                .catch((error) => {});
+                .catch((error) => {
+                    console.log(error);
+                });
         },
     },
 };

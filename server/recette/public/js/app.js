@@ -16598,7 +16598,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this.setUserData(res.data);
 
         _this.$router.push("/recipes");
-      })["catch"](function (error) {});
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   })
 });
@@ -21333,7 +21335,8 @@ var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_14__.createRouter)({
     beforeEnter: function beforeEnter(to, form, next) {
       axios.get("/api/athenticated").then(function () {
         next();
-      })["catch"](function () {
+      })["catch"](function (error) {
+        console.log(error);
         return next({
           name: "login"
         });

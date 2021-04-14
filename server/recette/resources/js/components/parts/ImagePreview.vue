@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-content-between mb-1">
-        <img :src="url" class="w-50" />
+        <img :src="url" class="w-50 w-lg-70" />
         <div class="d-flex justify-content-end w-30">
             <label>
                 <i class="fas fa-file-upload mr-1"></i>

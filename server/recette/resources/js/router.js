@@ -214,7 +214,7 @@ const router = createRouter({
             props: true,
             beforeEnter: (to, form, next) => {
                 axios
-                    .get("/api/athenticated")
+                    .get("/api/user")
                     .then(() => {
                         next();
                     })

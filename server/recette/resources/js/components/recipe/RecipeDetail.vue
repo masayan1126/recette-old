@@ -14,8 +14,8 @@
                 </router-link>
             </div>
 
-            <div class="d-md-flex">
-                <div class="w-100">
+            <div class="d-lg-flex mb-3 justify-content-between">
+                <div class="w-100 w-lg-49">
                     <img
                         class="w-100"
                         :src="selectedRecipe[0].recipe_image_path"
@@ -27,15 +27,15 @@
                     </p>
                 </div>
 
-                <div class="mb-4 w-100">
+                <div class="w-100 w-lg-49">
                     <p class="mb-0">材料</p>
                     <div class="container-recipe_ingredient-recipe_detail">
-                        <ul
-                            v-for="selectedRecipeIngredient in selectedRecipe[0]
-                                .recipe_ingredients"
-                            :key="selectedRecipeIngredient.id"
-                        >
-                            <li>
+                        <ul>
+                            <li
+                                v-for="selectedRecipeIngredient in selectedRecipe[0]
+                                    .recipe_ingredients"
+                                :key="selectedRecipeIngredient.id"
+                            >
                                 {{
                                     selectedRecipeIngredient.recipe_ingredient_name
                                 }}

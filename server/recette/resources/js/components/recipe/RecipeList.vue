@@ -30,14 +30,27 @@
                             </div>
 
                             <div class="small mb-0">
-                                <p class="mb-1">
+                                <div v-if="screenInnerWidth < 768" class="mb-1">
                                     {{ 1 }}.{{
                                         recipe.recipe_procedure[0].substr(
                                             0,
                                             30
                                         )
                                     }}...
-                                </p>
+                                </div>
+                                <div
+                                    v-else-if="screenInnerWidth >= 768"
+                                    class="mb-1"
+                                >
+                                    <p
+                                        v-for="(
+                                            recipe_procedure, index
+                                        ) in recipe.recipe_procedure"
+                                        :key="recipe_procedure"
+                                    >
+                                        {{ index + 1 }}.{{ recipe_procedure }}
+                                    </p>
+                                </div>
                             </div>
 
                             <div
@@ -86,10 +99,10 @@ export default {
     components: { PrimaryButton, ReturnButton },
     mixins: [utilsMixin],
     name: "RecipeList",
-    // props: ["searchQuery"],
     data() {
         return {
             listName: "",
+            screenInnerWidth: null,
             style: {
                 addFavoriteButtonStyle: {
                     color: "#fff",
@@ -150,6 +163,9 @@ export default {
         },
     },
     created() {
+        // 768
+        console.log(this.screenInnerWidth);
+        window.addEventListener("resize", this.getScreenInnerWidth);
         if (this.listType == "my-recipes") {
             this.listName = "マイレシピ";
         } else if (this.listType == "new-arrival-recipes") {
@@ -179,6 +195,9 @@ export default {
                     })
                     .catch((error) => {});
             }
+        },
+        getScreenInnerWidth() {
+            this.screenInnerWidth = window.innerWidth;
         },
         showRecipeDetail(recipeId) {
             this.$router.push({

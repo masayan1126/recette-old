@@ -18,13 +18,15 @@
             />
 
             <!-- レシピ画像 -->
-            <div class="d-flex justify-content-between">
-                <ImagePreview
-                    :image-preview-contents="
-                        contents.imagePreviewContentsForRecipeImage
-                    "
-                />
-                <div class="w-45 mb-4 d-none d-md-block">
+            <div class="d-lg-flex justify-content-between">
+                <div class="w-100 w-lg-49">
+                    <ImagePreview
+                        :image-preview-contents="
+                            contents.imagePreviewContentsForRecipeImage
+                        "
+                    />
+                </div>
+                <div class="w-100 mb-4 d-none d-md-block w-lg-49">
                     <p class="mb-0">材料</p>
                     <div class="container-recipe_ingredient-recipe_edit">
                         <ul

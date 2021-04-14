@@ -4,22 +4,15 @@
             <div class="container-header_content-toppage mb-2">
                 <h4>Reccete</h4>
                 <!-- ユーザーメニュー(スマートフォン) -->
-                <span
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    class="dropdown-toggle text-right"
-                    data-toggle="dropdown"
-                    id="dropdownMenuButton"
-                    type="button"
-                >
-                    <img
-                        alt="ユーザープロフィール画像"
-                        class="w-20"
-                        :src="userData.profileImagePath"
-                    />
-                </span>
 
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <img
+                    class="text-right w-10"
+                    data-toggle="dropdown"
+                    alt="ユーザープロフィール画像"
+                    :src="userData.profileImagePath"
+                />
+
+                <div class="dropdown-menu">
                     <router-link
                         :to="{
                             name: 'myPage',
@@ -46,7 +39,6 @@
                     <span
                         aria-haspopup="true"
                         aria-expanded="false"
-                        class="dropdown-toggle"
                         data-toggle="dropdown"
                         id="dropdownMenuButton"
                         type="button"
@@ -93,7 +85,10 @@
             </div>
 
             <!-- マイレシピが1つ以上登録されている場合はリストを表示する -->
-            <div class="container-myrecipe-toppage" v-if="myRecipes.length > 0">
+            <div
+                class="container-myrecipe-toppage mb-sm-5"
+                v-if="myRecipes.length > 0"
+            >
                 <div
                     class="element-recipe-toppage"
                     @click="showRecipeDetail(recipe.id)"
@@ -131,7 +126,7 @@
                     すべて見る ＞
                 </router-link>
             </div>
-            <div class="container-new_arrival_recipe-toppage">
+            <div class="container-new_arrival_recipe-toppage mb-sm-5">
                 <div
                     class="element-recipe-toppage"
                     @click="showRecipeDetail(recipe.id)"
@@ -152,7 +147,7 @@
             <div class="mt-4">
                 <h5>旬のレシピ</h5>
             </div>
-            <div class="container-seasonal_recipe-toppage d-flex w-100">
+            <div class="container-seasonal_recipe-toppage d-flex w-100 mb-sm-5">
                 <div
                     class="cursor-pointer element-seasonal_recipe_image-toppage"
                     @click="showRecipeDetail(recipe.id)"

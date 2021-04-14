@@ -19,7 +19,7 @@
                             :src="favoriteRecipe.recipe_image_path"
                         />
                         <p>{{ favoriteRecipe.recipe_name }}</p>
-                        <hr />
+                        <hr class="d-sm-none" />
                     </div>
                 </div>
             </div>

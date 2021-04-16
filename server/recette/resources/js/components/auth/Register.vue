@@ -1,6 +1,6 @@
 <template>
     <section
-        class="section-register h-100 d-flex align-items-center justify-content-center"
+        class="section-register d-flex align-items-center justify-content-center"
     >
         <div class="wrapper-register d-md-flex">
             <div class="w-50 d-none d-md-block">

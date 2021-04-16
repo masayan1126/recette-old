@@ -34,10 +34,10 @@
                 </li>
                 <span>/</span>
                 <li
-                    @click="transitionToNext('recipeCategoryList')"
+                    @click="transitionToNext('recipeBot')"
                     class="text-center cursor-pointer"
                 >
-                    カレンダー
+                    献立くん
                 </li>
             </ul>
         </div>

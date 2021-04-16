@@ -30,7 +30,11 @@ export const store = createStore({
             editingRecipeProcedureIndex: 0,
             //
             recipeCategory: null,
+            recipeGenre: null,
+            cookingTime: null,
             recipeIngredientQuantity: null,
+
+            botReccomendedRecipes: [],
         };
     },
     getters: getters,

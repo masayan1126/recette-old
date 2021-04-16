@@ -44,6 +44,7 @@
                                 }}
                             </li>
                         </ul>
+                        <p class="mb-0 text-right">調理時間：{{}}</p>
                     </div>
                 </div>
             </div>
@@ -85,12 +86,22 @@
                     </ul>
                 </div>
             </div>
-            <div class="mb-4">
-                <div class="d-flex justify-content-between align-items-end">
-                    <span>カテゴリー</span>
+            <div class="mb-4 d-lg-flex justify-content-between">
+                <div class="w-lg-49">
+                    <div class="d-flex justify-content-between align-items-end">
+                        <span>ジャンル</span>
+                    </div>
+                    <div class="container-recipe_category-recipe_detail p-2">
+                        {{ selectedRecipe[0].recipe_category }}
+                    </div>
                 </div>
-                <div class="container-recipe_category-recipe_detail p-2">
-                    {{ selectedRecipe[0].recipe_category }}
+                <div class="w-lg-49">
+                    <div class="d-flex justify-content-between align-items-end">
+                        <span>カテゴリー</span>
+                    </div>
+                    <div class="container-recipe_category-recipe_detail p-2">
+                        {{ selectedRecipe[0].recipe_category }}
+                    </div>
                 </div>
             </div>
         </div>

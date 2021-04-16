@@ -135,8 +135,8 @@ export default {
                             new Date(a.updated_at) - new Date(b.updated_at)
                     );
                     return newArrivalRecipes;
-                // break;
-                // seasonalRecipes
+                case "献立くんの提案レシピ":
+                    return this.botReccomendedRecipes;
                 default:
                     const recipes = this.recipes.filter((recipe) => {
                         if (
@@ -154,6 +154,7 @@ export default {
         ...mapGetters({
             userData: "getUserData",
             recipes: "getRecipes",
+            botReccomendedRecipes: "getBotReccomendedRecipes",
         }),
         listType() {
             const listType = window.location.pathname.split(
@@ -164,12 +165,14 @@ export default {
     },
     created() {
         // 768
-        console.log(this.screenInnerWidth);
+        console.log(this.listType);
         window.addEventListener("resize", this.getScreenInnerWidth);
         if (this.listType == "my-recipes") {
             this.listName = "マイレシピ";
         } else if (this.listType == "new-arrival-recipes") {
             this.listName = "新着レシピ";
+        } else if (this.listType == "bot-recommend-recipes") {
+            this.listName = "献立くんの提案レシピ";
         } else {
             this.listName = this.$route.query.query + "の検索結果";
         }

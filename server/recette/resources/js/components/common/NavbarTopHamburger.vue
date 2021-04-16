@@ -44,9 +44,9 @@
                     </li>
                     <li
                         class="cursor-pointer"
-                        @click="transitionToNext('recipeCategoryList')"
+                        @click="transitionToNext('recipeBot')"
                     >
-                        <i class="mr-1 far fa-calendar-alt"></i>カレンダー
+                        <i class="fas fa-robot fa-2x"></i>献立くん
                     </li>
                 </ul>
             </div>

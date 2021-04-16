@@ -14,6 +14,13 @@ export default {
 
     setRecipes: recipeMutations.setRecipes,
     initRecipes: recipeMutations.initRecipes,
+    setRecipeGenre: recipeMutations.setRecipeGenre,
+    initRecipeGenre: recipeMutations.initRecipeGenre,
+    setCookingTime: recipeMutations.setCookingTime,
+    initCookingTime: recipeMutations.initCookingTime,
+    setBotReccomendedRecipes: recipeMutations.setBotReccomendedRecipes,
+    initBotReccomendedRecipes: recipeMutations.initBotReccomendedRecipes,
+
     setIngredients: ingredientMutations.setIngredients,
     initIngredients: ingredientMutations.initIngredients,
     //

@@ -1,6 +1,6 @@
 <template>
     <section
-        class="section-login h-100 d-flex align-items-center justify-content-center"
+        class="section-login h-75 d-flex align-items-center justify-content-center"
     >
         <div class="wrapper-login d-md-flex">
             <div class="w-50 d-none d-md-block">

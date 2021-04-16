@@ -27,11 +27,11 @@
             </div>
             <!--  -->
             <div
-                @click="transitionToNext('recipeCategoryList')"
+                @click="transitionToNext('recipeBot')"
                 class="d-flex flex-column text-center"
             >
-                <i class="fas fa-calendar-alt fa-2x"></i>
-                <span> カレンダー </span>
+                <i class="fas fa-robot fa-2x"></i>
+                <span> 献立くん </span>
             </div>
         </div>
     </nav>

@@ -4,8 +4,19 @@
 // Variables
 @import "variables";
 
+// @import "tailwindcss/base";
+// @import "tailwindcss/components";
+// @import "tailwindcss/utilities";
+
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
+
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
+@import "@fortawesome/fontawesome-free/scss/solid";
+@import "@fortawesome/fontawesome-free/scss/regular";
+@import "@fortawesome/fontawesome-free/scss/brands";
+@import "@fortawesome/fontawesome-free/scss/v4-shims";
 
 body {
     font-family: "ヒラギノ丸ゴ ProN", "Hiragino Maru Gothic ProN", sans-serif !important;
@@ -87,6 +98,9 @@ input:-webkit-autofill {
 .w-30 {
     width: 30% !important;
 }
+.w-35 {
+    width: 35% !important;
+}
 .w-40 {
     width: 40% !important;
 }
@@ -95,6 +109,9 @@ input:-webkit-autofill {
 }
 .w-60 {
     width: 60% !important;
+}
+.w-65 {
+    width: 65% !important;
 }
 .w-70 {
     width: 70% !important;
@@ -288,7 +305,8 @@ input:-webkit-autofill {
 .section-recipelist,
 .section-recipe_category_list,
 .section-recipe_category_detail_list,
-.section-favorite_recipe_list {
+.section-favorite_recipe_list,
+.section-recipe_bot {
     width: 97%;
     margin: 0 auto;
 }
@@ -309,6 +327,87 @@ input:-webkit-autofill {
 }
 
 .container-recipe_category_detail_list {
+}
+
+.chat-box {
+    background: #454545;
+    /* border: 5px solid #EBB582;
+    border-radius: 4px; */
+    box-sizing: border-box;
+    /* height: 500px; */
+    // max-width: 432px;
+    // padding: 0 1rem;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.element-chat_answer {
+    display: flex;
+    flex-flow: column;
+    // justify-content: flex-end;
+    // height: 150px;
+    // height: 350px;
+    /* color: #898280; */
+}
+
+.element-chat_answer button {
+    // height: 200px;
+    margin-top: 10px;
+    /* color: #898280; */
+    background-color: #c4c4c4;
+}
+
+.element-chat_bubble {
+    /* background:#EBB582; */
+    background: rgb(228, 200, 173);
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 0.5rem;
+    max-width: 80%;
+    width: auto;
+}
+
+.element-chat_row {
+    display: flex;
+    opacity: 0;
+    animation-name: fadein-right;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadein-right {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.element-chat_reverse {
+    display: flex;
+    flex-direction: row-reverse;
+    opacity: 0;
+    animation-name: fadein-left;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadein-left {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .container-recipe_ingredient-recipe_create,
@@ -339,6 +438,11 @@ input:-webkit-autofill {
 // ↓レスポンシブ
 
 @media (max-width: 576px) {
+    .element-chat_reverse img {
+        border-radius: 20px;
+        width: 10%;
+    }
+
     .element-seasonal_recipe_image-toppage img {
         border-radius: 5px;
         box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
@@ -396,6 +500,16 @@ input:-webkit-autofill {
 
 // スマホ横
 @media (min-width: 576px) {
+    .element-chat_reverse img {
+        border-radius: 20px;
+        width: 10%;
+    }
+
+    .wrapper-recipe_bot {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
     .element-recipe-favorite_recipe_list img {
         height: 80%;
     }
@@ -506,6 +620,16 @@ input:-webkit-autofill {
 
 // タブレット
 @media (min-width: 768px) {
+    .element-chat_reverse img {
+        border-radius: 25px;
+        width: 10%;
+    }
+
+    .container-recipe_procedure-recipe_create,
+    .container-recipe_procedure-recipe_edit {
+        min-height: 400px;
+    }
+
     .element-recipe-favorite_recipe_list img {
         height: 90%;
     }
@@ -519,10 +643,10 @@ input:-webkit-autofill {
     }
 
     .w-md-65 {
-        width: 65%;
+        width: 65% !important;
     }
     .w-md-30 {
-        width: 30%;
+        width: 30% !important;
     }
 
     .font_size-md {

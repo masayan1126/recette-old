@@ -7,6 +7,7 @@ import MyPage from "./components//auth/MyPage.vue";
 import NotFound from "./components//common/NotFound.vue";
 import Top from "./components/TopPage.vue";
 import RecipeDetail from "./components/recipe/RecipeDetail.vue";
+import RecipeBot from "./components/recipe/bot/RecipeBot";
 import EditRecipe from "./components/recipe/EditRecipe.vue";
 import RecipeList from "./components/recipe/RecipeList.vue";
 import CreateRecipe from "./components/recipe/CreateRecipe.vue";
@@ -26,6 +27,22 @@ const router = createRouter({
     },
     history,
     routes: [
+        {
+            path: "/bot",
+            name: "recipeBot",
+            component: RecipeBot,
+            props: true,
+            beforeEnter: (to, form, next) => {
+                axios
+                    .get("/api/athenticated")
+                    .then(() => {
+                        next();
+                    })
+                    .catch(() => {
+                        return next({ name: "login" });
+                    });
+            },
+        },
         {
             path: "/recipes/:recipeId/edit",
             name: "editRecipe",
@@ -129,7 +146,8 @@ const router = createRouter({
                         if (
                             to.params.listType != "my-recipes" &&
                             to.params.listType != "new-arrival-recipes" &&
-                            to.params.listType != "search-result-recipe"
+                            to.params.listType != "search-result-recipe" &&
+                            to.params.listType != "bot-recommend-recipes"
                         ) {
                             next({ path: "/404" });
                             return;

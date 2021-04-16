@@ -7,7 +7,10 @@
         </div>
         <div class="container h-100 pt-3 px-1">
             <RouterView />
-            <div class="module_spacer-lg"></div>
+            <div
+                v-if="userData.loggedIn == true"
+                class="module_spacer-lg"
+            ></div>
         </div>
     </section>
 </template>

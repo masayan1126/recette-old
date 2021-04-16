@@ -107,76 +107,131 @@
                 </div>
             </div>
 
-            <div class="mb-4">
-                <div class="d-flex justify-content-between align-items-end">
-                    <span>作り方</span>
-                    <span
-                        class="cursor-pointer"
-                        data-target="#exampleModal"
-                        data-toggle="modal"
-                    >
-                        <i class="mr-1 fas fa-book-open"></i>レシピURL
-                    </span>
-                </div>
-                <div class="container-recipe_procedure-recipe_create p-2">
-                    <ul
-                        class="pl-1"
-                        v-for="(recipeProcedure, index) in recipeProcedureList"
-                        :key="recipeProcedure"
-                    >
-                        <li>
-                            {{ index + 1 }}.{{ recipeProcedure
-                            }}<i
-                                class="ml-2 fas fa-pencil-alt"
-                                @click="
-                                    editRecipeProcedure(recipeProcedure, index)
-                                "
-                            ></i>
-                            <i
-                                class="ml-2 fas fa-trash-alt"
-                                @click="deleteRecipeProcedure(index)"
-                            ></i>
-                        </li>
-                    </ul>
-                    <div class="form-group">
-                        <textarea
-                            class="form-control"
-                            id="recipe-procedure-input-field"
-                            rows="2"
-                            v-model="recipeProcedure"
-                        ></textarea>
-                    </div>
-
-                    <div @click="addRecipeProcedure" class="text-right">
-                        <i class="mr-1 fas fa-plus"></i>追加
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-4">
-                <p class="mb-0">カテゴリー</p>
-                <div class="container-recipe_category-recipe_create d-flex">
-                    <div class="input-group mb-3">
-                        <select
-                            class="custom-select mr-1"
-                            v-model="recipeCategory"
+            <div class="mb-4 d-md-flex justify-content-between">
+                <div class="w-100 w-md-65 mb-4 mb-md-0">
+                    <div class="d-flex justify-content-between align-items-end">
+                        <span>作り方</span>
+                        <span
+                            class="cursor-pointer"
+                            data-target="#exampleModal"
+                            data-toggle="modal"
                         >
-                            <option
-                                v-for="category in categories"
-                                :value="category"
-                                :key="category.id"
-                            >
-                                {{ category.recipe_category_name }}
-                            </option>
-                        </select>
+                            <i class="mr-1 fas fa-book-open"></i>レシピURL
+                        </span>
+                    </div>
+                    <div class="container-recipe_procedure-recipe_create p-2">
+                        <ul
+                            class="pl-1"
+                            v-for="(
+                                recipeProcedure, index
+                            ) in recipeProcedureList"
+                            :key="recipeProcedure"
+                        >
+                            <li>
+                                {{ index + 1 }}.{{ recipeProcedure
+                                }}<i
+                                    class="ml-2 fas fa-pencil-alt"
+                                    @click="
+                                        editRecipeProcedure(
+                                            recipeProcedure,
+                                            index
+                                        )
+                                    "
+                                ></i>
+                                <i
+                                    class="ml-2 fas fa-trash-alt"
+                                    @click="deleteRecipeProcedure(index)"
+                                ></i>
+                            </li>
+                        </ul>
+                        <div class="form-group">
+                            <textarea
+                                class="form-control"
+                                id="recipe-procedure-input-field"
+                                rows="2"
+                                v-model="recipeProcedure"
+                            ></textarea>
+                        </div>
+
+                        <div @click="addRecipeProcedure" class="text-right">
+                            <i class="mr-1 fas fa-plus"></i>追加
+                        </div>
                     </div>
                 </div>
+                <div class="w-100 w-md-30 d-md-flex flex-column">
+                    <div class="mb-4">
+                        <p class="mb-0">調理時間</p>
+                        <div
+                            class="container-recipe_category-recipe_create d-flex"
+                        >
+                            <div class="input-group mb-3">
+                                <select
+                                    class="custom-select mr-1"
+                                    v-model="cookingTime"
+                                >
+                                    <option
+                                        v-for="cookingTime in cookingTimeList"
+                                        :value="cookingTime"
+                                        :key="cookingTime.index"
+                                    >
+                                        {{ cookingTime.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <p class="mb-0">ジャンル</p>
+                        <div
+                            class="container-recipe_category-recipe_create d-flex"
+                        >
+                            <div class="input-group mb-3">
+                                <select
+                                    class="custom-select mr-1"
+                                    v-model="recipeGenre"
+                                >
+                                    <option
+                                        v-for="recipeGenre in recipeGenres"
+                                        :value="recipeGenre"
+                                        :key="recipeGenre.index"
+                                    >
+                                        {{ recipeGenre.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <p class="mb-0">カテゴリー</p>
+                        <div
+                            class="container-recipe_category-recipe_create d-flex"
+                        >
+                            <div class="input-group mb-3">
+                                <select
+                                    class="custom-select mr-1"
+                                    v-model="recipeCategory"
+                                >
+                                    <option
+                                        v-for="category in categories"
+                                        :value="category"
+                                        :key="category.id"
+                                    >
+                                        {{ category.recipe_category_name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <PrimaryButton
+                        class="mt-auto"
+                        :button-name="'登録する'"
+                        :button-style="style.sendNewRecipeButtonStyle"
+                        :props-function="sendNewRecipe"
+                    />
+                </div>
             </div>
-            <PrimaryButton
-                :button-name="'登録する'"
-                :button-style="style.sendNewRecipeButtonStyle"
-                :props-function="sendNewRecipe"
-            />
+
+            <!--  -->
         </div>
     </section>
 </template>
@@ -185,6 +240,8 @@
 import ImagePreview from "../parts/ImagePreview";
 import InputLabel from "../parts/InputLabel";
 import initialIngredientList from "../../assets/initialIngredientList.json";
+import CookingTimeList from "../../assets/cookingTimeList";
+import RecipeGenres from "../../assets/recipeGenres";
 import { mapGetters, mapMutations, mapActions } from "vuex";
 import Modal from "../parts/Modal";
 import PrimaryButton from "../parts/PrimaryButton";
@@ -209,6 +266,8 @@ export default {
     data() {
         return {
             categories: RecipeCategories.categories,
+            cookingTimeList: CookingTimeList.cookingTimeList,
+            recipeGenres: RecipeGenres.recipeGenres,
             contents: {
                 imagePreviewContentsForRecipeImage: {
                     defaultImage: null,
@@ -275,9 +334,19 @@ export default {
             recipeProcedureList: "getRecipeProcedureList",
             userData: "getUserData",
         }),
+        cookingTime: {
+            get() {
+                return this.$store.getters.getCookingTime;
+            },
+            set(val) {
+                this.setCookingTime(val);
+            },
+        },
         newRecipe() {
             const newRecipe = {
+                cookingTime: this.cookingTime,
                 recipeCategory: this.recipeCategory,
+                recipeGenre: this.recipeGenre,
                 recipeIngredientList: this.recipeIngredientList,
                 recipeName: this.recipeName,
                 recipeProcedure: this.recipeProcedureList,
@@ -309,20 +378,28 @@ export default {
                 this.setRecipeIngredientQuantity(val);
             },
         },
-        recipeProcedure: {
-            get() {
-                return this.$store.getters.getRecipeProcedure;
-            },
-            set(val) {
-                this.setRecipeProcedure(val);
-            },
-        },
         recipeCategory: {
             get() {
                 return this.$store.getters.getrecipeCategory;
             },
             set(val) {
                 this.setRecipeCategory(val);
+            },
+        },
+        recipeGenre: {
+            get() {
+                return this.$store.getters.getRecipeGenre;
+            },
+            set(val) {
+                this.setRecipeGenre(val);
+            },
+        },
+        recipeProcedure: {
+            get() {
+                return this.$store.getters.getRecipeProcedure;
+            },
+            set(val) {
+                this.setRecipeProcedure(val);
             },
         },
     },
@@ -347,6 +424,8 @@ export default {
             "initIsEditingRecipeProcedure",
             "initEditingRecipeProcedureIndex",
             "initRecipeCategory",
+            "initRecipeGenre",
+            "initCookingTime",
             "initRecipeIngredientQuantity",
             "setRecipeName",
             "setRecipeIngredient",
@@ -359,6 +438,8 @@ export default {
             "setIsEditingRecipeProcedure",
             "setEditingRecipeProcedureIndex",
             "setRecipeCategory",
+            "setRecipeGenre",
+            "setCookingTime",
         ]),
         ...mapActions(["setIngredients"]),
         // 食材の初期データを登録する
@@ -431,6 +512,8 @@ export default {
             this.initIsEditingRecipeProcedure();
             this.initEditingRecipeProcedureIndex();
             this.initRecipeCategory();
+            this.initRecipeGenre();
+            this.initCookingTime();
         },
         sendNewRecipe() {
             if (this.recipeName == null) {

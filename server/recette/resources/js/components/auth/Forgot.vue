@@ -1,6 +1,6 @@
 <template>
     <section
-        class="section-forgot h-100 d-flex align-items-center justify-content-center"
+        class="section-forgot h-75 d-flex align-items-center justify-content-center"
     >
         <div class="wrapper-forgot">
             <div class="container-forgot d-flex flex-column">

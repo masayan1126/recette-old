@@ -11,6 +11,10 @@ export default {
     // recipe
     getRecipeName: recipeGetters.getRecipeName,
     getRecipes: recipeGetters.getRecipes,
+    getRecipeGenre: recipeGetters.getRecipeGenre,
+    getCookingTime: recipeGetters.getCookingTime,
+    getBotReccomendedRecipes: recipeGetters.getBotReccomendedRecipes,
+
     getIngredients: ingredientGetters.getIngredients,
     // recipeIngredient
     getRecipeIngredient: recipeIngredientGetters.getRecipeIngredient,

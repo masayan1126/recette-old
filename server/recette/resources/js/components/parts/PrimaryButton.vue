@@ -1,6 +1,6 @@
 <template>
     <button
-        class="btn"
+        class="btn font_size-resize"
         @click.prevent="propsFunction(recipeId, isFavorite)"
         :style="buttonStyle"
     >

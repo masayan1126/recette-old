@@ -37,9 +37,10 @@ class RecipeController extends Controller
         $recipe->cooking_time_index = $new_recipe->cookingTime->index;
         $recipe->recipe_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/no_image.png";
 
-        clock($request->file('recipe-image-file'));
         if ($request->file('recipe-image-file') != null) {
             $imagefile = $request->file('recipe-image-file');
+            clock($imagefile);
+            $path = Storage::disk('s3')->putFile('/recipes', $imagefile, 'public');
             $recipe->recipe_image_path = Storage::disk('s3')->url($path);
         }
         

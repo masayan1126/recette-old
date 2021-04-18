@@ -27,7 +27,7 @@
                     class="btn btn-primary"
                     @click="toastContents.toastSubmitFunction"
                 >
-                    登録する
+                    登録
                 </button>
             </div>
         </div>

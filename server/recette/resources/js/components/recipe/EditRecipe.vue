@@ -45,7 +45,7 @@
                                     ><i
                                         @click="
                                             editRecipeIngredient(
-                                                ingredient,
+                                                recipeIngredient,
                                                 index
                                             )
                                         "
@@ -70,7 +70,7 @@
                                     :value="ingredient"
                                     :key="ingredient.id"
                                 >
-                                    {{ ingredient.recipe_ingredient_name }}
+                                    {{ ingredient.ingredient_name }}
                                 </option>
                             </select>
                             <TextInput
@@ -109,14 +109,13 @@
                 <div class="mb-4 d-md-none" style="flex-basis: 50%">
                     <p class="mb-0">材料</p>
                     <div class="container-recipe_ingredient-recipe_edit">
-                        <ul
-                            class="pl-1"
-                            v-for="(
-                                recipeIngredient, index
-                            ) in recipeIngredientList"
-                            :key="recipeIngredient.id"
-                        >
-                            <li>
+                        <ul class="pl-1">
+                            <li
+                                v-for="(
+                                    recipeIngredient, index
+                                ) in recipeIngredientList"
+                                :key="recipeIngredient.id"
+                            >
                                 {{ recipeIngredient.recipe_ingredient_name }}
                                 {{
                                     recipeIngredient.recipe_ingredient_quantity
@@ -125,7 +124,7 @@
                                     ><i
                                         @click="
                                             editRecipeIngredient(
-                                                ingredient,
+                                                recipeIngredient,
                                                 index
                                             )
                                         "
@@ -152,7 +151,7 @@
                                     :value="ingredient"
                                     :key="ingredient.id"
                                 >
-                                    {{ ingredient.recipe_ingredient_name }}
+                                    {{ ingredient.ingredient_name }}
                                 </option>
                             </select>
                             <TextInput
@@ -180,9 +179,9 @@
                     <div class="d-flex justify-content-between align-items-end">
                         <span>作り方</span>
                         <span
-                            class="cursor-pointer color-link_menu"
+                            class="cursor-pointer color-link_menu font_size-resize"
                             data-toggle="modal"
-                            data-target="#exampleModal"
+                            :data-target="`#${contents.modalContents.modalId}`"
                             v-if="selectedRecipe[0].recipe_url != null"
                         >
                             <i class="mr-1 fas fa-book-open"></i>レシピURL
@@ -190,9 +189,9 @@
                         <!-- URlの登録がない場合は↓を表示 -->
                         <span
                             v-else
-                            class="cursor-pointer"
+                            class="cursor-pointer font_size-resize"
                             data-toggle="modal"
-                            data-target="#exampleModal"
+                            :data-target="`#${contents.modalContents.modalId}`"
                         >
                             <i class="mr-1 fas fa-book-open"></i>レシピURL
                         </span>
@@ -365,6 +364,7 @@ export default {
                     },
                 },
                 modalContents: {
+                    modalId: "edit-recipeurl-modal",
                     modalTitle: "レシピURLの登録",
                     modalSetFunction: null,
                     modalSubmitFunction: null,
@@ -374,8 +374,8 @@ export default {
                 addRecipeButtonStyle: {
                     color: "#fff",
                     backgroundColor: "#E4C8AD",
-                    fontSize: "10px",
-                    height: "35px",
+                    // fontSize: "10px",
+                    // height: "35px",
                     width: "100%",
                 },
                 inputContentsStyle: {
@@ -472,6 +472,7 @@ export default {
         },
     },
     created() {
+        console.log(this.recipeIngredientList);
         this.initStoreDataSet();
         this.setSelectedRecipeData();
     },

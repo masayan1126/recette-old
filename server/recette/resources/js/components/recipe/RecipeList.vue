@@ -22,10 +22,12 @@
                         <!-- 縦方向のflex -->
                         <div class="d-flex flex-column h-100">
                             <div class="d-flex justify-content-between">
-                                <h6>{{ recipe.recipe_name }}</h6>
+                                <h6 class="w-80 font_size-resize">
+                                    {{ recipe.recipe_name }}
+                                </h6>
                                 <i
                                     @click="deleteRecipe(recipe.id)"
-                                    class="fas fa-trash-alt font_size-sm cursor-pointer"
+                                    class="fas fa-trash-alt font_size-resize cursor-pointer"
                                 ></i>
                             </div>
 
@@ -101,33 +103,54 @@ export default {
     name: "RecipeList",
     data() {
         return {
-            listName: "",
+            // listName: "",
             screenInnerWidth: null,
             style: {
                 addFavoriteButtonStyle: {
                     color: "#fff",
                     backgroundColor: "#E0D29E",
-                    fontSize: "10px",
+                    // fontSize: "10px",
                     flexBasis: "65%",
                 },
 
                 showRecipeDetailButtonStyle: {
                     color: "#fff",
                     backgroundColor: "#B1C6BD",
-                    fontSize: "10px",
+                    // fontSize: "10px",
                     flexBasis: "32%",
                 },
             },
         };
     },
     computed: {
+        ...mapGetters({
+            userData: "getUserData",
+            recipes: "getRecipes",
+            botReccomendedRecipes: "getBotReccomendedRecipes",
+        }),
+        listName() {
+            if (this.listType == "my-recipes") {
+                return "マイレシピ";
+            } else if (this.listType == "new-arrival-recipes") {
+                return "新着レシピ";
+            } else if (this.listType == "bot-recommend-recipes") {
+                return "献立くんの提案レシピ";
+            } else {
+                return this.$route.query.query + "の検索結果";
+            }
+        },
+        listType() {
+            const listType = window.location.pathname.split(
+                "/recipes/list/"
+            )[1];
+            return listType;
+        },
         recipeList() {
             switch (this.listName) {
                 case "マイレシピ":
                     return this.recipes.filter(
                         (recipe) => recipe.user_id == this.userData.userId
                     );
-                // break;
                 case "新着レシピ":
                     const newArrivalRecipes = this.recipes.slice();
                     newArrivalRecipes.sort(
@@ -148,34 +171,12 @@ export default {
                         }
                     });
                     return recipes;
-                // break;
             }
-        },
-        ...mapGetters({
-            userData: "getUserData",
-            recipes: "getRecipes",
-            botReccomendedRecipes: "getBotReccomendedRecipes",
-        }),
-        listType() {
-            const listType = window.location.pathname.split(
-                "/recipes/list/"
-            )[1];
-            return listType;
         },
     },
     created() {
-        // 768
-        console.log(this.listType);
+        this.getScreenInnerWidth();
         window.addEventListener("resize", this.getScreenInnerWidth);
-        if (this.listType == "my-recipes") {
-            this.listName = "マイレシピ";
-        } else if (this.listType == "new-arrival-recipes") {
-            this.listName = "新着レシピ";
-        } else if (this.listType == "bot-recommend-recipes") {
-            this.listName = "献立くんの提案レシピ";
-        } else {
-            this.listName = this.$route.query.query + "の検索結果";
-        }
     },
     methods: {
         ...mapActions(["setRecipes"]),

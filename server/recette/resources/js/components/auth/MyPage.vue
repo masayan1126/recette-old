@@ -20,7 +20,7 @@
                 <p
                     class="text-right"
                     data-toggle="modal"
-                    data-target="#exampleModal"
+                    :data-target="`#${contents.modalContents.modalId}`"
                 >
                     <i class="far fa-edit mr-1"></i>編集する
                 </p>
@@ -53,6 +53,7 @@ export default {
         return {
             contents: {
                 modalContents: {
+                    modalId: "edit-profile-modal",
                     modalTitle: "ユーザー情報の編集",
                     modalSetFunction: null,
                     modalSubmitFunction: this.updateProfileData,

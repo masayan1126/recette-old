@@ -18,7 +18,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 |
 */
 
-Route::get('/reset-password/{token}', [ResetPasswordController::class,'resetPassword'])->name('reset-password');
+Route::get('/reset-password/{token}', [ResetPasswordController::class,'resetPassword']);
 
 Route::get('/{any}', function() {
     return view('layouts.app');
@@ -30,7 +30,6 @@ Route::get('/{any}', function() {
 
 // // レシピ一覧(検索リスト)
 // Route::get('/users/{user_id?}/recipes/category', [SearchRecipeController::class, 'showRecipeCategoryList'])->name('recipe.category')->middleware('auth');
-
 // Route::post('/users/{user_id?}/recipes/category/{category_name?}', [SearchRecipeController::class, 'showRecipeCategoryDetailList'])->name('recipe.category.detail')->middleware('auth');
 
 // // レシピ作成

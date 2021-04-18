@@ -5,9 +5,7 @@ export default {
             authFormButtonStyle: {
                 color: "#fff",
                 backgroundColor: "#c4c4c4",
-                fontSize: "12px",
                 width: "100%",
-                height: "35px",
             },
         };
     },

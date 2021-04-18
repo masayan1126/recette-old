@@ -32,7 +32,6 @@ import RecipeDetail from "./components/recipe/RecipeDetail.vue";
 import EditRecipe from "./components/recipe/EditRecipe.vue";
 import CreateRecipe from "./components/recipe/CreateRecipe.vue";
 import Register from "./components/auth/Register.vue";
-import VueAutosuggest from "vue-autosuggest";
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -40,4 +39,4 @@ import VueAutosuggest from "vue-autosuggest";
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-createApp(App).use(router).use(store).use(VueAutosuggest).mount("#app");
+createApp(App).use(router).use(store).mount("#app");

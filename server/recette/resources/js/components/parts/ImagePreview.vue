@@ -1,6 +1,10 @@
 <template>
     <div class="d-flex justify-content-between mb-1">
-        <img :src="url" class="w-50 w-lg-70" />
+        <img
+            style="width: 180px; height: 180px; object-fit: cover"
+            :src="url"
+            class=""
+        />
         <div class="d-flex justify-content-end w-30">
             <label>
                 <i class="fas fa-file-upload mr-1"></i>
@@ -45,7 +49,14 @@ export default {
                 this.url = URL.createObjectURL(this.file);
                 return;
             }
+
+            if (e.target.files[0].size > 2000000) {
+                alert("アップロードできる画像は2MBまでです");
+                return;
+            }
+
             this.file = e.target.files[0];
+            console.log(this.file);
             this.url = URL.createObjectURL(this.file);
         },
         uploadDefaultImage() {

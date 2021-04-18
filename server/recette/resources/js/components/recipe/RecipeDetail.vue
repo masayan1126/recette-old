@@ -44,7 +44,9 @@
                                 }}
                             </li>
                         </ul>
-                        <p class="mb-0 text-right">調理時間：{{}}</p>
+                        <p class="mb-0 text-right">
+                            調理時間：{{ selectedRecipeCookingTime[0].name }}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -54,7 +56,7 @@
 
                     <span
                         v-if="selectedRecipe[0].recipe_url != null"
-                        class="color-link_menu"
+                        class="color-link_menu font_size-resize"
                     >
                         <a
                             :href="selectedRecipe[0].recipe_url"
@@ -63,7 +65,7 @@
                             ><i class="mr-1 fas fa-book-open"></i>レシピURL</a
                         >
                     </span>
-                    <span v-else>
+                    <span class="font_size-resize" v-else>
                         <i class="mr-1 fas fa-book-open"></i>レシピURL
                     </span>
                 </div>
@@ -92,7 +94,7 @@
                         <span>ジャンル</span>
                     </div>
                     <div class="container-recipe_category-recipe_detail p-2">
-                        {{ selectedRecipe[0].recipe_category }}
+                        {{ selectedRecipeGenre[0].name }}
                     </div>
                 </div>
                 <div class="w-lg-49">
@@ -109,19 +111,29 @@
 </template>
 
 <script>
+import CookingTimeList from "../../assets/cookingTimeList";
+import RecipeGenres from "../../assets/recipeGenres";
 import { mapGetters } from "vuex";
 import ReturnButton from "../parts/ReturnButton";
 import utilsMixin from "../../mixin/utility";
+
 export default {
     components: {
         ReturnButton,
     },
     mixins: [utilsMixin],
     name: "RecipeDetail",
+    data() {
+        return {
+            cookingTimeList: CookingTimeList.cookingTimeList,
+            recipeGenres: RecipeGenres.recipeGenres,
+        };
+    },
     computed: {
         ...mapGetters({
             recipes: "getRecipes",
         }),
+
         selectedRecipeId() {
             const recipeId = window.location.pathname.split("/recipes/")[1];
             return recipeId;
@@ -129,6 +141,20 @@ export default {
         selectedRecipe() {
             return this.recipes.filter(
                 (recipe) => recipe.id == this.selectedRecipeId
+            );
+        },
+        selectedRecipeCookingTime() {
+            return this.cookingTimeList.filter(
+                (cookingTime) =>
+                    cookingTime.index ==
+                    this.selectedRecipe[0].cooking_time_index
+            );
+        },
+        selectedRecipeGenre() {
+            return this.recipeGenres.filter(
+                (recipeGenre) =>
+                    recipeGenre.index ==
+                    this.selectedRecipe[0].recipe_genre_index
             );
         },
     },

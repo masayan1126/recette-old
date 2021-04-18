@@ -40,55 +40,55 @@ class IngredientController extends Controller
      */
     public function store(Request $request,$id)
     {
-
-       $vegs = json_decode($request->initialIngredientList)->vegs;
-       $meats = json_decode($request->initialIngredientList)->meats;
-       $fishes = json_decode($request->initialIngredientList)->fishes;
-       $cereals = json_decode($request->initialIngredientList)->cereals;
-       $potatoes_starches_beans_mushrooms = json_decode($request->initialIngredientList)->potatoes_starches_beans_mushrooms;
+        $vegs = json_decode($request->initialIngredientList)->vegs;
+        $meats = json_decode($request->initialIngredientList)->meats;
+        $fishes = json_decode($request->initialIngredientList)->fishes;
+        $cereals = json_decode($request->initialIngredientList)->cereals;
+        $potatoes_starches_beans_mushrooms = json_decode($request->initialIngredientList)->potatoes_starches_beans_mushrooms;
 
         foreach ($vegs as $veg){
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
-            $ingredient->recipe_ingredient_name = $veg->ingredientName;
-            $ingredient->recipe_ingredient_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/veg.jpeg";
-            $ingredient->recipe_ingredient_category = $veg->category;
+            $ingredient->ingredient_name = $veg->ingredientName;
+            $ingredient->ingredient_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/veg.jpeg";
+            $ingredient->ingredient_category = $veg->category;
             $ingredient->save();
         }
 
+        
         foreach ($meats as $meat){
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
-            $ingredient->recipe_ingredient_name = $meat->ingredientName;
-            $ingredient->recipe_ingredient_category = $meat->category;
+            $ingredient->ingredient_name = $meat->ingredientName;
+            $ingredient->ingredient_category = $meat->category;
             $ingredient->save();
         }
 
         foreach ($fishes as $fish){
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
-            $ingredient->recipe_ingredient_name = $fish->ingredientName;
-            $ingredient->recipe_ingredient_category = $fish->category;
+            $ingredient->ingredient_name = $fish->ingredientName;
+            $ingredient->ingredient_category = $fish->category;
             $ingredient->save();
         }
 
         foreach ($cereals as $cereal){
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
-            $ingredient->recipe_ingredient_name = $cereal->ingredientName;
-            $ingredient->recipe_ingredient_category = $cereal->category;
+            $ingredient->ingredient_name = $cereal->ingredientName;
+            $ingredient->ingredient_category = $cereal->category;
             $ingredient->save();
         }
 
         foreach ($potatoes_starches_beans_mushrooms as $potatoes_starches_beans_mushroom){
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
-            $ingredient->recipe_ingredient_name = $potatoes_starches_beans_mushroom->ingredientName;
-            $ingredient->recipe_ingredient_category = $potatoes_starches_beans_mushroom->category;
+            $ingredient->ingredient_name = $potatoes_starches_beans_mushroom->ingredientName;
+            $ingredient->ingredient_category = $potatoes_starches_beans_mushroom->category;
             $ingredient->save();
         }
 
-        $ingredients = Ingredient::where('user_id', $id)->get();        
+        $ingredients = Ingredient::where('user_id',$id)->get();
         return $ingredients;
     }
 
@@ -121,9 +121,31 @@ class IngredientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $user_id, $ingredient_id)
+    {   
+        $edited_ingredient = json_decode($request->newIngredient);
+
+        // 新規追加
+        if ($ingredient_id == "null") {
+            $ingredient = new Ingredient();
+            $ingredient->user_id = $user_id;
+            $ingredient->ingredient_name = $edited_ingredient->ingredientName;
+            $ingredient->ingredient_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/veg.jpeg";
+            $ingredient->ingredient_category = $edited_ingredient->ingredientCategory;
+            $ingredient->save();
+            $ingredients = Ingredient::where('user_id',$user_id)->get();
+            return $ingredients;
+        }
+        
+        $update_target_ingredient = Ingredient::where('id',$ingredient_id)->first();
+        $update_target_ingredient->ingredient_name = $edited_ingredient->ingredientName;
+        $update_target_ingredient->ingredient_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/veg.jpeg";
+        $update_target_ingredient->ingredient_category = $edited_ingredient->ingredientCategory;
+        $update_target_ingredient->save();
+
+        $ingredients = Ingredient::where('user_id',$user_id)->get();
+        clock($ingredients);
+        return $ingredients;
     }
 
     /**
@@ -132,8 +154,11 @@ class IngredientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($user_id,$ingredient_id)
     {
-        //
+        $delete_target_ingredient = Ingredient::where('user_id', $user_id)->where('id', $ingredient_id)->first();
+        $delete_target_ingredient->delete();
+        $ingredients = Ingredient::where('user_id',$user_id)->get();
+        return $ingredients;
     }
 }

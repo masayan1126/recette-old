@@ -33,27 +33,16 @@ Route::middleware('auth:sanctum')->get('/athenticated', function () {
 Route::post('/register', [RegisterController::class,'register']);
 Route::post('/login', [LoginController::class,'login']);
 Route::post('/logout', [LoginController::class,'logout']);
-
-// forgot
-Route::post('/forgot', [ForgotPasswordController::class,'forgot'])->name('forgot');
-// reset
-Route::post('/reset', [ResetPasswordController::class,'reset'])->name('reset');
-
-
-// Route::group(['middleware' => 'api'], function() {
-//     Route::post('forgot', [ForgotPasswordController::class, 'forgot']);
-// });
-// Route::group(['middleware' => 'api'], function() {
-//     Route::post('reset', [ForgotPasswordController::class, 'reset']);
-// });
-
-
-// Route::group(['middleware' => 'api'], function() {
-    Route::post('/check/routing', [RoutingCheckController::class, 'check'])->name('');
-// });
+Route::post('/forgot', [ForgotPasswordController::class,'forgot']);
+Route::post('/reset', [ResetPasswordController::class,'reset']);
+Route::post('/check/routing', [RoutingCheckController::class, 'check']);
 
 Route::group(['middleware' => 'api'], function() {
-    Route::get('recipes', [RecipeController::class, 'index'])->name('');
+    Route::put('account/{user_id?}/edit', [UserController::class, 'edit']);
+});
+
+Route::group(['middleware' => 'api'], function() {
+    Route::get('recipes', [RecipeController::class, 'index']);
 });
 
 Route::group(['middleware' => 'api'], function() {
@@ -69,22 +58,25 @@ Route::group(['middleware' => 'api'], function() {
 });
 
 Route::group(['middleware' => 'api'], function() {
-    Route::get('users/{user_id?}/ingredients', [IngredientController::class, 'index'])->name('');
-});
-
-
-Route::group(['middleware' => 'api'], function() {
-    Route::post('users/{id?}/ingredients/add', [IngredientController::class, 'store'])->name('ingredient.store');
+    Route::get('users/{user_id?}/ingredients', [IngredientController::class, 'index']);
 });
 
 Route::group(['middleware' => 'api'], function() {
-    Route::put('account/{user_id?}/edit', [UserController::class, 'edit'])->name('');
+    Route::post('users/{id?}/ingredients/add', [IngredientController::class, 'store']);
 });
 
 Route::group(['middleware' => 'api'], function() {
-    Route::post('users/{user_id?}/recipes/{recipe_id?}/favorite/add', [RecipeFavoriteController::class, 'addFavorite'])->name('recipe.favorite.add');
+    Route::post('users/{user_id?}/ingredients/{ingredient_id?}/edit', [IngredientController::class, 'update']);
 });
 
 Route::group(['middleware' => 'api'], function() {
-    Route::post('users/{user_id?}/recipes/{recipe_id?}/favorite/remove', [RecipeFavoriteController::class, 'removeFavorite'])->name('recipe.favorite.remove');
+    Route::delete('users/{user_id?}/ingredients/{ingredient_id?}/delete', [IngredientController::class, 'destroy']);
+});
+
+Route::group(['middleware' => 'api'], function() {
+    Route::post('users/{user_id?}/recipes/{recipe_id?}/favorite/add', [RecipeFavoriteController::class, 'addFavorite']);
+});
+
+Route::group(['middleware' => 'api'], function() {
+    Route::post('users/{user_id?}/recipes/{recipe_id?}/favorite/remove', [RecipeFavoriteController::class, 'removeFavorite']);
 });

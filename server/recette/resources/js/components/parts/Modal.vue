@@ -3,7 +3,7 @@
         aria-hidden="true"
         aria-labelledby="exampleModalLabel"
         class="modal fade"
-        id="exampleModal"
+        :id="modalContents.modalId"
         role="dialog"
         tabindex="-1"
     >

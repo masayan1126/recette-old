@@ -7,6 +7,7 @@ import MyPage from "./components//auth/MyPage.vue";
 import NotFound from "./components//common/NotFound.vue";
 import Top from "./components/TopPage.vue";
 import RecipeDetail from "./components/recipe/RecipeDetail.vue";
+import IngredientList from "./components/ingredient/IngredientList.vue";
 import RecipeBot from "./components/recipe/bot/RecipeBot";
 import EditRecipe from "./components/recipe/EditRecipe.vue";
 import RecipeList from "./components/recipe/RecipeList.vue";
@@ -229,6 +230,23 @@ const router = createRouter({
             path: "/recipes",
             name: "recipes",
             component: Top,
+            props: true,
+            beforeEnter: (to, form, next) => {
+                axios
+                    .get("/api/user")
+                    .then(() => {
+                        next();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        return next({ name: "login" });
+                    });
+            },
+        },
+        {
+            path: "/ingredients",
+            name: "ingredientList",
+            component: IngredientList,
             props: true,
             beforeEnter: (to, form, next) => {
                 axios

@@ -46,7 +46,7 @@
                         class="cursor-pointer"
                         @click="transitionToNext('recipeBot')"
                     >
-                        <i class="fas fa-robot fa-2x"></i>献立くん
+                        <i class="fas fa-robot mr-1"></i>献立くん
                     </li>
                 </ul>
             </div>

@@ -42,7 +42,17 @@
                 />
             </div>
             <div class="mb-4">
-                <p class="mb-0">材料</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="mb-0">材料</p>
+                    <router-link
+                        class="font_size-resize"
+                        :to="{
+                            name: 'ingredientList',
+                        }"
+                    >
+                        追加したい食材がない場合はこちら
+                    </router-link>
+                </div>
                 <div class="container-recipe_ingredient-recipe_create">
                     <ul
                         class="pl-1"
@@ -52,8 +62,8 @@
                         :key="recipeIngredient.id"
                     >
                         <li>
-                            {{ recipeIngredient.recipe_ingredient_name }}
-                            {{ recipeIngredient.recipe_ingredient_quantity }}
+                            {{ recipeIngredient.ingredient_name }}
+                            {{ recipeIngredient.ingredient_quantity }}
                             <span
                                 ><i
                                     @click="
@@ -85,7 +95,7 @@
                                 :value="ingredient"
                                 :key="ingredient.id"
                             >
-                                {{ ingredient.recipe_ingredient_name }}
+                                {{ ingredient.ingredient_name }}
                             </option>
                         </select>
                         <TextInput
@@ -112,8 +122,8 @@
                     <div class="d-flex justify-content-between align-items-end">
                         <span>作り方</span>
                         <span
-                            class="cursor-pointer"
-                            data-target="#exampleModal"
+                            class="cursor-pointer font_size-resize"
+                            :data-target="`#${contents.modalContents.modalId}`"
                             data-toggle="modal"
                         >
                             <i class="mr-1 fas fa-book-open"></i>レシピURL
@@ -296,6 +306,7 @@ export default {
                     },
                 },
                 modalContents: {
+                    modalId: "create-recipeurl-modal",
                     modalTitle: "レシピURLの登録",
                     modalSetFunction: null,
                     modalSubmitFunction: null,
@@ -317,9 +328,7 @@ export default {
                 sendNewRecipeButtonStyle: {
                     color: "#fff",
                     backgroundColor: "#E4C8AD",
-                    fontSize: "12px",
                     width: "100%",
-                    height: "35px",
                 },
                 unnecessaryElementStyle: {
                     display: "none !important",

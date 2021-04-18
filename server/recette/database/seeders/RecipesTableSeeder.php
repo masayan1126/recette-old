@@ -150,6 +150,49 @@ class RecipesTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'id' => 7,
+                'user_id' => 1,
+                'recipe_name' => "新じゃがと豚肉のバターしょうゆソテー",
+                'recipe_image_path' => "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/X7Bje4Bvp0alqXhmnROOFTaBhdorRmnWMzpmzlG7.jpg",
+                'recipe_procedure' => '[
+                    "豚肉は赤身と脂身の境目に、1～2cm間隔で包丁の刃先で切り目を入れ、筋を切る。塩小さじ1/4を全体にまぶし、手で表面を押さえてなじませ、一枚を4つに切る。じゃがいもはよく洗い、1つずつラップに包んで、電子レンジ（600W使用）で4分ほど加熱する。",
+                    "取り出してそのままおき、粗熱が取れたら、皮つきのまま横に幅1cmに切る。スナップえんどうはへたと筋を取り、手で縦半分に割る。にんにくは横に薄切りにする。",
+                    "フライパンにバター大さじ1、にんにくを入れて弱火で熱し、バターが溶けて、香りが立ってきたら中火にする。豚肉、じゃがいも、スナップえんどうを加え、ときどき返しながら、4～5分焼きつける",
+                    "豚肉とじゃがいもにこんがりと焼き色がついたら、しょうゆ小さじ2、みりん小さじ1を加えてさっと混ぜ合わせ、器に盛る。"
+                ]',
+                'recipe_category' => "肉料理",
+                'recipe_category_sub' => "meat",
+                'recipe_category_image' => "/images/category_meat.jpeg",
+                'is_favorite' => 1,
+                'recipe_url' => null,
+                'recipe_genre_index' => 4,
+                'cooking_time_index' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 8,
+                'user_id' => 1,
+                'recipe_name' => "新じゃがのポテトサラダ",
+                'recipe_image_path' => "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/KW4ukdSUxBEDH1PbV4TOe0ambVMGjdXvVBFRXWZ0.jpg",
+                'recipe_procedure' => '[
+                    "じゃがいもはしっかり洗い、皮付きのまま鍋に入れ、かぶるくらいの水を注ぎ、中火にかける。",
+                    "ゆでたじゃがいもは熱いうちに皮をむき、木べらを用いて固形感が残る程度にマッシュしたのち、粗熱をとる",
+                    "玉ねぎは縦に薄く切り、にんじんはいちょう切りにする。耐熱皿にのせてラップをかけ、レンジ（500W）で約2分加熱する。加熱後玉ねぎは水気をしぼっておく。",
+                    "きゅうりは輪切りにし、ハムは短冊切りにする",
+                    "マッシュしたじゃがいもの粗熱がとれたら、玉ねぎ、にんじん、きゅうり、ハム、マヨネーズを加えて全体をよく和える。最後に塩・こしょうで味をととのえる"
+                ]',
+                'recipe_category' => "野菜料理",
+                'recipe_category_sub' => "veg",
+                'recipe_category_image' => "/images/category_veg.jpeg",
+                'is_favorite' => 1,
+                'recipe_url' => null,
+                'recipe_genre_index' => 1,
+                'cooking_time_index' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
 

@@ -20174,6 +20174,16 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px #454545 inset;
 }
 
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+input,
+select,
+textarea {
+  font-size: 16px !important;
+}
+
 .btn {
   border-radius: 0.2rem;
 }
@@ -20680,7 +20690,7 @@ input:-webkit-autofill {
 
   .container-myrecipe-toppage,
   .container-new_arrival_recipe-toppage {
-    height: 190px;
+    height: 200px;
   }
 
   .container-header_content-toppage {

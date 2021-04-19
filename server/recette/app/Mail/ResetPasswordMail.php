@@ -33,16 +33,9 @@ class ResetPasswordMail extends Mailable
     {
         // 件名
         $subject = 'Reset password mail';
-
-        // コールバックURLをルート名で取得
-        // TODO: これだとホットリロードでホストがおかしくなる
-        // $url = route('reset-password', ['token' => $this->token]);
-
-        // TODO: とりあえずこれで対応
-        // .envの「APP_URL」に設定したurlを取得
         $baseUrl = config('app.url');
         $token = $this->token;
-        $url = "http://localhost:8000/reset-password/{$token}";
+        $url = "https://recette.work/reset-password/{$token}";
         // 送信元のアドレス
         // .envの「MAIL_FROM_ADDRESS」に設定したアドレスを取得
         $from = config('mail.from.address');

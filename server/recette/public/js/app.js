@@ -18871,7 +18871,7 @@ var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNo
 
 var _hoisted_15 = {
   key: 0,
-  "class": "container-myrecipe-toppage mb-sm-5"
+  "class": "container-myrecipe-toppage mb-sm-4"
 };
 var _hoisted_16 = {
   "class": "small"
@@ -18898,7 +18898,7 @@ var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" すべて見る ＞ ");
 
 var _hoisted_22 = {
-  "class": "container-new_arrival_recipe-toppage mb-sm-5"
+  "class": "container-new_arrival_recipe-toppage mb-sm-4"
 };
 var _hoisted_23 = {
   "class": "small"

@@ -86,7 +86,7 @@
 
             <!-- マイレシピが1つ以上登録されている場合はリストを表示する -->
             <div
-                class="container-myrecipe-toppage mb-sm-5"
+                class="container-myrecipe-toppage mb-sm-4"
                 v-if="myRecipes.length > 0"
             >
                 <div
@@ -126,7 +126,7 @@
                     すべて見る ＞
                 </router-link>
             </div>
-            <div class="container-new_arrival_recipe-toppage mb-sm-5">
+            <div class="container-new_arrival_recipe-toppage mb-sm-4">
                 <div
                     class="element-recipe-toppage"
                     @click="showRecipeDetail(recipe.id)"

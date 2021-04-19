@@ -199,7 +199,7 @@
             // TODO: とりあえずこれで対応
             // .envの「APP_URL」に設定したurlを取得
             // $baseUrl = config('app.url');
-            $route = "http://localhost:8000/{$vueRoute}";
+            $route = "https://recette.work/{$vueRoute}";
 
             return redirect($route)
                 // PHPネイティブのsetcookieメソッドに指定する引数同じ
@@ -224,7 +224,7 @@
             // TODO: とりあえずこれで対応
             // .envの「APP_URL」に設定したurlを取得
             // // $baseUrl = config('app.url');
-            $route = "http://localhost:8000/{$vueRoute}";
+            $route = "https://recette.work/{$vueRoute}";
             return redirect($route)->cookie('RESETTOKEN', $token, 0, '', '', false, false);
         }
     }

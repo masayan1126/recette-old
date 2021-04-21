@@ -20304,11 +20304,13 @@ textarea {
 .container-notfound {
   max-width: 400px;
   margin: 0 auto;
+  min-width: 300px;
 }
 
 .container-register {
   max-width: 300px;
   margin: 0 auto;
+  min-width: 300px;
 }
 
 .container-navbar_top {
@@ -20328,7 +20330,7 @@ textarea {
 .container-myrecipe-toppage,
 .container-new_arrival_recipe-toppage {
   display: flex;
-  height: 155px;
+  height: 170px;
   overflow-x: scroll;
 }
 
@@ -20353,6 +20355,7 @@ textarea {
 
 .element-recipe-toppage {
   height: 120px;
+  width: 120px;
   margin: 0 10px 0px 0;
   cursor: pointer;
 }
@@ -20647,6 +20650,13 @@ textarea {
   .font_size-resize {
     font-size: 0.5rem;
   }
+
+  .trim-image {
+    width: 180px;
+    height: 180px;
+    -o-object-fit: cover;
+       object-fit: cover;
+  }
 }
 
 @media (min-width: 576px) {
@@ -20766,6 +20776,13 @@ textarea {
     display: block;
     width: 30%;
   }
+
+  .trim-image {
+    width: 250px;
+    height: 250px;
+    -o-object-fit: cover;
+       object-fit: cover;
+  }
 }
 
 @media (min-width: 768px) {
@@ -20850,6 +20867,13 @@ textarea {
   .font_size-resize {
     font-size: 0.7rem;
   }
+
+  .trim-image {
+    width: 320px;
+    height: 320px;
+    -o-object-fit: cover;
+       object-fit: cover;
+  }
 }
 
 @media (min-width: 992px) {
@@ -20918,6 +20942,13 @@ textarea {
 
   .font_size-resize {
     font-size: 0.8rem;
+  }
+
+  .trim-image {
+    width: 370px;
+    height: 370px;
+    -o-object-fit: cover;
+       object-fit: cover;
   }
 }
 

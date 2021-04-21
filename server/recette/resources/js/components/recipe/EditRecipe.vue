@@ -31,21 +31,17 @@
                     <div class="container-recipe_ingredient-recipe_edit">
                         <ul
                             class="pl-1"
-                            v-for="(
-                                recipeIngredient, index
-                            ) in recipeIngredientList"
-                            :key="recipeIngredient.id"
+                            v-for="(ingredient, index) in recipeIngredientList"
+                            :key="ingredient.id"
                         >
                             <li>
-                                {{ recipeIngredient.recipe_ingredient_name }}
-                                {{
-                                    recipeIngredient.recipe_ingredient_quantity
-                                }}
+                                {{ ingredient.ingredient_name }}
+                                {{ ingredient.ingredient_quantity }}
                                 <span
                                     ><i
                                         @click="
                                             editRecipeIngredient(
-                                                recipeIngredient,
+                                                ingredient,
                                                 index
                                             )
                                         "
@@ -112,19 +108,17 @@
                         <ul class="pl-1">
                             <li
                                 v-for="(
-                                    recipeIngredient, index
+                                    ingredient, index
                                 ) in recipeIngredientList"
-                                :key="recipeIngredient.id"
+                                :key="ingredient.id"
                             >
-                                {{ recipeIngredient.recipe_ingredient_name }}
-                                {{
-                                    recipeIngredient.recipe_ingredient_quantity
-                                }}
+                                {{ ingredient.ingredient_name }}
+                                {{ ingredient.ingredient_quantity }}
                                 <span
                                     ><i
                                         @click="
                                             editRecipeIngredient(
-                                                recipeIngredient,
+                                                ingredient,
                                                 index
                                             )
                                         "
@@ -398,14 +392,6 @@ export default {
             recipeIngredientList: "getRecipeIngredientList",
             recipeProcedureList: "getRecipeProcedureList",
         }),
-        cookingTime: {
-            get() {
-                return this.$store.getters.getCookingTime;
-            },
-            set(val) {
-                this.setCookingTime(val);
-            },
-        },
         editedRecipe() {
             const editedRecipe = {
                 cookingTime: this.cookingTime,
@@ -419,60 +405,12 @@ export default {
             };
             return editedRecipe;
         },
-        recipeName: {
-            get() {
-                return this.$store.getters.getRecipeName;
-            },
-            set(val) {
-                this.setRecipeName(val);
-            },
-        },
-        recipeIngredient: {
-            get() {
-                return this.$store.getters.getRecipeIngredient;
-            },
-            set(val) {
-                this.setRecipeIngredient(val);
-            },
-        },
-        recipeIngredientQuantity: {
-            get() {
-                return this.$store.getters.getRecipeIngredientQuantity;
-            },
-            set(val) {
-                this.setRecipeIngredientQuantity(val);
-            },
-        },
-        recipeGenre: {
-            get() {
-                return this.$store.getters.getRecipeGenre;
-            },
-            set(val) {
-                this.setRecipeGenre(val);
-            },
-        },
-        recipeCategory: {
-            get() {
-                return this.$store.getters.getrecipeCategory;
-            },
-            set(val) {
-                this.setRecipeCategory(val);
-            },
-        },
-        recipeProcedure: {
-            get() {
-                return this.$store.getters.getRecipeProcedure;
-            },
-            set(val) {
-                this.setRecipeProcedure(val);
-            },
-        },
+
         selectedRecipe() {
             return this.recipes.filter((recipe) => recipe.id == this.recipeId);
         },
     },
     created() {
-        console.log(this.recipeIngredientList);
         this.initStoreDataSet();
         this.setSelectedRecipeData();
     },
@@ -534,10 +472,11 @@ export default {
             document.getElementById("recipe-procedure-input-field").focus();
         },
         editRecipeIngredient(ingredient, index) {
-            this.setRecipeIngredientQuantity(
-                ingredient.recipeIngredientQuantity
-            );
-            this.setRecipeIngredient(ingredient);
+            this.setRecipeIngredientQuantity(ingredient.ingredient_quantity);
+            const _ingredient = { ...ingredient };
+
+            delete _ingredient.ingredient_quantity;
+            this.setRecipeIngredient(_ingredient);
             // 食材編集モードをtrueに
             this.setIsEditingRecipeIngredient();
             this.setEditingRecipeIngredientIndex(index);
@@ -553,7 +492,7 @@ export default {
             this.initRecipeProcedureList();
         },
         sendEditedRecipe() {
-            if (this.recipeName == null) {
+            if (this.recipeName == "") {
                 alert("レシピ名は必須です");
                 return;
             }
@@ -576,9 +515,7 @@ export default {
                     },
                 })
                 .then((res) => {
-                    console.log(res.data);
                     this.setRecipes(res.data);
-                    console.log(this.recipes);
                     this.$router.push({
                         name: "recipeDetail",
                         params: { recipeId: this.recipeId },
@@ -590,13 +527,18 @@ export default {
         },
         setSelectedRecipeData() {
             this.setRecipeName(this.selectedRecipe[0].recipe_name);
-
             this.selectedRecipe[0].recipe_ingredients.forEach(
                 (recipe_ingredient) => {
+                    const recipeIngredient = {
+                        ingredient_name: recipe_ingredient.ingredient_name,
+                        ingredient_quantity:
+                            recipe_ingredient.ingredient_quantity,
+                        ingredient_category:
+                            recipe_ingredient.ingredient_category,
+                    };
                     this.setRecipeIngredientList({
-                        recipeIngredient: recipe_ingredient,
-                        recipeIngredientQuantity:
-                            recipe_ingredient.recipe_ingredient_quantity,
+                        recipeIngredient: recipeIngredient,
+                        recipeIngredientQuantity: null,
                     });
                 }
             );
@@ -608,15 +550,14 @@ export default {
             );
 
             this.contents.imagePreviewContentsForRecipeImage.defaultImage = this.selectedRecipe[0].recipe_image_path;
-            const selectedRecipeCategory = {
-                recipe_category_name: this.selectedRecipe[0].recipe_category,
-                recipe_category_name_sub: this.selectedRecipe[0]
-                    .recipe_category_sub,
-                recipe_category_image: this.selectedRecipe[0]
-                    .recipe_category_image,
-            };
 
-            this.setRecipeCategory(selectedRecipeCategory);
+            const selectedRecipeCategory = this.categories.filter(
+                (category) =>
+                    category.index ==
+                    this.selectedRecipe[0].recipe_category_index
+            );
+
+            this.setRecipeCategory(selectedRecipeCategory[0]);
 
             const selectedRecipeCookingTime = this.cookingTimeList.filter(
                 (cookingTimeObj) =>

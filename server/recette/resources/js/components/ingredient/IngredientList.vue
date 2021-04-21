@@ -17,15 +17,48 @@
                             :props-function="propsFunction"
                         />
                         <Ingredient
+                            :target-ingredients="fishIngredients"
+                            :collapse-id="'fish-collapse'"
+                            :props-function="propsFunction"
+                        />
+                        <Ingredient
+                            :target-ingredients="dairyProducts"
+                            :collapse-id="'dairy-products-collapse'"
+                            :props-function="propsFunction"
+                        />
+                        <Ingredient
+                            :target-ingredients="seasonings"
+                            :collapse-id="'seasonings-collapse'"
+                            :props-function="propsFunction"
+                        />
+                        <Ingredient
                             :target-ingredients="cerealIngredients"
                             :collapse-id="'cereal-collapse'"
                             :props-function="propsFunction"
                         />
                         <Ingredient
-                            :target-ingredients="
-                                potatoes_starches_beans_mushrooms
-                            "
-                            :collapse-id="'potatoes_starches_beans_mushrooms-collapse'"
+                            :target-ingredients="potatoes"
+                            :collapse-id="'potatoes-collapse'"
+                            :props-function="propsFunction"
+                        />
+                        <Ingredient
+                            :target-ingredients="starches"
+                            :collapse-id="'starches-collapse'"
+                            :props-function="propsFunction"
+                        />
+                        <Ingredient
+                            :target-ingredients="beans"
+                            :collapse-id="'beans-collapse'"
+                            :props-function="propsFunction"
+                        />
+                        <Ingredient
+                            :target-ingredients="mushrooms"
+                            :collapse-id="'mushrooms-collapse'"
+                            :props-function="propsFunction"
+                        />
+                        <Ingredient
+                            :target-ingredients="others"
+                            :collapse-id="'ohters-collapse'"
                             :props-function="propsFunction"
                         />
                     </div>
@@ -100,11 +133,17 @@ export default {
     data() {
         return {
             ingredientCategoryList: [
-                "野菜",
-                "肉",
-                "魚",
+                "野菜類",
+                "肉類",
+                "魚類",
+                "乳製品",
+                "調味料",
                 "穀類",
-                "芋・でん粉・豆・キノコ類",
+                "芋類",
+                "でん粉類",
+                "豆類",
+                "キノコ類",
+                "その他",
             ],
             ingredientCategory: null,
             ingredientId: null,
@@ -137,17 +176,27 @@ export default {
         },
         vegIngredients() {
             return this.ingredients.filter(
-                (ingredient) => ingredient.ingredient_category == "野菜"
+                (ingredient) => ingredient.ingredient_category == "野菜類"
             );
         },
         meatIngredients() {
             return this.ingredients.filter(
-                (ingredient) => ingredient.ingredient_category == "肉"
+                (ingredient) => ingredient.ingredient_category == "肉類"
             );
         },
         fishIngredients() {
             return this.ingredients.filter(
-                (ingredient) => ingredient.ingredient_category == "魚"
+                (ingredient) => ingredient.ingredient_category == "魚類"
+            );
+        },
+        dairyProducts() {
+            return this.ingredients.filter(
+                (ingredient) => ingredient.ingredient_category == "乳製品"
+            );
+        },
+        seasonings() {
+            return this.ingredients.filter(
+                (ingredient) => ingredient.ingredient_category == "調味料"
             );
         },
         cerealIngredients() {
@@ -155,10 +204,29 @@ export default {
                 (ingredient) => ingredient.ingredient_category == "穀類"
             );
         },
-        potatoes_starches_beans_mushrooms() {
+        potatoes() {
             return this.ingredients.filter(
-                (ingredient) =>
-                    ingredient.ingredient_category == "芋・でん粉・豆・キノコ類"
+                (ingredient) => ingredient.ingredient_category == "芋類"
+            );
+        },
+        starches() {
+            return this.ingredients.filter(
+                (ingredient) => ingredient.ingredient_category == "でん粉類"
+            );
+        },
+        beans() {
+            return this.ingredients.filter(
+                (ingredient) => ingredient.ingredient_category == "豆類"
+            );
+        },
+        mushrooms() {
+            return this.ingredients.filter(
+                (ingredient) => ingredient.ingredient_category == "キノコ類"
+            );
+        },
+        others() {
+            return this.ingredients.filter(
+                (ingredient) => ingredient.ingredient_category == "その他"
             );
         },
     },

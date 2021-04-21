@@ -17,8 +17,12 @@
                     <InputLabel
                         :class-name="'mb-0 w-100'"
                         :id="'input-email'"
-                        :name="'メールアドレス：'"
+                        :name="'メールアドレス'"
                     />
+                    <p class="small text-danger" v-if="errors.email">
+                        ※{{ errors.email[0] }}
+                    </p>
+
                     <TextInput
                         :class-name="'text-input-black w-100'"
                         :id="'input-email'"
@@ -31,8 +35,12 @@
                     <InputLabel
                         :class-name="'mb-0 w-100'"
                         :id="'input-password'"
-                        :name="'パスワード：'"
+                        :name="'パスワード'"
                     />
+                    <p class="small text-danger" v-if="errors.password">
+                        ※{{ errors.password[0] }}
+                    </p>
+
                     <TextInput
                         :class-name="'text-input-black w-100'"
                         :id="'input-password'"
@@ -70,6 +78,14 @@
                             パスワードをお忘れの方はこちら
                         </router-link>
                     </div>
+                    <div class="w-100 text-center text-md-left">
+                        <p
+                            @click="loginWithDemoUser()"
+                            class="small cursor-pointer"
+                        >
+                            デモユーザーで試してみる
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,6 +112,7 @@ export default {
                 email: "",
                 password: "",
             },
+            errors: [],
         };
     },
     created() {
@@ -103,16 +120,23 @@ export default {
     },
     methods: {
         ...mapActions(["setUserData", "initUserData"]),
-        login() {
-            axios
+        login: async function () {
+            await axios
                 .post("/api/login", this.loginForm)
                 .then((res) => {
+                    console.log("ログイン成功");
                     this.setUserData(res.data);
                     this.$router.push("/recipes");
                 })
                 .catch((error) => {
-                    console.log(error);
+                    this.errors = error.response.data.errors;
+                    console.log(error.response.data.errors);
                 });
+        },
+        loginWithDemoUser: async function () {
+            this.loginForm.email = "recipetarou@gmail.com";
+            this.loginForm.password = "recipetarou4719";
+            this.login();
         },
     },
 };

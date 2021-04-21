@@ -7,28 +7,35 @@ export default {
         state.recipeIngredient = null;
     },
     deleteRecipeIngredient(state, index) {
+        const boolConfirmDeleteIngredient = confirm(
+            "この食材を削除してよろしいですか？"
+        );
+        if (boolConfirmDeleteIngredient == false) {
+            return;
+        }
         state.recipeIngredient = null;
         state.recipeIngredientList.splice(index, 1);
-    },
-    setRecipeIngredient(state, ingredient) {
-        state.recipeIngredient = ingredient;
     },
     setRecipeIngredientList(
         state,
         { recipeIngredient, recipeIngredientQuantity }
     ) {
-        recipeIngredient.recipe_ingredient_quantity = recipeIngredientQuantity;
-        // 編集
+        console.log(recipeIngredient, recipeIngredientQuantity);
+        // レシピ編集の場合(EditRecipeから受け取った場合)
+        recipeIngredient.ingredient_quantity = recipeIngredientQuantity;
+
+        // 食材編集の場合
         if (state.isEditingRecipeIngredient == true) {
             state.recipeIngredientList.splice(
-                state.editingIngredientIndex,
+                state.editingRecipeIngredientIndex,
                 1,
                 recipeIngredient
             );
             state.isEditingRecipeIngredient = false;
             return;
         }
-        // 新規追加
+        // 食材新規追加の場合
+
         state.recipeIngredientList.push(recipeIngredient);
     },
     //
@@ -46,12 +53,6 @@ export default {
     },
     initEditingRecipeIngredientIndex(state) {
         state.editingRecipeIngredientIndex = 0;
-    },
-    setRecipeCategory(state, recipeCategory) {
-        state.recipeCategory = recipeCategory;
-    },
-    initRecipeCategory(state) {
-        state.recipeCategory = null;
     },
     setRecipeIngredientQuantity(state, recipeIngredientQuantity) {
         state.recipeIngredientQuantity = recipeIngredientQuantity;

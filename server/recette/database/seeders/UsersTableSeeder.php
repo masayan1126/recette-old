@@ -41,14 +41,14 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-            'name' => 'おおさかたろう',
-            'email' => 'matsushin@gmail.com',
-            'email_verified_at' => now(),
-            'password' => password_hash('mastsushin1126',PASSWORD_DEFAULT),
-            'remember_token' => Str::random(10),
-            'profile_photo_path' => 'https://recipe-img-bucket.s3.ap-northeast-1.amazonaws.com/recipes/tCmMiif40rtHN43PY1D4j5QSzqOMzAHMqR791ktK.jpg',
-            'created_at' => now(),
-            'updated_at' => now(),
+                'name' => 'レシピ太郎',
+                'email' => 'recipetarou@gmail.com',
+                'email_verified_at' => now(),
+                'password' => password_hash('recipetarou4719',PASSWORD_DEFAULT),
+                'remember_token' => Str::random(10),
+                'profile_photo_path' => 'https://recipe-img-bucket.s3.ap-northeast-1.amazonaws.com/recipes/tCmMiif40rtHN43PY1D4j5QSzqOMzAHMqR791ktK.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ]);  
     }

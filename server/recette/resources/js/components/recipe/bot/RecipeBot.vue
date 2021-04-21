@@ -51,7 +51,7 @@ export default {
         botReccomendedRecipes() {
             const resultRecipeDataSet = {
                 resultRecipeGenreIndex: this.results[0].index,
-                resultRecipeCategory: this.results[1].answer,
+                resultRecipeCategoryIndex: this.results[1].index,
                 cookingTimeIndex: this.results[2].index,
             };
 
@@ -59,8 +59,8 @@ export default {
                 (recipe) =>
                     recipe.recipe_genre_index ==
                         resultRecipeDataSet.resultRecipeGenreIndex &&
-                    recipe.recipe_category ==
-                        resultRecipeDataSet.resultRecipeCategory &&
+                    recipe.recipe_category_index ==
+                        resultRecipeDataSet.resultRecipeCategoryIndex &&
                     recipe.cooking_time_index ==
                         resultRecipeDataSet.cookingTimeIndex
             );

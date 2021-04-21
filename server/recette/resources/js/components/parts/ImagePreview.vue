@@ -1,10 +1,6 @@
 <template>
     <div class="d-flex justify-content-between mb-1">
-        <img
-            style="width: 180px; height: 180px; object-fit: cover"
-            :src="url"
-            class=""
-        />
+        <img :src="url" class="trim-image" />
         <div class="d-flex justify-content-end w-30">
             <label>
                 <i class="fas fa-file-upload mr-1"></i>

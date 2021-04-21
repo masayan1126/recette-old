@@ -40,17 +40,30 @@ class IngredientController extends Controller
      */
     public function store(Request $request,$id)
     {
+        $unspecifiedes = json_decode($request->initialIngredientList)->unspecifiedes;
         $vegs = json_decode($request->initialIngredientList)->vegs;
         $meats = json_decode($request->initialIngredientList)->meats;
         $fishes = json_decode($request->initialIngredientList)->fishes;
         $cereals = json_decode($request->initialIngredientList)->cereals;
-        $potatoes_starches_beans_mushrooms = json_decode($request->initialIngredientList)->potatoes_starches_beans_mushrooms;
+        $dairy_products = json_decode($request->initialIngredientList)->dairyProducts;
+        $seasonings = json_decode($request->initialIngredientList)->seasonings;    
+        $potatoes = json_decode($request->initialIngredientList)->potatoes;
+        $starches = json_decode($request->initialIngredientList)->starches;
+        $beans = json_decode($request->initialIngredientList)->beans;
+        $mushrooms = json_decode($request->initialIngredientList)->mushrooms;
+        $others = json_decode($request->initialIngredientList)->others;
 
+        foreach ($unspecifiedes as $unspecified){
+            $ingredient = new Ingredient();
+            $ingredient->user_id = $id;
+            $ingredient->ingredient_name = $unspecified->ingredientName;
+            $ingredient->ingredient_category = $unspecified->category;
+            $ingredient->save();
+        }
         foreach ($vegs as $veg){
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
             $ingredient->ingredient_name = $veg->ingredientName;
-            $ingredient->ingredient_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/veg.jpeg";
             $ingredient->ingredient_category = $veg->category;
             $ingredient->save();
         }
@@ -80,11 +93,57 @@ class IngredientController extends Controller
             $ingredient->save();
         }
 
-        foreach ($potatoes_starches_beans_mushrooms as $potatoes_starches_beans_mushroom){
+        foreach ($dairy_products as $dairy_product){
             $ingredient = new Ingredient();
             $ingredient->user_id = $id;
-            $ingredient->ingredient_name = $potatoes_starches_beans_mushroom->ingredientName;
-            $ingredient->ingredient_category = $potatoes_starches_beans_mushroom->category;
+            $ingredient->ingredient_name = $dairy_product->ingredientName;
+            $ingredient->ingredient_category = $dairy_product->category;
+            $ingredient->save();
+        }
+
+        foreach ($seasonings as $seasoning){
+            $ingredient = new Ingredient();
+            $ingredient->user_id = $id;
+            $ingredient->ingredient_name = $seasoning->ingredientName;
+            $ingredient->ingredient_category = $seasoning->category;
+            $ingredient->save();
+        }
+
+        foreach ($potatoes as $potato){
+            $ingredient = new Ingredient();
+            $ingredient->user_id = $id;
+            $ingredient->ingredient_name = $potato->ingredientName;
+            $ingredient->ingredient_category = $potato->category;
+            $ingredient->save();
+        }
+        foreach ($starches as $starch){
+            $ingredient = new Ingredient();
+            $ingredient->user_id = $id;
+            $ingredient->ingredient_name = $starch->ingredientName;
+            $ingredient->ingredient_category = $starch->category;
+            $ingredient->save();
+        }
+        foreach ($beans as $bean){
+            $ingredient = new Ingredient();
+            $ingredient->user_id = $id;
+            $ingredient->ingredient_name = $bean->ingredientName;
+            $ingredient->ingredient_category = $bean->category;
+            $ingredient->save();
+        }
+       
+        foreach ($mushrooms as $mushroom){
+            $ingredient = new Ingredient();
+            $ingredient->user_id = $id;
+            $ingredient->ingredient_name = $mushroom->ingredientName;
+            $ingredient->ingredient_category = $mushroom->category;
+            $ingredient->save();
+        }
+       
+        foreach ($others as $other){
+            $ingredient = new Ingredient();
+            $ingredient->user_id = $id;
+            $ingredient->ingredient_name = $other->ingredientName;
+            $ingredient->ingredient_category = $other->category;
             $ingredient->save();
         }
 
@@ -130,7 +189,6 @@ class IngredientController extends Controller
             $ingredient = new Ingredient();
             $ingredient->user_id = $user_id;
             $ingredient->ingredient_name = $edited_ingredient->ingredientName;
-            $ingredient->ingredient_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/veg.jpeg";
             $ingredient->ingredient_category = $edited_ingredient->ingredientCategory;
             $ingredient->save();
             $ingredients = Ingredient::where('user_id',$user_id)->get();
@@ -139,7 +197,6 @@ class IngredientController extends Controller
         
         $update_target_ingredient = Ingredient::where('id',$ingredient_id)->first();
         $update_target_ingredient->ingredient_name = $edited_ingredient->ingredientName;
-        $update_target_ingredient->ingredient_image_path = "https://recipe-img-bucket.s3-ap-northeast-1.amazonaws.com/recipes/veg.jpeg";
         $update_target_ingredient->ingredient_category = $edited_ingredient->ingredientCategory;
         $update_target_ingredient->save();
 

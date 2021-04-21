@@ -28,8 +28,7 @@ export default {
         selectedCategoryRecipeList() {
             return this.recipes.filter(
                 (recipe) =>
-                    recipe.recipe_category_sub ==
-                    this.recipeCategory.recipe_category_name_sub
+                    recipe.recipe_category_index == this.recipeCategory.index
             );
         },
     },

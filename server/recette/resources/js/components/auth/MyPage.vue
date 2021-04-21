@@ -13,17 +13,17 @@
             :modal-submit-function="contents.modalContents.modalSubmitFunction"
             :unnecessary-element-style="style.unnecessaryElementStyle"
         />
+        <p
+            class="text-right"
+            data-toggle="modal"
+            :data-target="`#${contents.modalContents.modalId}`"
+        >
+            <i class="far fa-edit mr-1"></i>編集する
+        </p>
         <div
             class="wrapper-mypage mt-5 mt-sm-0 align-items-center d-flex justify-content-center"
         >
             <div class="container-mypage text-center">
-                <p
-                    class="text-right"
-                    data-toggle="modal"
-                    :data-target="`#${contents.modalContents.modalId}`"
-                >
-                    <i class="far fa-edit mr-1"></i>編集する
-                </p>
                 <img
                     alt="プロフィール画像"
                     class="w-50"

@@ -38,16 +38,18 @@ export default {
         };
     },
     methods: {
-        showRecipeCategoryDetail(selectedCategoryRecipeList) {
+        showRecipeCategoryDetail(selectedCategoryRecipeList, recipeCategory) {
             if (selectedCategoryRecipeList.length == 0) {
                 alert("該当のレシピは0件です。");
                 return;
             }
+
+            console.log(selectedCategoryRecipeList);
             this.$router.push({
                 name: "recipeCategoryDetailList",
                 params: {
                     categoryPath:
-                        selectedCategoryRecipeList[0].recipe_category_sub,
+                        selectedCategoryRecipeList[0].recipe_category_index,
                 },
             });
         },

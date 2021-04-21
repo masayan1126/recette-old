@@ -38,7 +38,6 @@
                     <!-- ユーザーメニュー(タブレット以上) -->
 
                     <img
-                        class="w-30"
                         data-toggle="dropdown"
                         :src="userData.profileImagePath"
                         alt="ユーザープロフィール画像"

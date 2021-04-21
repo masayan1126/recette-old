@@ -490,6 +490,8 @@ export default {
         initStoreDataSet() {
             this.initRecipeIngredientList();
             this.initRecipeProcedureList();
+            this.initRecipeIngredient();
+            this.initRecipeIngredientQuantity();
         },
         sendEditedRecipe() {
             if (this.recipeName == "") {
@@ -531,17 +533,19 @@ export default {
                 (recipe_ingredient) => {
                     const recipeIngredient = {
                         ingredient_name: recipe_ingredient.ingredient_name,
-                        ingredient_quantity:
-                            recipe_ingredient.ingredient_quantity,
                         ingredient_category:
                             recipe_ingredient.ingredient_category,
                     };
+
                     this.setRecipeIngredientList({
                         recipeIngredient: recipeIngredient,
-                        recipeIngredientQuantity: null,
+                        recipeIngredientQuantity:
+                            recipe_ingredient.ingredient_quantity,
                     });
                 }
             );
+
+            console.log(this.recipeIngredientList);
 
             this.selectedRecipe[0].recipe_procedure.forEach(
                 (recipe_procedure) => {

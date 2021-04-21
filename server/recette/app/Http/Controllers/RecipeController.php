@@ -116,13 +116,19 @@ class RecipeController extends Controller
         $update_target_recipe->recipe_procedure = $edited_recipe->recipeProcedure;
 
         // 調理時間
-        $update_target_recipe->cooking_time_index = $edited_recipe->cookingTime->index;
+        if (isset($edited_recipe->cookingTime)) {
+            $update_target_recipe->cooking_time_index = $edited_recipe->cookingTime->index;
+        }
 
         // レシピジャンル
-        $update_target_recipe->recipe_genre_index = $edited_recipe->recipeGenre->index;
+        if (isset($edited_recipe->recipeGenre)) {
+            $update_target_recipe->recipe_genre_index = $edited_recipe->recipeGenre->index;
+        }
 
         // レシピカテゴリー
-        $update_target_recipe->recipe_category = $edited_recipe->recipeCategory->index;
+        if (isset($edited_recipe->recipeCategory)) {
+            $update_target_recipe->recipe_category = $edited_recipe->recipeCategory->index;
+        }
 
         $update_target_recipe->save();
         $last_insert_id = $update_target_recipe->id; 

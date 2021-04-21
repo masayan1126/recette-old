@@ -38,7 +38,7 @@
                             >
                                 {{ selectedRecipeIngredient.ingredient_name }}
                                 {{
-                                    selectedRecipeIngredient.ngredient_quantity
+                                    selectedRecipeIngredient.ingredient_quantity
                                 }}
                             </li>
                         </ul>

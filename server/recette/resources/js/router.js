@@ -85,15 +85,15 @@ const router = createRouter({
                     .get("/api/athenticated")
                     .then(() => {
                         if (
-                            to.params.categoryPath != "meat" &&
-                            to.params.categoryPath != "fish" &&
-                            to.params.categoryPath != "veg" &&
-                            to.params.categoryPath != "noodle" &&
-                            to.params.categoryPath != "rice" &&
-                            to.params.categoryPath != "soup" &&
-                            to.params.categoryPath != "bread" &&
-                            to.params.categoryPath != "sweets" &&
-                            to.params.categoryPath != "other"
+                            to.params.categoryPath != 1 &&
+                            to.params.categoryPath != 2 &&
+                            to.params.categoryPath != 3 &&
+                            to.params.categoryPath != 4 &&
+                            to.params.categoryPath != 5 &&
+                            to.params.categoryPath != 6 &&
+                            to.params.categoryPath != 7 &&
+                            to.params.categoryPath != 8 &&
+                            to.params.categoryPath != 9
                         ) {
                             next({ path: "/404" });
                             return;
@@ -242,17 +242,6 @@ const router = createRouter({
                         return next({ name: "login" });
                     });
             },
-            // beforeUpdate: (to, form, next) => {
-            //     axios
-            //         .get("/api/athenticated")
-            //         .then(() => {
-            //             next();
-            //         })
-            //         .catch((error) => {
-            //             console.log(error);
-            //             return next({ name: "login" });
-            //         });
-            // },
         },
         {
             path: "/ingredients",

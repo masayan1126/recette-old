@@ -20,8 +20,6 @@ export default {
         state,
         { recipeIngredient, recipeIngredientQuantity }
     ) {
-        console.log(recipeIngredient, recipeIngredientQuantity);
-        // レシピ編集の場合(EditRecipeから受け取った場合)
         recipeIngredient.ingredient_quantity = recipeIngredientQuantity;
 
         // 食材編集の場合

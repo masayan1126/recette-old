@@ -6,7 +6,7 @@
                 <h5>
                     カテゴリーから探す/
                     <span class="small">{{
-                        selectedRecipeCategoryList[0].recipe_category
+                        selectedCategory[0].recipe_category_name
                     }}</span>
                 </h5>
                 <div class="container-recipe_category_detail_list mt-4">
@@ -37,6 +37,7 @@
 <script>
 import { mapGetters } from "vuex";
 import BreadCrumb from "../common/BreadcrumbTrail";
+import RecipeCategories from "../../assets/recipeCategories";
 import ReturnButton from "../parts/ReturnButton";
 import utilsMixin from "../../mixin/utility";
 
@@ -44,20 +45,30 @@ export default {
     components: { BreadCrumb, ReturnButton },
     name: "RecipeCategoryDetailList",
     mixins: [utilsMixin],
+    data() {
+        return {
+            categories: RecipeCategories.categories,
+        };
+    },
     computed: {
         ...mapGetters({
             recipes: "getRecipes",
         }),
-        selectedCategoryName() {
-            const categoryName = window.location.pathname.split(
+        selectedCategoryIndex() {
+            const categoryIndex = window.location.pathname.split(
                 "/recipes/category/"
             )[1];
-            return categoryName;
+            return categoryIndex;
+        },
+        selectedCategory() {
+            return this.categories.filter(
+                (category) => category.index == this.selectedCategoryIndex
+            );
         },
         selectedRecipeCategoryList() {
             return this.recipes.filter(
                 (recipe) =>
-                    recipe.recipe_category_sub == this.selectedCategoryName
+                    recipe.recipe_category_index == this.selectedCategoryIndex
             );
         },
     },

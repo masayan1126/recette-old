@@ -32,7 +32,13 @@
                             </div>
 
                             <div class="small mb-0">
-                                <div v-if="screenInnerWidth < 768" class="mb-1">
+                                <div
+                                    class="mb-1"
+                                    v-if="
+                                        screenInnerWidth < 768 &&
+                                        recipe.recipe_procedure[0]
+                                    "
+                                >
                                     {{ 1 }}.{{
                                         recipe.recipe_procedure[0].substr(
                                             0,
@@ -161,16 +167,18 @@ export default {
                 case "献立くんの提案レシピ":
                     return this.botReccomendedRecipes;
                 default:
-                    const recipes = this.recipes.filter((recipe) => {
-                        if (
-                            recipe.recipe_name.indexOf(
-                                this.$route.query.query
-                            ) != -1
-                        ) {
-                            return recipe;
+                    const searchResultRecipes = this.recipes.filter(
+                        (recipe) => {
+                            if (
+                                recipe.recipe_name.indexOf(
+                                    this.$route.query.query
+                                ) != -1
+                            ) {
+                                return recipe;
+                            }
                         }
-                    });
-                    return recipes;
+                    );
+                    return searchResultRecipes;
             }
         },
     },

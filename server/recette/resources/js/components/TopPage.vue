@@ -36,24 +36,15 @@
 
                 <div class="user_menu-sm">
                     <!-- ユーザーメニュー(タブレット以上) -->
-                    <span
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                        data-toggle="dropdown"
-                        id="dropdownMenuButton"
-                        type="button"
-                    >
-                        <img
-                            class="w-40"
-                            :src="userData.profileImagePath"
-                            alt="ユーザープロフィール画像"
-                        />
-                    </span>
 
-                    <div
-                        class="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton"
-                    >
+                    <img
+                        class="w-30"
+                        data-toggle="dropdown"
+                        :src="userData.profileImagePath"
+                        alt="ユーザープロフィール画像"
+                    />
+
+                    <div class="dropdown-menu">
                         <router-link
                             :to="{
                                 name: 'myPage',
@@ -192,17 +183,16 @@ export default {
             newArrivalRecipes.sort(
                 (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
             );
-            console.log(newArrivalRecipes);
             return newArrivalRecipes;
         },
     },
     created() {
         this.fetchAllRecipes();
         this.fetchUserIngredients();
-        // apiから取得した認証情報をstoreにセット
         axios.get("api/user").then((res) => {
             this.setUserData(res.data);
         });
+        // apiから取得した認証情報をstoreにセット
     },
     methods: {
         simpleSuggestionList() {
@@ -221,7 +211,6 @@ export default {
                 .get("/api/recipes")
                 .then((response) => {
                     this.setRecipes(response.data);
-                    console.log(this.recipes);
                 })
                 .catch((error) => {});
         },
@@ -230,14 +219,22 @@ export default {
             await axios
                 .get("/api/users/" + this.userData.userId + "/ingredients")
                 .then((response) => {
-                    this.setIngredients(response.data);
+                    const ingredients = [];
+                    response.data.forEach((ingredient) => {
+                        const _ingredient = {
+                            ingredient_name: ingredient.ingredient_name,
+                            ingredient_category: ingredient.ingredient_category,
+                        };
+                        ingredients.push(_ingredient);
+                    });
+
+                    this.setIngredients(ingredients);
                 })
                 .catch((error) => {});
         },
         logout() {
             axios.post("/api/logout").then((res) => {
                 this.initUserData();
-                this.$router.push("/login");
             });
         },
         searchRecipe(e) {

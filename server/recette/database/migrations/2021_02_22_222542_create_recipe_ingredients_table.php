@@ -15,23 +15,19 @@ class CreateRecipeIngredientsTable extends Migration
     {
         Schema::create('recipe_ingredients', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('user_id') // 「テーブル名の単数形」のスネークケース + '_id'
-            ->nullable()
+            $table->foreignId('user_id')
             ->comment('ユーザーテーブルへの外部キー')
-            ->constrained('users') // 「複数形のテーブル名」
+            ->constrained('users')
             ->onDelete('cascade');
 
-            $table->foreignId('recipe_id') // 「テーブル名の単数形」のスネークケース + '_id'
-            ->nullable()
+            $table->foreignId('recipe_id')
             ->comment('レシピテーブルへの外部キー')
-            ->constrained('recipes') // 「複数形のテーブル名」
+            ->constrained('recipes')
             ->onDelete('cascade');
             
-            $table->string("recipe_ingredient_name");
-            $table->string("recipe_ingredient_image_path")->nullable()->comment('レシピ食材の画像ファイルパス');
-            $table->string("recipe_ingredient_category")->nullable()->comment('レシピ食材のカテゴリー');
-            $table->string("recipe_ingredient_quantity")->nullable()->comment('レシピ食材の数量');
+            $table->string("ingredient_name")->comment('レシピ食材の名前')->nullable();
+            $table->string("ingredient_category")->comment('レシピ食材のカテゴリー')->nullable();
+            $table->string("ingredient_quantity")->comment('レシピ食材の数量')->nullable();
             $table->timestamps();
         });
     }

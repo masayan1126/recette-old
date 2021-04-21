@@ -99,9 +99,9 @@ The application can then be accessed at http://localhost:8000/
 # Usage
 
 - デモユーザー
-  - name:matsushin
-  - mail:matsushin@gmail.com
-  - password:matsushin1126
+  - usernama:レシピ太郎
+  - email:recipetarou@gmail.com
+  - password:recipetarou4719
 
 # Author
 

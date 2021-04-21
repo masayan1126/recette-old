@@ -19,6 +19,9 @@
                         :id="'input-username'"
                         :name="'ユーザー名'"
                     />
+                    <p class="small text-danger" v-if="errors.name">
+                        ※{{ errors.name[0] }}
+                    </p>
                     <TextInput
                         :class-name="'text-input-black w-100'"
                         :id="'input-username'"
@@ -33,6 +36,9 @@
                         :id="'input-email'"
                         :name="'メールアドレス'"
                     />
+                    <p class="small text-danger" v-if="errors.email">
+                        ※{{ errors.email[0] }}
+                    </p>
                     <TextInput
                         :class-name="'text-input-black w-100'"
                         :id="'input-email'"
@@ -45,8 +51,11 @@
                     <InputLabel
                         :class-name="'mb-0 w-100'"
                         :id="'input-password'"
-                        :name="'パスワード：'"
+                        :name="'パスワード'"
                     />
+                    <p class="small text-danger" v-if="errors.password">
+                        ※{{ errors.password[0] }}
+                    </p>
                     <TextInput
                         :class-name="'text-input-black w-100'"
                         :id="'input-password'"
@@ -59,7 +68,7 @@
                     <InputLabel
                         :class-name="'mb-0 w-100'"
                         :id="'input-password-confirmation'"
-                        :name="'確認用パスワード：'"
+                        :name="'確認用パスワード'"
                     />
                     <TextInput
                         :class-name="'text-input-black w-100'"
@@ -115,6 +124,7 @@ export default {
                 password: "",
                 password_confirmation: "",
             },
+            errors: [],
         };
     },
     methods: {
@@ -126,7 +136,10 @@ export default {
                     this.setUserData(res.data);
                     this.$router.push("/recipes");
                 })
-                .catch((error) => {});
+                .catch((error) => {
+                    this.errors = error.response.data.errors;
+                    console.log(error.response.data.errors);
+                });
         },
     },
 };

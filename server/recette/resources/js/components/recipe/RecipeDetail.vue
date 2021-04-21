@@ -36,15 +36,16 @@
                                     .recipe_ingredients"
                                 :key="selectedRecipeIngredient.id"
                             >
+                                {{ selectedRecipeIngredient.ingredient_name }}
                                 {{
-                                    selectedRecipeIngredient.recipe_ingredient_name
-                                }}
-                                {{
-                                    selectedRecipeIngredient.recipe_ingredient_quantity
+                                    selectedRecipeIngredient.ngredient_quantity
                                 }}
                             </li>
                         </ul>
-                        <p class="mb-0 text-right">
+                        <p
+                            v-if="selectedRecipe[0].cooking_time_index != null"
+                            class="mb-0 text-right"
+                        >
                             調理時間：{{ selectedRecipeCookingTime[0].name }}
                         </p>
                     </div>
@@ -89,12 +90,17 @@
                 </div>
             </div>
             <div class="mb-4 d-lg-flex justify-content-between">
-                <div class="w-lg-49">
+                <div class="w-lg-49 mb-4">
                     <div class="d-flex justify-content-between align-items-end">
                         <span>ジャンル</span>
                     </div>
                     <div class="container-recipe_category-recipe_detail p-2">
-                        {{ selectedRecipeGenre[0].name }}
+                        <p
+                            class="mb-0"
+                            v-if="selectedRecipe[0].recipe_genre_index != null"
+                        >
+                            {{ selectedRecipeGenre[0].name }}
+                        </p>
                     </div>
                 </div>
                 <div class="w-lg-49">
@@ -102,7 +108,14 @@
                         <span>カテゴリー</span>
                     </div>
                     <div class="container-recipe_category-recipe_detail p-2">
-                        {{ selectedRecipe[0].recipe_category }}
+                        <p
+                            class="mb-0"
+                            v-if="
+                                selectedRecipe[0].recipe_category_index != null
+                            "
+                        >
+                            {{ selectedRecipeCategory[0].recipe_category_name }}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -114,6 +127,7 @@
 import CookingTimeList from "../../assets/cookingTimeList";
 import RecipeGenres from "../../assets/recipeGenres";
 import { mapGetters } from "vuex";
+import RecipeCategories from "../../assets/recipeCategories";
 import ReturnButton from "../parts/ReturnButton";
 import utilsMixin from "../../mixin/utility";
 
@@ -125,9 +139,13 @@ export default {
     name: "RecipeDetail",
     data() {
         return {
+            categories: RecipeCategories.categories,
             cookingTimeList: CookingTimeList.cookingTimeList,
             recipeGenres: RecipeGenres.recipeGenres,
         };
+    },
+    created() {
+        console.log(this.selectedRecipe);
     },
     computed: {
         ...mapGetters({
@@ -155,6 +173,13 @@ export default {
                 (recipeGenre) =>
                     recipeGenre.index ==
                     this.selectedRecipe[0].recipe_genre_index
+            );
+        },
+        selectedRecipeCategory() {
+            return this.categories.filter(
+                (category) =>
+                    category.index ==
+                    this.selectedRecipe[0].recipe_category_index
             );
         },
     },

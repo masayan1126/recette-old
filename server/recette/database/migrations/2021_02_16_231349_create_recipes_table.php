@@ -22,15 +22,13 @@ class CreateRecipesTable extends Migration
             ->onDelete('cascade');
 
             $table->string("recipe_name")->comment('レシピ名');
-            $table->string("recipe_image_path")->comment('レシピ食材の画像ファイルパス')->nullable();
-            $table->json("recipe_procedure")->comment('レシピ作成手順')->nullable();
-            $table->string("recipe_category")->comment('レシピカテゴリー')->nullable();
-            $table->string("recipe_category_sub")->comment('レシピカテゴリーサブ')->nullable();
-            $table->string("recipe_category_image")->comment('レシピカテゴリーの画像')->nullable();
-            $table->boolean("is_favorite")->comment('お気に入りレシピかどうか')->nullable();
+            $table->string("recipe_image_path")->comment('レシピ食材の画像ファイルパス');
             $table->string("recipe_url")->comment('レシピの外部URL')->nullable();
+            $table->json("recipe_procedure")->comment('レシピ作成手順')->nullable();
             $table->integer("cooking_time_index")->comment('調理時間(分)のインデックス')->nullable();
-            $table->string("recipe_genre_index")->comment('レシピジャンルのインデックス')->nullable();
+            $table->integer("recipe_genre_index")->comment('レシピジャンルのインデックス')->nullable();
+            $table->integer("recipe_category_index")->comment('レシピカテゴリーのインデックス')->nullable();
+            $table->boolean("is_favorite")->comment('お気に入りレシピかどうか')->nullable();
 
             $table->timestamps();
         });

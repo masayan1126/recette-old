@@ -233,7 +233,7 @@ const router = createRouter({
             props: true,
             beforeEnter: (to, form, next) => {
                 axios
-                    .get("/api/user")
+                    .get("/api/athenticated")
                     .then(() => {
                         next();
                     })
@@ -242,6 +242,17 @@ const router = createRouter({
                         return next({ name: "login" });
                     });
             },
+            // beforeUpdate: (to, form, next) => {
+            //     axios
+            //         .get("/api/athenticated")
+            //         .then(() => {
+            //             next();
+            //         })
+            //         .catch((error) => {
+            //             console.log(error);
+            //             return next({ name: "login" });
+            //         });
+            // },
         },
         {
             path: "/ingredients",
@@ -250,7 +261,7 @@ const router = createRouter({
             props: true,
             beforeEnter: (to, form, next) => {
                 axios
-                    .get("/api/user")
+                    .get("/api/athenticated")
                     .then(() => {
                         next();
                     })

@@ -3,6 +3,7 @@
         <div class="wrapper-recipe_create">
             <ReturnButton :props-function="routerBack" />
             <Toast :toast-contents="contents.toastContents" />
+            <!-- レシピURL登録のためのモーダル -->
             <Modal
                 :input-contents="contents.inputContents"
                 :input-style="style.inputContentsStyle"
@@ -56,21 +57,16 @@
                 <div class="container-recipe_ingredient-recipe_create">
                     <ul
                         class="pl-1"
-                        v-for="(
-                            recipeIngredient, index
-                        ) in recipeIngredientList"
-                        :key="recipeIngredient.id"
+                        v-for="(ingredient, index) in recipeIngredientList"
+                        :key="ingredient.id"
                     >
                         <li>
-                            {{ recipeIngredient.ingredient_name }}
-                            {{ recipeIngredient.ingredient_quantity }}
+                            {{ ingredient.ingredient_name }}
+                            {{ ingredient.ingredient_quantity }}
                             <span
                                 ><i
                                     @click="
-                                        editRecipeIngredient(
-                                            recipeIngredient,
-                                            index
-                                        )
+                                        editRecipeIngredient(ingredient, index)
                                     "
                                     class="ml-2 fas fa-pencil-alt"
                                 ></i
@@ -343,14 +339,6 @@ export default {
             recipeProcedureList: "getRecipeProcedureList",
             userData: "getUserData",
         }),
-        cookingTime: {
-            get() {
-                return this.$store.getters.getCookingTime;
-            },
-            set(val) {
-                this.setCookingTime(val);
-            },
-        },
         newRecipe() {
             const newRecipe = {
                 cookingTime: this.cookingTime,
@@ -363,56 +351,9 @@ export default {
             };
             return newRecipe;
         },
-        recipeName: {
-            get() {
-                return this.$store.getters.getRecipeName;
-            },
-            set(val) {
-                this.setRecipeName(val);
-            },
-        },
-        recipeIngredient: {
-            get() {
-                return this.$store.getters.getRecipeIngredient;
-            },
-            set(val) {
-                this.setRecipeIngredient(val);
-            },
-        },
-        recipeIngredientQuantity: {
-            get() {
-                return this.$store.getters.getRecipeIngredientQuantity;
-            },
-            set(val) {
-                this.setRecipeIngredientQuantity(val);
-            },
-        },
-        recipeCategory: {
-            get() {
-                return this.$store.getters.getrecipeCategory;
-            },
-            set(val) {
-                this.setRecipeCategory(val);
-            },
-        },
-        recipeGenre: {
-            get() {
-                return this.$store.getters.getRecipeGenre;
-            },
-            set(val) {
-                this.setRecipeGenre(val);
-            },
-        },
-        recipeProcedure: {
-            get() {
-                return this.$store.getters.getRecipeProcedure;
-            },
-            set(val) {
-                this.setRecipeProcedure(val);
-            },
-        },
     },
     created() {
+        console.log(this.recipeIngredient);
         this.initStoreDataSet();
         // 初期データの食材リストが未登録なら、トーストでメッセージを表示する
         this.ingredients.length == 0
@@ -496,9 +437,7 @@ export default {
             this.contents.toastContents.toastIsShow = false;
         },
         editRecipeIngredient(ingredient, index) {
-            this.setRecipeIngredientQuantity(
-                ingredient.recipeIngredientQuantity
-            );
+            this.setRecipeIngredientQuantity(ingredient.ingredient_quantity);
             this.setRecipeIngredient(ingredient);
             // 食材編集モードをtrueに
             this.setIsEditingRecipeIngredient();
@@ -545,7 +484,11 @@ export default {
                 .then((res) => {
                     this.$router.push({ name: "recipes" });
                 })
-                .catch((error) => {});
+                .catch((error) => {
+                    alert(
+                        "申し訳ございません。処理に失敗いたしました。少し時間おいてからもう一度お試しください"
+                    );
+                });
         },
     },
 };

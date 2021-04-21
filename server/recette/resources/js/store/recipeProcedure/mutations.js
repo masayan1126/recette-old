@@ -35,6 +35,12 @@ export default {
         state.editingRecipeProcedureIndex = 0;
     },
     deleteRecipeProcedure(state, index) {
+        const boolConfirmDeleteRecipeProcedure = confirm(
+            "この食材を削除してよろしいですか？"
+        );
+        if (boolConfirmDeleteRecipeProcedure == false) {
+            return;
+        }
         state.recipeProcedureList.splice(index, 1);
     },
 };

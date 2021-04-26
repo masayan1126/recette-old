@@ -36,7 +36,7 @@ export default {
     },
     deleteRecipeProcedure(state, index) {
         const boolConfirmDeleteRecipeProcedure = confirm(
-            "この食材を削除してよろしいですか？"
+            "この作り方のテキストを削除してよろしいですか？"
         );
         if (boolConfirmDeleteRecipeProcedure == false) {
             return;

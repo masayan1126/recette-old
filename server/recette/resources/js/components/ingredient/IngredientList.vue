@@ -235,7 +235,7 @@ export default {
         ...mapActions(["setIngredients"]),
         deleteIngredientList(ingredient) {
             const boolConfirmDeleteIngredient = confirm(
-                "このレシピを削除してよろしいですか？"
+                "この食材を削除してよろしいですか？"
             );
             if (boolConfirmDeleteIngredient == true) {
                 const url =

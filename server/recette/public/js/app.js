@@ -17226,7 +17226,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     deleteIngredientList: function deleteIngredientList(ingredient) {
       var _this = this;
 
-      var boolConfirmDeleteIngredient = confirm("このレシピを削除してよろしいですか？");
+      var boolConfirmDeleteIngredient = confirm("この食材を削除してよろしいですか？");
 
       if (boolConfirmDeleteIngredient == true) {
         var url = "/api/users/" + this.userData.userId + "/ingredients/" + ingredient.id + "/delete";
@@ -23886,7 +23886,7 @@ __webpack_require__.r(__webpack_exports__);
     state.editingRecipeProcedureIndex = 0;
   },
   deleteRecipeProcedure: function deleteRecipeProcedure(state, index) {
-    var boolConfirmDeleteRecipeProcedure = confirm("この食材を削除してよろしいですか？");
+    var boolConfirmDeleteRecipeProcedure = confirm("この作り方のテキストを削除してよろしいですか？");
 
     if (boolConfirmDeleteRecipeProcedure == false) {
       return;
